@@ -1,0 +1,4304 @@
+{
+  "schema_version": 2,
+  "experiment": "region",
+  "status": "complete",
+  "image": "test.png",
+  "image_size": [
+    1558,
+    974
+  ],
+  "repeats": 1,
+  "winrt_repeats": 1,
+  "regions": {
+    "left_header": {
+      "box": [
+        86,
+        29,
+        169,
+        62
+      ],
+      "expected": "画间沉铁兽60级490/490"
+    },
+    "right_header": {
+      "box": [
+        1359,
+        29,
+        162,
+        60
+      ],
+      "expected": "恶魔狼60级100%"
+    },
+    "left_energy": {
+      "box": [
+        203,
+        87,
+        41,
+        26
+      ],
+      "expected": "★10"
+    },
+    "right_energy": {
+      "box": [
+        1359,
+        84,
+        44,
+        29
+      ],
+      "expected": "★10"
+    },
+    "skill_1": {
+      "box": [
+        245,
+        407,
+        94,
+        29
+      ],
+      "expected": "连续爪击"
+    },
+    "skill_2": {
+      "box": [
+        224,
+        516,
+        84,
+        32
+      ],
+      "expected": "反击拳"
+    },
+    "skill_3": {
+      "box": [
+        238,
+        629,
+        89,
+        32
+      ],
+      "expected": "幻象"
+    },
+    "skill_4": {
+      "box": [
+        294,
+        725,
+        106,
+        41
+      ],
+      "expected": "鼓劲"
+    },
+    "energy_1": {
+      "box": [
+        251,
+        334,
+        45,
+        32
+      ],
+      "expected": "★2"
+    },
+    "energy_2": {
+      "box": [
+        214,
+        447,
+        50,
+        34
+      ],
+      "expected": "★2"
+    },
+    "energy_3": {
+      "box": [
+        222,
+        569,
+        52,
+        28
+      ],
+      "expected": "★1"
+    },
+    "energy_4": {
+      "box": [
+        277,
+        669,
+        49,
+        36
+      ],
+      "expected": "★3"
+    },
+    "power_1": {
+      "box": [
+        292,
+        390,
+        47,
+        29
+      ],
+      "expected": "37"
+    },
+    "power_2": {
+      "box": [
+        260,
+        498,
+        54,
+        28
+      ],
+      "expected": "62"
+    },
+    "power_3": {
+      "box": [
+        274,
+        607,
+        55,
+        32
+      ],
+      "expected": "30"
+    },
+    "power_4": {
+      "box": [
+        331,
+        708,
+        58,
+        29
+      ],
+      "expected": "--"
+    }
+  },
+  "engines": [
+    {
+      "engine": "PixPin_OCR",
+      "results": [
+        {
+          "region": "left_header",
+          "box": [
+            86,
+            29,
+            169,
+            62
+          ],
+          "variant": "native",
+          "elapsed_ms": 1534.5852000027662,
+          "expected": "画间沉铁兽60级490/490",
+          "detections": [
+            {
+              "text": "画间沉铁兽",
+              "score": 0.9998947978019714,
+              "box": [
+                [
+                  8,
+                  15
+                ],
+                [
+                  106,
+                  15
+                ],
+                [
+                  106,
+                  32
+                ],
+                [
+                  8,
+                  32
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.9989553689956665,
+              "box": [
+                [
+                  127,
+                  17
+                ],
+                [
+                  163,
+                  17
+                ],
+                [
+                  163,
+                  31
+                ],
+                [
+                  127,
+                  31
+                ]
+              ]
+            },
+            {
+              "text": "490/490",
+              "score": 0.9993458390235901,
+              "box": [
+                [
+                  49,
+                  39
+                ],
+                [
+                  112,
+                  39
+                ],
+                [
+                  112,
+                  50
+                ],
+                [
+                  49,
+                  50
+                ]
+              ]
+            }
+          ],
+          "text": "画间沉铁兽\n60级\n490/490",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "60490/490",
+            "predicted_numeric": "60490/490"
+          }
+        },
+        {
+          "region": "left_header",
+          "box": [
+            86,
+            29,
+            169,
+            62
+          ],
+          "variant": "x3",
+          "elapsed_ms": 2347.3232999967877,
+          "expected": "画间沉铁兽60级490/490",
+          "detections": [
+            {
+              "text": "画间沉铁兽",
+              "score": 0.9997338652610779,
+              "box": [
+                [
+                  30.5,
+                  48.5
+                ],
+                [
+                  314.5,
+                  48.5
+                ],
+                [
+                  314.5,
+                  88.5
+                ],
+                [
+                  30.5,
+                  88.5
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.9994333386421204,
+              "box": [
+                [
+                  381.49996948242193,
+                  52.499999988693546
+                ],
+                [
+                  481.4999694824218,
+                  52.500003921371146
+                ],
+                [
+                  481.4999694824218,
+                  91.50000392137115
+                ],
+                [
+                  381.49996948242193,
+                  91.49999998869355
+                ]
+              ]
+            },
+            {
+              "text": "490/490",
+              "score": 0.9986156906400409,
+              "box": [
+                [
+                  149.5,
+                  119.5
+                ],
+                [
+                  334.5,
+                  119.5
+                ],
+                [
+                  334.5,
+                  147.5
+                ],
+                [
+                  149.5,
+                  147.5
+                ]
+              ]
+            }
+          ],
+          "text": "画间沉铁兽\n60级\n490/490",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "60490/490",
+            "predicted_numeric": "60490/490"
+          }
+        },
+        {
+          "region": "right_header",
+          "box": [
+            1359,
+            29,
+            162,
+            60
+          ],
+          "variant": "native",
+          "elapsed_ms": 1723.3656999887899,
+          "expected": "恶魔狼60级100%",
+          "detections": [
+            {
+              "text": "恶魔狼",
+              "score": 0.9980761210123698,
+              "box": [
+                [
+                  5,
+                  15
+                ],
+                [
+                  53,
+                  15
+                ],
+                [
+                  53,
+                  32
+                ],
+                [
+                  5,
+                  32
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.999100387096405,
+              "box": [
+                [
+                  123,
+                  17
+                ],
+                [
+                  157,
+                  17
+                ],
+                [
+                  157,
+                  31
+                ],
+                [
+                  123,
+                  31
+                ]
+              ]
+            },
+            {
+              "text": "100%",
+              "score": 0.9999238848686218,
+              "box": [
+                [
+                  59,
+                  39
+                ],
+                [
+                  97,
+                  39
+                ],
+                [
+                  97,
+                  50
+                ],
+                [
+                  59,
+                  50
+                ]
+              ]
+            }
+          ],
+          "text": "恶魔狼\n60级\n100%",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "60100%",
+            "predicted_numeric": "60100%"
+          }
+        },
+        {
+          "region": "right_header",
+          "box": [
+            1359,
+            29,
+            162,
+            60
+          ],
+          "variant": "x3",
+          "elapsed_ms": 3267.4534999969183,
+          "expected": "恶魔狼60级100%",
+          "detections": [
+            {
+              "text": "恶魔狼",
+              "score": 0.9976441860198975,
+              "box": [
+                [
+                  16,
+                  46
+                ],
+                [
+                  156,
+                  46
+                ],
+                [
+                  156,
+                  93
+                ],
+                [
+                  16,
+                  93
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.9994364976882935,
+              "box": [
+                [
+                  370.5,
+                  52.5
+                ],
+                [
+                  470.5,
+                  52.5
+                ],
+                [
+                  470.5,
+                  92.5
+                ],
+                [
+                  370.5,
+                  92.5
+                ]
+              ]
+            },
+            {
+              "text": "100%",
+              "score": 0.9999473690986633,
+              "box": [
+                [
+                  178.49996948242188,
+                  118.5
+                ],
+                [
+                  287.4999694824219,
+                  118.5
+                ],
+                [
+                  287.4999694824219,
+                  147.5
+                ],
+                [
+                  178.49996948242188,
+                  147.5
+                ]
+              ]
+            }
+          ],
+          "text": "恶魔狼\n60级\n100%",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "60100%",
+            "predicted_numeric": "60100%"
+          }
+        },
+        {
+          "region": "left_energy",
+          "box": [
+            203,
+            87,
+            41,
+            26
+          ],
+          "variant": "native",
+          "elapsed_ms": 1042.1091000025626,
+          "expected": "★10",
+          "detections": [
+            {
+              "text": "★10",
+              "score": 0.8922064701716105,
+              "box": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  37,
+                  5
+                ],
+                [
+                  37,
+                  23
+                ],
+                [
+                  4,
+                  23
+                ]
+              ]
+            }
+          ],
+          "text": "★10",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "10",
+            "predicted_numeric": "10"
+          }
+        },
+        {
+          "region": "left_energy",
+          "box": [
+            203,
+            87,
+            41,
+            26
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1045.7944000081625,
+          "expected": "★10",
+          "detections": [
+            {
+              "text": "★10",
+              "score": 0.9270296494166056,
+              "box": [
+                [
+                  13.999992370605469,
+                  15.9999978737753
+                ],
+                [
+                  103.99999237060547,
+                  15.9999978737753
+                ],
+                [
+                  103.99999237060547,
+                  55.9999978737753
+                ],
+                [
+                  13.999992370605469,
+                  55.9999978737753
+                ]
+              ]
+            }
+          ],
+          "text": "★10",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "10",
+            "predicted_numeric": "10"
+          }
+        },
+        {
+          "region": "right_energy",
+          "box": [
+            1359,
+            84,
+            44,
+            29
+          ],
+          "variant": "native",
+          "elapsed_ms": 943.2077999954345,
+          "expected": "★10",
+          "detections": [
+            {
+              "text": "含10",
+              "score": 0.7693706850210825,
+              "box": [
+                [
+                  6,
+                  8
+                ],
+                [
+                  39,
+                  8
+                ],
+                [
+                  39,
+                  25
+                ],
+                [
+                  6,
+                  25
+                ]
+              ]
+            }
+          ],
+          "text": "含10",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "10",
+            "predicted_numeric": "10"
+          }
+        },
+        {
+          "region": "right_energy",
+          "box": [
+            1359,
+            84,
+            44,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1340.578600007575,
+          "expected": "★10",
+          "detections": [
+            {
+              "text": "★10",
+              "score": 0.8716102242469788,
+              "box": [
+                [
+                  21,
+                  25
+                ],
+                [
+                  114,
+                  25
+                ],
+                [
+                  114,
+                  60
+                ],
+                [
+                  21,
+                  60
+                ]
+              ]
+            }
+          ],
+          "text": "★10",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "10",
+            "predicted_numeric": "10"
+          }
+        },
+        {
+          "region": "skill_1",
+          "box": [
+            245,
+            407,
+            94,
+            29
+          ],
+          "variant": "native",
+          "elapsed_ms": 1193.880500009982,
+          "expected": "连续爪击",
+          "detections": [
+            {
+              "text": "连续爪击",
+              "score": 0.9961620271205902,
+              "box": [
+                [
+                  1.5,
+                  0.5
+                ],
+                [
+                  93,
+                  0.5
+                ],
+                [
+                  93,
+                  28
+                ],
+                [
+                  1.5,
+                  28
+                ]
+              ]
+            }
+          ],
+          "text": "连续爪击",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_1",
+          "box": [
+            245,
+            407,
+            94,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1559.8074000008637,
+          "expected": "连续爪击",
+          "detections": [
+            {
+              "text": "连续爪击",
+              "score": 0.9993910044431686,
+              "box": [
+                [
+                  8,
+                  11
+                ],
+                [
+                  275,
+                  11
+                ],
+                [
+                  275,
+                  73
+                ],
+                [
+                  8,
+                  73
+                ]
+              ]
+            }
+          ],
+          "text": "连续爪击",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_2",
+          "box": [
+            224,
+            516,
+            84,
+            32
+          ],
+          "variant": "native",
+          "elapsed_ms": 1249.5739000005415,
+          "expected": "反击拳",
+          "detections": [
+            {
+              "text": "反击拳",
+              "score": 0.9987612764040629,
+              "box": [
+                [
+                  0,
+                  12.364591088932073
+                ],
+                [
+                  79.91458788079164,
+                  1.7977759875941786
+                ],
+                [
+                  82.26276535106167,
+                  19.64395380157206
+                ],
+                [
+                  1.9549673572545043,
+                  30.210768902909955
+                ]
+              ]
+            }
+          ],
+          "text": "反击拳",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_2",
+          "box": [
+            224,
+            516,
+            84,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1452.8171999991173,
+          "expected": "反击拳",
+          "detections": [
+            {
+              "text": "反击拳",
+              "score": 0.9978729883829752,
+              "box": [
+                [
+                  7.5,
+                  9.5
+                ],
+                [
+                  245.5,
+                  9.5
+                ],
+                [
+                  245.5,
+                  86.5
+                ],
+                [
+                  7.5,
+                  86.5
+                ]
+              ]
+            }
+          ],
+          "text": "反击拳",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_3",
+          "box": [
+            238,
+            629,
+            89,
+            32
+          ],
+          "variant": "native",
+          "elapsed_ms": 1353.0349999928148,
+          "expected": "幻象",
+          "detections": [
+            {
+              "text": "幻象",
+              "score": 0.8778984248638153,
+              "box": [
+                [
+                  1.4999923706054688,
+                  1.4999980926513672
+                ],
+                [
+                  79.49999237060547,
+                  1.4999980926513672
+                ],
+                [
+                  79.49999237060547,
+                  31
+                ],
+                [
+                  1.4999923706054688,
+                  31
+                ]
+              ]
+            }
+          ],
+          "text": "幻象",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_3",
+          "box": [
+            238,
+            629,
+            89,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1817.7215000032447,
+          "expected": "幻象",
+          "detections": [
+            {
+              "text": "幻象",
+              "score": 0.900225430727005,
+              "box": [
+                [
+                  11.5,
+                  9.5
+                ],
+                [
+                  230.5,
+                  9.5
+                ],
+                [
+                  230.5,
+                  85.5
+                ],
+                [
+                  11.5,
+                  85.5
+                ]
+              ]
+            }
+          ],
+          "text": "幻象",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_4",
+          "box": [
+            294,
+            725,
+            106,
+            41
+          ],
+          "variant": "native",
+          "elapsed_ms": 2011.6837000095984,
+          "expected": "鼓劲",
+          "detections": [
+            {
+              "text": "年",
+              "score": 0.4404006004333496,
+              "box": [
+                [
+                  12,
+                  8
+                ],
+                [
+                  25,
+                  8
+                ],
+                [
+                  25,
+                  23
+                ],
+                [
+                  12,
+                  23
+                ]
+              ]
+            },
+            {
+              "text": "直支劲",
+              "score": 0.880027155081431,
+              "box": [
+                [
+                  34.09082375283856,
+                  17.49587840891695
+                ],
+                [
+                  66.82584346701786,
+                  5.109656857842872
+                ],
+                [
+                  72.84201190452065,
+                  21.00952218216544
+                ],
+                [
+                  40.106992190341344,
+                  33.39574373323952
+                ]
+              ]
+            }
+          ],
+          "text": "年\n直支劲",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 3,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_4",
+          "box": [
+            294,
+            725,
+            106,
+            41
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1280.2960999979405,
+          "expected": "鼓劲",
+          "detections": [
+            {
+              "text": "鼓支劲",
+              "score": 0.8883788784344991,
+              "box": [
+                [
+                  106.72574494725828,
+                  55.872803605187016
+                ],
+                [
+                  199.94558189323035,
+                  25.63934532191445
+                ],
+                [
+                  213.21128514636277,
+                  66.54192613535253
+                ],
+                [
+                  119.99144820039069,
+                  96.7753844186251
+                ]
+              ]
+            }
+          ],
+          "text": "鼓支劲",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_1",
+          "box": [
+            251,
+            334,
+            45,
+            32
+          ],
+          "variant": "native",
+          "elapsed_ms": 1166.7681999970227,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "★2",
+              "score": 0.7721211314201355,
+              "box": [
+                [
+                  0,
+                  8
+                ],
+                [
+                  41,
+                  8
+                ],
+                [
+                  41,
+                  31
+                ],
+                [
+                  0,
+                  31
+                ]
+              ]
+            }
+          ],
+          "text": "★2",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "2",
+            "predicted_numeric": "2"
+          }
+        },
+        {
+          "region": "energy_1",
+          "box": [
+            251,
+            334,
+            45,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 2648.446999999578,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "★2",
+              "score": 0.6950398683547974,
+              "box": [
+                [
+                  23,
+                  29
+                ],
+                [
+                  122,
+                  29
+                ],
+                [
+                  122,
+                  93
+                ],
+                [
+                  23,
+                  93
+                ]
+              ]
+            }
+          ],
+          "text": "★2",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "2",
+            "predicted_numeric": "2"
+          }
+        },
+        {
+          "region": "energy_2",
+          "box": [
+            214,
+            447,
+            50,
+            34
+          ],
+          "variant": "native",
+          "elapsed_ms": 895.1687999942806,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "22",
+              "score": 0.8644087612628937,
+              "box": [
+                [
+                  0,
+                  10
+                ],
+                [
+                  49,
+                  10
+                ],
+                [
+                  49,
+                  33
+                ],
+                [
+                  0,
+                  33
+                ]
+              ]
+            }
+          ],
+          "text": "22",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 1,
+            "expected_numeric": "2",
+            "predicted_numeric": "22"
+          }
+        },
+        {
+          "region": "energy_2",
+          "box": [
+            214,
+            447,
+            50,
+            34
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1125.7482999935746,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "★2",
+              "score": 0.7447394132614136,
+              "box": [
+                [
+                  4.5,
+                  28.5
+                ],
+                [
+                  148.5,
+                  28.5
+                ],
+                [
+                  148.5,
+                  95.5
+                ],
+                [
+                  4.5,
+                  95.5
+                ]
+              ]
+            }
+          ],
+          "text": "★2",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "2",
+            "predicted_numeric": "2"
+          }
+        },
+        {
+          "region": "energy_3",
+          "box": [
+            222,
+            569,
+            52,
+            28
+          ],
+          "variant": "native",
+          "elapsed_ms": 1115.1785999973072,
+          "expected": "★1",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "1",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_3",
+          "box": [
+            222,
+            569,
+            52,
+            28
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1172.676300004241,
+          "expected": "★1",
+          "detections": [
+            {
+              "text": "★",
+              "score": 0.6032063364982605,
+              "box": [
+                [
+                  25,
+                  6
+                ],
+                [
+                  153,
+                  6
+                ],
+                [
+                  153,
+                  78
+                ],
+                [
+                  25,
+                  78
+                ]
+              ]
+            }
+          ],
+          "text": "★",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 1,
+            "expected_numeric": "1",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_4",
+          "box": [
+            277,
+            669,
+            49,
+            36
+          ],
+          "variant": "native",
+          "elapsed_ms": 947.0952999981819,
+          "expected": "★3",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "3",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_4",
+          "box": [
+            277,
+            669,
+            49,
+            36
+          ],
+          "variant": "x3",
+          "elapsed_ms": 2945.4745999973966,
+          "expected": "★3",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "3",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_1",
+          "box": [
+            292,
+            390,
+            47,
+            29
+          ],
+          "variant": "native",
+          "elapsed_ms": 921.8133999966085,
+          "expected": "37",
+          "detections": [
+            {
+              "text": "37",
+              "score": 0.9872435927391052,
+              "box": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  46,
+                  0
+                ],
+                [
+                  46,
+                  28
+                ],
+                [
+                  0,
+                  28
+                ]
+              ]
+            }
+          ],
+          "text": "37",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "37",
+            "predicted_numeric": "37"
+          }
+        },
+        {
+          "region": "power_1",
+          "box": [
+            292,
+            390,
+            47,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1475.1048000034643,
+          "expected": "37",
+          "detections": [
+            {
+              "text": "37",
+              "score": 0.9310804307460785,
+              "box": [
+                [
+                  2.4999961853027486,
+                  8.499998092651367
+                ],
+                [
+                  137.49999618530273,
+                  8.499998092651367
+                ],
+                [
+                  137.49999618530273,
+                  84.49999809265137
+                ],
+                [
+                  2.4999961853027486,
+                  84.49999809265137
+                ]
+              ]
+            }
+          ],
+          "text": "37",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "37",
+            "predicted_numeric": "37"
+          }
+        },
+        {
+          "region": "power_2",
+          "box": [
+            260,
+            498,
+            54,
+            28
+          ],
+          "variant": "native",
+          "elapsed_ms": 1227.9116999998223,
+          "expected": "62",
+          "detections": [
+            {
+              "text": "62",
+              "score": 0.986178070306778,
+              "box": [
+                [
+                  0,
+                  2
+                ],
+                [
+                  53,
+                  2
+                ],
+                [
+                  53,
+                  27
+                ],
+                [
+                  0,
+                  27
+                ]
+              ]
+            }
+          ],
+          "text": "62",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "62",
+            "predicted_numeric": "62"
+          }
+        },
+        {
+          "region": "power_2",
+          "box": [
+            260,
+            498,
+            54,
+            28
+          ],
+          "variant": "x3",
+          "elapsed_ms": 2028.3102999965195,
+          "expected": "62",
+          "detections": [
+            {
+              "text": "62",
+              "score": 0.8734280467033386,
+              "box": [
+                [
+                  2,
+                  6.999997988139114
+                ],
+                [
+                  159,
+                  6.999997988139114
+                ],
+                [
+                  159,
+                  75.99999798813911
+                ],
+                [
+                  2,
+                  75.99999798813911
+                ]
+              ]
+            }
+          ],
+          "text": "62",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "62",
+            "predicted_numeric": "62"
+          }
+        },
+        {
+          "region": "power_3",
+          "box": [
+            274,
+            607,
+            55,
+            32
+          ],
+          "variant": "native",
+          "elapsed_ms": 1083.0578000022797,
+          "expected": "30",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "30",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_3",
+          "box": [
+            274,
+            607,
+            55,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1390.772900005686,
+          "expected": "30",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "30",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_4",
+          "box": [
+            331,
+            708,
+            58,
+            29
+          ],
+          "variant": "native",
+          "elapsed_ms": 1054.0795999986585,
+          "expected": "--",
+          "detections": [
+            {
+              "text": "0",
+              "score": 0.6859902143478394,
+              "box": [
+                [
+                  0.5,
+                  0.5
+                ],
+                [
+                  50.5,
+                  0.5
+                ],
+                [
+                  50.5,
+                  28
+                ],
+                [
+                  0.5,
+                  28
+                ]
+              ]
+            }
+          ],
+          "text": "0",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": "0"
+          }
+        },
+        {
+          "region": "power_4",
+          "box": [
+            331,
+            708,
+            58,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 1158.2139999954961,
+          "expected": "--",
+          "detections": [
+            {
+              "text": "0",
+              "score": 0.8563398122787476,
+              "box": [
+                [
+                  5,
+                  9
+                ],
+                [
+                  146,
+                  9
+                ],
+                [
+                  146,
+                  79
+                ],
+                [
+                  5,
+                  79
+                ]
+              ]
+            }
+          ],
+          "text": "0",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": "0"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "RapidOCR",
+      "results": [
+        {
+          "region": "left_header",
+          "box": [
+            86,
+            29,
+            169,
+            62
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1418.8283000112278,
+          "expected": "画间沉铁兽60级490/490",
+          "detections": [
+            {
+              "text": "画间沉铁兽",
+              "score": 0.99956,
+              "box": [
+                [
+                  15.0,
+                  34.0
+                ],
+                [
+                  272.0,
+                  31.0
+                ],
+                [
+                  273.0,
+                  106.0
+                ],
+                [
+                  16.0,
+                  109.0
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.99873,
+              "box": [
+                [
+                  374.0,
+                  46.0
+                ],
+                [
+                  488.0,
+                  46.0
+                ],
+                [
+                  488.0,
+                  99.0
+                ],
+                [
+                  374.0,
+                  99.0
+                ]
+              ]
+            },
+            {
+              "text": "06/06",
+              "score": 0.99373,
+              "box": [
+                [
+                  139.0,
+                  112.0
+                ],
+                [
+                  341.0,
+                  111.0
+                ],
+                [
+                  342.0,
+                  154.0
+                ],
+                [
+                  139.0,
+                  155.0
+                ]
+              ]
+            }
+          ],
+          "text": "画间沉铁兽60级06/06",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 6,
+            "text_edit_distance": 6,
+            "expected_numeric": "60490/490",
+            "predicted_numeric": "6006/06"
+          }
+        },
+        {
+          "region": "left_header",
+          "box": [
+            86,
+            29,
+            169,
+            62
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 1092.4279000028037,
+          "expected": "画间沉铁兽60级490/490",
+          "detections": [
+            {
+              "text": "画间沉铁兽",
+              "score": 0.99969,
+              "box": [
+                [
+                  15.0,
+                  34.0
+                ],
+                [
+                  272.0,
+                  31.0
+                ],
+                [
+                  273.0,
+                  106.0
+                ],
+                [
+                  15.0,
+                  108.0
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.99797,
+              "box": [
+                [
+                  374.0,
+                  46.0
+                ],
+                [
+                  489.0,
+                  46.0
+                ],
+                [
+                  489.0,
+                  99.0
+                ],
+                [
+                  374.0,
+                  99.0
+                ]
+              ]
+            },
+            {
+              "text": "06h/06h",
+              "score": 0.93493,
+              "box": [
+                [
+                  139.0,
+                  112.0
+                ],
+                [
+                  341.0,
+                  111.0
+                ],
+                [
+                  342.0,
+                  155.0
+                ],
+                [
+                  139.0,
+                  156.0
+                ]
+              ]
+            }
+          ],
+          "text": "画间沉铁兽60级06h/06h",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 6,
+            "text_edit_distance": 6,
+            "expected_numeric": "60490/490",
+            "predicted_numeric": "6006/06"
+          }
+        },
+        {
+          "region": "left_header",
+          "box": [
+            86,
+            29,
+            169,
+            62
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 1397.5322999904165,
+          "expected": "画间沉铁兽60级490/490",
+          "detections": [
+            {
+              "text": "画间沉铁兽",
+              "score": 0.99969,
+              "box": [
+                [
+                  15.0,
+                  34.0
+                ],
+                [
+                  272.0,
+                  31.0
+                ],
+                [
+                  273.0,
+                  106.0
+                ],
+                [
+                  15.0,
+                  108.0
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.99797,
+              "box": [
+                [
+                  374.0,
+                  46.0
+                ],
+                [
+                  489.0,
+                  46.0
+                ],
+                [
+                  489.0,
+                  99.0
+                ],
+                [
+                  374.0,
+                  99.0
+                ]
+              ]
+            },
+            {
+              "text": "06h/06h",
+              "score": 0.93493,
+              "box": [
+                [
+                  139.0,
+                  112.0
+                ],
+                [
+                  341.0,
+                  111.0
+                ],
+                [
+                  342.0,
+                  155.0
+                ],
+                [
+                  139.0,
+                  156.0
+                ]
+              ]
+            }
+          ],
+          "text": "画间沉铁兽60级06h/06h",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 6,
+            "text_edit_distance": 6,
+            "expected_numeric": "60490/490",
+            "predicted_numeric": "6006/06"
+          }
+        },
+        {
+          "region": "right_header",
+          "box": [
+            1359,
+            29,
+            162,
+            60
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1199.2135000036797,
+          "expected": "恶魔狼60级100%",
+          "detections": [
+            {
+              "text": "恶魔狼",
+              "score": 0.9989,
+              "box": [
+                [
+                  2.0,
+                  34.0
+                ],
+                [
+                  167.0,
+                  31.0
+                ],
+                [
+                  169.0,
+                  106.0
+                ],
+                [
+                  4.0,
+                  108.0
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.9991,
+              "box": [
+                [
+                  359.0,
+                  44.0
+                ],
+                [
+                  479.0,
+                  44.0
+                ],
+                [
+                  479.0,
+                  99.0
+                ],
+                [
+                  359.0,
+                  99.0
+                ]
+              ]
+            },
+            {
+              "text": "100%",
+              "score": 0.99994,
+              "box": [
+                [
+                  169.0,
+                  107.0
+                ],
+                [
+                  295.0,
+                  107.0
+                ],
+                [
+                  295.0,
+                  157.0
+                ],
+                [
+                  169.0,
+                  157.0
+                ]
+              ]
+            }
+          ],
+          "text": "恶魔狼60级100%",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "60100%",
+            "predicted_numeric": "60100%"
+          }
+        },
+        {
+          "region": "right_header",
+          "box": [
+            1359,
+            29,
+            162,
+            60
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 1388.2402000017464,
+          "expected": "恶魔狼60级100%",
+          "detections": [
+            {
+              "text": "恶魔狼",
+              "score": 0.99905,
+              "box": [
+                [
+                  2.0,
+                  34.0
+                ],
+                [
+                  168.0,
+                  31.0
+                ],
+                [
+                  169.0,
+                  106.0
+                ],
+                [
+                  3.0,
+                  109.0
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.99869,
+              "box": [
+                [
+                  361.0,
+                  44.0
+                ],
+                [
+                  479.0,
+                  44.0
+                ],
+                [
+                  479.0,
+                  99.0
+                ],
+                [
+                  361.0,
+                  99.0
+                ]
+              ]
+            },
+            {
+              "text": "100%",
+              "score": 0.99995,
+              "box": [
+                [
+                  168.0,
+                  107.0
+                ],
+                [
+                  295.0,
+                  107.0
+                ],
+                [
+                  295.0,
+                  158.0
+                ],
+                [
+                  168.0,
+                  158.0
+                ]
+              ]
+            }
+          ],
+          "text": "恶魔狼60级100%",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "60100%",
+            "predicted_numeric": "60100%"
+          }
+        },
+        {
+          "region": "right_header",
+          "box": [
+            1359,
+            29,
+            162,
+            60
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 1390.4375999991316,
+          "expected": "恶魔狼60级100%",
+          "detections": [
+            {
+              "text": "恶魔狼",
+              "score": 0.99905,
+              "box": [
+                [
+                  2.0,
+                  34.0
+                ],
+                [
+                  168.0,
+                  31.0
+                ],
+                [
+                  169.0,
+                  106.0
+                ],
+                [
+                  3.0,
+                  109.0
+                ]
+              ]
+            },
+            {
+              "text": "60级",
+              "score": 0.99869,
+              "box": [
+                [
+                  361.0,
+                  44.0
+                ],
+                [
+                  479.0,
+                  44.0
+                ],
+                [
+                  479.0,
+                  99.0
+                ],
+                [
+                  361.0,
+                  99.0
+                ]
+              ]
+            },
+            {
+              "text": "100%",
+              "score": 0.99995,
+              "box": [
+                [
+                  168.0,
+                  107.0
+                ],
+                [
+                  295.0,
+                  107.0
+                ],
+                [
+                  295.0,
+                  158.0
+                ],
+                [
+                  168.0,
+                  158.0
+                ]
+              ]
+            }
+          ],
+          "text": "恶魔狼60级100%",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "60100%",
+            "predicted_numeric": "60100%"
+          }
+        },
+        {
+          "region": "left_energy",
+          "box": [
+            203,
+            87,
+            41,
+            26
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 868.7458000058541,
+          "expected": "★10",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 3,
+            "expected_numeric": "10",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "left_energy",
+          "box": [
+            203,
+            87,
+            41,
+            26
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 358.47360000479966,
+          "expected": "★10",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 3,
+            "expected_numeric": "10",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "left_energy",
+          "box": [
+            203,
+            87,
+            41,
+            26
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 369.9210999911884,
+          "expected": "★10",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 3,
+            "expected_numeric": "10",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "right_energy",
+          "box": [
+            1359,
+            84,
+            44,
+            29
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 361.1205000051996,
+          "expected": "★10",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 3,
+            "expected_numeric": "10",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "right_energy",
+          "box": [
+            1359,
+            84,
+            44,
+            29
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 333.21119999163784,
+          "expected": "★10",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 3,
+            "expected_numeric": "10",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "right_energy",
+          "box": [
+            1359,
+            84,
+            44,
+            29
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 406.1011000012513,
+          "expected": "★10",
+          "detections": [
+            {
+              "text": "★10",
+              "score": 0.94723,
+              "box": [
+                [
+                  4.0,
+                  11.0
+                ],
+                [
+                  128.0,
+                  11.0
+                ],
+                [
+                  128.0,
+                  72.0
+                ],
+                [
+                  4.0,
+                  72.0
+                ]
+              ]
+            }
+          ],
+          "text": "★10",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "10",
+            "predicted_numeric": "10"
+          }
+        },
+        {
+          "region": "skill_1",
+          "box": [
+            245,
+            407,
+            94,
+            29
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1566.1544000031427,
+          "expected": "连续爪击",
+          "detections": [
+            {
+              "text": "连续爪击",
+              "score": 0.99945,
+              "box": [
+                [
+                  31.0,
+                  2.0
+                ],
+                [
+                  264.0,
+                  4.0
+                ],
+                [
+                  263.0,
+                  80.0
+                ],
+                [
+                  30.0,
+                  79.0
+                ]
+              ]
+            }
+          ],
+          "text": "连续爪击",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_1",
+          "box": [
+            245,
+            407,
+            94,
+            29
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 1431.853800007957,
+          "expected": "连续爪击",
+          "detections": [
+            {
+              "text": "连续爪击",
+              "score": 0.99908,
+              "box": [
+                [
+                  30.0,
+                  2.0
+                ],
+                [
+                  265.0,
+                  4.0
+                ],
+                [
+                  264.0,
+                  81.0
+                ],
+                [
+                  29.0,
+                  79.0
+                ]
+              ]
+            }
+          ],
+          "text": "连续爪击",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_1",
+          "box": [
+            245,
+            407,
+            94,
+            29
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 1308.9812999969581,
+          "expected": "连续爪击",
+          "detections": [
+            {
+              "text": "连续爪击",
+              "score": 0.99922,
+              "box": [
+                [
+                  30.0,
+                  2.0
+                ],
+                [
+                  264.0,
+                  4.0
+                ],
+                [
+                  264.0,
+                  80.0
+                ],
+                [
+                  30.0,
+                  79.0
+                ]
+              ]
+            }
+          ],
+          "text": "连续爪击",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_2",
+          "box": [
+            224,
+            516,
+            84,
+            32
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1352.2658000001684,
+          "expected": "反击拳",
+          "detections": [
+            {
+              "text": "反击拳",
+              "score": 0.99796,
+              "box": [
+                [
+                  44.0,
+                  22.0
+                ],
+                [
+                  222.0,
+                  0.0
+                ],
+                [
+                  232.0,
+                  78.0
+                ],
+                [
+                  54.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "反击拳",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_2",
+          "box": [
+            224,
+            516,
+            84,
+            32
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 1330.1052000024356,
+          "expected": "反击拳",
+          "detections": [
+            {
+              "text": "反击拳",
+              "score": 0.99576,
+              "box": [
+                [
+                  43.0,
+                  21.0
+                ],
+                [
+                  223.0,
+                  0.0
+                ],
+                [
+                  233.0,
+                  78.0
+                ],
+                [
+                  53.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "反击拳",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_2",
+          "box": [
+            224,
+            516,
+            84,
+            32
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 973.0962999892654,
+          "expected": "反击拳",
+          "detections": [
+            {
+              "text": "反击拳",
+              "score": 0.99575,
+              "box": [
+                [
+                  43.0,
+                  21.0
+                ],
+                [
+                  223.0,
+                  0.0
+                ],
+                [
+                  233.0,
+                  78.0
+                ],
+                [
+                  53.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "反击拳",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_3",
+          "box": [
+            238,
+            629,
+            89,
+            32
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1405.815000005532,
+          "expected": "幻象",
+          "detections": [
+            {
+              "text": "果",
+              "score": 0.43514,
+              "box": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  112.0,
+                  0.0
+                ],
+                [
+                  114.0,
+                  55.0
+                ],
+                [
+                  5.0,
+                  59.0
+                ]
+              ]
+            },
+            {
+              "text": "幻象",
+              "score": 0.98983,
+              "box": [
+                [
+                  77.0,
+                  29.0
+                ],
+                [
+                  208.0,
+                  2.0
+                ],
+                [
+                  223.0,
+                  77.0
+                ],
+                [
+                  92.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "果幻象",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_3",
+          "box": [
+            238,
+            629,
+            89,
+            32
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 1033.6456000077305,
+          "expected": "幻象",
+          "detections": [
+            {
+              "text": "0",
+              "score": 0.37156,
+              "box": [
+                [
+                  4.0,
+                  7.0
+                ],
+                [
+                  93.0,
+                  0.0
+                ],
+                [
+                  101.0,
+                  42.0
+                ],
+                [
+                  13.0,
+                  57.0
+                ]
+              ]
+            },
+            {
+              "text": "幻象",
+              "score": 0.98134,
+              "box": [
+                [
+                  75.0,
+                  28.0
+                ],
+                [
+                  211.0,
+                  0.0
+                ],
+                [
+                  227.0,
+                  76.0
+                ],
+                [
+                  91.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "0幻象",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 1,
+            "expected_numeric": "",
+            "predicted_numeric": "0"
+          }
+        },
+        {
+          "region": "skill_3",
+          "box": [
+            238,
+            629,
+            89,
+            32
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 1178.4423999924911,
+          "expected": "幻象",
+          "detections": [
+            {
+              "text": "0",
+              "score": 0.39757,
+              "box": [
+                [
+                  4.0,
+                  6.0
+                ],
+                [
+                  93.0,
+                  0.0
+                ],
+                [
+                  101.0,
+                  43.0
+                ],
+                [
+                  12.0,
+                  57.0
+                ]
+              ]
+            },
+            {
+              "text": "幻象",
+              "score": 0.99164,
+              "box": [
+                [
+                  75.0,
+                  28.0
+                ],
+                [
+                  211.0,
+                  1.0
+                ],
+                [
+                  226.0,
+                  78.0
+                ],
+                [
+                  90.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "0幻象",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 1,
+            "expected_numeric": "",
+            "predicted_numeric": "0"
+          }
+        },
+        {
+          "region": "skill_4",
+          "box": [
+            294,
+            725,
+            106,
+            41
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1417.9404000024078,
+          "expected": "鼓劲",
+          "detections": [
+            {
+              "text": "o",
+              "score": 0.71413,
+              "box": [
+                [
+                  0.0,
+                  39.0
+                ],
+                [
+                  79.0,
+                  0.0
+                ],
+                [
+                  132.0,
+                  24.0
+                ],
+                [
+                  50.0,
+                  97.0
+                ]
+              ]
+            },
+            {
+              "text": "鼓劲",
+              "score": 0.96622,
+              "box": [
+                [
+                  87.0,
+                  51.0
+                ],
+                [
+                  208.0,
+                  7.0
+                ],
+                [
+                  233.0,
+                  73.0
+                ],
+                [
+                  112.0,
+                  117.0
+                ]
+              ]
+            }
+          ],
+          "text": "o鼓劲",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_4",
+          "box": [
+            294,
+            725,
+            106,
+            41
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 1067.7173000003677,
+          "expected": "鼓劲",
+          "detections": [
+            {
+              "text": "O",
+              "score": 0.56263,
+              "box": [
+                [
+                  6.0,
+                  26.0
+                ],
+                [
+                  94.0,
+                  0.0
+                ],
+                [
+                  123.0,
+                  44.0
+                ],
+                [
+                  35.0,
+                  86.0
+                ]
+              ]
+            },
+            {
+              "text": "鼓支劲",
+              "score": 0.91582,
+              "box": [
+                [
+                  86.0,
+                  51.0
+                ],
+                [
+                  208.0,
+                  6.0
+                ],
+                [
+                  233.0,
+                  73.0
+                ],
+                [
+                  111.0,
+                  118.0
+                ]
+              ]
+            }
+          ],
+          "text": "O鼓支劲",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_4",
+          "box": [
+            294,
+            725,
+            106,
+            41
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 1241.4859999989858,
+          "expected": "鼓劲",
+          "detections": [
+            {
+              "text": "O",
+              "score": 0.39419,
+              "box": [
+                [
+                  9.0,
+                  26.0
+                ],
+                [
+                  93.0,
+                  0.0
+                ],
+                [
+                  121.0,
+                  43.0
+                ],
+                [
+                  37.0,
+                  83.0
+                ]
+              ]
+            },
+            {
+              "text": "鼓支劲",
+              "score": 0.91736,
+              "box": [
+                [
+                  86.0,
+                  51.0
+                ],
+                [
+                  208.0,
+                  6.0
+                ],
+                [
+                  233.0,
+                  73.0
+                ],
+                [
+                  111.0,
+                  118.0
+                ]
+              ]
+            }
+          ],
+          "text": "O鼓支劲",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_1",
+          "box": [
+            251,
+            334,
+            45,
+            32
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 928.1010999984574,
+          "expected": "★2",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "2",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_1",
+          "box": [
+            251,
+            334,
+            45,
+            32
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 392.35970001027454,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "★2",
+              "score": 0.96905,
+              "box": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  134.0,
+                  0.0
+                ],
+                [
+                  134.0,
+                  95.0
+                ],
+                [
+                  0.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "★2",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "2",
+            "predicted_numeric": "2"
+          }
+        },
+        {
+          "region": "energy_1",
+          "box": [
+            251,
+            334,
+            45,
+            32
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 1012.9127000109293,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "★2",
+              "score": 0.97161,
+              "box": [
+                [
+                  0.0,
+                  10.0
+                ],
+                [
+                  134.0,
+                  10.0
+                ],
+                [
+                  134.0,
+                  95.0
+                ],
+                [
+                  0.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "★2",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "2",
+            "predicted_numeric": "2"
+          }
+        },
+        {
+          "region": "energy_2",
+          "box": [
+            214,
+            447,
+            50,
+            34
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 996.3302000105614,
+          "expected": "★2",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "2",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_2",
+          "box": [
+            214,
+            447,
+            50,
+            34
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 622.7144000004046,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "2",
+              "score": 0.79091,
+              "box": [
+                [
+                  0.0,
+                  11.0
+                ],
+                [
+                  149.0,
+                  11.0
+                ],
+                [
+                  149.0,
+                  101.0
+                ],
+                [
+                  0.0,
+                  101.0
+                ]
+              ]
+            }
+          ],
+          "text": "2",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "2",
+            "predicted_numeric": "2"
+          }
+        },
+        {
+          "region": "energy_2",
+          "box": [
+            214,
+            447,
+            50,
+            34
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 891.963999994914,
+          "expected": "★2",
+          "detections": [
+            {
+              "text": "★2",
+              "score": 0.87788,
+              "box": [
+                [
+                  1.0,
+                  12.0
+                ],
+                [
+                  149.0,
+                  15.0
+                ],
+                [
+                  149.0,
+                  101.0
+                ],
+                [
+                  0.0,
+                  101.0
+                ]
+              ]
+            }
+          ],
+          "text": "★2",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "2",
+            "predicted_numeric": "2"
+          }
+        },
+        {
+          "region": "energy_3",
+          "box": [
+            222,
+            569,
+            52,
+            28
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1011.6392000054475,
+          "expected": "★1",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "1",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_3",
+          "box": [
+            222,
+            569,
+            52,
+            28
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 412.94480000215117,
+          "expected": "★1",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "1",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_3",
+          "box": [
+            222,
+            569,
+            52,
+            28
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 395.0944999960484,
+          "expected": "★1",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "1",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_4",
+          "box": [
+            277,
+            669,
+            49,
+            36
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 705.651600001147,
+          "expected": "★3",
+          "detections": [
+            {
+              "text": "日",
+              "score": 0.49826,
+              "box": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  146.0,
+                  0.0
+                ],
+                [
+                  146.0,
+                  107.0
+                ],
+                [
+                  0.0,
+                  107.0
+                ]
+              ]
+            }
+          ],
+          "text": "日",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "3",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_4",
+          "box": [
+            277,
+            669,
+            49,
+            36
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 857.2709000000032,
+          "expected": "★3",
+          "detections": [
+            {
+              "text": "日",
+              "score": 0.49495,
+              "box": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  146.0,
+                  0.0
+                ],
+                [
+                  146.0,
+                  107.0
+                ],
+                [
+                  0.0,
+                  107.0
+                ]
+              ]
+            }
+          ],
+          "text": "日",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "3",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_4",
+          "box": [
+            277,
+            669,
+            49,
+            36
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 893.9433000050485,
+          "expected": "★3",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "3",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_1",
+          "box": [
+            292,
+            390,
+            47,
+            29
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 946.3142000022344,
+          "expected": "37",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "37",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_1",
+          "box": [
+            292,
+            390,
+            47,
+            29
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 377.4881999997888,
+          "expected": "37",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "37",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_1",
+          "box": [
+            292,
+            390,
+            47,
+            29
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 362.79949999880046,
+          "expected": "37",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "37",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_2",
+          "box": [
+            260,
+            498,
+            54,
+            28
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 574.2710999911651,
+          "expected": "62",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "62",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_2",
+          "box": [
+            260,
+            498,
+            54,
+            28
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 401.71780000673607,
+          "expected": "62",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "62",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_2",
+          "box": [
+            260,
+            498,
+            54,
+            28
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 405.91699999640696,
+          "expected": "62",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "62",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_3",
+          "box": [
+            274,
+            607,
+            55,
+            32
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 574.7335000050953,
+          "expected": "30",
+          "detections": [
+            {
+              "text": "品",
+              "score": 0.57541,
+              "box": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  164.0,
+                  0.0
+                ],
+                [
+                  164.0,
+                  95.0
+                ],
+                [
+                  0.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "品",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "30",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_3",
+          "box": [
+            274,
+            607,
+            55,
+            32
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 953.1645999959437,
+          "expected": "30",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "30",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_3",
+          "box": [
+            274,
+            607,
+            55,
+            32
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 600.9162999980617,
+          "expected": "30",
+          "detections": [
+            {
+              "text": "印",
+              "score": 0.51578,
+              "box": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  164.0,
+                  0.0
+                ],
+                [
+                  164.0,
+                  95.0
+                ],
+                [
+                  0.0,
+                  95.0
+                ]
+              ]
+            }
+          ],
+          "text": "印",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 2,
+            "text_edit_distance": 2,
+            "expected_numeric": "30",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_4",
+          "box": [
+            331,
+            708,
+            58,
+            29
+          ],
+          "variant": "color_x3",
+          "elapsed_ms": 1084.2332999891369,
+          "expected": "--",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_4",
+          "box": [
+            331,
+            708,
+            58,
+            29
+          ],
+          "variant": "gray_x3",
+          "elapsed_ms": 454.0071999945212,
+          "expected": "--",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_4",
+          "box": [
+            331,
+            708,
+            58,
+            29
+          ],
+          "variant": "contrast_x3",
+          "elapsed_ms": 461.70050000364427,
+          "expected": "--",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        }
+      ]
+    },
+    {
+      "engine": "WinRT OCR",
+      "results": [
+        {
+          "region": "left_header",
+          "box": [
+            86,
+            29,
+            169,
+            62
+          ],
+          "variant": "x3",
+          "elapsed_ms": 542.9128000105266,
+          "inference_ms": [
+            9.0143
+          ],
+          "expected": "画间沉铁兽60级490/490",
+          "detections": [
+            {
+              "text": "画 间 沉 铁 兽 ． ． 级",
+              "score": 1,
+              "box": [
+                [
+                  26,
+                  45
+                ],
+                [
+                  481,
+                  45
+                ],
+                [
+                  481,
+                  101
+                ],
+                [
+                  26,
+                  101
+                ]
+              ]
+            }
+          ],
+          "text": "画 间 沉 铁 兽 ． ． 级",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 9,
+            "text_edit_distance": 9,
+            "expected_numeric": "60490/490",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "right_header",
+          "box": [
+            1359,
+            29,
+            162,
+            60
+          ],
+          "variant": "x3",
+          "elapsed_ms": 508.56080000812653,
+          "inference_ms": [
+            3.9521
+          ],
+          "expected": "恶魔狼60级100%",
+          "detections": [
+            {
+              "text": "恶 魔 狼",
+              "score": 1,
+              "box": [
+                [
+                  16,
+                  46
+                ],
+                [
+                  156,
+                  46
+                ],
+                [
+                  156,
+                  94
+                ],
+                [
+                  16,
+                  94
+                ]
+              ]
+            },
+            {
+              "text": "60 级",
+              "score": 1,
+              "box": [
+                [
+                  371,
+                  54
+                ],
+                [
+                  469,
+                  54
+                ],
+                [
+                  469,
+                  91
+                ],
+                [
+                  371,
+                  91
+                ]
+              ]
+            }
+          ],
+          "text": "恶 魔 狼 60 级",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 4,
+            "text_edit_distance": 4,
+            "expected_numeric": "60100%",
+            "predicted_numeric": "60"
+          }
+        },
+        {
+          "region": "left_energy",
+          "box": [
+            203,
+            87,
+            41,
+            26
+          ],
+          "variant": "x3",
+          "elapsed_ms": 511.9168999954127,
+          "inference_ms": [
+            1.1982000000000002
+          ],
+          "expected": "★10",
+          "detections": [
+            {
+              "text": "10",
+              "score": 1,
+              "box": [
+                [
+                  53,
+                  20
+                ],
+                [
+                  104,
+                  20
+                ],
+                [
+                  104,
+                  49
+                ],
+                [
+                  53,
+                  49
+                ]
+              ]
+            }
+          ],
+          "text": "10",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "10",
+            "predicted_numeric": "10"
+          }
+        },
+        {
+          "region": "right_energy",
+          "box": [
+            1359,
+            84,
+            44,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 475.86569999111816,
+          "inference_ms": [
+            1.5419
+          ],
+          "expected": "★10",
+          "detections": [
+            {
+              "text": "10",
+              "score": 1,
+              "box": [
+                [
+                  59,
+                  29
+                ],
+                [
+                  110,
+                  29
+                ],
+                [
+                  110,
+                  58
+                ],
+                [
+                  59,
+                  58
+                ]
+              ]
+            }
+          ],
+          "text": "10",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "10",
+            "predicted_numeric": "10"
+          }
+        },
+        {
+          "region": "skill_1",
+          "box": [
+            245,
+            407,
+            94,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 509.85919999948237,
+          "inference_ms": [
+            2.8582
+          ],
+          "expected": "连续爪击",
+          "detections": [
+            {
+              "text": "连 纟 爪 击",
+              "score": 1,
+              "box": [
+                [
+                  51,
+                  17
+                ],
+                [
+                  244,
+                  17
+                ],
+                [
+                  244,
+                  67
+                ],
+                [
+                  51,
+                  67
+                ]
+              ]
+            }
+          ],
+          "text": "连 纟 爪 击",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 1,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_2",
+          "box": [
+            224,
+            516,
+            84,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 465.61660000588745,
+          "inference_ms": [
+            2.3153
+          ],
+          "expected": "反击拳",
+          "detections": [
+            {
+              "text": "反 击 拳",
+              "score": 1,
+              "box": [
+                [
+                  67,
+                  27
+                ],
+                [
+                  208,
+                  27
+                ],
+                [
+                  208,
+                  77
+                ],
+                [
+                  67,
+                  77
+                ]
+              ]
+            }
+          ],
+          "text": "反 击 拳",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_3",
+          "box": [
+            238,
+            629,
+            89,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 442.621300011524,
+          "inference_ms": [
+            1.6361
+          ],
+          "expected": "幻象",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "skill_4",
+          "box": [
+            294,
+            725,
+            106,
+            41
+          ],
+          "variant": "x3",
+          "elapsed_ms": 490.2094999997644,
+          "inference_ms": [
+            2.2695000000000003
+          ],
+          "expected": "鼓劲",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_1",
+          "box": [
+            251,
+            334,
+            45,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 437.92530000791885,
+          "inference_ms": [
+            0.5680000000000001
+          ],
+          "expected": "★2",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "2",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_2",
+          "box": [
+            214,
+            447,
+            50,
+            34
+          ],
+          "variant": "x3",
+          "elapsed_ms": 444.7972999914782,
+          "inference_ms": [
+            0.5247
+          ],
+          "expected": "★2",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "2",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_3",
+          "box": [
+            222,
+            569,
+            52,
+            28
+          ],
+          "variant": "x3",
+          "elapsed_ms": 444.7862999950303,
+          "inference_ms": [
+            0.5942000000000001
+          ],
+          "expected": "★1",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "1",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "energy_4",
+          "box": [
+            277,
+            669,
+            49,
+            36
+          ],
+          "variant": "x3",
+          "elapsed_ms": 466.84589999495074,
+          "inference_ms": [
+            0.6519
+          ],
+          "expected": "★3",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 2,
+            "expected_numeric": "3",
+            "predicted_numeric": ""
+          }
+        },
+        {
+          "region": "power_1",
+          "box": [
+            292,
+            390,
+            47,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 474.27649999735877,
+          "inference_ms": [
+            1.1819
+          ],
+          "expected": "37",
+          "detections": [
+            {
+              "text": "彐 7",
+              "score": 1,
+              "box": [
+                [
+                  40,
+                  22
+                ],
+                [
+                  95,
+                  22
+                ],
+                [
+                  95,
+                  55
+                ],
+                [
+                  40,
+                  55
+                ]
+              ]
+            }
+          ],
+          "text": "彐 7",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 1,
+            "expected_numeric": "37",
+            "predicted_numeric": "7"
+          }
+        },
+        {
+          "region": "power_2",
+          "box": [
+            260,
+            498,
+            54,
+            28
+          ],
+          "variant": "x3",
+          "elapsed_ms": 458.17559999704827,
+          "inference_ms": [
+            1.1529
+          ],
+          "expected": "62",
+          "detections": [
+            {
+              "text": "6Z",
+              "score": 1,
+              "box": [
+                [
+                  54,
+                  27
+                ],
+                [
+                  109,
+                  27
+                ],
+                [
+                  109,
+                  63
+                ],
+                [
+                  54,
+                  63
+                ]
+              ]
+            }
+          ],
+          "text": "6Z",
+          "score": {
+            "numeric_exact": false,
+            "numeric_edit_distance": 1,
+            "text_edit_distance": 1,
+            "expected_numeric": "62",
+            "predicted_numeric": "6"
+          }
+        },
+        {
+          "region": "power_3",
+          "box": [
+            274,
+            607,
+            55,
+            32
+          ],
+          "variant": "x3",
+          "elapsed_ms": 456.421800001408,
+          "inference_ms": [
+            1.1487
+          ],
+          "expected": "30",
+          "detections": [
+            {
+              "text": "30",
+              "score": 1,
+              "box": [
+                [
+                  59,
+                  34
+                ],
+                [
+                  115,
+                  34
+                ],
+                [
+                  115,
+                  71
+                ],
+                [
+                  59,
+                  71
+                ]
+              ]
+            }
+          ],
+          "text": "30",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 0,
+            "expected_numeric": "30",
+            "predicted_numeric": "30"
+          }
+        },
+        {
+          "region": "power_4",
+          "box": [
+            331,
+            708,
+            58,
+            29
+          ],
+          "variant": "x3",
+          "elapsed_ms": 463.8825000001816,
+          "inference_ms": [
+            1.0012
+          ],
+          "expected": "--",
+          "detections": [],
+          "text": "",
+          "score": {
+            "numeric_exact": true,
+            "numeric_edit_distance": 0,
+            "text_edit_distance": 2,
+            "expected_numeric": "",
+            "predicted_numeric": ""
+          }
+        }
+      ]
+    }
+  ]
+}

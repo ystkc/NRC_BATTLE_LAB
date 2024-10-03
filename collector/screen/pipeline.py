@@ -30,6 +30,10 @@ class TurnSegmenter:
         for observation in observations:
             if observation["screen"] not in ACTION_SCREENS:
                 continue
+            action_text = observation.get("text", "")
+            has_action_text = any(marker in action_text for marker in ("使出", "使用了", "使用"))
+            if not has_action_text and not observation.get("skill_name"):
+                continue
             event = copy.deepcopy(observation)
             manual = _nearest_manual_event(observation, manual_events)
             if manual:
@@ -129,9 +133,16 @@ class ScreenCollectionPipeline:
         opponent_skills = list(dict.fromkeys(item.get("skill_name") for item in observations if item.get("side") == "opponent" and item.get("skill_name")))
         own_skills = own_skills or ["__screen_own_skill"]
         opponent_skills = opponent_skills or ["__screen_opponent_skill"]
+        own_names = list(dict.fromkeys(name for item in observations for name in item.get("creature_names", []) if item.get("screen") == "entrance"))
+        opponent_names = []
+        for item in observations:
+            if item.get("screen") in {"switch", "perform_counter"}:
+                opponent_names.extend(item.get("creature_names", []))
+        own_names = own_names[:6] or ["screen_own"]
+        opponent_names = [name for name in dict.fromkeys(opponent_names) if name not in own_names][:6] or ["screen_opponent"]
         return {
-            "own_team": {"team_name": "screen-own", "active_index": 0, "creatures": [self._creature("screen_own", own_skills)]},
-            "opponent_team": {"team_name": "screen-opponent", "active_index": 0, "creatures": [self._creature("screen_opponent", opponent_skills)]},
+            "own_team": {"team_name": "screen-own", "active_index": 0, "creatures": [self._creature(name, own_skills) for name in own_names]},
+            "opponent_team": {"team_name": "screen-opponent", "active_index": 0, "creatures": [self._creature(name, opponent_skills) for name in opponent_names]},
             "shared": {"turn": 1, "mp": {"own": 10, "opponent": 10}},
             "own_turn": {"primary": {"kind": "charge"}, "items": []},
             "opponent_turn": {"primary": {"kind": "charge"}, "items": []},
@@ -157,3 +168,70 @@ class ScreenCollectionPipeline:
         request["opponent_turn"] = {"primary": {"kind": "skill", "skill_name": opponent["skill_name"]} if opponent and opponent.get("skill_name") else {"kind": "charge"}, "items": []}
         request.setdefault("shared", {})["turn"] = turn["turn"]
         return request
+
+    def _database_snapshot(self, actions: list[dict[str, Any]]) -> dict[str, Any]:
+        names = [item.get("skill_name") for item in actions if item.get("skill_name")]
+        if not names:
+            return {"skills": []}
+        with sqlite3.connect(self.data_dir / "nrc.db") as connection:
+            columns = [column[1] for column in connection.execute("PRAGMA table_info(skill)")]
+            rows = []
+            for name in names:
+                row = connection.execute("SELECT * FROM skill WHERE name = ?", (name,)).fetchone()
+                if row:
+                    rows.append(dict(zip(columns, row)))
+        return {"skills": rows}
+
+    @staticmethod
+    def _calculation_trace(request: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "raw_request": request,
+            "shared_before": result.get("shared_before", {}),
+            "side_before_after": {
+                "own": {"before": result.get("own", {}).get("before"), "after": result.get("own", {}).get("after")},
+                "opponent": {"before": result.get("opponent", {}).get("before"), "after": result.get("opponent", {}).get("after")},
+            },
+            "events": result.get("events", []),
+            "effectiveness": {
+                "own": result.get("own", {}).get("effectiveness", []),
+                "opponent": result.get("opponent", {}).get("effectiveness", []),
+            },
+            "shared_after": result.get("shared_after", {}),
+            "warnings": result.get("warnings", []),
+            "unknowns": result.get("input_unknowns", []),
+        }
+
+    @staticmethod
+    def _compare_observation(turn: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
+        observed = [item for item in turn["actions"] if item.get("observed_damage") is not None]
+        if not observed:
+            return {"status": "uncomparable", "mismatches": ["视频流未提供可确认的伤害数值；保留原始 OCR 和模拟快照供人工复核"]}
+        mismatches = []
+        for item in observed:
+            side = "own" if item.get("side") == "opponent" else "opponent"
+            creatures = result.get(side, {}).get("before", {}).get("creatures", [{}])
+            after_creatures = result.get(side, {}).get("after", {}).get("creatures", [{}])
+            before = creatures[0].get("hp") if creatures else None
+            after = after_creatures[0].get("hp") if after_creatures else None
+            simulated = (before or 0) - (after or 0)
+            if abs(float(item["observed_damage"]) - simulated) > max(2.0, abs(simulated) * 0.1):
+                mismatches.append({"side": item.get("side"), "observed": item["observed_damage"], "simulated": simulated})
+        return {"status": "mismatch" if mismatches else "matched", "mismatches": mismatches}
+
+    @staticmethod
+    def _advance_request(request: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
+        next_request = copy.deepcopy(request)
+        for side, result_key in (("own_team", "own"), ("opponent_team", "opponent")):
+            snapshot = result.get(result_key, {}).get("after", {})
+            next_request[side]["active_index"] = snapshot.get("active_index", 0)
+            for index, creature in enumerate(snapshot.get("creatures", [])):
+                if index >= len(next_request[side].get("creatures", [])):
+                    continue
+                state = next_request[side]["creatures"][index].setdefault("state", {})
+                for key in ("hp", "max_hp", "energy", "fatigue_turns"):
+                    if key in creature:
+                        state[key] = creature[key]
+                if "skills" in creature:
+                    next_request[side]["creatures"][index]["skills"] = creature["skills"]
+        next_request["shared"] = result.get("shared_after", next_request.get("shared", {}))
+        return next_request

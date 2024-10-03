@@ -1,0 +1,20 @@
+- [x] 确认两个开源项目中的对战模拟器都有哪些功能，是否适合用于学习
+- [*] 确认APP用mitmproxy可以获取哪些信息
+- [x] 确定下用哪个OCR
+-- [x] EasyOCR、RapidOCR、PaddleOCR
+-- [x] WinRT OCR（evan-ocr指路）
+-- [*] PearOCR
+-- [x] PixPin OCR（C++ Bridge）
+--- [x] Bridge API反向
+--- [x] 封装为Windows命名管道
+--- [x] 检查依赖并迁移
+--- [x] 增加环境回退
+---- [x] 卸载错误版本DLL，清理干净再重新加载模型
+--- [x] 整理tutor
+-- [x] 实验报告和可视化结果
+-- [x] 整理实验报告结果
+-- [x] 清理垃圾
+- [-] 再次尝试提高PixPinOCR的性能
+- [-] 确定5个模板帧的色块触发器（entrance中间部分和normal的聚能角落，然后两侧左上方的黑色条带，中央的速度对比）
+-- [x] 
+- [-] 触发器之后对指定区域进行OCR识别，区域画大一点得了

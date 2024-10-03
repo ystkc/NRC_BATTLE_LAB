@@ -62,7 +62,10 @@ class VideoFrameSource:
                 ok, image = capture.read()
                 if not ok:
                     break
-                if index % stride == 0:
+                # A one-frame animation can fall between regular samples. The
+                # adjacent sample keeps the stream efficient while catching
+                # the short willpower overlay in the supplied recording.
+                if index % stride in {0, stride - 1}:
                     yield VideoFrame(index, index / fps, image)
                 index += 1
         finally:
@@ -92,9 +95,12 @@ class OCRBackend:
             result = self.engine(image)
         except Exception:
             return []
-        texts = getattr(result, "txts", None) or ()
-        scores = getattr(result, "scores", None) or ()
-        boxes = getattr(result, "boxes", None) or ()
+        texts = getattr(result, "txts", None)
+        scores = getattr(result, "scores", None)
+        boxes = getattr(result, "boxes", None)
+        texts = () if texts is None else texts
+        scores = () if scores is None else scores
+        boxes = () if boxes is None else boxes
         return [
             {"text": str(text), "score": float(score), "box": [[float(x), float(y)] for x, y in box]}
             for text, score, box in zip(texts, scores, boxes)
@@ -126,6 +132,24 @@ class SkillNameResolver:
         return (best_name, best_score) if best_score >= 0.55 else (None, best_score)
 
 
+class CreatureNameResolver:
+    def __init__(self, db_path: str | Path):
+        try:
+            with sqlite3.connect(db_path) as connection:
+                self.names = [row[0] for row in connection.execute("SELECT name FROM pokemon")]
+        except Exception:
+            self.names = []
+
+    def resolve(self, texts: Iterable[str]) -> list[str]:
+        joined = "".join(texts).replace(" ", "")
+        matches = sorted({name for name in self.names if name and name in joined}, key=len, reverse=True)
+        selected = []
+        for name in matches:
+            if not any(name in existing for existing in selected):
+                selected.append(name)
+        return selected
+
+
 class ScreenRecognizer:
     thresholds = {
         "entrance": 180.0, "perform": 220.0, "perform_counter": 500.0,
@@ -137,6 +161,7 @@ class ScreenRecognizer:
         self.templates = self._load_templates()
         self.ocr = OCRBackend(Path(project_dir))
         self.skill_names = SkillNameResolver(db_path)
+        self.creature_names = CreatureNameResolver(db_path)
 
     def _load_templates(self) -> dict[str, np.ndarray]:
         templates = {}
@@ -180,6 +205,14 @@ class ScreenRecognizer:
         ocr = self.ocr.read(frame.image) if screen != "battle" else []
         texts = [item["text"] for item in ocr if float(item.get("score", 0.0)) >= 0.45]
         skill_name, skill_confidence = self.skill_names.resolve(texts)
+        detected_creatures = self.creature_names.resolve(texts)
+        detected_skill = skill_name
+        if detected_skill is None and screen in {"perform", "perform_counter"}:
+            joined = "".join(texts)
+            match = re.search(r"(?:使出了|使用了|使用)(?:[★*☆]?d+)?([^！!。s]+)", joined)
+            if match:
+                detected_skill = match.group(1).strip("★⭑⭐☆*0123456789") or None
+                skill_confidence = 0.5 if detected_skill else 0.0
         side = self._side_from_ocr(ocr) if screen in {"perform", "perform_counter"} else None
         if screen == "perform" and side is None:
             side = "own"
@@ -190,7 +223,8 @@ class ScreenRecognizer:
             "confidence": round(confidence, 4),
             "template_scores": {key: round(value, 3) for key, value in scores.items()},
             "ocr_available": self.ocr.available, "ocr": ocr, "text": "".join(texts),
-            "side": side, "skill_name": skill_name, "skill_confidence": round(skill_confidence, 4),
+            "side": side, "skill_name": detected_skill, "skill_confidence": round(skill_confidence, 4),
+            "creature_names": detected_creatures,
         }
 
     def recognize(self, source: VideoFrameSource) -> list[dict[str, Any]]:

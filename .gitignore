@@ -6,3 +6,9 @@ data/mitm/
 *.db-wal
 *.db-shm
 .screen-deps/
+/data/ocr_benchmark/region_preview
+*.txt
+*.mp4
+*.png
+*.jpg
+*.json

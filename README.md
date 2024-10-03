@@ -1,5 +1,139 @@
 # NRC Battle Lab
 
+## Windows real-time battle monitor
+
+The real-time path is intentionally separate from the offline video auditor.
+It captures only the selected window's client area, runs cheap downsampled
+ROI/color-structure tests, and never invokes OCR in the capture loop.
+
+Start it from `NRC_BATTLE_LAB` on Windows:
+
+    pip install -e ".[screen]"
+    python scripts/run_realtime_monitor.py --output data/screen/live.mp4
+
+When prompted, switch to the target game window. The monitor watches the
+foreground top-level window, ignores its own console, and records its client
+rectangle. The detector transitions through state 1 (entrance), state 2
+(normal/聚能 icon), and state 3 (skill banners). The speed-comparison panel is
+reported as transient state 4 and does not change the underlying state.
+
+### Control pipe
+
+The monitor exposes a line-delimited UTF-8 JSON pipe at
+`\\.\pipe\nrc-battle-lab` by default. The request is one JSON object per line:
+
+    {"op":"status"}
+    {"op":"ocr","feature":"perform","timeout":5}
+    {"op":"ocr","feature":"speedcomp","timeout":5}
+    {"op":"ocr","feature":"current"}
+
+`feature` waits for a newly captured frame containing the requested feature,
+then sends that full BGR frame as BGRA32 over the persistent OCR pipe from
+`ocr_service/protocol.md`. Supported aliases include `entrance`, `normal`,
+`perform`, `perform_counter`, `speedcomp`, `state1`-`state4`, and `current`.
+OCR has a one-item latest-frame queue: a slow OCR request never backlogs
+frames or blocks recording. The OCR service pipe defaults to
+`\\.\pipe\pixpin-ocr` and can be changed with `--ocr-pipe`.
+
+## Screen-stream collection
+
+### Pixel-based entrance region detection
+
+Run from NRC_BATTLE_LAB:
+
+    python -m collector.screen.entrance_regions --image ../entrance.jpg --compare-raw --repeats 5
+    python -m unittest tests.test_entrance_regions -v
+
+The feature detector in collector/screen/entrance_detector.py receives only a
+BGR image. It does not load annotation coordinates, fixed ROIs, screenshot
+templates, or scoring weights. It searches the entire image for:
+
+- Repeated, vertically aligned green health bars, used as local card anchors.
+- Dark/gold connected components containing each health bar. Row projections
+  separate the card body from its protruding circular badge.
+- Circular badges near each measured card body, using local Hough detection.
+- Long dark strips, gold rounded buttons, enclosed artwork above a detected
+  team, and a near-square bright emblem with a low-saturation surrounding disc.
+
+The optimized variant derives a shared card width from the longest observed
+card in each detected stack. Border allowances are proportional to measured
+health-bar or panel dimensions, not annotation coordinates. The raw-contour
+variant disables these two refinements for comparison.
+
+Annotations live in data/screen/entrance_references.json and are consumed only
+by the evaluator. The report and annotated image are written to
+data/screen/inspection/entrance_regions.json and entrance_regions.jpg.
+
+The JSON includes all five detect(image) timings, their mean, per-reference
+coverage, and penalty details. Timing includes segmentation, contour extraction,
+Hough detection, and box construction; file I/O, imports, drawing, and scoring
+are excluded. OpenCV uses one worker thread for this benchmark.
+
+The supplied rule charges area * weight for a completely missed reference,
+10 points per predicted pixel outside the reference union, 15 points per pixel
+for a completely disjoint prediction, and 10 points per millisecond. Because
+partial-overlap treatment is unspecified, coverage_score additionally charges
+uncovered reference pixels * weight. This stricter diagnostic prevents a tiny
+intersecting box from claiming full recall. Both scores must remain positive
+in the real-frame regression test. Overlapping references use union geometry.
+
+Reference rectangles remain unchanged even outside the image: the right
+banner ends at x=1561 while entrance.jpg is 1558 pixels wide. The conservative
+score includes this unobservable strip rather than hiding it by clipping the
+annotations. The detector is specialized to these UI colors and shapes; it
+does not claim general object recognition or support arbitrary color themes.
+
+### Single-frame structural inspection
+
+Before enabling OCR, inspect the cheap geometric detectors on a supplied
+frame. This writes an annotated image and a JSON feature dump without loading
+or running OCR:
+
+    python scripts/inspect_frame.py --image ../entrance.jpg \
+      --output data/screen/inspection/entrance_annotated.jpg \
+      --json data/screen/inspection/entrance.json
+
+The detector draws fixed ROIs, dark-banner candidates, bright-panel
+candidates, horizontal information bands, and rough skill-card contours.
+
+### Semantic-segmentation baseline
+
+The repository also includes a model-based segmentation experiment. It uses
+the COCO-pretrained torchvision DeepLabV3 model and writes an original-size
+label mask, a color overlay, and per-class pixel statistics:
+
+    pip install -e ".[segmentation]"
+    python scripts/semantic_segment.py ../entrance.jpg ../normal.jpg \
+      --output-dir data/screen/inspection/segmentation
+
+This checkpoint is a generic object model, not a game-UI model, so labels such
+as `health_bar`, `skill_card`, and `button` are not expected to appear. The
+CLI keeps the backend and output contract isolated so a UI-specific checkpoint
+can later replace `DeepLabSegmenter` without changing the inspection flow.
+For production UI recognition, annotate masks for a small vocabulary such as
+`ui_panel`, `health_bar`, `skill_card`, `status_icon`, `button`, and `text`
+and fine-tune a lightweight segmentation backbone on screenshots from several
+resolutions and UI states.
+
+The mitmproxy path is not required for screen-based auditing. Install the
+optional screen dependencies and run the complete video-to-record pipeline:
+
+    pip install -e ".[screen]"
+    python scripts/collect_video.py \
+      --video ../recording_20261001_162236.mp4 \
+      --references .. \
+      --output data/screen/battle_record.json
+
+The output preserves raw OCR/template evidence, the detected turn boundary,
+the database rows used by the simulator, the full simulator result, and a
+calculation trace. Unknown OCR or an unpaired action remains explicit and can
+be corrected with a manifest:
+
+    {"events": [{"time": 9.6, "side": "opponent", "skill_name": "力量增效"}]}
+
+Use --no-simulate when only collecting evidence. --sample-fps 10 is the
+default because short willpower animations may not appear in a single frame.
+
 新的、与原 `NRC_AI` 隔离的洛克王国战斗核心与对战数据审计项目。
 
 当前阶段不包含 Web 前端、FastAPI 后端和旧 MCTS 入口，只保留：
