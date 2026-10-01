@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nrc-battle-lab"
+version = "0.1.0"
+description = "纯核心战斗模拟器与半自动对战数据审计工具"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+collector = [
+    "mitmproxy>=10.0",
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
