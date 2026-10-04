@@ -9,7 +9,7 @@ from typing import Optional, List, Dict, Tuple
 
 _conn: Optional[sqlite3.Connection] = None
 _DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                        "data", "nrc.db")
+                        "data", "nrc_wiki.db")
 
 # 全库速度种族值中位线 (从 DB 中动态计算后缓存)
 _speed_median: Optional[float] = None
@@ -32,7 +32,7 @@ def _get_speed_median() -> float:
         return _speed_median
     conn = _get_conn()
     c = conn.cursor()
-    c.execute("SELECT base_speed FROM pokemon ORDER BY base_speed")
+    c.execute("SELECT base_speed FROM spirit_forms WHERE base_speed IS NOT NULL ORDER BY base_speed")
     speeds = [r[0] for r in c.fetchall()]
     n = len(speeds)
     if n == 0:
@@ -173,59 +173,27 @@ def load_pokemon_db(filepath=None):
     """兼容旧接口 — 现在只需确认 DB 可连接"""
     conn = _get_conn()
     c = conn.cursor()
-    c.execute("SELECT COUNT(*) FROM pokemon")
+    c.execute("SELECT COUNT(*) FROM spirit_forms")
     count = c.fetchone()[0]
     print(f"[OK] 精灵数据库已加载：{count} 只精灵 (战斗五维由公式实时计算)")
 
 
 def get_pokemon(name: str) -> Optional[Dict]:
-    """
-    根据名称获取精灵数据。
-    支持模糊匹配：精确 > 前缀 > 包含。
-    返回 dict 兼容旧接口，只包含种族值，战斗五维需调用 calc_combat_stats 计算。
-    """
+    """按规范化数据库中的完整名称精确获取精灵数据。"""
     conn = _get_conn()
-    c = conn.cursor()
-
-    # 精确匹配
-    c.execute("SELECT * FROM pokemon WHERE name = ?", (name,))
-    row = c.fetchone()
-    if row:
-        return _row_to_dict(row)
-
-    # 前缀匹配（"千棘盔" -> "千棘盔（本来的样子）"）
-    c.execute("SELECT * FROM pokemon WHERE name LIKE ? ORDER BY evo_stage DESC LIMIT 1",
-              (f"{name}%",))
-    row = c.fetchone()
-    if row:
-        return _row_to_dict(row)
-
-    # 基础名匹配（去掉括号部分）
-    base = name.split("（")[0].split("(")[0]
-    if base != name:
-        c.execute("SELECT * FROM pokemon WHERE name LIKE ? ORDER BY evo_stage DESC LIMIT 1",
-                  (f"{base}%",))
-        row = c.fetchone()
-        if row:
-            return _row_to_dict(row)
-
-    # 包含匹配
-    c.execute("SELECT * FROM pokemon WHERE name LIKE ? ORDER BY evo_stage DESC LIMIT 1",
-              (f"%{name}%",))
-    row = c.fetchone()
-    if row:
-        return _row_to_dict(row)
-
-    return None
+    row = conn.execute("SELECT * FROM spirit_forms WHERE name = ?", (name,)).fetchone()
+    return _row_to_dict(row) if row else None
 
 
 def search_pokemon(keyword: str) -> List[Dict]:
     """搜索精灵"""
     conn = _get_conn()
     c = conn.cursor()
-    c.execute("SELECT * FROM pokemon WHERE name LIKE ? OR ability LIKE ? LIMIT 20",
-              (f"%{keyword}%", f"%{keyword}%"))
-    return [_row_to_dict(r) for r in c.fetchall()]
+    rows = c.execute(
+        "SELECT * FROM spirit_forms WHERE name LIKE ? OR ability_description LIKE ? LIMIT 20",
+        (f"%{keyword}%", f"%{keyword}%"),
+    ).fetchall()
+    return [_row_to_dict(r) for r in rows]
 
 
 def get_prev_evolution(name: str) -> Optional[str]:
@@ -238,10 +206,10 @@ def get_prev_evolution(name: str) -> Optional[str]:
     conn = _get_conn()
     c = conn.cursor()
     row = c.execute(
-        "SELECT from_name FROM evolution WHERE to_name = ? LIMIT 1",
-        (name,)
+        "SELECT previous_stage_text FROM spirit_forms WHERE name = ? LIMIT 1",
+        (name,),
     ).fetchone()
-    return row[0] if row else None
+    return row[0] or None if row else None
 
 
 def get_evolution_chain(name: str) -> List[str]:
@@ -259,12 +227,13 @@ def get_evolution_chain(name: str) -> List[str]:
     visited = {name}
     while True:
         row = c.execute(
-            "SELECT from_name FROM evolution WHERE to_name = ? LIMIT 1",
-            (current,)
+            "SELECT previous_stage_text FROM spirit_forms WHERE name = ? LIMIT 1",
+            (current,),
         ).fetchone()
-        if not row or row[0] in visited:
+        previous = row[0] if row else ""
+        if not previous or previous in visited:
             break
-        current = row[0]
+        current = previous
         visited.add(current)
         chain.insert(0, current)
 
@@ -272,12 +241,13 @@ def get_evolution_chain(name: str) -> List[str]:
     current = chain[-1]
     while True:
         row = c.execute(
-            "SELECT to_name FROM evolution WHERE from_name = ? LIMIT 1",
-            (current,)
+            "SELECT next_stage_text FROM spirit_forms WHERE name = ? LIMIT 1",
+            (current,),
         ).fetchone()
-        if not row or row[0] in visited:
+        following = row[0] if row else ""
+        if not following or following in visited:
             break
-        current = row[0]
+        current = following
         visited.add(current)
         chain.append(current)
 
@@ -289,27 +259,39 @@ def get_pokemon_skills(name: str) -> List[Dict]:
     conn = _get_conn()
     c = conn.cursor()
     c.execute("""
-        SELECT DISTINCT s.* FROM skill s
-        JOIN pokemon_skill ps ON ps.skill_id = s.id
-        JOIN pokemon p ON ps.pokemon_id = p.id
-        WHERE p.name LIKE ?
-    """, (f"{name}%",))
+        SELECT DISTINCT s.*
+        FROM skill_catalog s
+        JOIN spirit_skills ss ON ss.skill_id = s.id
+        JOIN spirit_forms p ON p.id = ss.spirit_id
+        WHERE p.name = ?
+        ORDER BY s.id
+    """, (name,))
     return [dict(r) for r in c.fetchall()]
 
 
 def _row_to_dict(row) -> Dict:
-    """将 sqlite3.Row 转为兼容旧接口的 dict，只返回种族值"""
-    # 只返回种族值，不计算战斗值
-    return {
-        "编号": row["id"],
-        "名称": row["name"],
-        "属性": row["element"],
-        "进化阶段": row["evo_stage"],
-        "特性": row["ability"],
-        "生命种族值": row["base_hp"],
-        "物攻种族值": row["base_atk"],
-        "魔攻种族值": row["base_spatk"],
-        "物防种族值": row["base_def"],
-        "魔防种族值": row["base_spdef"],
-        "速度种族值": row["base_speed"],
-    }
+    """将规范化 spirit_forms 行转换为核心使用的精灵记录。"""
+    keys = set(row.keys())
+    if "base_attack" in keys:
+        conn = _get_conn()
+        elements = [r[0] for r in conn.execute(
+            """SELECT e.name FROM spirit_elements se
+               JOIN elements e ON e.id = se.element_id
+               WHERE se.spirit_id = ? ORDER BY se.position""",
+            (row["id"],),
+        )]
+        ability = conn.execute(
+            "SELECT name FROM ability_catalog WHERE id = ?", (row["ability_id"],)
+        ).fetchone()
+        return {
+            "id": row["id"], "name": row["name"], "types": elements,
+            "ability": ability[0] if ability else "",
+            "ability_description": row["ability_description"],
+            "evolution_stage": row["evolution_stage"],
+            "base_hp": row["base_hp"], "base_attack": row["base_attack"],
+            "base_magic_attack": row["base_magic_attack"],
+            "base_defense": row["base_defense"],
+            "base_magic_defense": row["base_magic_defense"],
+            "base_speed": row["base_speed"],
+        }
+    raise ValueError("pokemon_db only supports spirit_forms from nrc_wiki.db")

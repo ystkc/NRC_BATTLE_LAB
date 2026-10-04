@@ -38,6 +38,7 @@ def action_from_dict(raw: dict[str, Any]) -> ActionIntent:
         skill_id=raw.get("skill_id"),
         skill_name=raw.get("skill_name"),
         skill_slot=raw.get("skill_slot"),
+        choice=raw.get("choice"),
         switch_index=raw.get("switch_index"),
         item_kind=ItemKind(item_kind) if item_kind else None,
         item_payload=dict(raw.get("item_payload") or {}),
@@ -142,6 +143,9 @@ def battle_request_from_dict(raw: dict[str, Any]) -> BattleRequest:
             turn=_maybe(shared.get("turn", 1)),
             weather=_maybe(shared.get("weather")),
             weather_turns=_maybe(shared.get("weather_turns")),
+            system_time=_maybe(shared.get("system_time")),
+            weekend=_maybe(shared.get("weekend")),
+            bypass=_maybe(shared.get("bypass")),
             mp={
                 "own": _maybe(mp.get("own")),
                 "opponent": _maybe(mp.get("opponent")),

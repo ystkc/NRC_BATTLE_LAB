@@ -53,9 +53,9 @@ class SkillCategory(Enum):
 TYPE_CHART: Dict[str, Dict[str, float]] = {
     "normal":   {"fire": 2, "light": 2, "fighting": 2, "fairy": 0.5, "steel": 2},
     "grass":    {"fire": 0.5, "water": 2, "light": 2, "ground": 2, "ice": 0.5, "poison": 0.5, "bug": 0.5, "fairy": 0.5},
-    "fire":     {"normal": 0.5, "grass": 2, "water": 0.5, "ground": 0.5, "ice": 2, "poison": 2, "steel": 2, "dark": 2},
+    "fire":     {"normal": 0.5, "grass": 2, "water": 0.5, "ground": 0.5, "ice": 2, "poison": 2, "steel": 2, "dark": 2, "psychic": 2},
     "water":    {"grass": 0.5, "fire": 2, "ground": 2, "electric": 0.5, "steel": 2},
-    "light":    {"grass": 0.5, "fighting": 2, "flying": 2},
+    "light":    {"grass": 0.5, "flying": 2, "fairy": 2},
     "ground":   {"normal": 0.5, "grass": 0.5, "fire": 2, "water": 0.5, "ice": 2, "electric": 2, "poison": 2, "fighting": 0.5, "steel": 0.5},
     "ice":      {"grass": 2, "fire": 0.5, "light": 2, "dragon": 2, "bug": 0.5, "fighting": 2, "steel": 0.5},
     "dragon":   {"ice": 0.5, "dragon": 2, "fighting": 0.5},
@@ -64,11 +64,11 @@ TYPE_CHART: Dict[str, Dict[str, float]] = {
     "bug":      {"grass": 2, "fire": 0.5, "bug": 0.5, "fairy": 2, "dark": 2, "psychic": 2},
     "fighting": {"normal": 2, "light": 2, "ground": 2, "bug": 0.5, "flying": 0.5, "fairy": 2, "steel": 0.5},
     "flying":   {"grass": 2, "ground": 0.5, "ice": 2, "poison": 0.5, "fighting": 2},
-    "fairy":    {"ground": 2, "electric": 0.5, "bug": 2, "ghost": 2, "dark": 0.5},
+    "fairy":    {"ice": 2, "electric": 0.5, "bug": 2, "ghost": 2, "dark": 0.5},
     "ghost":    {"water": 2, "fairy": 2, "ghost": 0.5, "dark": 2},
     "dark":     {"water": 0.5, "ice": 2, "dragon": 2, "electric": 0.5, "poison": 0.5, "fighting": 2, "flying": 2},
     "steel":    {"normal": 0.5, "grass": 0.5, "fire": 0.5, "light": 2, "ground": 2, "dragon": 0.5, "bug": 2},
-    "psychic":  {"ice": 2, "dragon": 0.5, "electric": 2, "bug": 0.5, "psychic": 0.5},
+    "psychic":  {"ice": 2, "dragon": 0.5, "electric": 2, "bug": 0.5},
 }
 
 # 属性映射（中文 -> Type enum）
@@ -101,6 +101,13 @@ def get_type_effectiveness(attack_type: Type, defense_type: Type | List[Type] | 
 def has_type(pokemon: "Pokemon", type_value: Type) -> bool:
     """Check primary and secondary combat attributes, excluding bloodline attributes."""
     return type_value in getattr(pokemon, "pokemon_types", [pokemon.pokemon_type])
+
+
+def get_mark_stacks(marks: Dict[str, float], mark_key: str) -> float:
+    """Read normal mark stacks plus all source-owned 吟游之弦 slots."""
+    total = marks.get(mark_key, 0)
+    prefix = f"bard_mark:{mark_key}:"
+    return total + sum(value for key, value in marks.items() if key.startswith(prefix))
 
 
 @dataclass
@@ -177,6 +184,12 @@ class Skill:
 
     # ── 新引擎字段 ──
     effects: List[Any] = field(default_factory=list)  # List[EffectTag], 有值则走新引擎
+    description: str = ""
+    transform_scope: str = ""
+    transform_dynamic_scope: str = ""
+    transform_pending: bool = False
+    transform_restore: Any = field(default=None, repr=False, compare=False)
+    random_source: str = ""
 
     def copy(self):
         s = Skill(
@@ -221,6 +234,13 @@ class Skill:
             counter_damage_reflect=self.counter_damage_reflect,
         )
         s.effects = [e.copy() for e in self.effects] if self.effects else []
+        s.description = getattr(self, "description", "")
+        s.transform_scope = getattr(self, "transform_scope", "")
+        s.transform_dynamic_scope = getattr(self, "transform_dynamic_scope", "")
+        s.transform_pending = getattr(self, "transform_pending", False)
+        s.random_source = getattr(self, "random_source", "")
+        restore = getattr(self, "transform_restore", None)
+        s.transform_restore = restore.copy() if restore is not None else None
         if hasattr(self, "_base_energy_cost"):
             s._base_energy_cost = self._base_energy_cost
         if hasattr(self, "burst"):
@@ -235,7 +255,6 @@ class Pokemon:
     """精灵"""
     name: str
     pokemon_type: Type
-    pokemon_types: List[Type] = field(default_factory=list)
     hp: int
     attack: int
     defense: int
@@ -279,8 +298,9 @@ class Pokemon:
     # 状态层数
     poison_stacks: int = 0          # 中毒层数 (每层3%/回合, 换人不清除)
     burn_stacks: int = 0            # 燃烧层数 (每层4%/回合, 每回合减半min1, 换人不清除)
-    frostbite_damage: int = 0       # 冻伤累计不可恢复伤害 (每回合+hp//12, 换人不清除)
-    leech_stacks: int = 0           # 寄生层数 (每层8%/回合, 换人不清除)
+    frostbite_damage: int = 0       # 冻结侵蚀的生命值 (每层5%最大生命，换人不清除)
+    leech_stacks: int = 0           # 寄生层数 (每层2%/回合，换人清除)
+    electric_stacks: int = 0        # 引电层数 (达到2层立即受到25%生命电伤)
     meteor_stacks: int = 0          # 星陨层数 (延迟爆炸)
     meteor_countdown: int = 0       # 星陨倒计时 (>0时每回合-1, =0时引爆)
     cute_stacks: int = 0            # 萌化层数 (可叠加, 换人不清除; 解锁条件性技能效果)
@@ -305,6 +325,7 @@ class Pokemon:
 
     # 性格名称（25 种性格之一，默认坦率无修正）
     nature: str = "坦率"
+    pokemon_types: List[Type] = field(default_factory=list)
 
 
     # ── 新引擎字段 ──
@@ -400,6 +421,8 @@ class Pokemon:
         self.poison_stacks = 0
         self.burn_stacks = 0
         self.leech_stacks = 0
+        self.electric_stacks = 0
+        self.ability_state.pop("sleep_entry_applied", None)
         # 注: freeze_stacks/frostbite_damage 冻结换人保留
         # 注: meteor_stacks/meteor_countdown 星陨换人保留
         # 注: cute_stacks 萌化换人保留
@@ -450,6 +473,7 @@ class Pokemon:
         p.burn_stacks = self.burn_stacks
         p.frostbite_damage = self.frostbite_damage
         p.leech_stacks = self.leech_stacks
+        p.electric_stacks = self.electric_stacks
         p.meteor_stacks = self.meteor_stacks
         p.meteor_countdown = self.meteor_countdown
         p.charging_skill_idx = self.charging_skill_idx
@@ -467,6 +491,31 @@ class Pokemon:
         p.ability_effects = [ae.copy() for ae in self.ability_effects] if self.ability_effects else []
         p.ability_state = dict(self.ability_state)
         return p
+
+
+def add_freeze_stacks(pokemon: Pokemon, stacks: int) -> None:
+    """Apply freeze as an irreversible 5% maximum-HP layer and check fainting."""
+    stacks = int(stacks)
+    if stacks <= 0 or pokemon.is_fainted:
+        return
+    pokemon.freeze_stacks += stacks
+    pokemon.frostbite_damage += max(1, round(pokemon.hp * 0.05 * stacks))
+    if pokemon.current_hp <= pokemon.frostbite_damage:
+        pokemon.current_hp = 0
+        pokemon.status = StatusType.FAINTED
+
+
+def add_electric_stacks(pokemon: Pokemon, stacks: int) -> None:
+    """Apply 引电; every complete pair deals 25% max-HP electric damage."""
+    stacks = int(stacks)
+    if stacks <= 0 or pokemon.is_fainted or has_type(pokemon, Type.ELECTRIC):
+        return
+    pokemon.electric_stacks += stacks
+    while pokemon.electric_stacks >= 2 and not pokemon.is_fainted:
+        pokemon.electric_stacks -= 2
+        pokemon.current_hp = max(0, pokemon.current_hp - max(1, round(pokemon.hp * 0.25)))
+        if pokemon.current_hp <= 0:
+            pokemon.status = StatusType.FAINTED
 
 
 @dataclass
@@ -496,6 +545,7 @@ class BattleState:
     switch_this_turn_a: bool = False
     switch_this_turn_b: bool = False
     battle_start_effects_triggered: bool = False
+    turn_start_prepared: bool = False
 
     # 天气持续回合 (由 _h_weather 设置)
     weather_turns: int = 0
@@ -557,6 +607,7 @@ class BattleState:
             switch_this_turn_a=self.switch_this_turn_a,
             switch_this_turn_b=self.switch_this_turn_b,
             battle_start_effects_triggered=self.battle_start_effects_triggered,
+            turn_start_prepared=self.turn_start_prepared,
             weather_turns=self.weather_turns,
             sandstorm_original_costs=dict(self.sandstorm_original_costs),
             energy_recharge_log=[],

@@ -16,6 +16,7 @@ from __future__ import annotations
 import csv
 import json
 import random
+import sqlite3
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
@@ -30,6 +31,7 @@ from src.effect_models import Timing
 from src.models import BattleState, Pokemon, SkillCategory, Type, get_type_effectiveness
 from src.pokemon_db import calc_combat_stats, get_pokemon
 from src.skill_db import get_skill, load_ability_effects
+from src.rng import rng_scope
 
 from .actions import ActionIntent, ActionKind, SideTurnInput
 from .branching import AuditStatus, BranchDimension, BranchKey, BranchOption
@@ -107,18 +109,14 @@ class BattleSimulator:
         before_opponent = self._snapshot_side(built.state, "b", request.opponent_team, built.opponent_names)
         shared_before = self._snapshot_shared(built.state)
 
-        seed = request.seed if request.seed is not None else random.randrange(2**32)
+        seed = request.seed if request.seed is not None else random.SystemRandom().randrange(2**32)
         effectiveness_a = self._effectiveness_for_action(built.state, "a", request.own_turn.primary)
         effectiveness_b = self._effectiveness_for_action(built.state, "b", request.opponent_turn.primary)
-        random_state = random.getstate()
-        random.seed(seed)
-        try:
+        with rng_scope(random.Random(seed)):
             action_a = self._to_legacy_action(request.own_turn.primary, built.state, "a")
             action_b = self._to_legacy_action(request.opponent_turn.primary, built.state, "b")
             execute_full_turn(built.state, action_a, action_b)
             auto_switch(built.state)
-        finally:
-            random.setstate(random_state)
 
         after_own = self._snapshot_side(built.state, "a", request.own_team, built.own_names)
         after_opponent = self._snapshot_side(built.state, "b", request.opponent_team, built.opponent_names)
@@ -194,6 +192,13 @@ class BattleSimulator:
             mp_a=int(request.shared.mp.get("own").or_default(4)),
             mp_b=int(request.shared.mp.get("opponent").or_default(4)),
         )
+        battle_context = dict(request.shared.metadata)
+        for field_name in ("system_time", "weekend", "bypass"):
+            field = getattr(request.shared, field_name)
+            if field.known and field.exists:
+                battle_context[field_name] = field.value
+        for pokemon in state.team_a + state.team_b:
+            pokemon.ability_state["battle_context"] = dict(battle_context)
         self._apply_devotion_input(state, request.own_team, "a")
         self._apply_devotion_input(state, request.opponent_team, "b")
         for team_id, source in (("a", request.own_team), ("b", request.opponent_team)):
@@ -266,25 +271,31 @@ class BattleSimulator:
 
     def _creature_to_legacy(self, item: CreatureInput, fallback: str, warnings: list[str], unknowns: list[str]) -> Pokemon:
         name = item.resolved_name(fallback)
+        db_record = None
+        try:
+            db_record = get_pokemon(name)
+        except Exception:
+            db_record = None
         stats = item.base.stats.value if item.base.stats.known and item.base.stats.exists else None
         if not stats:
-            db_record = None
-            try:
-                db_record = get_pokemon(name)
-            except Exception:
-                db_record = None
             if db_record:
                 stats = calc_combat_stats(
-                    db_record["生命种族值"], db_record["物攻种族值"], db_record["魔攻种族值"],
-                    db_record["物防种族值"], db_record["魔防种族值"], db_record["速度种族值"],
+                    db_record["base_hp"], db_record["base_attack"], db_record["base_magic_attack"],
+                    db_record["base_defense"], db_record["base_magic_defense"], db_record["base_speed"],
                     nature_name=item.base.nature.or_default("坦率"),
                 )
             else:
                 stats = {"hp": 100, "atk": 100, "def": 100, "spatk": 100, "spdef": 100, "speed": 100}
                 warnings.append(f"{name}: 未找到六维数据，使用中性占位值")
-        type_value = item.base.attributes.or_default(["普通"])
-        pokemon_type = TYPE_MAP.get(type_value[0] if type_value else "普通", Type.NORMAL)
-        ability_name = item.ability.name.or_default("")
+        type_value = item.base.attributes.or_default(None)
+        if not type_value and db_record:
+            type_value = db_record.get("types", [])
+        if isinstance(type_value, str):
+            type_value = [part.strip() for part in type_value.replace("|", "/").split("/") if part.strip()]
+        type_value = type_value or ["普通"]
+        pokemon_types = [TYPE_MAP.get(value, Type.NORMAL) for value in type_value]
+        pokemon_type = pokemon_types[0]
+        ability_name = item.ability.name.or_default(db_record.get("ability", "") if db_record else "")
         ability_names = [ability_name] if ability_name else []
         ability_names.extend(
             ability.name.value
@@ -324,6 +335,7 @@ class BattleSimulator:
             sp_attack=int(stats.get("spatk", 100)),
             sp_defense=int(stats.get("spdef", 100)),
             speed=int(stats.get("speed", 100)),
+            pokemon_types=pokemon_types,
             ability=ability_name,
             skills=skills,
             current_hp=current_hp,
@@ -339,11 +351,16 @@ class BattleSimulator:
         status_fields = {
             "poison": "poison_stacks", "burn": "burn_stacks", "freeze": "freeze_stacks",
             "frostbite_damage": "frostbite_damage", "leech": "leech_stacks",
+            "electric": "electric_stacks",
             "meteor": "meteor_stacks", "cute": "cute_stacks", "combo": "hit_count_mod",
         }
         for key, value in item.metadata.get("status_stacks", {}).items():
             if key in status_fields:
                 setattr(pokemon, status_fields[key], max(0, int(value)))
+        if pokemon.freeze_stacks and not pokemon.frostbite_damage:
+            pokemon.frostbite_damage = max(1, round(pokemon.hp * 0.05 * pokemon.freeze_stacks))
+            if pokemon.current_hp <= pokemon.frostbite_damage:
+                pokemon.current_hp = 0
         pokemon.ability_effects = [
             effect
             for name in dict.fromkeys(ability_names)
@@ -354,6 +371,9 @@ class BattleSimulator:
             "evolution_stage": item.evolution_stage.value if item.evolution_stage.known else None,
             "bossified": item.bossified.value if item.bossified.known else None,
             "bloodline_attributes": item.base.bloodline_attributes.value if item.base.bloodline_attributes.known else None,
+            "combat_attributes": list(type_value),
+            "skill_pool": item.skill_pool.value if item.skill_pool.known else None,
+            "gulu_ball": item.metadata.get("gulu_ball"),
         }
         for field_name, field in (("hp", state.hp), ("energy", state.energy), ("ability", item.ability.name)):
             if not field.known:
@@ -378,13 +398,17 @@ class BattleSimulator:
         raise ValueError(f"{team} 当前精灵没有技能: {action.skill_name or action.skill_id}")
 
     def _load_skill_descriptions(self) -> None:
-        path = self.data_dir / "skills_all.csv"
-        if not path.exists():
+        database = self.data_dir / "nrc_wiki.db"
+        if database.exists():
+            with sqlite3.connect(database) as connection:
+                for name, description in connection.execute("SELECT name, description FROM skill_catalog"):
+                    self._skill_descriptions[name] = description or ""
             return
-        with path.open("r", encoding="utf-8-sig", newline="") as handle:
-            for row in csv.DictReader(handle):
-                name = (row.get("技能名") or "").strip()
-                self._skill_descriptions[name] = (row.get("效果描述") or "").strip()
+        path = self.data_dir / "wiki" / "skills.csv"
+        if path.exists():
+            with path.open("r", encoding="utf-8-sig", newline="") as handle:
+                for row in csv.DictReader(handle):
+                    self._skill_descriptions[(row.get("名称") or "").strip()] = (row.get("描述") or "").strip()
 
     def _possible_branches(self, request: BattleRequest, state: BattleState) -> list[ResolutionBranch]:
         parsed_rules = []
@@ -499,7 +523,7 @@ class BattleSimulator:
         skill = self._skill_for_action(action, attacker)
         if skill is None:
             return []
-        multiplier = get_type_effectiveness(skill.skill_type, defender.pokemon_type)
+        multiplier = get_type_effectiveness(skill.skill_type, defender.pokemon_types)
         return [{
             "role": "dealt",
             "attacker": attacker.name,
@@ -570,6 +594,8 @@ class BattleSimulator:
                     "entry_count": getattr(pokemon, "entry_count", 0),
                     "fatigue_turns": getattr(pokemon, "fatigue_turns", 0),
                     "ability": pokemon.ability,
+                    "attributes": [type_value.value for type_value in pokemon.pokemon_types],
+                    "bloodline_attributes": pokemon.ability_state.get("lab_metadata", {}).get("bloodline_attributes"),
                     "stats": {
                         "atk": pokemon.attack, "def": pokemon.defense,
                         "spatk": pokemon.sp_attack, "spdef": pokemon.sp_defense,

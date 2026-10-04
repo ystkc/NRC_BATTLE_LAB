@@ -10,6 +10,14 @@ def __getattr__(name):
     if name == "BattleSimulator":
         from .simulator import BattleSimulator
         return BattleSimulator
+    if name in {"NRCTrainingBackend", "UnsupportedMechanicError", "VersionMismatchError", "create_backend"}:
+        from .training import NRCTrainingBackend, UnsupportedMechanicError, VersionMismatchError, create_backend
+        return {
+            "NRCTrainingBackend": NRCTrainingBackend,
+            "UnsupportedMechanicError": UnsupportedMechanicError,
+            "VersionMismatchError": VersionMismatchError,
+            "create_backend": create_backend,
+        }[name]
     raise AttributeError(name)
 
 __all__ = [
@@ -23,4 +31,8 @@ __all__ = [
     "BattleRequest",
     "BattleResult",
     "BattleSimulator",
+    "NRCTrainingBackend",
+    "UnsupportedMechanicError",
+    "VersionMismatchError",
+    "create_backend",
 ]

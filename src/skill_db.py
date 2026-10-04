@@ -22,7 +22,7 @@ SPECIAL_TYPES = {Type.FIRE, Type.WATER, Type.GRASS, Type.ELECTRIC, Type.ICE,
 _conn: Optional[sqlite3.Connection] = None
 _skill_db: dict = {}
 _DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                        "data", "nrc.db")
+                        "data", "nrc_wiki.db")
 
 # 属性中文名→Type（含短名）
 _TYPE_MAP = {
@@ -78,11 +78,16 @@ def load_skills(csv_path: str = None) -> dict:
 
     conn = _get_conn()
     c = conn.cursor()
-    c.execute("SELECT * FROM skill")
+    c.execute("""
+        SELECT s.*, e.name AS element_name
+        FROM skill_catalog s
+        LEFT JOIN elements e ON e.id = s.element_id
+        ORDER BY s.id
+    """)
 
     for row in c.fetchall():
         name = row["name"]
-        element = _TYPE_MAP.get(row["element"], Type.NORMAL)
+        element = _TYPE_MAP.get(row["element_name"], Type.NORMAL)
         category = _CAT_MAP.get(row["category"], SkillCategory.STATUS)
         power = row["power"] or 0
         energy = row["energy_cost"] or 0
@@ -105,16 +110,17 @@ def load_skills(csv_path: str = None) -> dict:
         if match:
             priority_mod = int(match.group(1))
 
-        try:
-            skill_id = str(row["id"])
-        except (IndexError, KeyError):
-            skill_id = name
+        skill_id = row["wiki_id"] or str(row["id"])
         skill = Skill(
             name=name, skill_type=element, category=category,
             power=power, energy_cost=energy,
             hit_count=hit_count, skill_id=skill_id,
             agility=agility, priority_mod=priority_mod,
         )
+        skill.description = description
+        transform_match = re.search(r"巧变：([^。]+)", description)
+        if transform_match:
+            skill.transform_scope = transform_match.group(1).strip()
         skill._base_energy_cost = energy
         skill.effects = all_effects.get(name, [])
 
@@ -162,10 +168,11 @@ def get_skill_learners(skill_name: str) -> List[str]:
     conn = _get_conn()
     c = conn.cursor()
     c.execute("""
-        SELECT p.name FROM pokemon p
-        JOIN pokemon_skill ps ON ps.pokemon_id = p.id
-        JOIN skill s ON ps.skill_id = s.id
-        WHERE s.name = ?
+        SELECT DISTINCT sp.name
+        FROM spirit_skills ss
+        JOIN spirit_forms sp ON sp.id = ss.spirit_id
+        WHERE ss.skill_name = ?
+        ORDER BY sp.id
     """, (skill_name,))
     return [r[0] for r in c.fetchall()]
 

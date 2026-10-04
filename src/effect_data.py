@@ -1126,10 +1126,10 @@ ABILITY_EFFECTS = {
            [T(E.COUNTER_ACCUMULATE_TRANSFORM, threshold=2, category_filter="防御")]),
     ],
 
-    # 不朽：力竭时设置3回合后复活计时器
+    # 不朽：力竭回合记为第1回合，第5回合重新上场
     "不朽": [
         AE(Timing.ON_FAINT,
-           [T(E.DELAYED_REVIVE, turns=3)]),
+           [T(E.DELAYED_REVIVE, turns=4)]),
     ],
 
     # 贪婪：敌方换人时，复制离场精灵的所有状态到入场精灵
@@ -1873,7 +1873,7 @@ ABILITY_EFFECTS = {
 
     # 契约的形状 (3只): 根据咕噜球入场效果，默认绝缘球（+50速度+1层中毒）
     "契约的形状": [
-        AE(Timing.ON_ENTER, [T(E.CONTRACT_ENTRY, ball="绝缘球")]),
+        AE(Timing.ON_ENTER, [T(E.CONTRACT_ENTRY)]),
     ],
 
     # 嫉妒 (2只): 蓄力状态下可用任一技能
@@ -1888,7 +1888,27 @@ ABILITY_EFFECTS = {
 
     # 张弛有度 (2只): 周末双攻+40%其他时间双防+40% — 不模拟现实时间
     "张弛有度": [
-        AE(Timing.PASSIVE, [T(E.SELF_BUFF, _params={"def": 0.4, "spdef": 0.4})]),  # 简化为双防+40%
+        AE(Timing.ON_TURN_START, []),
+    ],
+
+    # 安眠：由 battle_context.system_time 决定夜间入场和回合结束效果
+    "安眠": [
+        AE(Timing.ON_TURN_START, []),
+    ],
+
+    # 魔术帽：当前场上的同系别技能在使用后由核心随机替换
+    "魔术帽": [
+        AE(Timing.ON_TURN_START, []),
+    ],
+
+    # 秋收：保留未来草系环境接口，当前没有对应天气效果
+    "秋收": [
+        AE(Timing.ON_TURN_START, []),
+    ],
+
+    # 盲从：允许多个“借用”槽位同时随机借用
+    "盲从": [
+        AE(Timing.ON_TURN_START, [T(E.ABILITY_COMPUTE, action="multiple_borrow")]),
     ],
 
     # 无差别过滤 (2只): 在场时所有精灵连击数固定为2

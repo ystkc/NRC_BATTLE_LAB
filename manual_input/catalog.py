@@ -125,9 +125,12 @@ class PrefixIndex:
 
 
 class Catalog:
+    """Read the normalized wiki database used by the simulator."""
+
     def __init__(self, db_path: str | Path | None = None) -> None:
         project_root = Path(__file__).resolve().parents[1]
-        self.db_path = Path(db_path) if db_path else project_root / "data" / "nrc.db"
+        self.db_path = Path(db_path) if db_path else project_root / "data" / "nrc_wiki.db"
+        self.asset_root = project_root / "data"
         self.pokemon: list[Candidate] = []
         self.skills: list[Candidate] = []
         self._load()
@@ -135,65 +138,97 @@ class Catalog:
         self.skill_index = PrefixIndex(self.skills)
 
     def _load(self) -> None:
+        if not self.db_path.exists():
+            raise FileNotFoundError(f"Database not found: {self.db_path}")
         with sqlite3.connect(self.db_path) as connection:
             connection.row_factory = sqlite3.Row
             pokemon_rows = connection.execute(
-                "SELECT * FROM pokemon ORDER BY id"
+                """
+                SELECT
+                    sp.*,
+                    COALESCE((
+                        SELECT group_concat(e.name, ' / ')
+                        FROM spirit_elements se JOIN elements e ON e.id = se.element_id
+                        WHERE se.spirit_id = sp.id ORDER BY se.position
+                    ), '') AS element_name,
+                    COALESCE(a.name, '') AS ability_name,
+                    COALESCE(av.path, '') AS avatar_path,
+                    COALESCE(po.path, '') AS portrait_path
+                FROM spirit_forms sp
+                LEFT JOIN ability_catalog a ON a.id = sp.ability_id
+                LEFT JOIN assets av ON av.id = sp.avatar_asset_id
+                LEFT JOIN (
+                    SELECT spirit_id, MIN(asset_id) AS asset_id
+                    FROM spirit_portraits GROUP BY spirit_id
+                ) portrait ON portrait.spirit_id = sp.id
+                LEFT JOIN assets po ON po.id = portrait.asset_id
+                ORDER BY sp.id
+                """
             ).fetchall()
             skill_rows = connection.execute(
-                "SELECT id, name, element, category, power, energy_cost FROM skill ORDER BY name"
+                """
+                SELECT s.*, e.name AS element_name, COALESCE(a.path, '') AS skill_path
+                FROM skill_catalog s
+                LEFT JOIN elements e ON e.id = s.element_id
+                LEFT JOIN assets a ON a.id = s.icon_asset_id
+                ORDER BY s.id
+                """
             ).fetchall()
-        pokemon_rows_by_form: dict[str, list[sqlite3.Row]] = {}
+
+        groups: dict[str, list[sqlite3.Row]] = {}
         for row in pokemon_rows:
-            pokemon_rows_by_form.setdefault(self._form_key(row), []).append(row)
-        for forms in pokemon_rows_by_form.values():
+            groups.setdefault(self._form_key(row), []).append(row)
+        for forms in groups.values():
             forms.sort(key=self._form_order)
-        self.pokemon = [
-            Candidate(
-                name=row["name"],
-                initials=initials(row["name"]),
-                pinyin=pinyin(row["name"]),
+
+        self.pokemon = []
+        for row in pokemon_rows:
+            forms = groups[self._form_key(row)]
+            base = forms[0]
+            self.pokemon.append(Candidate(
+                name=str(row["name"] or ""),
+                initials=initials(str(row["name"] or "")),
+                pinyin=pinyin(str(row["name"] or "")),
                 kind="pokemon",
                 meta={
                     "id": row["id"],
-                    "element": row["element"],
-                    "ability": row["ability"] or "",
-                    "icon_url": self._spirit_icon(row["spirit_no"], row["name"]),
-                    "base_name": re.sub(
-                        r"[（(].*?[）)]", "", pokemon_rows_by_form[self._form_key(row)][0]["name"]
-                    ).strip(),
-                    "forms": [
-                        {
-                            "id": form["id"],
-                            "name": form["name"],
-                            "element": form["element"],
-                            "ability": form["ability"] or "",
-                            "icon_url": self._spirit_icon(form["spirit_no"], form["name"]),
-                            "portrait_url": self._portrait(form),
-                        }
-                        for form in pokemon_rows_by_form[self._form_key(row)]
-                    ],
+                    "element": row["element_name"] or "",
+                    "ability": row["ability_name"] or row["ability_description"] or "",
+                    "icon_url": self._asset_url(row["avatar_path"]),
+                    "base_name": str(base["name"] or ""),
+                    "forms": [self._form_json(form) for form in forms],
                 },
-            )
-            for row in pokemon_rows
-        ]
-        self.skills = [
-            Candidate(
-                name=row["name"],
-                initials=initials(row["name"]),
-                pinyin=pinyin(row["name"]),
+            ))
+
+        self.skills = []
+        for row in skill_rows:
+            name = str(row["name"] or "")
+            self.skills.append(Candidate(
+                name=name,
+                initials=initials(name),
+                pinyin=pinyin(name),
                 kind="skill",
                 meta={
                     "id": row["id"],
-                    "element": row["element"],
-                    "category": row["category"],
+                    "element": row["element_name"] or "",
+                    "category": row["category"] or "",
                     "power": row["power"] or 0,
                     "energy_cost": row["energy_cost"] or 0,
-                    "icon_url": self._skill_icon(row["name"]),
+                    "icon_url": self._asset_url(row["skill_path"]),
                 },
-            )
-            for row in skill_rows
-        ]
+            ))
+
+    def _form_json(self, row: sqlite3.Row) -> dict:
+        return {
+            "id": row["id"],
+            "name": row["name"],
+            "element": row["element_name"] or "",
+            "ability": row["ability_name"] or row["ability_description"] or "",
+            "icon_url": self._asset_url(row["avatar_path"]),
+            "portrait_url": self._asset_url(row["portrait_path"]) or self._asset_url(row["avatar_path"]),
+            "catalog_number": row["catalog_number"] or "",
+            "evolution_stage": row["evolution_stage"],
+        }
 
     def search(self, kind: str, query: str, limit: int = 12) -> list[dict]:
         if kind == "weather":
@@ -212,7 +247,7 @@ class Catalog:
         if kind != "pokemon":
             return [candidate.to_json() for candidate in index.search(query, limit)]
         result = []
-        seen = set()
+        seen: set[int] = set()
         for candidate in index.search(query, len(self.pokemon)):
             item = candidate.to_json()
             base = item["forms"][0]
@@ -226,41 +261,19 @@ class Catalog:
 
     @staticmethod
     def _form_key(row: sqlite3.Row) -> str:
-        return str(row["spirit_no"] or re.sub(r"[（(].*?[）)]", "", row["name"]).strip())
+        return str(row["catalog_number"] or row["wiki_id"] or row["name"])
 
     @staticmethod
     def _form_order(row: sqlite3.Row) -> tuple[int, int, int]:
-        form = row["wiki_form"] if "wiki_form" in row.keys() else ""
-        name = row["name"]
-        basic = any(label in (form or "") + name for label in ("基本", "基础", "本来的样子"))
-        return (0 if basic else 1, 1 if "（" in name or "(" in name else 0, row["id"])
+        stage = row["evolution_stage"] if row["evolution_stage"] is not None else 999
+        return (0 if stage == 1 else 1, int(stage), int(row["id"]))
 
-    @staticmethod
-    def _portrait(row: sqlite3.Row) -> str | None:
-        if "portrait_path" in row.keys() and row["portrait_path"]:
-            project_root = Path(__file__).resolve().parents[1]
-            candidate = (project_root / row["portrait_path"]).resolve()
-            asset_root = (project_root / "data").resolve()
-            if asset_root in candidate.parents and candidate.is_file():
-                return "/assets/" + candidate.relative_to(asset_root).as_posix()
-        return Catalog._spirit_icon(row["spirit_no"], row["name"])
-
-    @staticmethod
-    def _spirit_icon(spirit_no: str | None, name: str) -> str | None:
-        if not spirit_no:
+    def _asset_url(self, relative_path: str | None) -> str | None:
+        relative_path = str(relative_path or "").replace(chr(92), "/").lstrip("/")
+        if not relative_path:
             return None
-        safe_name = re.sub(r"[^\w\u4e00-\u9fff]", "_", name)
-        filename = f"{str(spirit_no).replace('.', '')}_{safe_name}.png"
-        project_root = Path(__file__).resolve().parents[1]
-        if (project_root / "data" / "spirit_icons" / filename).exists():
-            return f"/assets/spirit_icons/{filename}"
-        return None
-
-    @staticmethod
-    def _skill_icon(name: str) -> str | None:
-        safe_name = re.sub(r"[^\w\u4e00-\u9fff.-]", "_", name).strip("._") or "asset"
-        filename = f"{safe_name}.png"
-        project_root = Path(__file__).resolve().parents[1]
-        if (project_root / "data" / "skill_icons" / filename).exists():
-            return f"/assets/skill_icons/{filename}"
-        return None
+        candidate = (self.asset_root / relative_path).resolve()
+        root = self.asset_root.resolve()
+        if root not in candidate.parents or not candidate.is_file():
+            return None
+        return "/assets/" + candidate.relative_to(root).as_posix()

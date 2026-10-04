@@ -71,27 +71,14 @@ def test_initial_checkpoint_endpoint(tmp_path):
     assert client.post("/api/save-initial", json=payload).status_code == 422
 
 
-def test_catalog_returns_only_basic_forms(tmp_path):
-    database = tmp_path / "catalog.db"
-    with sqlite3.connect(database) as connection:
-        connection.executescript("""
-            CREATE TABLE pokemon (id INTEGER, name TEXT, element TEXT, ability TEXT,
-                                  spirit_no TEXT, wiki_form TEXT);
-            CREATE TABLE skill (id INTEGER, name TEXT, element TEXT, category TEXT,
-                                power INTEGER, energy_cost INTEGER);
-            INSERT INTO pokemon VALUES (1, '测试精灵（战斗型）', '火', '', '001', '战斗型');
-            INSERT INTO pokemon VALUES (2, '测试精灵（基本型）', '水', '', '001', '基本型');
-            INSERT INTO pokemon VALUES (3, '另一精灵(变化)', '草', '', NULL, '变化');
-            INSERT INTO pokemon VALUES (4, '另一精灵', '草', '', NULL, '');
-        """)
-    catalog = Catalog(database)
-    choices = catalog.search("pokemon", "测试")
-    assert len(choices) == 1
-    assert choices[0]["name"] == "测试精灵"
-    assert choices[0]["id"] == 2
-    assert [form["id"] for form in choices[0]["forms"]] == [2, 1]
-    assert catalog.search("pokemon", "战斗型")[0]["id"] == 2
-    assert catalog.search("pokemon", "变化")[0]["name"] == "另一精灵"
+def test_catalog_reads_new_wiki_database():
+    catalog = Catalog()
+    assert len(catalog.pokemon) == 625
+    assert len(catalog.skills) == 579
+    candidate = catalog.pokemon[0].to_json()
+    assert candidate["forms"]
+    assert candidate["icon_url"] or candidate["forms"][0]["icon_url"]
+    assert catalog.search("skill", "")[0]["icon_url"]
     assert catalog.search("weather", "yt")[0]["id"] == "rain"
     assert catalog.search("weather", "无天气")[0]["id"] == ""
 

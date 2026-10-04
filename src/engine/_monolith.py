@@ -12,10 +12,10 @@
 逻辑只写一次。
 """
 
-import random
 from typing import List, Optional, Dict, Callable, TYPE_CHECKING
 
 from src.effect_models import E, EffectTag, Timing, AbilityEffect, SkillTiming, SkillEffect
+from src.rng import choice as rng_choice, shuffle as rng_shuffle
 
 if TYPE_CHECKING:
     from src.models import Pokemon, Skill, BattleState, SkillCategory
@@ -88,7 +88,7 @@ def _share_heal_to_bench(ctx: "Ctx", heal: int) -> None:
     current_idx = ctx.state.current_a if ctx.team == "a" else ctx.state.current_b
     bench = [p for i, p in enumerate(team_list) if i != current_idx and not p.is_fainted]
     if bench:
-        target = random.choice(bench)
+        target = rng_choice(bench)
         target.current_hp = min(target.hp, target.current_hp + heal)
 
 
@@ -98,7 +98,7 @@ def _share_energy_to_bench(ctx: "Ctx", amount: int) -> None:
     current_idx = ctx.state.current_a if ctx.team == "a" else ctx.state.current_b
     bench = [p for i, p in enumerate(team_list) if i != current_idx and not p.is_fainted]
     if bench:
-        target = random.choice(bench)
+        target = rng_choice(bench)
         target.gain_energy(amount)
 
 
@@ -486,7 +486,9 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
         meteor_stacks = mark_mods["meteor_mark_stacks"]
         if meteor_stacks > 0 and dmg > 0:
             enemy_marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
-            enemy_marks["meteor_mark"] = 0
+            for key in list(enemy_marks):
+                if key == "meteor_mark" or key.startswith("bard_mark:meteor_mark:"):
+                    del enemy_marks[key]
             meteor_power = 30 * meteor_stacks
             # 星陨印记造成魔法伤害（用攻方魔攻 vs 被攻方魔防）
             from src.models import SkillCategory, Type
@@ -602,6 +604,9 @@ def _h_grant_life_drain(tag: EffectTag, ctx: Ctx) -> None:
 
 
 def _h_poison(tag: EffectTag, ctx: Ctx) -> None:
+    from src.models import has_type, Type
+    if has_type(ctx.target, Type.POISON) or ctx.target.ability_state.get("poison_immune"):
+        return
     stacks = tag.params.get("stacks", 1)
     # 特殊: stacks_per_poison_skill（溶解扩散特性）
     if tag.params.get("stacks_per_poison_skill"):
@@ -611,7 +616,7 @@ def _h_poison(tag: EffectTag, ctx: Ctx) -> None:
     if tag.params.get("stacks_per_mark"):
         mult = tag.params["stacks_per_mark"]
         enemy_marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
-        mark_stacks = enemy_marks.get("poison_mark", 0)
+        mark_stacks = _mark_stacks(enemy_marks, "poison_mark")
         stacks = mark_stacks * mult
     # 目标选择
     tgt = tag.params.get("target", "enemy")
@@ -622,14 +627,28 @@ def _h_poison(tag: EffectTag, ctx: Ctx) -> None:
 
 
 def _h_burn(tag: EffectTag, ctx: Ctx) -> None:
+    from src.models import has_type, Type
+    if has_type(ctx.target, Type.FIRE) or ctx.target.ability_state.get("burn_immune"):
+        return
     ctx.target.burn_stacks += tag.params.get("stacks", 1)
 
 
 def _h_freeze(tag: EffectTag, ctx: Ctx) -> None:
-    ctx.target.freeze_stacks += tag.params.get("stacks", 1)
+    from src.models import add_freeze_stacks, has_type, Type
+    if has_type(ctx.target, Type.ICE) or ctx.target.ability_state.get("freeze_immune"):
+        return
+    add_freeze_stacks(ctx.target, tag.params.get("stacks", 1))
+
+
+def _h_electric_lure(tag: EffectTag, ctx: Ctx) -> None:
+    from src.models import add_electric_stacks
+    add_electric_stacks(ctx.target, tag.params.get("stacks", 1))
 
 
 def _h_leech(tag: EffectTag, ctx: Ctx) -> None:
+    from src.models import has_type, Type
+    if has_type(ctx.target, Type.GRASS) or ctx.target.ability_state.get("leech_immune"):
+        return
     ctx.target.leech_stacks += tag.params.get("stacks", 1)
 
 
@@ -676,7 +695,13 @@ def _h_mark_generic(tag: EffectTag, ctx: Ctx, mark_key: str) -> None:
     else:
         marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
     
-    # 同类印记覆盖：施加印记时清除同一 marks dict 中已有的同类（正面/负面）印记
+    # 吟游之弦拥有按来源隔离的专属槽，不占用普通正/负面印记槽。
+    if ctx.user.ability_state.get("mark_stack_additive"):
+        owned_key = f"bard_mark:{mark_key}:{ctx.user.name}"
+        marks[owned_key] = marks.get(owned_key, 0) + tag.params.get("stacks", 1)
+        return
+
+    # 同类印记覆盖：只清除普通槽，不清除吟游之弦专属槽。
     if mark_key in POSITIVE_MARKS:
         for existing_key in list(marks.keys()):
             if existing_key in POSITIVE_MARKS and existing_key != mark_key:
@@ -687,6 +712,11 @@ def _h_mark_generic(tag: EffectTag, ctx: Ctx, mark_key: str) -> None:
                 del marks[existing_key]
     
     marks[mark_key] = marks.get(mark_key, 0) + tag.params.get("stacks", 1)
+
+
+def _mark_stacks(marks, mark_key):
+    from src.models import get_mark_stacks
+    return get_mark_stacks(marks, mark_key)
 
 
 # 正面印记集合（同一阵营同时仅存1种，新覆盖旧）
@@ -1120,9 +1150,9 @@ _WEATHER_IMMUNE_TYPES = {"ground", "steel"}      # 游戏无岩系，免疫天�
 def _apply_weather_damage(state) -> None:
     """回合结束时应用天气效果。
     - 沙暴：对非地/钢系造成 1/16 HP 伤害
-    - 雪天：双方获得 2 层冻结
+    - 暴风雪：双方当前在场精灵获得 2 层冻结
     """
-    from src.models import Type
+    from src.models import Type, has_type
     w = state.weather
     if not w:
         return
@@ -1130,18 +1160,23 @@ def _apply_weather_damage(state) -> None:
     if w == "sandstorm":
         dmg_pct = 1 / 16
         for p in state.team_a:
-            if not p.is_fainted and p.pokemon_type not in immune:
+            if not p.is_fainted and not (has_type(p, Type.GROUND) or has_type(p, Type.STEEL)):
                 p.current_hp = max(1, p.current_hp - int(p.hp * dmg_pct))
         for p in state.team_b:
-            if not p.is_fainted and p.pokemon_type not in immune:
+            if not p.is_fainted and not (has_type(p, Type.GROUND) or has_type(p, Type.STEEL)):
                 p.current_hp = max(1, p.current_hp - int(p.hp * dmg_pct))
     if w == "snow":
-        for p in state.team_a:
-            if not p.is_fainted:
-                p.freeze_stacks += 2
-        for p in state.team_b:
-            if not p.is_fainted:
-                p.freeze_stacks += 2
+        from src.models import add_freeze_stacks, has_type, Type
+        for team, index in ((state.team_a, state.current_a), (state.team_b, state.current_b)):
+            p = team[index]
+            if not p.is_fainted and not has_type(p, Type.ICE):
+                add_freeze_stacks(p, 2)
+    if w in {"thunder", "雷鸣"}:
+        from src.models import add_electric_stacks, has_type, Type
+        for team, index in ((state.team_a, state.current_a), (state.team_b, state.current_b)):
+            p = team[index]
+            if not p.is_fainted and not has_type(p, Type.ELECTRIC):
+                add_electric_stacks(p, 1)
 
 
 def _h_enemy_energy_cost_up(tag: EffectTag, ctx: Ctx) -> None:
@@ -1268,9 +1303,15 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
     action = tag.params.get("action", "")
     pokemon = ctx.user
 
-    if action == "count_poison_skills":
+    if action == "multiple_borrow":
+        pokemon.ability_state["multiple_borrow"] = True
+
+    elif action in {"magic_hat", "sleep_context", "context_time_buff", "autumn_harvest"}:
+        pokemon.ability_state[action] = True
+
+    elif action == "count_poison_skills":
         from src.skill_db import _TYPE_MAP
-        from src.models import Type
+        from src.models import Type, has_type
         count = sum(1 for s in pokemon.skills if s.skill_type == Type.POISON)
         if not hasattr(pokemon, "ability_state"):
             pokemon.ability_state = {}
@@ -1280,14 +1321,14 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
         _apply_matching_skill_mods(pokemon, ctx.target, tag.params)
 
     elif action == "shared_wing_skills":
-        from src.models import Type
+        from src.models import Type, has_type
         team_list = ctx.state.team_a if ctx.team == "a" else ctx.state.team_b
         my_skills = {s.name for s in pokemon.skills}
         shared = set()
         for p in team_list:
             if p.name == pokemon.name:
                 continue
-            if p.pokemon_type == Type.FLYING:
+            if has_type(p, Type.FLYING):
                 for s in p.skills:
                     if s.name in my_skills:
                         shared.add(s.name)
@@ -1395,12 +1436,20 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
             if i != current_idx and not p.is_fainted:
                 ally_skills.extend(p.skills)
         if ally_skills:
-            chosen = random.choice(ally_skills)
-            # 找到"借用"技能的位置并替换
-            for i, s in enumerate(pokemon.skills):
-                if s.name == "借用":
-                    pokemon.skills[i] = chosen.copy()
-                    break
+            borrow_slots = [
+                i for i, s in enumerate(pokemon.skills)
+                if s.name == "借用" or getattr(s, "random_source", "") == "借用"
+            ]
+            if not pokemon.ability_state.get("multiple_borrow"):
+                borrow_slots = borrow_slots[:1]
+            for slot in borrow_slots:
+                chosen = rng_choice(ally_skills).copy()
+                chosen.random_source = "借用"
+                if pokemon.ability_state.get("multiple_borrow"):
+                    from src.models import Type
+                    if chosen.skill_type != Type.PSYCHIC:
+                        chosen.energy_cost = max(0, chosen.energy_cost - 2)
+                pokemon.skills[slot] = chosen
 
     elif action == "copy_enemy_skill":
         # 取念：变成敌方随机技能，能耗-2
@@ -1411,13 +1460,22 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
             if not p.is_fainted:
                 enemy_skills.extend(p.skills)
         if enemy_skills:
-            chosen = random.choice(enemy_skills).copy()
-            cost_reduce = tag.params.get("cost_reduce", 2)
-            chosen.energy_cost = max(0, chosen.energy_cost - cost_reduce)
-            for i, s in enumerate(pokemon.skills):
-                if s.name == "取念":
-                    pokemon.skills[i] = chosen
-                    break
+            slots = [
+                i for i, s in enumerate(pokemon.skills)
+                if s.name == "取念" or getattr(s, "random_source", "") == "取念"
+            ]
+            if not pokemon.ability_state.get("multiple_borrow"):
+                slots = slots[:1]
+            for slot in slots:
+                chosen = rng_choice(enemy_skills).copy()
+                chosen.random_source = "取念"
+                cost_reduce = tag.params.get("cost_reduce", 2)
+                chosen.energy_cost = max(0, chosen.energy_cost - cost_reduce)
+                if pokemon.ability_state.get("multiple_borrow"):
+                    from src.models import Type
+                    if chosen.skill_type != Type.PSYCHIC:
+                        chosen.energy_cost = max(0, chosen.energy_cost - 2)
+                pokemon.skills[slot] = chosen
 
     elif action == "copy_random_skill":
         # 复写：变成自己未携带的随机技能，能耗-2
@@ -1426,16 +1484,25 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
         all_names = get_all_skill_names()
         candidates = [n for n in all_names if n not in current_names]
         if candidates:
-            chosen_name = random.choice(candidates)
-            chosen = get_skill(chosen_name)
-            if chosen:
-                chosen = chosen.copy()
+            slots = [
+                i for i, s in enumerate(pokemon.skills)
+                if s.name == "复写" or getattr(s, "random_source", "") == "复写"
+            ]
+            if not pokemon.ability_state.get("multiple_borrow"):
+                slots = slots[:1]
+            for slot in slots:
+                chosen = get_skill(rng_choice(candidates))
+                if chosen is None:
+                    continue
+                replacement = chosen.copy()
                 cost_reduce = tag.params.get("cost_reduce", 2)
-                chosen.energy_cost = max(0, chosen.energy_cost - cost_reduce)
-                for i, s in enumerate(pokemon.skills):
-                    if s.name == "复写":
-                        pokemon.skills[i] = chosen
-                        break
+                replacement.energy_cost = max(0, replacement.energy_cost - cost_reduce)
+                replacement.random_source = "复写"
+                if pokemon.ability_state.get("multiple_borrow"):
+                    from src.models import Type
+                    if replacement.skill_type != Type.PSYCHIC:
+                        replacement.energy_cost = max(0, replacement.energy_cost - 2)
+                pokemon.skills[slot] = replacement
 
     elif action == "double_enemy_burn_and_tick":
         # 充分燃烧：敌方灼烧翻倍+触发1次灼烧伤害
@@ -1467,7 +1534,7 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
         team = ctx.team
         devotion = ctx.state._get_devotion(team)
         for _ in range(count):
-            chosen = random.choice(DEVOTION_TYPES)
+            chosen = rng_choice(DEVOTION_TYPES)
             devotion[chosen] = devotion.get(chosen, 0) + 1
 
     elif action == "cast_all_normal_skills_double_cost":
@@ -1650,7 +1717,7 @@ def _h_counter_accumulate_transform(tag: EffectTag, ctx: Ctx) -> None:
 
 def _h_delayed_revive(tag: EffectTag, ctx: Ctx) -> None:
     """DELAYED_REVIVE: 不朽 — 力竭时设置延迟复活计时器"""
-    turns = tag.params.get("turns", 3)
+    turns = tag.params.get("turns", 4)
     ctx.user.ability_state["undying_revive_in"] = turns
 
 
@@ -1788,11 +1855,11 @@ def _h_team_synergy_bug_swarm_attack(tag: EffectTag, ctx: Ctx) -> None:
     """TEAM_SYNERGY_BUG_SWARM_ATTACK: 虫群突袭 — 队伍每多1只虫系+15%攻击"""
     if not ctx.user or not ctx.state:
         return
-    from src.models import Type
+    from src.models import Type, has_type
     user_team = ctx.state.team_a if ctx.team == "a" else ctx.state.team_b
     bug_count = 0
     for mon in user_team:
-        if mon and mon != ctx.user and not mon.is_fainted and mon.pokemon_type == Type.BUG:
+        if mon and mon != ctx.user and not mon.is_fainted and has_type(mon, Type.BUG):
             bug_count += 1
     bonus_pct = tag.params.get("bonus_pct", 0.15)
     total = bonus_pct * bug_count
@@ -1805,11 +1872,11 @@ def _h_team_synergy_bug_swarm_inspire(tag: EffectTag, ctx: Ctx) -> None:
     """TEAM_SYNERGY_BUG_SWARM_INSPIRE: 虫群鼓舞 — 队伍每多1只虫系+10%攻击"""
     if not ctx.user or not ctx.state:
         return
-    from src.models import Type
+    from src.models import Type, has_type
     user_team = ctx.state.team_a if ctx.team == "a" else ctx.state.team_b
     bug_count = 0
     for mon in user_team:
-        if mon and mon != ctx.user and not mon.is_fainted and mon.pokemon_type == Type.BUG:
+        if mon and mon != ctx.user and not mon.is_fainted and has_type(mon, Type.BUG):
             bug_count += 1
     bonus_pct = tag.params.get("bonus_pct", 0.1)
     total = bonus_pct * bug_count
@@ -1822,9 +1889,9 @@ def _h_team_synergy_brave_if_bugs(tag: EffectTag, ctx: Ctx) -> None:
     """TEAM_SYNERGY_BRAVE_IF_BUGS: 壮胆 — 队伍有虫系时攻击+50%"""
     if not ctx.user or not ctx.state:
         return
-    from src.models import Type
+    from src.models import Type, has_type
     user_team = ctx.state.team_a if ctx.team == "a" else ctx.state.team_b
-    has_bugs = any(mon and mon != ctx.user and not mon.is_fainted and mon.pokemon_type == Type.BUG
+    has_bugs = any(mon and mon != ctx.user and not mon.is_fainted and has_type(mon, Type.BUG)
                    for mon in user_team)
     if has_bugs:
         bonus_pct = tag.params.get("bonus_pct", 0.5)
@@ -1890,7 +1957,7 @@ def _h_mark_power_per_meteor(tag: EffectTag, ctx: Ctx) -> None:
         return
     # Get meteor mark count on target (enemy)
     enemy_marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
-    meteor_count = enemy_marks.get("meteor_mark", 0)
+    meteor_count = _mark_stacks(enemy_marks, "meteor_mark")
     bonus_pct_per_mark = tag.params.get("bonus_pct_per_mark", 0.15)
     multiplier = 1.0 + (bonus_pct_per_mark * meteor_count)
     if "power_multiplier" not in ctx.result:
@@ -2212,7 +2279,8 @@ def _h_entry_freeze_extra(tag: EffectTag, ctx: Ctx) -> None:
     """ENTRY_FREEZE_EXTRA: 入场时冻结+额外能耗增加（抓到你了）"""
     freeze = tag.params.get("freeze", 2)
     extra_cost_up = tag.params.get("extra_cost_up", 1)
-    ctx.target.freeze_stacks += freeze
+    from src.models import add_freeze_stacks
+    add_freeze_stacks(ctx.target, freeze)
     if extra_cost_up:
         for s in ctx.target.skills:
             s.energy_cost = max(0, s.energy_cost + _adjust_cost_delta(ctx.target, extra_cost_up))
@@ -2483,7 +2551,7 @@ def _h_shuffle_skills_reduce_last(tag: EffectTag, ctx: Ctx) -> None:
     cost_reduce = tag.params.get("cost_reduce", 4)
     skills = ctx.user.skills
     if len(skills) >= 2:
-        random.shuffle(skills)
+        rng_shuffle(skills)
         # 新4号位(最后一个)能耗-4
         if len(skills) >= 4:
             last = skills[3]
@@ -2517,7 +2585,7 @@ def _h_on_super_effective_buff(tag: EffectTag, ctx: Ctx) -> None:
     if not ctx.skill:
         return
     from src.models import get_type_effectiveness
-    effectiveness = get_type_effectiveness(ctx.skill.skill_type, ctx.target.pokemon_type)
+    effectiveness = get_type_effectiveness(ctx.skill.skill_type, ctx.target.pokemon_types)
     if effectiveness > 1.0:
         buff = tag.params.get("buff", {})
         energy = tag.params.get("energy", 0)
@@ -2667,14 +2735,14 @@ def _h_devotion_grant(tag: EffectTag, ctx: Ctx) -> None:
 def _h_devotion_grant_random(tag: EffectTag, ctx: Ctx) -> None:
     """DEVOTION_GRANT_RANDOM: 花精灵 — 回合结束随机获得1种奉献1层"""
     team = ctx.team
-    chosen = random.choice(DEVOTION_TYPES)
+    chosen = rng_choice(DEVOTION_TYPES)
     _grant_devotion(ctx.state, team, chosen, is_random=True)
 
 
 def _h_devotion_on_hit(tag: EffectTag, ctx: Ctx) -> None:
     """DEVOTION_ON_HIT: 坚韧铠甲 — 受攻击时随机获得1种奉献1层"""
     team = ctx.team
-    chosen = random.choice(DEVOTION_TYPES)
+    chosen = rng_choice(DEVOTION_TYPES)
     _grant_devotion(ctx.state, team, chosen, is_random=True)
 
 
@@ -2714,7 +2782,8 @@ def _h_refraction(tag: EffectTag, ctx: Ctx) -> None:
             ctx.target.burn_stacks += 4
     if PokemonType.ICE in carried_types:
         if not ctx.target.ability_state.get("freeze_immune") and not ctx.target.ability_state.get("debuff_immune"):
-            ctx.target.freeze_stacks += 2
+            from src.models import add_freeze_stacks
+            add_freeze_stacks(ctx.target, 2)
     if PokemonType.POISON in carried_types:
         if not ctx.target.ability_state.get("poison_immune") and not ctx.target.ability_state.get("debuff_immune"):
             ctx.target.poison_stacks += 2
@@ -2781,15 +2850,85 @@ def _h_share_gains(tag: EffectTag, ctx: Ctx) -> None:
 
 
 def _h_contract_entry(tag: EffectTag, ctx: Ctx) -> None:
-    """CONTRACT_ENTRY: 契约的形状 — 默认绝缘球：入场+50速度，给敌方1层中毒"""
-    ball = tag.params.get("ball", "绝缘球")
-    if ball == "绝缘球":
-        ctx.user.speed_up += 0.0  # 速度用 flat +50
-        # 直接+50速度（作为 skill_power_bonus 的speed等价物）
-        # 用 speed_up 百分比近似：+50/base_speed
-        base_spd = max(1, ctx.user.speed)
-        ctx.user.speed_up += 50.0 / base_spd
-        ctx.target.poison_stacks += 1
+    """CONTRACT_ENTRY: apply the configured gulu-ball entry package."""
+    from src.models import add_freeze_stacks, has_type, Type
+
+    ball = tag.params.get("ball") or ctx.user.ability_state.get("gulu_ball")
+    if ball == "柔软咕噜球":
+        options = [
+            "skill_power", "heal", "burn", "skill_cost", "spatk", "slow_combo",
+            "speed", "poison", "def", "atk", "combo", "enemy_atk", "spdef",
+            "meteor", "freeze", "enemy_spdef", "energy", "drain",
+        ]
+        ball = ctx.user.ability_state.setdefault("contract_random_ball", rng_choice(options))
+
+    def add_speed(value: int) -> None:
+        ctx.user.speed_up += value / max(1, ctx.user.speed)
+
+    if ball == "普通咕噜球":
+        ctx.user.atk_up += 0.05; ctx.user.spatk_up += 0.05
+        ctx.user.def_up += 0.05; ctx.user.spdef_up += 0.05; add_speed(5)
+    elif ball == "高级咕噜球":
+        ctx.user.atk_up += 0.10; ctx.user.spatk_up += 0.10
+        ctx.user.def_up += 0.10; ctx.user.spdef_up += 0.10; add_speed(10)
+    elif ball == "国王球":
+        ctx.user.atk_up += 0.15; ctx.user.spatk_up += 0.15
+        ctx.user.def_up += 0.15; ctx.user.spdef_up += 0.15; add_speed(15)
+    elif ball in {"美妙球", "skill_power"}:
+        ctx.user.skill_power_bonus += 20
+        ctx.target.atk_down += 0.30; ctx.target.spatk_down += 0.30
+    elif ball in {"好战球", "atk"}:
+        ctx.user.atk_up += 0.40; ctx.target.spdef_down += 0.40
+    elif ball in {"光合球", "heal"}:
+        ctx.user.current_hp = min(ctx.user.hp, ctx.user.current_hp + round(ctx.user.hp * 0.10))
+        ctx.user.spatk_up += 0.40
+    elif ball in {"skill_cost"}:
+        for skill in ctx.user.skills:
+            skill.energy_cost = max(0, skill.energy_cost - 1)
+    elif ball in {"spatk"}:
+        ctx.user.spatk_up += 0.40
+    elif ball in {"网兜球", "combo"}:
+        ctx.user.hit_count_mod += 1
+        for skill in ctx.user.skills:
+            skill.energy_cost = max(0, skill.energy_cost - 1)
+    elif ball in {"暗星球", "energy"}:
+        ctx.target.energy = max(0, ctx.target.energy - 1)
+        ctx.user.life_drain_mod += 0.30
+    elif ball in {"调温球", "freeze"}:
+        if not has_type(ctx.target, Type.ICE):
+            add_freeze_stacks(ctx.target, 1)
+        if not has_type(ctx.target, Type.FIRE):
+            ctx.target.burn_stacks += 4
+    elif ball in {"绝缘球", "speed"}:
+        add_speed(50)
+        if not has_type(ctx.target, Type.POISON):
+            ctx.target.poison_stacks += 1
+    elif ball in {"淘沙球", "slow_combo"}:
+        ctx.target.speed_down += 0.40
+        ctx.target.hit_count_mod -= 2
+        ctx.target.def_down += 0.40
+    elif ball in {"变幻球", "def"}:
+        ctx.user.def_up += 0.30; ctx.user.spdef_up += 0.30
+        marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
+        marks["meteor_mark"] = marks.get("meteor_mark", 0) + 1
+    elif ball in {"对手攻击", "enemy_atk"}:
+        ctx.target.atk_down += 0.30; ctx.target.spatk_down += 0.30
+    elif ball in {"对手魔防", "enemy_spdef"}:
+        ctx.target.spdef_down += 0.40
+    elif ball in {"poison"}:
+        if not has_type(ctx.target, Type.POISON):
+            ctx.target.poison_stacks += 1
+    elif ball in {"spdef"}:
+        ctx.user.def_up += 0.30
+        ctx.user.spdef_up += 0.30
+    elif ball in {"meteor"}:
+        marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
+        marks["meteor_mark"] = marks.get("meteor_mark", 0) + 1
+    elif ball == "drain":
+        ctx.user.life_drain_mod += 0.30
+    elif ball == "burn":
+        if not has_type(ctx.target, Type.FIRE):
+            ctx.target.burn_stacks += 4
 
 
 def _h_bloodline_entry(tag: EffectTag, ctx: Ctx) -> None:
@@ -2969,6 +3108,7 @@ _HANDLERS: Dict[E, Callable] = {
     E.POISON:                   _h_poison,
     E.BURN:                     _h_burn,
     E.FREEZE:                   _h_freeze,
+    E.ELECTRIC_LURE:            _h_electric_lure,
     E.LEECH:                    _h_leech,
     E.METEOR:                   _h_meteor,
     E.POISON_MARK:              _h_poison_mark,

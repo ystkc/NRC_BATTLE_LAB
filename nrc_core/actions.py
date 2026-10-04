@@ -28,14 +28,17 @@ class ActionIntent:
     skill_id: Optional[str] = None
     skill_name: Optional[str] = None
     skill_slot: Optional[int] = None
+    choice: Optional[str] = None
     switch_index: Optional[int] = None
     item_kind: Optional[ItemKind] = None
     item_payload: dict[str, Any] = field(default_factory=dict)
     source: str = "manual"
 
     @classmethod
-    def skill(cls, name: str = "", slot: Optional[int] = None, skill_id: Optional[str] = None) -> "ActionIntent":
-        return cls(ActionKind.SKILL, skill_id=skill_id, skill_name=name or None, skill_slot=slot)
+    def skill(cls, name: str = "", slot: Optional[int] = None, skill_id: Optional[str] = None,
+              choice: Optional[str] = None) -> "ActionIntent":
+        return cls(ActionKind.SKILL, skill_id=skill_id, skill_name=name or None,
+                   skill_slot=slot, choice=choice)
 
     @classmethod
     def charge(cls) -> "ActionIntent":
@@ -65,6 +68,7 @@ class ActionIntent:
             "skill_id": self.skill_id,
             "skill_name": self.skill_name,
             "skill_slot": self.skill_slot,
+            "choice": self.choice,
             "switch_index": self.switch_index,
             "item_kind": self.item_kind.value if self.item_kind else None,
             "item_payload": self.item_payload,

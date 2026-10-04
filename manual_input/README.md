@@ -39,7 +39,6 @@
 
 ## 数据与验证
 
-真实计算需要完整的 data/nrc.db（包含 pokemon、skill 等表）。目录不可用时接口返回明确错误，不伪造候选或结果；恢复数据后重启服务。保存文件位于 data/manual_battles。
+真实计算需要完整的 data/nrc_wiki.db（包含 spirit_forms、skill_catalog 等表）。目录不可用时接口返回明确错误，不伪造候选或结果；恢复数据后重启服务。保存文件位于 data/manual_battles。
 
 安装项目 dev 依赖后运行：python -m pytest tests/test_manual_input.py -q。回归测试使用隔离输入运行真实核心，并用本机 Chrome 无头模式检查桌面和小屏交互、五档图形、天气补全、请求过期处理、实测隔离及回合提交。无 Chrome 时跳过浏览器测试。
-

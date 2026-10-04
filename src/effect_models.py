@@ -34,6 +34,7 @@ class E(Enum):
     POISON = auto()                  # 中毒  params: {"stacks": 2}
     BURN = auto()                    # 灼烧  params: {"stacks": 4}
     FREEZE = auto()                  # 冻伤  params: {"stacks": 1}
+    ELECTRIC_LURE = auto()           # 引电  params: {"stacks": 1}
     LEECH = auto()                   # 寄生  params: {"stacks": 1}
     METEOR = auto()                  # 星陨  params: {"stacks": 1}
 

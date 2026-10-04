@@ -138,6 +138,9 @@ class SharedBattleState:
     turn: Maybe[int] = field(default_factory=lambda: Maybe.from_value(1))
     weather: Maybe[str] = field(default_factory=Maybe.unknown)
     weather_turns: Maybe[int] = field(default_factory=Maybe.unknown)
+    system_time: Maybe[str] = field(default_factory=Maybe.unknown)
+    weekend: Maybe[bool] = field(default_factory=Maybe.unknown)
+    bypass: Maybe[bool] = field(default_factory=Maybe.unknown)
     mp: dict[str, Maybe[float]] = field(default_factory=lambda: {
         "own": Maybe.unknown(),
         "opponent": Maybe.unknown(),
@@ -149,6 +152,9 @@ class SharedBattleState:
             "turn": self.turn.to_json(),
             "weather": self.weather.to_json(),
             "weather_turns": self.weather_turns.to_json(),
+            "system_time": self.system_time.to_json(),
+            "weekend": self.weekend.to_json(),
+            "bypass": self.bypass.to_json(),
             "mp": {key: value.to_json() for key, value in self.mp.items()},
             "metadata": self.metadata,
         }

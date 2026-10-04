@@ -6,7 +6,7 @@ OCR is no longer required for manual collection. Start the browser recorder from
 
     python scripts/manual_input.py
 
-Open http://127.0.0.1:8766/. The recorder reads Pokémon and skills from data/nrc.db, indexes Chinese initials and full pinyin, removes apostrophes from queries, and sorts shorter candidates first. Use 1-9, arrow keys, Tab, Space, and Enter in candidate fields. Numbers are ignored when the input is empty.
+Open http://127.0.0.1:8766/. The recorder reads Pokémon and skills from data/nrc_wiki.db, indexes Chinese initials and full pinyin, removes apostrophes from queries, and sorts shorter candidates first. Use 1-9, arrow keys, Tab, Space, and Enter in candidate fields. Numbers are ignored when the input is empty.
 
 The opening screen records only six names and maximum HP values per side. Current HP is initialized to maximum HP and energy to 10. Enter /nc from the central command popup to skip the opponent lineup, then start with /start 1 or /start 2; the number selects the starting side. After starting, the lineup screen is hidden and only the active creature's four skills are editable.
 
@@ -25,7 +25,7 @@ confirmation before writing canonical CSV/JSON and `data/nrc_wiki.db`.
 Use `--stage-only` to inspect without committing and `--crawl-skill-relations`
 to opt into skill-detail relationship collection. Only the current v2 schema
 is supported; obsolete scrapers, alias entry points, and migration code have
-been removed. Existing battle consumers still use the separate `data/nrc.db`.
+been removed. Existing battle consumers still use the separate `data/nrc_wiki.db`.
 See `scripts/wiki_crawler/README.md` for usage, tables, and SQLite queries.
 
 
