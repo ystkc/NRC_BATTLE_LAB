@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NRC Battle Lab</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<button class="menu-toggle" aria-label="Toggle menu">☰</button>
+<div class="sidebar-overlay"></div>
+<div id="app" class="app">
+  <aside class="sidebar"><div class="side-inner"><div class="side-title"><span>历史保存点</span><button id="newBattle" class="secondary">新建</button></div><div id="tree" class="tree"></div></div></aside>
+  <section class="workspace">
+    <div class="topbar"><h1>NRC Battle Lab</h1><span id="roundLabel" class="muted"></span></div>
+    <section id="setup" class="setup">
+      <h2>开场录入</h2>
+      <div class="muted">录入双方精灵名称和最大 HP；技能在开始对战后按需补录。任何位置按 <b>/</b> 都会打开命令弹窗。</div>
+      <div class="setup-grid"><div class="setup-team"><h3>我方阵容</h3><div id="ownSetup"></div></div><div class="setup-team"><h3>对方阵容</h3><div id="opponentSetup"></div></div></div>
+      <div class="setup-actions"><button id="startBattle" class="secondary">打开命令</button><span id="setupStatus" class="muted"></span></div>
+      <div class="muted">进入对战后，修改起始状态或行动会自动调用核心预测；在实测区录入实际结果进行对比。</div>
+    </section>
+    <section id="board" class="board hidden"></section>
+    <section id="comparison" class="comparison hidden" aria-live="polite"></section>
+  </section>
+</div>
+<div id="buffer" class="buffer hidden"></div>
+<div id="prompt" class="prompt">准备开始。Tab 确认第一个并进入下一项；Shift+Tab 返回上一项；Space 确认。</div>
+<div id="commandModal" class="command-modal hidden"><div class="command-box"><h3>命令弹窗</h3><input id="commandInput" autocomplete="off" placeholder="输入 /start 1、/start 2 或 /nc"><div id="commandChoices" class="command-choices"></div><div class="muted">↑↓ 选择，Enter 或 Space 确认，Esc 关闭</div></div></div>
+  <div id="unknownModal" class="command-modal hidden"><div class="command-box"><h3>发现未收录精灵</h3><p id="unknownText" class="muted"></p><div class="muted">Enter 或 Space 确认继续，Esc 取消开始。</div><button id="unknownContinue">确认开始</button></div></div>
+<script src="/status-icons.js"></script>
+<script src="/comparison.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

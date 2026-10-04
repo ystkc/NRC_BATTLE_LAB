@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: nrc-battle-lab
+Version: 0.1.0
+Summary: 纯核心战斗模拟器与半自动对战数据审计工具
+Requires-Python: >=3.10
+Provides-Extra: collector
+Requires-Dist: mitmproxy>=10.0; extra == "collector"
+Requires-Dist: pandas>=2.0; extra == "collector"
+Requires-Dist: openpyxl>=3.1; extra == "collector"
+Requires-Dist: requests>=2.31; extra == "collector"
+Requires-Dist: beautifulsoup4>=4.12; extra == "collector"
+Provides-Extra: screen
+Requires-Dist: opencv-python>=4.8; extra == "screen"
+Requires-Dist: numpy>=1.24; extra == "screen"
+Requires-Dist: mss>=9.0; extra == "screen"
+Requires-Dist: rapidocr>=3.0; extra == "screen"
+Requires-Dist: onnxruntime>=1.17; extra == "screen"
+Provides-Extra: segmentation
+Requires-Dist: torch>=2.0; extra == "segmentation"
+Requires-Dist: torchvision>=0.15; extra == "segmentation"
+Requires-Dist: Pillow>=9.0; extra == "segmentation"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"

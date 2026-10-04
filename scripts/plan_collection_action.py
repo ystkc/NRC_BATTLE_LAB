@@ -13,7 +13,7 @@ from nrc_core.codec import battle_request_from_dict
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="根据技能审计表推荐下一步人工操作")
-    parser.add_argument("--request", required=True, help="BattleRequest JSON 文件")
+    parser.add_argument("--request", required=False, help="BattleRequest JSON 文件")
     parser.add_argument("--table", default="data/audit/skills_audit.json")
     parser.add_argument("--side", choices=["own", "opponent"], default="own")
     args = parser.parse_args()

@@ -49,26 +49,26 @@ class SkillCategory(Enum):
     STATUS = "状态"
 
 
-# 属性克制表（洛克王国真实数据，来自游戏内克制图表）
+# 属性克制表（data/属性克制表.md；未列出的组合均为 1 倍）
 TYPE_CHART: Dict[str, Dict[str, float]] = {
-    "normal":   {"ground": 0.5, "ghost": 0.5, "steel": 0.5},
-    "grass":    {"fire": 0.5, "water": 2, "light": 2, "ground": 2, "dragon": 0.5, "poison": 0.5, "bug": 0.5, "flying": 0.5, "steel": 0.5},
-    "fire":     {"grass": 2, "water": 0.5, "ground": 0.5, "ice": 2, "dragon": 0.5, "bug": 2, "steel": 2},
-    "water":    {"grass": 0.5, "fire": 2, "ground": 2, "ice": 0.5, "dragon": 0.5, "steel": 2},
-    "light":    {"grass": 0.5, "ice": 0.5, "ghost": 2, "dark": 2},
-    "ground":   {"grass": 0.5, "fire": 2, "ice": 2, "electric": 2, "poison": 2, "fighting": 0.5},
-    "ice":      {"grass": 2, "fire": 0.5, "ground": 2, "ice": 0.5, "dragon": 2, "flying": 2, "steel": 0.5},
-    "dragon":   {"dragon": 2, "steel": 0.5},
-    "electric": {"grass": 0.5, "water": 2, "ground": 0.5, "dragon": 0.5, "electric": 0.5, "flying": 2},
-    "poison":   {"grass": 2, "ground": 0.5, "poison": 0.5, "fairy": 2, "ghost": 0.5, "steel": 0.5},
-    "bug":      {"grass": 2, "fire": 0.5, "poison": 0.5, "fighting": 0.5, "flying": 0.5, "fairy": 0.5, "ghost": 0.5, "dark": 2, "steel": 0.5, "psychic": 2},
-    "fighting": {"normal": 2, "ground": 2, "ice": 2, "poison": 0.5, "bug": 0.5, "flying": 0.5, "fairy": 0.5, "ghost": 0.5, "dark": 2, "steel": 2, "psychic": 0.5},
-    "flying":   {"grass": 2, "ground": 0.5, "dragon": 0.5, "electric": 0.5, "bug": 2, "fighting": 2, "steel": 0.5},
-    "fairy":    {"fire": 0.5, "dragon": 2, "poison": 0.5, "fighting": 2, "dark": 2, "steel": 0.5},
-    "ghost":    {"normal": 0.5, "light": 2, "ghost": 2, "dark": 0.5, "psychic": 2},
-    "dark":     {"light": 0.5, "poison": 2, "fighting": 0.5, "fairy": 2, "ghost": 2, "dark": 0.5},
-    "steel":    {"fire": 0.5, "water": 0.5, "ground": 2, "ice": 2, "electric": 0.5, "fairy": 2, "steel": 0.5},
-    "psychic":  {"light": 0.5, "poison": 2, "fighting": 2, "steel": 0.5, "psychic": 0.5},
+    "normal":   {"fire": 2, "light": 2, "fighting": 2, "fairy": 0.5, "steel": 2},
+    "grass":    {"fire": 0.5, "water": 2, "light": 2, "ground": 2, "ice": 0.5, "poison": 0.5, "bug": 0.5, "fairy": 0.5},
+    "fire":     {"normal": 0.5, "grass": 2, "water": 0.5, "ground": 0.5, "ice": 2, "poison": 2, "steel": 2, "dark": 2},
+    "water":    {"grass": 0.5, "fire": 2, "ground": 2, "electric": 0.5, "steel": 2},
+    "light":    {"grass": 0.5, "fighting": 2, "flying": 2},
+    "ground":   {"normal": 0.5, "grass": 0.5, "fire": 2, "water": 0.5, "ice": 2, "electric": 2, "poison": 2, "fighting": 0.5, "steel": 0.5},
+    "ice":      {"grass": 2, "fire": 0.5, "light": 2, "dragon": 2, "bug": 0.5, "fighting": 2, "steel": 0.5},
+    "dragon":   {"ice": 0.5, "dragon": 2, "fighting": 0.5},
+    "electric": {"water": 2, "ground": 0.5, "flying": 2},
+    "poison":   {"grass": 2, "light": 0.5, "bug": 2, "flying": 0.5, "fairy": 0.5},
+    "bug":      {"grass": 2, "fire": 0.5, "bug": 0.5, "fairy": 2, "dark": 2, "psychic": 2},
+    "fighting": {"normal": 2, "light": 2, "ground": 2, "bug": 0.5, "flying": 0.5, "fairy": 2, "steel": 0.5},
+    "flying":   {"grass": 2, "ground": 0.5, "ice": 2, "poison": 0.5, "fighting": 2},
+    "fairy":    {"ground": 2, "electric": 0.5, "bug": 2, "ghost": 2, "dark": 0.5},
+    "ghost":    {"water": 2, "fairy": 2, "ghost": 0.5, "dark": 2},
+    "dark":     {"water": 0.5, "ice": 2, "dragon": 2, "electric": 0.5, "poison": 0.5, "fighting": 2, "flying": 2},
+    "steel":    {"normal": 0.5, "grass": 0.5, "fire": 0.5, "light": 2, "ground": 2, "dragon": 0.5, "bug": 2},
+    "psychic":  {"ice": 2, "dragon": 0.5, "electric": 2, "bug": 0.5, "psychic": 0.5},
 }
 
 # 属性映射（中文 -> Type enum）
@@ -87,11 +87,20 @@ CATEGORY_NAME_MAP = {
 }
 
 
-def get_type_effectiveness(attack_type: Type, defense_type: Type) -> float:
-    a, d = attack_type.value, defense_type.value
-    if a in TYPE_CHART and d in TYPE_CHART[a]:
-        return TYPE_CHART[a][d]
-    return 1.0
+def get_type_effectiveness(attack_type: Type, defense_type: Type | List[Type] | tuple[Type, ...]) -> float:
+    """Return matchup multiplier, multiplying both defensive attributes."""
+    attack = attack_type.value if isinstance(attack_type, Type) else str(attack_type)
+    defenses = defense_type if isinstance(defense_type, (list, tuple)) else [defense_type]
+    multiplier = 1.0
+    for defense in defenses:
+        value = defense.value if isinstance(defense, Type) else str(defense)
+        multiplier *= TYPE_CHART.get(attack, {}).get(value, 1.0)
+    return multiplier
+
+
+def has_type(pokemon: "Pokemon", type_value: Type) -> bool:
+    """Check primary and secondary combat attributes, excluding bloodline attributes."""
+    return type_value in getattr(pokemon, "pokemon_types", [pokemon.pokemon_type])
 
 
 @dataclass
@@ -226,6 +235,7 @@ class Pokemon:
     """精灵"""
     name: str
     pokemon_type: Type
+    pokemon_types: List[Type] = field(default_factory=list)
     hp: int
     attack: int
     defense: int
@@ -302,6 +312,10 @@ class Pokemon:
     ability_state: Dict[str, Any] = field(default_factory=dict)  # 特性运行时状态
 
     def __post_init__(self):
+        if not self.pokemon_types:
+            self.pokemon_types = [self.pokemon_type]
+        elif self.pokemon_type not in self.pokemon_types:
+            self.pokemon_types.insert(0, self.pokemon_type)
         if self.current_hp == 0:
             self.current_hp = round(self.hp)
         # 确保 HP 是整数
@@ -403,6 +417,7 @@ class Pokemon:
         """复制状态（用于MCTS模拟）"""
         p = Pokemon(
             name=self.name, pokemon_type=self.pokemon_type,
+            pokemon_types=list(self.pokemon_types),
             hp=self.hp, attack=self.attack, defense=self.defense,
             sp_attack=self.sp_attack, sp_defense=self.sp_defense,
             speed=self.speed, ability=self.ability,

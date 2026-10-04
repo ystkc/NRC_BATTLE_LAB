@@ -407,19 +407,52 @@ std::string jsonEscape(const std::string& input) {
     return result;
 }
 
-std::vector<std::uint8_t> rotateBgra180(const std::vector<std::uint8_t>& pixels,
-                                        std::uint32_t width,
-                                        std::uint32_t height) {
-    const auto rowBytes = static_cast<std::size_t>(width) * 4;
-    std::vector<std::uint8_t> rotated(pixels.size());
-    for (std::uint32_t y = 0; y < height; ++y) {
-        for (std::uint32_t x = 0; x < width; ++x) {
-            const auto source = (static_cast<std::size_t>(height - 1 - y) * width + (width - 1 - x)) * 4;
-            const auto destination = static_cast<std::size_t>(y) * rowBytes + static_cast<std::size_t>(x) * 4;
-            std::memcpy(rotated.data() + destination, pixels.data() + source, 4);
-        }
-    }
-    return rotated;
+template <typename Value>
+void writeValue(void* storage, std::size_t offset, const Value& value) {
+    std::memcpy(static_cast<std::uint8_t*>(storage) + offset, &value, sizeof(value));
+}
+
+void initializePixOcrParams(void* storage,
+                            const std::string& detectionModel,
+                            const std::string& recognitionModel,
+                            const std::string& language,
+                            const Api& api) {
+    api.qStringCstrCtor(static_cast<std::uint8_t*>(storage) + 0x00, detectionModel.c_str());
+    api.qStringCstrCtor(static_cast<std::uint8_t*>(storage) + 0x50, recognitionModel.c_str());
+    api.qStringCstrCtor(static_cast<std::uint8_t*>(storage) + 0x60, language.c_str());
+    api.qStringDefaultCtor(static_cast<std::uint8_t*>(storage) + 0x68);
+
+    const double detThreshold = 0.5;
+    const double detMinScore = 0.25;
+    const double detMergeThreshold = 0.3;
+    const double detScale = 1.2;
+    const std::int32_t detMaxCandidates = 5;
+    const std::int32_t detMaxImageSize = 1000;
+    const double detPadding = 8.0;
+    const double detBoxThreshold = 0.3;
+    const double detUnclipRatio = 0.8;
+    const double detMinSize = 0.8;
+    const float recThreshold = 0.6f;
+    const std::uint8_t recUseSpace = 0;
+    const float paragraphThreshold = 0.52f;
+    const std::uint8_t paragraphEnabled = 1;
+    const double paragraphScale = 1.2;
+
+    writeValue(storage, 0x08, detThreshold);
+    writeValue(storage, 0x10, detMinScore);
+    writeValue(storage, 0x18, detMergeThreshold);
+    writeValue(storage, 0x20, detScale);
+    writeValue(storage, 0x28, detMaxCandidates);
+    writeValue(storage, 0x2c, detMaxImageSize);
+    writeValue(storage, 0x30, detPadding);
+    writeValue(storage, 0x38, detBoxThreshold);
+    writeValue(storage, 0x40, detUnclipRatio);
+    writeValue(storage, 0x48, detMinSize);
+    writeValue(storage, 0x58, recThreshold);
+    writeValue(storage, 0x5c, recUseSpace);
+    writeValue(storage, 0x70, paragraphThreshold);
+    writeValue(storage, 0x74, paragraphEnabled);
+    writeValue(storage, 0x78, paragraphScale);
 }
 
 class OcrEngine {
@@ -456,17 +489,13 @@ public:
         }
     }
 
-    Response recognize(Request request) {
+    Response recognize(const Request& request) {
         auto response = recognizeOnce(request);
-        if (response.status != kStatusOcrError) return response;
-
-        Request rotated = request;
-        rotated.pixels = rotateBgra180(request.pixels, request.width, request.height);
-        return recognizeOnce(std::move(rotated));
+        return response;
     }
 
 private:
-    Response recognizeOnce(Request request) {
+    Response recognizeOnce(const Request& request) {
         Response response;
         response.requestId = request.requestId;
         response.width = request.width;
@@ -484,10 +513,7 @@ private:
 
             auto detection = config_.detectionModel.string();
             auto recognition = config_.recognitionModel.string();
-            api_.qStringCstrCtor(static_cast<std::uint8_t*>(params.data()) + 0x00, detection.c_str());
-            api_.qStringCstrCtor(static_cast<std::uint8_t*>(params.data()) + 0x50, recognition.c_str());
-            api_.qStringCstrCtor(static_cast<std::uint8_t*>(params.data()) + 0x60, config_.language.c_str());
-            api_.qStringDefaultCtor(static_cast<std::uint8_t*>(params.data()) + 0x68);
+            initializePixOcrParams(params.data(), detection, recognition, config_.language, api_);
             paramsReady = true;
             api_.pixOcrObjectCtor(ocrObject.data(), image.data(), params.data(), kOcrModeFull, nullptr);
             objectReady = true;

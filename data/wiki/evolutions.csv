@@ -1,0 +1,263 @@
+﻿from_name,to_name,from_number,to_number,from_stage,to_stage,method,level,condition,chain_text
+一窝蜂,黄蜂后,082,083,1,2,adjacent_number_stage,,,一窝蜂 → 黄蜂后 → 花魁蜂后
+不咕钟,溯源钟,412,413,1,2,adjacent_number_stage,,,不咕钟 → 溯源钟
+丢丢,卡卡虫,044,045,1,2,adjacent_number_stage,,,丢丢 → 卡卡虫 → 卡瓦重
+乌达,迷你乌,258,259,1,2,adjacent_number_stage,,,乌达 → 迷你乌 → 乌拉塔
+乖乖鹄,蓝珠天鹅,088,089,1,2,adjacent_number_stage,,,乖乖鹄 → 蓝珠天鹅 → 翠顶夫人
+九尾狐,尖嘴狐仙,148,149,2,3,adjacent_number_stage,,,灵狐 → 九尾狐 → 尖嘴狐仙
+书卷守护,古卷执政官,304,305,2,3,adjacent_number_stage,,,书魔虫 → 书卷守护 → 古卷执政官
+书魔虫,书卷守护,303,304,1,2,adjacent_number_stage,,,书魔虫 → 书卷守护 → 古卷执政官
+仪使者,仪式之星,113,114,1,2,adjacent_number_stage,,,仪使者 → 仪式之星 → 仪式巨像
+仪式之星,仪式巨像,114,115,2,3,adjacent_number_stage,,,仪使者 → 仪式之星 → 仪式巨像
+伊贝儿,伊贝粉粉,071,072,1,2,adjacent_number_stage,,,伊贝儿 → 伊贝粉粉
+伊雷龙,伊兰亚龙,203,204,1,2,adjacent_number_stage,,,伊雷龙 → 伊兰亚龙
+伏地兽,贪食鼹,060,061,1,2,adjacent_number_stage,,,伏地兽 → 贪食鼹 → 巨噬针鼹
+优优,绒光优优,270,271,1,2,adjacent_number_stage,,,优优 → 绒光优优
+光纤兽,疾光千兽,311,312,2,3,adjacent_number_stage,,,犀角鸟 → 光纤兽 → 疾光千兽
+冬羽雀,岚鸟,019,020,2,3,adjacent_number_stage,,,雪绒鸟 → 冬羽雀 → 岚鸟
+冰封怨灵,雪灵,140,141,2,3,adjacent_number_stage,,,雪娃娃 → 冰封怨灵 → 雪灵
+凡雀,紫翎鹰,351,352,1,2,adjacent_number_stage,,,凡雀 → 紫翎鹰 → 凡鹰
+刺电环,荆棘电环,208,209,2,3,adjacent_number_stage,,,闪电环 → 刺电环 → 荆棘电环
+刺盔虫,千棘盔,077,078,2,3,adjacent_number_stage,,,海盔虫 → 刺盔虫 → 千棘盔
+刺轮砣,月亮砣,237,238,1,2,adjacent_number_stage,,,刺轮砣 → 月亮砣
+加油海葵,加油蟹,360,361,1,2,adjacent_number_stage,,,加油海葵 → 加油蟹
+加灵,加益,414,415,1,2,adjacent_number_stage,,,加灵 → 加益 → 加尔
+加益,加尔,415,416,2,3,adjacent_number_stage,,,加灵 → 加益 → 加尔
+动力猿,瞌睡王,074,075,2,3,adjacent_number_stage,,,白发懒人 → 动力猿 → 瞌睡王
+十字蛙,深渊蛙,428,429,2,3,adjacent_number_stage,,,十字蝌蚪 → 十字蛙 → 深渊蛙
+十字蝌蚪,十字蛙,427,428,1,2,adjacent_number_stage,,,十字蝌蚪 → 十字蛙 → 深渊蛙
+卡卡虫,卡瓦重,045,046,2,3,adjacent_number_stage,,,丢丢 → 卡卡虫 → 卡瓦重
+卡波,卡拉波斯,430,431,1,2,adjacent_number_stage,,,卡波 → 卡拉波斯
+厉毒小萝,厉毒修萝,291,292,1,2,adjacent_number_stage,,,厉毒小萝 → 厉毒修萝
+友爱天天,友爱星飞,396,397,1,2,adjacent_number_stage,,,友爱天天 → 友爱星飞
+双灯鱼,利灯鱼,320,321,1,2,adjacent_number_stage,,,双灯鱼 → 利灯鱼
+古钟蛇,寒音蛇,212,213,1,2,adjacent_number_stage,,,古钟蛇 → 寒音蛇
+叮叮卯,飞飞钥,379,380,1,2,adjacent_number_stage,,,叮叮卯 → 飞飞钥
+可爱猿,炽热猿,249,250,1,2,adjacent_number_stage,,,可爱猿 → 炽热猿 → 火焰猿
+可立鸡,晕晕鸡,266,267,1,2,adjacent_number_stage,,,可立鸡 → 晕晕鸡 → 绅士鸡
+叶眼魔,障眼魔,407,408,2,3,adjacent_number_stage,,,芽眼魔 → 叶眼魔 → 障眼魔
+号儿鱼,圆号鱼,183,184,1,2,adjacent_number_stage,,,号儿鱼 → 圆号鱼
+吸泥鸥,泥吼牙,287,288,1,2,adjacent_number_stage,,,吸泥鸥 → 泥吼牙
+呆小路,舞动路路,195,196,1,2,adjacent_number_stage,,,呆小路 → 舞动路路 → 白发路路
+呼呼猪,獠牙猪,137,138,1,2,adjacent_number_stage,,,呼呼猪 → 獠牙猪
+咔咔壳,水泡壳,013,014,2,3,adjacent_number_stage,,,板板壳 → 咔咔壳 → 水泡壳
+咔咔羽毛,咔咔雀,096,097,1,2,adjacent_number_stage,,,咔咔羽毛 → 咔咔雀 → 咔咔鸟
+咔咔雀,咔咔鸟,097,098,2,3,adjacent_number_stage,,,咔咔羽毛 → 咔咔雀 → 咔咔鸟
+咕咕帽,咕德帽帽,367,368,1,2,adjacent_number_stage,,,咕咕帽 → 咕德帽帽
+咬咬小子,胡桃王子,418,419,1,2,adjacent_number_stage,,,咬咬小子 → 胡桃王子
+哭哭菇,怖须菇,128,129,1,2,adjacent_number_stage,,,哭哭菇 → 怖须菇 → 怖哭菇
+喵呜,魔力猫,003,004,2,3,adjacent_number_stage,,,喵喵 → 喵呜 → 魔力猫
+喵喵,喵呜,002,003,1,2,adjacent_number_stage,,,喵喵 → 喵呜 → 魔力猫
+嗜光嗡嗡,窃光蚊,323,324,1,2,adjacent_number_stage,,,嗜光嗡嗡 → 窃光蚊
+嘟嘟煲,嘟嘟锅,052,053,1,2,adjacent_number_stage,,,嘟嘟煲 → 嘟嘟锅
+圆眼蜘蛛,尖角蜘蛛,168,169,1,2,adjacent_number_stage,,,圆眼蜘蛛 → 尖角蜘蛛 → 芋香巨角蛛
+圣剑侍从,圣剑-X,285,286,1,2,adjacent_number_stage,,,圣剑侍从 → 圣剑-X
+地鼠,遁鼠,277,278,1,2,adjacent_number_stage,,,地鼠 → 遁鼠 → 遁地鼠
+墨鱿士,混乱鱿彩,280,281,1,2,adjacent_number_stage,,,墨鱿士 → 混乱鱿彩
+壳乙螺,卡洛儿,186,187,2,3,adjacent_number_stage,,,甜田螺 → 壳乙螺 → 卡洛儿
+多啦多,古啦多,126,127,2,3,adjacent_number_stage,,,多多 → 多啦多 → 古啦多
+多多,多啦多,125,126,1,2,adjacent_number_stage,,,多多 → 多啦多 → 古啦多
+多彩方方,立方人,264,265,2,3,adjacent_number_stage,,,机械方方 → 多彩方方 → 立方人
+多菇丁,九幽菇,175,176,2,3,adjacent_number_stage,,,菇菇丁 → 多菇丁 → 九幽菇
+多西,库多西,221,222,1,2,adjacent_number_stage,,,多西 → 库多西 → 波多西
+夜宿颅,夜枭,328,329,2,3,adjacent_number_stage,,,空空颅 → 夜宿颅 → 夜枭
+大头骨龙,寂灭骨龙,289,290,1,2,adjacent_number_stage,,,大头骨龙 → 寂灭骨龙
+大耳帽兜,帽兜娃娃,142,143,1,2,adjacent_number_stage,,,大耳帽兜 → 帽兜娃娃 → 雪影娃娃
+奇丽叶,奇丽花,042,043,2,3,adjacent_number_stage,,,奇丽草 → 奇丽叶 → 奇丽花
+奇丽草,奇丽叶,041,042,1,2,adjacent_number_stage,,,奇丽草 → 奇丽叶 → 奇丽花
+奔乐鹿,爵士鹿,227,228,2,3,adjacent_number_stage,,,电动长颈鹿 → 奔乐鹿 → 爵士鹿
+奔波鼠,流浪鼠,193,194,1,2,adjacent_number_stage,,,奔波鼠 → 流浪鼠
+守夜烛,流明坎德拉,432,433,1,2,adjacent_number_stage,,,守夜烛 → 流明坎德拉
+宝藏小狐,宝藏沙狐,441,442,1,2,adjacent_number_stage,,,宝藏小狐 → 宝藏沙狐
+小丑兔,小丑公爵,363,364,2,3,adjacent_number_stage,,,小丑豆豆 → 小丑兔 → 小丑公爵
+小丑豆豆,小丑兔,362,363,1,2,adjacent_number_stage,,,小丑豆豆 → 小丑兔 → 小丑公爵
+小勇狮,炽焰狮,156,157,1,2,adjacent_number_stage,,,小勇狮 → 炽焰狮 → 炽心勇狮
+小夜,紫夜,085,086,1,2,adjacent_number_stage,,,小夜 → 紫夜 → 朔夜伊芙
+小帕尔,帕尔萨斯,293,294,1,2,adjacent_number_stage,,,小帕尔 → 帕尔萨斯 → 龙息帕尔
+小怂猫,怒目怂猫,163,164,1,2,adjacent_number_stage,,,小怂猫 → 怒目怂猫
+小星光,星光狮,080,081,1,2,adjacent_number_stage,,,小星光 → 星光狮
+小浣蛋,黑手浣熊,459,460,1,2,adjacent_number_stage,,,小浣蛋 → 黑手浣熊
+小灵菇,幻灵菇,021,022,1,2,adjacent_number_stage,,,小灵菇 → 幻灵菇 → 幻影灵菇
+小灵面,暗影灵面,054,055,1,2,adjacent_number_stage,,,小灵面 → 暗影灵面 → 幽冥眼
+小独角兽,白金独角兽,116,117,1,2,adjacent_number_stage,,,小独角兽 → 白金独角兽
+小狮鹫,神圣狮鹫,165,166,1,2,adjacent_number_stage,,,小狮鹫 → 神圣狮鹫 → 皇家狮鹫
+小甲虫,铠甲虫,283,284,1,2,adjacent_number_stage,,,小甲虫 → 铠甲虫
+小电企鹅,电企鹅,132,133,1,2,adjacent_number_stage,,,小电企鹅 → 电企鹅
+小箱怪,迷迷箱怪,210,211,1,2,adjacent_number_stage,,,小箱怪 → 迷迷箱怪
+小绒茧,绒仙子,308,309,2,3,adjacent_number_stage,,,绒绒 → 小绒茧 → 绒仙子
+小翼龙,翼龙,224,225,1,2,adjacent_number_stage,,,小翼龙 → 翼龙
+小草虫,草衣虫,099,100,1,2,adjacent_number_stage,,,小草虫 → 草衣虫 → 花衣蝶
+小雪人,雪怪,354,355,1,2,adjacent_number_stage,,,小雪人 → 雪怪
+小鹬,鄙目鹬,231,232,1,2,adjacent_number_stage,,,小鹬 → 鄙目鹬 → 高脚鹬
+小黑猫,黑猫巫师,121,122,1,2,adjacent_number_stage,,,小黑猫 → 黑猫巫师
+小鼓象,巨鼓象,371,372,1,2,adjacent_number_stage,,,小鼓象 → 巨鼓象
+小鼠獭,燕尾獭,036,037,1,2,adjacent_number_stage,,,小鼠獭 → 燕尾獭 → 卷胡巨獭
+尖角蜘蛛,芋香巨角蛛,169,170,2,3,adjacent_number_stage,,,圆眼蜘蛛 → 尖角蜘蛛 → 芋香巨角蛛
+布是岩,布克棱岩,028,029,2,3,adjacent_number_stage,,,布是石 → 布是岩 → 布克棱岩
+布是石,布是岩,027,028,1,2,adjacent_number_stage,,,布是石 → 布是岩 → 布克棱岩
+布灵,布灵布灵,464,465,1,2,adjacent_number_stage,,,布灵 → 布灵布灵
+布瓜蝌,上岸蛙,338,339,1,2,adjacent_number_stage,,,布瓜蝌 → 上岸蛙
+布鲁斯,雪顶布鲁斯,252,253,1,2,adjacent_number_stage,,,布鲁斯 → 雪顶布鲁斯 → 冰钻布鲁斯
+帕尔萨斯,龙息帕尔,294,295,2,3,adjacent_number_stage,,,小帕尔 → 帕尔萨斯 → 龙息帕尔
+帽兜娃娃,雪影娃娃,143,144,2,3,adjacent_number_stage,,,大耳帽兜 → 帽兜娃娃 → 雪影娃娃
+幻灵菇,幻影灵菇,022,023,2,3,adjacent_number_stage,,,小灵菇 → 幻灵菇 → 幻影灵菇
+幻雪兽,饮雪狂兽,391,392,2,3,adjacent_number_stage,,,雪灵兽 → 幻雪兽 → 饮雪狂兽
+幽星光,曜星光,345,346,1,2,adjacent_number_stage,,,幽星光 → 曜星光 → 暮星辰
+幽铃,摇铃魔偶,461,462,1,2,adjacent_number_stage,,,幽铃 → 摇铃魔偶
+库多西,波多西,222,223,2,3,adjacent_number_stage,,,多西 → 库多西 → 波多西
+快鳍鱼,龙鱼,240,241,2,3,adjacent_number_stage,,,豆丁鱼 → 快鳍鱼 → 龙鱼
+忽幽狸,影狸,123,124,1,2,adjacent_number_stage,,,忽幽狸 → 影狸
+怖须菇,怖哭菇,129,130,2,3,adjacent_number_stage,,,哭哭菇 → 怖须菇 → 怖哭菇
+恶魔叮,叮叮恶魔,030,031,1,2,adjacent_number_stage,,,恶魔叮 → 叮叮恶魔
+护主犬,音速犬,047,048,1,2,adjacent_number_stage,,,护主犬 → 音速犬
+抱枕松鼠,蹦床松鼠,050,051,2,3,adjacent_number_stage,,,绿耳松鼠 → 抱枕松鼠 → 蹦床松鼠
+拉特,酷拉,205,206,1,2,adjacent_number_stage,,,拉特 → 酷拉
+斑斑,斑枭,177,178,1,2,adjacent_number_stage,,,斑斑 → 斑枭
+新月狼灵,银月狼王,444,445,2,3,adjacent_number_stage,,,诅咒狼灵 → 新月狼灵 → 银月狼王
+新月鹭,月辉鹭,446,447,1,2,adjacent_number_stage,,,新月鹭 → 月辉鹭 → 月使鹭纳
+旋叶虫,蓬叶虫,118,119,1,2,adjacent_number_stage,,,旋叶虫 → 蓬叶虫 → 风滚暮虫
+星尘虫,落星虫,317,318,1,2,adjacent_number_stage,,,星尘虫 → 落星虫 → 陨星虫
+春兔,春花兔,343,344,2,3,adjacent_number_stage,,,春团 → 春兔 → 春花兔
+春团,春兔,342,343,1,2,adjacent_number_stage,,,春团 → 春兔 → 春花兔
+晕晕鸡,绅士鸡,267,268,2,3,adjacent_number_stage,,,可立鸡 → 晕晕鸡 → 绅士鸡
+晶尾蝎,蝎子王,382,383,2,3,adjacent_number_stage,,,碎晶蝎 → 晶尾蝎 → 蝎子王
+暗影灵面,幽冥眼,055,056,2,3,adjacent_number_stage,,,小灵面 → 暗影灵面 → 幽冥眼
+曜星光,暮星辰,346,347,2,3,adjacent_number_stage,,,幽星光 → 曜星光 → 暮星辰
+月辉鹭,月使鹭纳,447,448,2,3,adjacent_number_stage,,,新月鹭 → 月辉鹭 → 月使鹭纳
+机械方方,多彩方方,263,264,1,2,adjacent_number_stage,,,机械方方 → 多彩方方 → 立方人
+权杖-Ⅱ,权杖-V,145,146,1,2,adjacent_number_stage,,,权杖-Ⅱ → 权杖-V
+松仔,松叶羊,153,154,1,2,adjacent_number_stage,,,松仔 → 松叶羊 → 针叶巡林
+松叶羊,针叶巡林,154,155,2,3,adjacent_number_stage,,,松仔 → 松叶羊 → 针叶巡林
+板板壳,咔咔壳,012,013,1,2,adjacent_number_stage,,,板板壳 → 咔咔壳 → 水泡壳
+果冻,抹茶布丁,313,314,1,2,adjacent_number_stage,,,果冻 → 抹茶布丁
+柴渣虫,燃薪虫,325,326,1,2,adjacent_number_stage,,,柴渣虫 → 燃薪虫
+栗鼠,壳栗丝鼠,438,439,1,2,adjacent_number_stage,,,栗鼠 → 壳栗丝鼠
+格兰种子,格兰花,274,275,1,2,adjacent_number_stage,,,格兰种子 → 格兰花 → 格兰球
+格兰花,格兰球,275,276,2,3,adjacent_number_stage,,,格兰种子 → 格兰花 → 格兰球
+梦游,梦悠悠,057,058,1,2,adjacent_number_stage,,,梦游 → 梦悠悠
+棋棋,棋骑士,188,189,1,2,adjacent_number_stage,,,棋棋 → 棋骑士
+森蛮人,森巨人,385,386,2,3,adjacent_number_stage,,,森豆丁 → 森蛮人 → 森巨人
+森豆丁,森蛮人,384,385,1,2,adjacent_number_stage,,,森豆丁 → 森蛮人 → 森巨人
+毛头小蛛,捕尘长绒,296,297,1,2,adjacent_number_stage,,,毛头小蛛 → 捕尘长绒
+毛毛,爬爬,032,033,1,2,adjacent_number_stage,,,毛毛 → 爬爬 → 化蝶
+气球猫,梦想三三,199,200,2,3,adjacent_number_stage,,,逗逗 → 气球猫 → 梦想三三
+水滴蛇,水蛇锁,159,160,1,2,adjacent_number_stage,,,水滴蛇 → 水蛇锁 → 游蛇魔使
+水蓝蓝,波波拉,008,009,1,2,adjacent_number_stage,,,水蓝蓝 → 波波拉 → 水灵
+水蛇锁,游蛇魔使,160,161,2,3,adjacent_number_stage,,,水滴蛇 → 水蛇锁 → 游蛇魔使
+治愈兔,红丝绒,255,256,1,2,adjacent_number_stage,,,治愈兔 → 红丝绒 → 红绒十字
+波波拉,水灵,009,010,2,3,adjacent_number_stage,,,水蓝蓝 → 波波拉 → 水灵
+波波螺,消波螺,171,172,1,2,adjacent_number_stage,,,波波螺 → 消波螺 → 嗜波螺
+海盔虫,刺盔虫,076,077,1,2,adjacent_number_stage,,,海盔虫 → 刺盔虫 → 千棘盔
+海豹战士,海豹船长,181,182,1,2,adjacent_number_stage,,,海豹战士 → 海豹船长
+消波螺,嗜波螺,172,173,2,3,adjacent_number_stage,,,波波螺 → 消波螺 → 嗜波螺
+火尾战士,烈火守护,217,218,2,3,adjacent_number_stage,,,火尾瓦特 → 火尾战士 → 烈火守护
+火尾瓦特,火尾战士,216,217,1,2,adjacent_number_stage,,,火尾瓦特 → 火尾战士 → 烈火守护
+火红尾,雅丹鬃,340,341,1,2,adjacent_number_stage,,,火红尾 → 雅丹鬃
+火花,焰火,005,006,1,2,adjacent_number_stage,,,火花 → 焰火 → 火神
+火蛮人,火巨人,394,395,2,3,adjacent_number_stage,,,火豆丁 → 火蛮人 → 火巨人
+火豆丁,火蛮人,393,394,1,2,adjacent_number_stage,,,火豆丁 → 火蛮人 → 火巨人
+灵狐,九尾狐,147,148,1,2,adjacent_number_stage,,,灵狐 → 九尾狐 → 尖嘴狐仙
+灵羽勇士,圣羽翼王,151,152,2,3,adjacent_number_stage,,,里奥 → 灵羽勇士 → 圣羽翼王
+炫光迪迪,霹雳迪迪,369,370,1,2,adjacent_number_stage,,,炫光迪迪 → 霹雳迪迪
+点点,珀尔鼬,410,411,1,2,adjacent_number_stage,,,点点 → 珀尔鼬
+炽热猿,火焰猿,250,251,2,3,adjacent_number_stage,,,可爱猿 → 炽热猿 → 火焰猿
+炽焰狮,炽心勇狮,157,158,2,3,adjacent_number_stage,,,小勇狮 → 炽焰狮 → 炽心勇狮
+烈钻鸟,长尾火鸟,376,377,1,2,adjacent_number_stage,,,烈钻鸟 → 长尾火鸟 → 火羽
+烟花团,烟花伯爵,365,366,1,2,adjacent_number_stage,,,烟花团 → 烟花伯爵
+热团团,焰米龙,449,450,1,2,adjacent_number_stage,,,热团团 → 焰米龙 → 圣凯布米龙
+焰火,火神,006,007,2,3,adjacent_number_stage,,,火花 → 焰火 → 火神
+焰米龙,圣凯布米龙,450,451,2,3,adjacent_number_stage,,,热团团 → 焰米龙 → 圣凯布米龙
+燕尾獭,卷胡巨獭,037,038,2,3,adjacent_number_stage,,,小鼠獭 → 燕尾獭 → 卷胡巨獭
+爆焰仔,爆焰喷喷,356,357,1,2,adjacent_number_stage,,,爆焰仔 → 爆焰喷喷
+爬爬,化蝶,033,034,2,3,adjacent_number_stage,,,毛毛 → 爬爬 → 化蝶
+牵线木偶,帅帅魔偶,373,374,1,2,adjacent_number_stage,,,牵线木偶 → 帅帅魔偶
+犀角鸟,光纤兽,310,311,1,2,adjacent_number_stage,,,犀角鸟 → 光纤兽 → 疾光千兽
+猴麦仔,音碟吼,358,359,1,2,adjacent_number_stage,,,猴麦仔 → 音碟吼
+玳龟,玳塔,455,456,1,2,adjacent_number_stage,,,玳龟 → 玳塔
+瑰眼仔,耳翎瑰魅,400,401,1,2,adjacent_number_stage,,,瑰眼仔 → 耳翎瑰魅 → 邪眼巨魔
+甜田螺,壳乙螺,185,186,1,2,adjacent_number_stage,,,甜田螺 → 壳乙螺 → 卡洛儿
+电动长颈鹿,奔乐鹿,226,227,1,2,adjacent_number_stage,,,电动长颈鹿 → 奔乐鹿 → 爵士鹿
+电咩咩,粉咩咩,066,067,1,2,adjacent_number_stage,,,电咩咩 → 粉咩咩 → 电球咩咩
+画像守护,画间法师手,300,301,2,3,adjacent_number_stage,,,画精灵 → 画像守护 → 画间法师手
+画精灵,画像守护,299,300,1,2,adjacent_number_stage,,,画精灵 → 画像守护 → 画间法师手
+白发懒人,动力猿,073,074,1,2,adjacent_number_stage,,,白发懒人 → 动力猿 → 瞌睡王
+矮脚爬爬,恶魔红钻,214,215,1,2,adjacent_number_stage,,,矮脚爬爬 → 恶魔红钻
+石刺蜥,石冠王蜥,025,026,2,3,adjacent_number_stage,,,石肤蜥 → 石刺蜥 → 石冠王蜥
+石石,巨灵石,111,112,1,2,adjacent_number_stage,,,石石 → 巨灵石
+石肤蜥,石刺蜥,024,025,1,2,adjacent_number_stage,,,石肤蜥 → 石刺蜥 → 石冠王蜥
+矿晶虫,晶石蜗,039,040,1,2,adjacent_number_stage,,,矿晶虫 → 晶石蜗
+碎晶蝎,晶尾蝎,381,382,1,2,adjacent_number_stage,,,碎晶蝎 → 晶尾蝎 → 蝎子王
+神圣狮鹫,皇家狮鹫,166,167,2,3,adjacent_number_stage,,,小狮鹫 → 神圣狮鹫 → 皇家狮鹫
+稻草人,稻草守护者,436,437,1,2,adjacent_number_stage,,,稻草人 → 稻草守护者
+空空颅,夜宿颅,327,328,1,2,adjacent_number_stage,,,空空颅 → 夜宿颅 → 夜枭
+章脑丸,智辉章脑,452,453,1,2,adjacent_number_stage,,,章脑丸 → 智辉章脑
+粉咩咩,电球咩咩,067,068,2,3,adjacent_number_stage,,,电咩咩 → 粉咩咩 → 电球咩咩
+粉星仔,粉耳星兔,335,336,1,2,adjacent_number_stage,,,粉星仔 → 粉耳星兔
+粉粉星,小皮球,330,331,1,2,adjacent_number_stage,,,粉粉星 → 小皮球
+紫夜,朔夜伊芙,086,087,2,3,adjacent_number_stage,,,小夜 → 紫夜 → 朔夜伊芙
+紫翎鹰,凡鹰,352,353,2,3,adjacent_number_stage,,,凡雀 → 紫翎鹰 → 凡鹰
+红丝绒,红绒十字,256,257,2,3,adjacent_number_stage,,,治愈兔 → 红丝绒 → 红绒十字
+绒绒,小绒茧,307,308,1,2,adjacent_number_stage,,,绒绒 → 小绒茧 → 绒仙子
+绿翼鸟,魔翼鸟,102,103,1,2,adjacent_number_stage,,,绿翼鸟 → 魔翼鸟 → 魔眷鸟
+绿耳松鼠,抱枕松鼠,049,050,1,2,adjacent_number_stage,,,绿耳松鼠 → 抱枕松鼠 → 蹦床松鼠
+绿草精灵,魔草巫灵,093,094,1,2,adjacent_number_stage,,,绿草精灵 → 魔草巫灵
+缇塔,声波缇塔,229,230,1,2,adjacent_number_stage,,,缇塔 → 声波缇塔
+翡翠水母,琉璃水母,244,245,1,2,adjacent_number_stage,,,翡翠水母 → 琉璃水母
+翻翻蝠,夜游魔,404,405,2,3,adjacent_number_stage,,,觅觅蝠 → 翻翻蝠 → 夜游魔
+耳翎瑰魅,邪眼巨魔,401,402,2,3,adjacent_number_stage,,,瑰眼仔 → 耳翎瑰魅 → 邪眼巨魔
+胆小鳗鱼,闪电鳗鱼,242,243,1,2,adjacent_number_stage,,,胆小鳗鱼 → 闪电鳗鱼
+脆筒甜甜,香草甜甜,234,235,1,2,adjacent_number_stage,,,脆筒甜甜 → 香草甜甜 → 圣代甜甜
+舞动路路,白发路路,196,197,2,3,adjacent_number_stage,,,呆小路 → 舞动路路 → 白发路路
+花怨鳗,鳗尾兽,201,202,1,2,adjacent_number_stage,,,花怨鳗 → 鳗尾兽
+芽眼魔,叶眼魔,406,407,1,2,adjacent_number_stage,,,芽眼魔 → 叶眼魔 → 障眼魔
+苞米仔,炮米花,425,426,1,2,adjacent_number_stage,,,苞米仔 → 炮米花
+草头鸭,卷毛鸭,179,180,1,2,adjacent_number_stage,,,草头鸭 → 卷毛鸭
+草衣虫,花衣蝶,100,101,2,3,adjacent_number_stage,,,小草虫 → 草衣虫 → 花衣蝶
+莫比乌乌,克莱因龙,398,399,1,2,adjacent_number_stage,,,莫比乌乌 → 克莱因龙
+菇菇丁,多菇丁,174,175,1,2,adjacent_number_stage,,,菇菇丁 → 多菇丁 → 九幽菇
+落星虫,陨星虫,318,319,2,3,adjacent_number_stage,,,星尘虫 → 落星虫 → 陨星虫
+蒲公英,蒲公英娃娃,069,070,1,2,adjacent_number_stage,,,蒲公英 → 蒲公英娃娃
+蓝珠天鹅,翠顶夫人,089,090,2,3,adjacent_number_stage,,,乖乖鹄 → 蓝珠天鹅 → 翠顶夫人
+蓝蝶鲨,彩蝶鲨,109,110,2,3,adjacent_number_stage,,,风铃鲨 → 蓝蝶鲨 → 彩蝶鲨
+蓬叶虫,风滚暮虫,119,120,2,3,adjacent_number_stage,,,旋叶虫 → 蓬叶虫 → 风滚暮虫
+蜜果骸,半朽蜜果灵,434,435,1,2,adjacent_number_stage,,,蜜果骸 → 半朽蜜果灵
+蝴蝶陶陶,铆钉毛毛,422,423,1,2,adjacent_number_stage,,,蝴蝶陶陶 → 铆钉毛毛 → 徘徊爪爪
+螺旋帕帕,帕帕斯卡,261,262,1,2,adjacent_number_stage,,,螺旋帕帕 → 帕帕斯卡
+裘力,裘卡,247,248,2,3,adjacent_number_stage,,,裘洛 → 裘力 → 裘卡
+裘洛,裘力,246,247,1,2,adjacent_number_stage,,,裘洛 → 裘力 → 裘卡
+觅觅蝠,翻翻蝠,403,404,1,2,adjacent_number_stage,,,觅觅蝠 → 翻翻蝠 → 夜游魔
+诅咒狼灵,新月狼灵,443,444,1,2,adjacent_number_stage,,,诅咒狼灵 → 新月狼灵 → 银月狼王
+豆丁鱼,快鳍鱼,239,240,1,2,adjacent_number_stage,,,豆丁鱼 → 快鳍鱼 → 龙鱼
+贝加尔,贝古斯,333,334,2,3,adjacent_number_stage,,,贝瑟 → 贝加尔 → 贝古斯
+贝瑟,贝加尔,332,333,1,2,adjacent_number_stage,,,贝瑟 → 贝加尔 → 贝古斯
+贪食鼹,巨噬针鼹,061,062,2,3,adjacent_number_stage,,,伏地兽 → 贪食鼹 → 巨噬针鼹
+足尖元件,离心舞者,420,421,1,2,adjacent_number_stage,,,足尖元件 → 离心舞者
+蹦蹦种子,蹦蹦草,063,064,1,2,adjacent_number_stage,,,蹦蹦种子 → 蹦蹦草 → 蹦蹦花
+蹦蹦草,蹦蹦花,064,065,2,3,adjacent_number_stage,,,蹦蹦种子 → 蹦蹦草 → 蹦蹦花
+辉光幕机,机幕方舟,349,350,2,3,adjacent_number_stage,,,钨丝贝贝 → 辉光幕机 → 机幕方舟
+迷你乌,乌拉塔,259,260,2,3,adjacent_number_stage,,,乌达 → 迷你乌 → 乌拉塔
+逗逗,气球猫,198,199,1,2,adjacent_number_stage,,,逗逗 → 气球猫 → 梦想三三
+遁鼠,遁地鼠,278,279,2,3,adjacent_number_stage,,,地鼠 → 遁鼠 → 遁地鼠
+鄙目鹬,高脚鹬,232,233,2,3,adjacent_number_stage,,,小鹬 → 鄙目鹬 → 高脚鹬
+里奥,灵羽勇士,150,151,1,2,adjacent_number_stage,,,里奥 → 灵羽勇士 → 圣羽翼王
+量风碗,测风蝉,457,458,1,2,adjacent_number_stage,,,量风碗 → 测风蝉
+钨丝贝贝,辉光幕机,348,349,1,2,adjacent_number_stage,,,钨丝贝贝 → 辉光幕机 → 机幕方舟
+铃兰羊,花影羚羊,016,017,2,3,adjacent_number_stage,,,锥尾羊 → 铃兰羊 → 花影羚羊
+铆钉毛毛,徘徊爪爪,423,424,2,3,adjacent_number_stage,,,蝴蝶陶陶 → 铆钉毛毛 → 徘徊爪爪
+锥尾羊,铃兰羊,015,016,1,2,adjacent_number_stage,,,锥尾羊 → 铃兰羊 → 花影羚羊
+长尾火鸟,火羽,377,378,2,3,adjacent_number_stage,,,烈钻鸟 → 长尾火鸟 → 火羽
+闪电环,刺电环,207,208,1,2,adjacent_number_stage,,,闪电环 → 刺电环 → 荆棘电环
+阿米亚特,阿米樱,105,106,1,2,adjacent_number_stage,,,阿米亚特 → 阿米樱 → 罗隐
+阿米樱,罗隐,106,107,2,3,adjacent_number_stage,,,阿米亚特 → 阿米樱 → 罗隐
+雪娃娃,冰封怨灵,139,140,1,2,adjacent_number_stage,,,雪娃娃 → 冰封怨灵 → 雪灵
+雪灵兽,幻雪兽,390,391,1,2,adjacent_number_stage,,,雪灵兽 → 幻雪兽 → 饮雪狂兽
+雪绒鸟,冬羽雀,018,019,1,2,adjacent_number_stage,,,雪绒鸟 → 冬羽雀 → 岚鸟
+雪蛮人,雪巨人,135,136,2,3,adjacent_number_stage,,,雪豆丁 → 雪蛮人 → 雪巨人
+雪豆丁,雪蛮人,134,135,1,2,adjacent_number_stage,,,雪豆丁 → 雪蛮人 → 雪巨人
+雪顶布鲁斯,冰钻布鲁斯,253,254,2,3,adjacent_number_stage,,,布鲁斯 → 雪顶布鲁斯 → 冰钻布鲁斯
+雷鸣小子,雷神之子,388,389,2,3,adjacent_number_stage,,,霹雳宝宝 → 雷鸣小子 → 雷神之子
+霹雳宝宝,雷鸣小子,387,388,1,2,adjacent_number_stage,,,霹雳宝宝 → 雷鸣小子 → 雷神之子
+风铃鲨,蓝蝶鲨,108,109,1,2,adjacent_number_stage,,,风铃鲨 → 蓝蝶鲨 → 彩蝶鲨
+香草甜甜,圣代甜甜,235,236,2,3,adjacent_number_stage,,,脆筒甜甜 → 香草甜甜 → 圣代甜甜
+魔翼鸟,魔眷鸟,103,104,2,3,adjacent_number_stage,,,绿翼鸟 → 魔翼鸟 → 魔眷鸟
+黄蜂后,花魁蜂后,083,084,2,3,adjacent_number_stage,,,一窝蜂 → 黄蜂后 → 花魁蜂后

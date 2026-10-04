@@ -1,5 +1,34 @@
 # NRC Battle Lab
 
+## Manual battle input
+
+OCR is no longer required for manual collection. Start the browser recorder from the repository root:
+
+    python scripts/manual_input.py
+
+Open http://127.0.0.1:8766/. The recorder reads Pokémon and skills from data/nrc.db, indexes Chinese initials and full pinyin, removes apostrophes from queries, and sorts shorter candidates first. Use 1-9, arrow keys, Tab, Space, and Enter in candidate fields. Numbers are ignored when the input is empty.
+
+The opening screen records only six names and maximum HP values per side. Current HP is initialized to maximum HP and energy to 10. Enter /nc from the central command popup to skip the opponent lineup, then start with /start 1 or /start 2; the number selects the starting side. After starting, the lineup screen is hidden and only the active creature's four skills are editable.
+
+During battle, k focuses the next unknown own skill and l does the same for the opponent. e edits energy, p edits power, and u/d changes the effect indicator. m/n opens opponent/own action input: mk1-mk4 selects a skill, ms1-ms6 switches, me means 聚能, and mp means item. Esc cancels focus. Press Enter twice within one second, or click 下一回合, to save the complete nrc_core request automatically.
+
+The overlay sidebar contains the battle and round tree. Internal battle IDs and round numbers are not editable fields. Unknown Pokémon and skills remain explicit unknown/manual values rather than being silently discarded.
+
+### Wiki crawler
+
+The maintained BeautifulSoup crawler lives in `scripts/wiki_crawler/`:
+
+    python -m scripts.wiki_crawler --kind all --verbose
+
+It downloads assets and prepares a staged incremental report, then requests
+confirmation before writing canonical CSV/JSON and `data/nrc_wiki.db`.
+Use `--stage-only` to inspect without committing and `--crawl-skill-relations`
+to opt into skill-detail relationship collection. Only the current v2 schema
+is supported; obsolete scrapers, alias entry points, and migration code have
+been removed. Existing battle consumers still use the separate `data/nrc.db`.
+See `scripts/wiki_crawler/README.md` for usage, tables, and SQLite queries.
+
+
 ## Windows real-time battle monitor
 
 The real-time path is intentionally separate from the offline video auditor.
@@ -141,7 +170,7 @@ default because short willpower animations may not appear in a single frame.
 - `src/`：复制并隔离的旧规则执行内核（数据模型、战斗流程、效果引擎、数据库加载）
 - `nrc_core/`：新的稳定输入/输出协议和核心适配器
 - `collector/`：技能/特性审计、分支匹配、mitmproxy 原始流采集
-- `scripts/`：原有爬虫、数据库工具和新审计命令
+- `scripts/`：数据库工具和审计命令；爬虫独立位于 `scripts/wiki_crawler/`
 - `data/`：SQLite、`skills_all.csv` 等必要资源
 
 ## 核心入口
@@ -247,15 +276,6 @@ python scripts/plan_collection_action.py --request path/to/request.json
 ```
 
 它会优先选择当前精灵仍有未记录分支的已知技能；若当前已知技能没有待审分支，则建议聚能。真正的“实际结果 → enum 指标”归一化必须由后续 mitmproxy 协议适配器提供，匹配器遇到 0 个或多个候选时会保留为失败/歧义，不会自动污染审计记录。
-
-## 原有爬虫
-
-原项目的技能、精灵和技能关系爬虫已保留在 `scripts/`：
-
-- `scrape_skills.py`
-- `scrape_skills_bilibili.py`
-- `crawl_pokemon_skills.py`
-- `crawl_spirits.py`
 
 ## 当前限制
 

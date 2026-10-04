@@ -227,7 +227,7 @@ class ForegroundWindowSelector:
     def prompt_and_select(self, timeout: float = 120.0) -> tuple[int, WindowRect]:
         print("请切换到目标窗口；检测到目标窗口后会自动记录句柄。按 Ctrl+C 取消。", flush=True)
         deadline = time.monotonic() + timeout
-        own_hwnd = int(self.user32.GetConsoleWindow() or 0)
+        own_hwnd = int(self.kernel32.GetConsoleWindow() or 0)
         last_hwnd = 0
         stable_since = 0.0
         while time.monotonic() < deadline:

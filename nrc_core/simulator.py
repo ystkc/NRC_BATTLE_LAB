@@ -71,7 +71,7 @@ TYPE_MAP = {
     "幽": Type.GHOST, "幽系": Type.GHOST,
     "龙": Type.DRAGON, "龙系": Type.DRAGON,
     "恶": Type.DARK, "恶系": Type.DARK,
-    "机械": Type.STEEL, "机械系": Type.STEEL,
+    "机械": Type.STEEL, "机械系": Type.STEEL, "机": Type.STEEL, "机系": Type.STEEL,
     "萌": Type.FAIRY, "萌系": Type.FAIRY,
     "光": Type.LIGHT, "光系": Type.LIGHT,
 }
@@ -332,6 +332,18 @@ class BattleSimulator:
             fatigue_turns=int(state.fatigue_turns.or_default(0)),
             nature=item.base.nature.or_default("坦率"),
         )
+        for direction, modifiers in (("up", state.buffs), ("down", state.debuffs)):
+            for stat, value in modifiers.or_default({}).items():
+                if stat in {"atk", "def", "spatk", "spdef", "speed"}:
+                    setattr(pokemon, f"{stat}_{direction}", max(0.0, float(value)))
+        status_fields = {
+            "poison": "poison_stacks", "burn": "burn_stacks", "freeze": "freeze_stacks",
+            "frostbite_damage": "frostbite_damage", "leech": "leech_stacks",
+            "meteor": "meteor_stacks", "cute": "cute_stacks", "combo": "hit_count_mod",
+        }
+        for key, value in item.metadata.get("status_stacks", {}).items():
+            if key in status_fields:
+                setattr(pokemon, status_fields[key], max(0, int(value)))
         pokemon.ability_effects = [
             effect
             for name in dict.fromkeys(ability_names)
@@ -577,6 +589,8 @@ class BattleSimulator:
                         "frostbite_damage": pokemon.frostbite_damage,
                         "leech": pokemon.leech_stacks,
                         "meteor": pokemon.meteor_stacks,
+                        "cute": pokemon.cute_stacks,
+                        "combo": pokemon.hit_count_mod,
                     },
                     "skills": [
                         {

@@ -150,8 +150,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Compare OCR engines on test.png.")
     parser.add_argument("image", nargs="?", type=Path, default=DEFAULT_IMAGE)
     parser.add_argument("--repeats", type=int, default=3)
+    parser.add_argument("--engines", default="pixpin_ocr,easyocr,paddleocr,rapidocr,winrt", help="Comma-separated: pixpin_ocr,easyocr,paddleocr,rapidocr,winrt")
     parser.add_argument("--pixpin-ocr-pipe", default=os.environ.get("PIXPin_OCR_PIPE", r"\\.\pipe\pixpin-ocr"))
-    parser.add_argument("--skip-pixpin-ocr", action="store_true")
     parser.add_argument("--output", type=Path, default=DEFAULT_FULL_RESULTS)
     args = parser.parse_args()
     if args.repeats <= 0:
@@ -160,19 +160,21 @@ def main() -> None:
     if image is None:
         raise SystemExit(f"Cannot read image: {args.image}")
 
-    factories: list[tuple[str, Callable[[], tuple[Callable[[], list[dict[str, Any]]], dict[str, Any]]]]] = [
-        ("RapidOCR", lambda: rapidocr_runner(image)),
-        ("EasyOCR", lambda: easyocr_runner(image)),
-        ("PaddleOCR", lambda: paddleocr_runner(args.image)),
-    ]
     engines: list[dict[str, Any]] = []
     pixpin_client = None
     try:
-        if not args.skip_pixpin_ocr:
-            pixpin_client = PixPinOCRClient(args.pixpin_ocr_pipe)
-            engines.append(benchmark_engine("PixPin_OCR", lambda: pixpin_ocr_runner(args.image, pixpin_client), args.repeats))
-        engines.extend(benchmark_engine(name, factory, args.repeats) for name, factory in factories)
-        engines.append(benchmark_winrt(args.image, args.repeats))
+        for engine in args.engines.split(","):
+            if engine == "pixpin_ocr":
+                pixpin_client = PixPinOCRClient(args.pixpin_ocr_pipe)
+                engines.append(benchmark_engine("PixPin_OCR", lambda: pixpin_ocr_runner(args.image, pixpin_client), args.repeats))
+            elif engine == "RapidOCR":
+                engines.append(benchmark_engine("RapidOCR", lambda: rapidocr_runner(image), args.repeats))
+            elif engine == "EasyOCR":
+                engines.append(benchmark_engine("EasyOCR", lambda: easyocr_runner(image), args.repeats))
+            elif engine == "PaddleOCR":
+                engines.append(benchmark_engine("PaddleOCR", lambda: paddleocr_runner(args.image), args.repeats))
+            elif engine == "winrt":
+                engines.append(benchmark_winrt(args.image, args.repeats))
         result = {
             "schema_version": 2,
             "experiment": "full_image",
