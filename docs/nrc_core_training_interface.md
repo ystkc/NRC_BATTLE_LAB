@@ -7,7 +7,7 @@
 - 核心开发者：完整状态、规则推进、决策阶段、合法动作、观测可见性、可重复随机性、完整序列化、版本声明。建议提供 `nrc_core.training:create_backend` 工厂，可自行选择内部实现。
 - 训练侧：历史编码、隐藏状态假设/先验、信念权重更新、对手策略、搜索、自博弈、轨迹、训练与评估。全部置于 `nrc_ai/`。
 - P0 是第 2～7 节全部接口与验收。训练侧不会将现有带占位值的 `BattleRequest` 当完整状态，也不会用 `BattleResult.opponent.after` 直接训练演员。
-- 优先交付一组**规则已核验**的小规模阵容和技能，明确不支持集合；血脉属性作为阵容/技能池输入但不参与属性克制，契约的形状需要 `metadata.gulu_ball`。选择技能、首领、道具/愿力和随机奉献等未实现机制在初始化时报 `UnsupportedMechanicError`，不得伪装成已执行。
+- 优先交付一组**规则已核验**的小规模阵容和技能，明确不支持集合；血脉属性作为阵容/技能池输入但不参与属性克制，契约的形状需要 `metadata.gulu_ball`。选择技能、随机奉献等仍未完成机制在初始化时报 `UnsupportedMechanicError`，不得伪装成已执行。
 
 ## 2. Python 边界
 
@@ -44,7 +44,7 @@ CSV/DB 是同一份游戏内容，不重复统计。`data/回合顺序.md` 内�
 - 强制换人/力竭后如规则允许选择：进入 `replacement`，只请求需换人者，不自动挑首个存活精灵。若双方同时换人，两方仍同时提交。一个回合可有多个决策节点，回合结束只结算一次。
 - `advance` 只接收所有且仅有 `decision.players` 的动作；缺失、额外、非法、终局动作都抛 `ValueError`，不能自动聚能/pass。
 
-`LegalAction`：`key` 是稳定的规范化字符串，`payload` 是既有 `SideTurnInput` 的 JSON 结构（primary + items）。例如 `skill:slot=0:choice=cleanse`、`charge`、`switch:index=2`、`skill:slot=1|willpower:target=0`。相同 action_version 内同一语义 key 稳定；顺序稳定；每个节点 key 唯一。技能传动后 slot 指当前已展示顺序。
+`LegalAction`：`key` 是稳定的规范化字符串，`payload` 是既有 `SideTurnInput` 的 JSON 结构（primary + items）。例如 `skill:slot=0:choice=cleanse`、`charge`、`switch:index=2`、`skill:slot=0|resonance=willpower`。共鸣魔法通过 `items` 传入；当前已上线 `willpower`、`boss`、`solar_heal`，每方只能携带一种，使用次数和冷却由核心维护。相同 action_version 内同一语义 key 稳定；顺序稳定；每个节点 key 唯一。技能传动后 slot 指当前已展示顺序。
 
 选择技能需枚举所有合法 choice；附加道具需枚举允许组合/目标/次数，禁止不完整动作。mask 以候选列表为边界：列表内全合法，批处理补齐位置全非法，不强制定义涵盖所有全局技能的巨大整数空间。终局或非活动玩家返回空列表。己方合法动作不能根据己方不可见的对手信息改变；若实际存在可见限制，用观测体现。
 

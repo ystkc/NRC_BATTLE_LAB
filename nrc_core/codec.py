@@ -95,7 +95,7 @@ def creature_from_dict(raw: dict[str, Any]) -> CreatureInput:
                 name=_maybe(slot.get("name") if isinstance(slot, dict) else slot),
                 current_energy_cost=_maybe(slot.get("current_energy_cost") if isinstance(slot, dict) else None),
                 current_power=_maybe(slot.get("current_power") if isinstance(slot, dict) else None),
-                use_count=_maybe(slot.get("use_count", 0) if isinstance(slot, dict) else 0),
+                use_count=_maybe(slot.get("use_count", 1) if isinstance(slot, dict) else 1),
                 known_to_observer=bool(slot.get("known_to_observer", True)) if isinstance(slot, dict) else True,
                 source=slot.get("source", "json") if isinstance(slot, dict) else "json",
             )
@@ -124,6 +124,7 @@ def team_from_dict(raw: dict[str, Any]) -> TeamInput:
         creatures=[creature_from_dict(item) for item in raw.get("creatures", [])],
         active_index=_maybe(raw.get("active_index", 0)),
         team_name=raw.get("team_name", ""),
+        resonance_magic=_maybe(raw.get("resonance_magic")),
         devotion=DevotionInput(
             specified_counts=_maybe_dict(devotion.get("specified_counts", {})),
             random_draws=_maybe(devotion.get("random_draws", 0)),

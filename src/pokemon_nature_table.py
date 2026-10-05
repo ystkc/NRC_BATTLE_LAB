@@ -13,6 +13,7 @@ from typing import TypedDict
 
 class NatureBonus(TypedDict):
     """性格加成数据结构"""
+    hp: float
     atk: float    # 攻击修正
     defense: float  # 防御修正
     sp_atk: float  # 魔攻修正
@@ -212,25 +213,46 @@ NATURE_BONUSES: dict[str, NatureBonus] = {
     },
 }
 
-# 所有性格名称列表（按分类）
-NATURES_BY_CATEGORY = {
-    "attack": ["孤僻", "固执", "调皮", "勇敢"],
-    "defense": ["大胆", "淘气", "无虑", "悠闲"],
-    "sp_attack": ["保守", "稳重", "马虎", "冷静"],
-    "sp_defense": ["沉着", "温顺", "慎重", "狂妄"],
-    "speed": ["胆小", "急躁", "开朗", "天真"],
-    "neutral": ["坦率", "害羞", "认真", "实干", "浮躁"],
+# NRC PvP 性格表以 data/属性数值计算.md 为准。旧版表格保留在上方仅供
+# 历史数据读取；这里覆盖为当前六维表（+20%/-10%）。
+NATURE_BONUSES = {
+    "逞强": {"hp": -0.1, "atk": 0.2, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0},
+    "理性": {"hp": -0.1, "atk": 0.0, "defense": 0.0, "sp_atk": 0.2, "sp_defense": 0.0, "speed": 0.0},
+    "坦率": {"hp": -0.1, "atk": 0.0, "defense": 0.2, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0},
+    "焦虑": {"hp": -0.1, "atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.2, "speed": 0.0},
+    "热情": {"hp": -0.1, "atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.2},
+    "沉默": {"hp": 0.2, "atk": -0.1, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0},
+    "聪明": {"hp": 0.0, "atk": -0.1, "defense": 0.0, "sp_atk": 0.2, "sp_defense": 0.0, "speed": 0.0},
+    "稳重": {"hp": 0.0, "atk": -0.1, "defense": 0.2, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0},
+    "警惕": {"hp": 0.0, "atk": -0.1, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.2, "speed": 0.0},
+    "胆小": {"hp": 0.0, "atk": -0.1, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.2},
+    "平和": {"hp": 0.2, "atk": 0.0, "defense": 0.0, "sp_atk": -0.1, "sp_defense": 0.0, "speed": 0.0},
+    "固执": {"hp": 0.0, "atk": 0.2, "defense": 0.0, "sp_atk": -0.1, "sp_defense": 0.0, "speed": 0.0},
+    "天真": {"hp": 0.0, "atk": 0.0, "defense": 0.2, "sp_atk": -0.1, "sp_defense": 0.0, "speed": 0.0},
+    "害羞": {"hp": 0.0, "atk": 0.0, "defense": 0.0, "sp_atk": -0.1, "sp_defense": 0.2, "speed": 0.0},
+    "开朗": {"hp": 0.0, "atk": 0.0, "defense": 0.0, "sp_atk": -0.1, "sp_defense": 0.0, "speed": 0.2},
+    "忧郁": {"hp": 0.2, "atk": 0.0, "defense": -0.1, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0},
+    "大胆": {"hp": 0.0, "atk": 0.2, "defense": -0.1, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0},
+    "专注": {"hp": 0.0, "atk": 0.0, "defense": -0.1, "sp_atk": 0.2, "sp_defense": 0.0, "speed": 0.0},
+    "温顺": {"hp": 0.0, "atk": 0.0, "defense": -0.1, "sp_atk": 0.0, "sp_defense": 0.2, "speed": 0.0},
+    "急躁": {"hp": 0.0, "atk": 0.0, "defense": -0.1, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.2},
+    "粗心": {"hp": 0.2, "atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": -0.1, "speed": 0.0},
+    "调皮": {"hp": 0.0, "atk": 0.2, "defense": 0.0, "sp_atk": 0.0, "sp_defense": -0.1, "speed": 0.0},
+    "偏执": {"hp": 0.0, "atk": 0.0, "defense": 0.0, "sp_atk": 0.2, "sp_defense": -0.1, "speed": 0.0},
+    "懒散": {"hp": 0.0, "atk": 0.0, "defense": 0.2, "sp_atk": 0.0, "sp_defense": -0.1, "speed": 0.0},
+    "莽撞": {"hp": 0.0, "atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": -0.1, "speed": 0.2},
+    "踏实": {"hp": 0.2, "atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": -0.1},
+    "勇敢": {"hp": 0.0, "atk": 0.2, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": -0.1},
+    "冷静": {"hp": 0.0, "atk": 0.0, "defense": 0.0, "sp_atk": 0.2, "sp_defense": 0.0, "speed": -0.1},
+    "悠闲": {"hp": 0.0, "atk": 0.0, "defense": 0.2, "sp_atk": 0.0, "sp_defense": 0.0, "speed": -0.1},
+    "慎重": {"hp": 0.0, "atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.2, "speed": -0.1},
 }
 
+# 所有性格名称列表（按分类）
+NATURES_BY_CATEGORY = {"nrc": list(NATURE_BONUSES)}
+
 # 所有性格名称（平铺列表）
-ALL_NATURES = [
-    "孤僻", "固执", "调皮", "勇敢",
-    "大胆", "淘气", "无虑", "悠闲",
-    "保守", "稳重", "马虎", "冷静",
-    "沉着", "温顺", "慎重", "狂妄",
-    "胆小", "急躁", "开朗", "天真",
-    "坦率", "害羞", "认真", "实干", "浮躁",
-]
+ALL_NATURES = list(NATURE_BONUSES)
 
 
 def get_nature_bonus(nature: str) -> NatureBonus:

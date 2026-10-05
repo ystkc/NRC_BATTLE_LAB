@@ -43,6 +43,13 @@ class ParticleBelief:
             raise ValueError("cannot sample an empty belief")
         return rng.choices(self.particles, weights=[p.weight for p in self.particles], k=1)[0]
 
+    def sample_many(self, count: int, rng: random.Random, *, clone: Callable[[Any], Any] | None = None) -> list[Particle]:
+        if count <= 0 or not self.particles:
+            return []
+        copier = clone or (lambda value: value)
+        selected = rng.choices(self.particles, weights=[p.weight for p in self.particles], k=count)
+        return [Particle(copier(item.state), 1.0, dict(item.metadata or {})) for item in selected]
+
 
 class ParticleFilter:
     def __init__(self, *, resample_threshold: float = 0.5) -> None:

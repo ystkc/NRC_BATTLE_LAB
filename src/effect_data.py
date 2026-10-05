@@ -51,6 +51,11 @@ def on_defense(*subs): return counter(E.COUNTER_DEFENSE, *subs)
 # ============================================================
 SKILL_EFFECTS = {
 
+    "愿力冲击": [
+        SE(SkillTiming.ON_USE, [T(E.DAMAGE)]),
+        SE(SkillTiming.ON_COUNTER, [T(E.POWER_DYNAMIC, condition="counter", multiplier=2.5)], category="status"),
+    ],
+
     "折射": [
         SE(SkillTiming.ON_USE, [T(E.REFRACTION), T(E.DAMAGE)]),
     ],

@@ -4,6 +4,7 @@ from .actions import ActionKind, ActionIntent, SideTurnInput
 from .branching import BranchDimension, BranchKey, BranchOption
 from .devotion import DevotionInput
 from .schema import BattleRequest, BattleResult
+from .core import TurnResult, simulate_turn
 
 
 def __getattr__(name):
@@ -30,6 +31,8 @@ __all__ = [
     "DevotionInput",
     "BattleRequest",
     "BattleResult",
+    "TurnResult",
+    "simulate_turn",
     "BattleSimulator",
     "NRCTrainingBackend",
     "UnsupportedMechanicError",

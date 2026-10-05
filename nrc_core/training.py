@@ -33,16 +33,16 @@ from src.battle import (
     _apply_turn_start_ability_logic,
     _trigger_battle_start_effects,
     check_winner,
-    execute_full_turn,
 )
 from src.effect_models import Timing
 from src.engine._monolith import EffectExecutor
 from src.models import BattleState, Pokemon
 from src.pokemon_db import get_pokemon
 from src.rng import rng_scope
-from src.skill_db import get_all_skill_names, load_ability_effects
+from src.skill_db import get_all_skill_names, get_skill, load_ability_effects
 
 from .codec import battle_request_from_dict, side_turn_from_dict
+from .core import simulate_turn
 from .schema import BattleRequest
 from .simulator import BattleSimulator
 
@@ -107,6 +107,9 @@ def _manifest(project_dir: Path, environment: str, data_dir: Path | None = None)
     rules = _hash_files([
         data_dir / "属性克制表.md",
         data_dir / "回合顺序.md",
+        data_dir / "共鸣魔法.md",
+        data_dir / "伤害数值计算.md",
+        data_dir / "属性数值计算.md",
         data_dir / "wiki" / "game_descriptions.csv",
         project_dir / "src" / "battle.py",
         project_dir / "src" / "engine" / "_monolith.py",
@@ -243,11 +246,14 @@ class NRCTrainingBackend:
             raise ValueError("both teams must contain at least one creature")
         unsupported: list[str] = []
         for side, team in (("0", request.own_team), ("1", request.opponent_team)):
+            resonance = self._simulator._canonical_resonance(team.resonance_magic.or_default(None))
+            if resonance in {"flame_burst", "throttle"}:
+                unsupported.append(f"player {side}: resonance {resonance}")
+            elif resonance not in {None, "willpower", "boss", "solar_heal"}:
+                unsupported.append(f"player {side}: unknown resonance {resonance}")
             active_index = int(team.active_index.or_default(0))
             if active_index < 0 or active_index >= len(team.creatures):
                 raise ValueError(f"player {side} active_index is out of range")
-            if team.devotion.random_draws.known and team.devotion.random_draws.or_default(0) > 0:
-                unsupported.append(f"player {side}: random devotion")
             for index, creature in enumerate(team.creatures):
                 name = creature.resolved_name(f"{side}_{index}")
                 try:
@@ -281,10 +287,15 @@ class NRCTrainingBackend:
                     skill_name = skill.name.or_default(skill.skill_id.or_default(""))
                     if not skill_name or skill_name not in self._known_skill_names():
                         raise ValueError(f"unknown skill {skill_name!r} at {name}[{slot}]")
+                    if skill_name == "愿力冲击":
+                        unsupported.append(f"{name}[{slot}] 愿力冲击: resonance-only skill")
                     description = self._skill_description(skill_name)
-                    if any(marker in description for marker in ("随机选择", "选择一项", "随机抽取")):
-                        unsupported.append(f"{name}[{slot}] {skill_name}: choice/random skill")
-                for key in ("items", "willpower", "contract", "random_skill"):
+                    parsed_skill = get_skill(skill_name)
+                    if "选择" in description and len(getattr(parsed_skill, "choice_options", ())) != 2:
+                        unsupported.append(f"{name}[{slot}] {skill_name}: choice skill must expose exactly two options")
+                    if any(marker in description for marker in ("随机选择", "随机抽取")):
+                        unsupported.append(f"{name}[{slot}] {skill_name}: random target/choice skill")
+                for key in ("items", "contract", "random_skill"):
                     if (creature.metadata or {}).get(key):
                         unsupported.append(f"{name}: {key}")
         if unsupported:
@@ -387,16 +398,62 @@ class NRCTrainingBackend:
         if active.is_fainted:
             return ()
         for index, skill in enumerate(active.skills):
-            if active.energy < skill.energy_cost or active.cooldowns.get(index, 0) > 0:
+            repetitions = max(1, int(getattr(skill, "use_count", 1) or 1))
+            if active.ability_state.get("first_action_bonus"):
+                repetitions += 1
+            if active.energy < skill.energy_cost * repetitions or active.cooldowns.get(index, 0) > 0:
                 continue
-            key = f"skill:slot={index}"
-            result.append(LegalAction(key, {"primary": {"kind": "skill", "skill_slot": index, "skill_id": skill.skill_id, "skill_name": skill.name}, "items": []}))
+            options = tuple(getattr(skill, "choice_options", ()))
+            if len(options) == 2:
+                for option_index, option in enumerate(options):
+                    key = f"skill:slot={index}:choice={option_index}"
+                    result.append(LegalAction(key, {"primary": {"kind": "skill", "skill_slot": index, "skill_id": skill.skill_id, "skill_name": skill.name, "choice": option}, "items": []}))
+            else:
+                key = f"skill:slot={index}"
+                result.append(LegalAction(key, {"primary": {"kind": "skill", "skill_slot": index, "skill_id": skill.skill_id, "skill_name": skill.name}, "items": []}))
         result.append(LegalAction("charge", {"primary": {"kind": "charge"}, "items": []}))
         for index, pokemon in enumerate(team):
             if index == active_index or pokemon.is_fainted:
                 continue
             key = f"switch:index={index}"
             result.append(LegalAction(key, {"primary": {"kind": "switch", "switch_index": index}, "items": []}))
+        return self._with_resonance_actions(current, player, result)
+
+    def _with_resonance_actions(self, state: TrainingState, player: int, base: list[LegalAction]) -> tuple[LegalAction, ...]:
+        team, active_index, side = self._team(state.battle, player)
+        active = team[active_index]
+        carried = state.battle.resonance_magic_a if side == "a" else state.battle.resonance_magic_b
+        if not carried:
+            return tuple(base)
+        result = list(base)
+        for action in base:
+            primary = action.payload.get("primary", {})
+            kind = primary.get("kind")
+            if kind not in {"skill", "charge"}:
+                continue
+            if carried == "willpower":
+                uses = state.battle.resonance_uses_a if side == "a" else state.battle.resonance_uses_b
+                cooldown = state.battle.resonance_cooldown_a if side == "a" else state.battle.resonance_cooldown_b
+                if uses >= 2 or cooldown > 0 or active.energy < 2:
+                    continue
+                if kind != "skill" or int(primary.get("skill_slot", -1)) != 0:
+                    continue
+                if self._simulator._bloodline_type(active) is None:
+                    continue
+            elif carried == "boss":
+                used = state.battle.resonance_evolution_used_a if side == "a" else state.battle.resonance_evolution_used_b
+                bloodline = active.ability_state.get("lab_metadata", {}).get("bloodline_attributes") or []
+                if used or not any("首领" in str(value) for value in (bloodline if isinstance(bloodline, list) else [bloodline])):
+                    continue
+            elif carried == "solar_heal":
+                used = state.battle.resonance_solar_heal_used_a if side == "a" else state.battle.resonance_solar_heal_used_b
+                if used:
+                    continue
+            else:
+                continue
+            payload = copy.deepcopy(action.payload)
+            payload["items"] = [{"kind": "item", "item_kind": carried, "item_payload": {}}]
+            result.append(LegalAction(f"{action.key}|resonance={carried}", payload))
         return tuple(result)
 
     def observe(self, state: object, player: int) -> Observation:
@@ -461,11 +518,22 @@ class NRCTrainingBackend:
             self._prepare_decision(next_state, settle_start=True)
         else:
             payloads = {player: side_turn_from_dict(legal_by_player[player][actions[player]].payload) for player in current.players}
-            legacy_a = self._simulator._to_legacy_action(payloads[0].primary, next_state.battle, "a")
-            legacy_b = self._simulator._to_legacy_action(payloads[1].primary, next_state.battle, "b")
-            with _isolated_rng(seed):
-                execute_full_turn(next_state.battle, legacy_a, legacy_b, lambda *_: None, lambda *_: None)
-            winner = check_winner(next_state.battle)
+            cleanups = []
+            cleanups.extend(self._simulator._apply_resonance_items(
+                next_state.battle, "a", payloads[0].items, next_state.battle.resonance_magic_a,
+            ))
+            cleanups.extend(self._simulator._apply_resonance_items(
+                next_state.battle, "b", payloads[1].items, next_state.battle.resonance_magic_b,
+            ))
+            try:
+                legacy_a = self._simulator._to_legacy_action(payloads[0].primary, next_state.battle, "a")
+                legacy_b = self._simulator._to_legacy_action(payloads[1].primary, next_state.battle, "b")
+                turn_result = simulate_turn(next_state.battle, legacy_a, legacy_b, seed=seed, clone=False)
+            finally:
+                self._simulator._restore_resonance_items(cleanups)
+            next_state.events.extend(turn_result.report)
+            next_state.events.append({"type": "display_power", "value": turn_result.display_power})
+            winner = turn_result.winner or check_winner(next_state.battle)
             if winner:
                 next_state.terminated = True
                 next_state.winner = 0 if winner == "a" else 1

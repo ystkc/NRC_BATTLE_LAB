@@ -2,6 +2,7 @@
 洛克王国战斗模拟系统 - 数据模型
 """
 
+import copy
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 from enum import Enum
@@ -51,23 +52,23 @@ class SkillCategory(Enum):
 
 # 属性克制表（data/属性克制表.md；未列出的组合均为 1 倍）
 TYPE_CHART: Dict[str, Dict[str, float]] = {
-    "normal":   {"fire": 2, "light": 2, "fighting": 2, "fairy": 0.5, "steel": 2},
-    "grass":    {"fire": 0.5, "water": 2, "light": 2, "ground": 2, "ice": 0.5, "poison": 0.5, "bug": 0.5, "fairy": 0.5},
-    "fire":     {"normal": 0.5, "grass": 2, "water": 0.5, "ground": 0.5, "ice": 2, "poison": 2, "steel": 2, "dark": 2, "psychic": 2},
-    "water":    {"grass": 0.5, "fire": 2, "ground": 2, "electric": 0.5, "steel": 2},
+    "normal":   {"fire": 2, "light": 2, "fighting": 2, "fairy": 0.5, "dark": 2},
+    "grass":    {"fire": 0.5, "water": 2, "light": 2, "ground": 2, "ice": 0.5, "electric": 0.5, "poison": 0.5, "bug": 0.5, "fairy": 0.5},
+    "fire":     {"normal": 0.5, "grass": 2, "water": 0.5, "ground": 0.5, "ice": 2, "bug": 2, "dark": 2, "psychic": 2},
+    "water":    {"grass": 0.5, "fire": 2, "ground": 2, "electric": 0.5, "dark": 2},
     "light":    {"grass": 0.5, "flying": 2, "fairy": 2},
     "ground":   {"normal": 0.5, "grass": 0.5, "fire": 2, "water": 0.5, "ice": 2, "electric": 2, "poison": 2, "fighting": 0.5, "steel": 0.5},
-    "ice":      {"grass": 2, "fire": 0.5, "light": 2, "dragon": 2, "bug": 0.5, "fighting": 2, "steel": 0.5},
+    "ice":      {"grass": 2, "fire": 0.5, "light": 2, "dragon": 2, "bug": 0.5, "fighting": 2, "steel": 0.5, "dark": 0.5},
     "dragon":   {"ice": 0.5, "dragon": 2, "fighting": 0.5},
-    "electric": {"water": 2, "ground": 0.5, "flying": 2},
+    "electric": {"water": 2, "ground": 0.5, "flying": 2, "bug": 2},
     "poison":   {"grass": 2, "light": 0.5, "bug": 2, "flying": 0.5, "fairy": 0.5},
-    "bug":      {"grass": 2, "fire": 0.5, "bug": 0.5, "fairy": 2, "dark": 2, "psychic": 2},
+    "bug":      {"grass": 2, "fire": 0.5, "bug": 0.5, "flying": 2, "fairy": 2, "dark": 2, "steel": 2},
     "fighting": {"normal": 2, "light": 2, "ground": 2, "bug": 0.5, "flying": 0.5, "fairy": 2, "steel": 0.5},
     "flying":   {"grass": 2, "ground": 0.5, "ice": 2, "poison": 0.5, "fighting": 2},
     "fairy":    {"ice": 2, "electric": 0.5, "bug": 2, "ghost": 2, "dark": 0.5},
-    "ghost":    {"water": 2, "fairy": 2, "ghost": 0.5, "dark": 2},
+    "ghost":    {"water": 2, "fairy": 2, "dark": 2, "ghost": 0.5},
     "dark":     {"water": 0.5, "ice": 2, "dragon": 2, "electric": 0.5, "poison": 0.5, "fighting": 2, "flying": 2},
-    "steel":    {"normal": 0.5, "grass": 0.5, "fire": 0.5, "light": 2, "ground": 2, "dragon": 0.5, "bug": 2},
+    "steel":    {"normal": 0.5, "grass": 0.5, "fire": 0.5, "ground": 2, "ice": 2, "electric": 0.5, "fighting": 2},
     "psychic":  {"ice": 2, "dragon": 0.5, "electric": 2, "bug": 0.5},
 }
 
@@ -88,14 +89,21 @@ CATEGORY_NAME_MAP = {
 
 
 def get_type_effectiveness(attack_type: Type, defense_type: Type | List[Type] | tuple[Type, ...]) -> float:
-    """Return matchup multiplier, multiplying both defensive attributes."""
+    """Return NRC dual-type effectiveness using the documented combination rules."""
     attack = attack_type.value if isinstance(attack_type, Type) else str(attack_type)
     defenses = defense_type if isinstance(defense_type, (list, tuple)) else [defense_type]
-    multiplier = 1.0
+    multipliers = []
     for defense in defenses:
         value = defense.value if isinstance(defense, Type) else str(defense)
-        multiplier *= TYPE_CHART.get(attack, {}).get(value, 1.0)
-    return multiplier
+        multipliers.append(TYPE_CHART.get(attack, {}).get(value, 1.0))
+    if not multipliers:
+        return 1.0
+    if len(multipliers) == 2 and all(value == 2.0 for value in multipliers):
+        return 3.0
+    result = 1.0
+    for value in multipliers:
+        result *= value
+    return max(0.0, result)
 
 
 def has_type(pokemon: "Pokemon", type_value: Type) -> bool:
@@ -120,7 +128,7 @@ class Skill:
     energy_cost: int
     hit_count: int = 1
     skill_id: str = ""
-    use_count: int = 0
+    use_count: int = 1
 
     # 效果标记
     life_drain: float = 0          # 吸血比例 (0.5 = 50%)
@@ -190,13 +198,15 @@ class Skill:
     transform_pending: bool = False
     transform_restore: Any = field(default=None, repr=False, compare=False)
     random_source: str = ""
+    choice_options: tuple[str, ...] = ()
+    selected_choice: str = ""
 
     def copy(self):
         s = Skill(
             name=self.name, skill_type=self.skill_type, category=self.category,
             power=self.power, energy_cost=self.energy_cost, hit_count=self.hit_count,
             skill_id=getattr(self, "skill_id", self.name),
-            use_count=getattr(self, "use_count", 0),
+            use_count=max(1, int(getattr(self, "use_count", 1) or 1)),
             life_drain=self.life_drain, damage_reduction=self.damage_reduction,
             self_heal_hp=self.self_heal_hp, self_heal_energy=self.self_heal_energy,
             steal_energy=self.steal_energy, enemy_lose_energy=self.enemy_lose_energy,
@@ -239,6 +249,8 @@ class Skill:
         s.transform_dynamic_scope = getattr(self, "transform_dynamic_scope", "")
         s.transform_pending = getattr(self, "transform_pending", False)
         s.random_source = getattr(self, "random_source", "")
+        s.choice_options = tuple(getattr(self, "choice_options", ()))
+        s.selected_choice = getattr(self, "selected_choice", "")
         restore = getattr(self, "transform_restore", None)
         s.transform_restore = restore.copy() if restore is not None else None
         if hasattr(self, "_base_energy_cost"):
@@ -247,6 +259,8 @@ class Skill:
             s.burst = self.burst
         if hasattr(self, "devotion_affected"):
             s.devotion_affected = self.devotion_affected
+        if hasattr(self, "_resonance_dual_path"):
+            s._resonance_dual_path = self._resonance_dual_path
         return s
 
 
@@ -489,7 +503,7 @@ class Pokemon:
         p.nature = self.nature
         # 新引擎字段
         p.ability_effects = [ae.copy() for ae in self.ability_effects] if self.ability_effects else []
-        p.ability_state = dict(self.ability_state)
+        p.ability_state = copy.deepcopy(self.ability_state)
         return p
 
 
@@ -556,6 +570,9 @@ class BattleState:
     # 聚能事件日志 (供 server.py 战斗播报使用)
     energy_recharge_log: list = field(default_factory=list)
 
+    # 当前单回合由核心生成的战报事件；多回合平台负责保存和展示。
+    turn_report: list = field(default_factory=list)
+
     # 待处理的换人请求 (脱离/强制换人时暂存，由 server.py 让玩家选择)
     pending_switch_requests: list = field(default_factory=list)
 
@@ -576,6 +593,18 @@ class BattleState:
     random_devotion_draws_b: int = 0
     random_devotion_counts_a: Dict[str, int] = field(default_factory=dict)
     random_devotion_counts_b: Dict[str, int] = field(default_factory=dict)
+
+    # 共鸣魔法：每方携带一种；使用次数/冷却按整场战斗记录。
+    resonance_magic_a: Optional[str] = None
+    resonance_magic_b: Optional[str] = None
+    resonance_uses_a: int = 0
+    resonance_uses_b: int = 0
+    resonance_cooldown_a: int = 0
+    resonance_cooldown_b: int = 0
+    resonance_evolution_used_a: bool = False
+    resonance_evolution_used_b: bool = False
+    resonance_solar_heal_used_a: bool = False
+    resonance_solar_heal_used_b: bool = False
 
     # 木桶状态待生效标记
     _barrel_pending_a: bool = False
@@ -611,6 +640,7 @@ class BattleState:
             weather_turns=self.weather_turns,
             sandstorm_original_costs=dict(self.sandstorm_original_costs),
             energy_recharge_log=[],
+            turn_report=[],
             pending_switch_requests=[],
             skill_use_counts_a=dict(self.skill_use_counts_a),
             skill_use_counts_b=dict(self.skill_use_counts_b),
@@ -622,6 +652,16 @@ class BattleState:
             random_devotion_draws_b=self.random_devotion_draws_b,
             random_devotion_counts_a=dict(self.random_devotion_counts_a),
             random_devotion_counts_b=dict(self.random_devotion_counts_b),
+            resonance_magic_a=self.resonance_magic_a,
+            resonance_magic_b=self.resonance_magic_b,
+            resonance_uses_a=self.resonance_uses_a,
+            resonance_uses_b=self.resonance_uses_b,
+            resonance_cooldown_a=self.resonance_cooldown_a,
+            resonance_cooldown_b=self.resonance_cooldown_b,
+            resonance_evolution_used_a=self.resonance_evolution_used_a,
+            resonance_evolution_used_b=self.resonance_evolution_used_b,
+            resonance_solar_heal_used_a=self.resonance_solar_heal_used_a,
+            resonance_solar_heal_used_b=self.resonance_solar_heal_used_b,
             _barrel_pending_a=self._barrel_pending_a,
             _barrel_pending_b=self._barrel_pending_b,
             burst_entry_turn_a=dict(self.burst_entry_turn_a),

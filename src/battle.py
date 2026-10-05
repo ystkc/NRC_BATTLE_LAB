@@ -7,6 +7,7 @@
 
 import sys
 import os
+import math
 from typing import Optional, List, Tuple, Dict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -282,31 +283,6 @@ class DamageCalculator:
         if power <= 0:
             return 0
 
-        # 按技能类型选取方向字段
-        if skill.category == SkillCategory.MAGICAL:
-            base_atk = attacker.sp_attack
-            base_def = defender.sp_defense
-            atk_up   = attacker.spatk_up
-            atk_down = attacker.spatk_down
-            def_up   = defender.spdef_up
-            def_down = defender.spdef_down
-        else:
-            base_atk = attacker.attack
-            base_def = defender.defense
-            atk_up   = attacker.atk_up
-            atk_down = attacker.atk_down
-            def_up   = defender.def_up
-            def_down = defender.def_down
-
-        # 能力等级 = (1 + 我方攻升 + 敌方防降) / (1 + 我方攻降 + 敌方防升)
-        ability_level = (1.0 + atk_up + def_down) / max(0.1, 1.0 + atk_down + def_up)
-
-        atk = base_atk * ability_level
-        dfn = max(1.0, float(base_def))
-
-        # 基础伤害 = (攻击/防御) × 威力 × 0.9
-        base = (atk / dfn) * power * 0.9
-
         # 属性克制
         eff = get_type_effectiveness(skill.skill_type, defender.pokemon_types)
 
@@ -316,8 +292,8 @@ class DamageCalculator:
         if getattr(defender, "ability_state", {}).get("barrel_active"):
             eff = 1.0
 
-        # 本系加成 1.5x
-        stab = 1.5 if skill.skill_type in attacker.pokemon_types else 1.0
+        # PvP 本系加成固定为 1.25；血脉属性不进入 pokemon_types。
+        stab = 1.25 if skill.skill_type in attacker.pokemon_types else 1.0
 
         # 天气修正
         weather_mult = 1.0
@@ -332,7 +308,48 @@ class DamageCalculator:
         # 威力提升 buff（独立乘法层）
         power_mult_buff = getattr(attacker, "power_multiplier", 1.0)
 
-        damage = base * eff * stab * weather_mult * hits * power_mult_buff
+        effective_power = power * eff * stab * weather_mult * power_mult_buff
+
+        def calculate_path(category: SkillCategory) -> tuple[int, float]:
+            if category == SkillCategory.MAGICAL:
+                base_atk = attacker.sp_attack
+                base_def = defender.sp_defense
+                atk_up = attacker.spatk_up
+                atk_down = attacker.spatk_down
+                def_up = defender.spdef_up
+                def_down = defender.spdef_down
+            else:
+                base_atk = attacker.attack
+                base_def = defender.defense
+                atk_up = attacker.atk_up
+                atk_down = attacker.atk_down
+                def_up = defender.def_up
+                def_down = defender.spdef_down
+            ability_level = (1.0 + atk_up + def_down) / max(0.1, 1.0 + atk_down + def_up)
+            atk = base_atk * ability_level
+            dfn = max(1.0, float(base_def))
+            raw = effective_power * atk * 37 / 41
+            per_hit = max(1, math.floor(math.floor(raw + 0.5) / dfn))
+            return per_hit * max(1, hits), raw
+
+        categories = (
+            (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)
+            if getattr(skill, "_resonance_dual_path", False)
+            else (skill.category,)
+        )
+        paths = [(calculate_path(category), category) for category in categories]
+        (damage, _), selected_category = max(paths, key=lambda item: item[0][0])
+        damage_per_hit = max(1, damage // max(1, hits))
+        attacker.ability_state["_last_damage_details"] = {
+            "effective_power": effective_power,
+            "damage_per_hit": max(1, damage_per_hit),
+            "hits": max(1, hits),
+            "damage": damage,
+            "category": selected_category.value,
+            "stab": stab,
+            "effectiveness": eff,
+            "weather": weather_mult,
+        }
         # 保存属性克制到攻击方临时状态，供前端事件使用
         attacker.ability_state["_last_effectiveness"] = eff
         return max(1, int(damage))
@@ -462,7 +479,10 @@ def get_actions(state: BattleState, team: str) -> List[Action]:
 
     for i, skill in enumerate(current.skills):
         cd = current.cooldowns.get(i, 0)
-        if current.energy >= skill.energy_cost and cd <= 0:
+        repetitions = max(1, int(getattr(skill, "use_count", 1) or 1))
+        if current.ability_state.get("first_action_bonus"):
+            repetitions += 1
+        if current.energy >= skill.energy_cost * repetitions and cd <= 0:
             actions.append((i,))
 
     return actions if actions else [(-1,)]
@@ -499,59 +519,63 @@ def ability_auto_switch(state: BattleState, team: str, reason: str,
     if not should_switch:
         return False
 
-    alive = [i for i, p in enumerate(team_list) if not p.is_fainted and i != idx]
+    return _random_disengage(state, team)
+
+
+def _random_disengage(state: BattleState, team: str) -> bool:
+    """执行脱离：从己方存活队伍中随机选择下一只精灵。"""
+    team_list = state.team_a if team == "a" else state.team_b
+    current_index = state.current_a if team == "a" else state.current_b
+    current = team_list[current_index]
+    alive = [i for i, pokemon in enumerate(team_list) if i != current_index and not pokemon.is_fainted]
     if not alive:
         return False
-
-    # 触发离场特性
     enemy_list = state.team_b if team == "a" else state.team_a
-    enemy_idx = state.current_b if team == "a" else state.current_a
-    enemy = enemy_list[enemy_idx]
-    transfer_ctx = {}
+    enemy_index = state.current_b if team == "a" else state.current_a
+    enemy = enemy_list[enemy_index]
+    snapshot_mods = {
+        "atk_up": current.atk_up, "atk_down": current.atk_down,
+        "def_up": current.def_up, "def_down": current.def_down,
+        "spatk_up": current.spatk_up, "spatk_down": current.spatk_down,
+        "spdef_up": current.spdef_up, "spdef_down": current.spdef_down,
+        "speed_up": current.speed_up, "speed_down": current.speed_down,
+    }
+    transfer_ctx = {"_snapshot_mods": snapshot_mods}
     if current.ability_effects:
-        from src.engine._monolith import EffectExecutor
-        EffectExecutor.execute_ability(
-            state, current, enemy, Timing.ON_LEAVE,
-            current.ability_effects, team, transfer_ctx,
-        )
+        EffectExecutor.execute_ability(state, current, enemy, Timing.ON_LEAVE, current.ability_effects, team, transfer_ctx)
     current.on_switch_out()
-
+    _clear_mirror_buff(current, state, team)
+    new_index = rng_choice(alive)
     if team == "a":
-        # 玩家侧：提交 pending_switch_request 让玩家选
-        state.current_a = alive[0]
+        state.current_a = new_index
         state.switch_this_turn_a = True
-        state.pending_switch_requests = [
-            r for r in state.pending_switch_requests if r["team"] != "a"
-        ]
-        state.pending_switch_requests.append({
-            "team": "a",
-            "reason": reason,
-            "alive": alive,
-        })
-        new_pokemon = team_list[state.current_a]
     else:
-        # AI 侧：自动选 alive[0]（可扩展 switch_cb_b）
-        if switch_cb_b and len(alive) > 1:
-            chosen = switch_cb_b(state, team_list, alive)
-            new_idx = chosen if chosen in alive else alive[0]
-        else:
-            new_idx = alive[0]
-        state.current_b = new_idx
+        state.current_b = new_index
         state.switch_this_turn_b = True
-        new_pokemon = team_list[new_idx]
-
+    state.pending_switch_requests = [item for item in state.pending_switch_requests if item.get("team") != team]
+    new_pokemon = team_list[new_index]
+    if "transfer_mods" in transfer_ctx:
+        for attribute, value in transfer_ctx["transfer_mods"].items():
+            setattr(new_pokemon, attribute, getattr(new_pokemon, attribute) + value)
+    if "leave_heal_ally" in transfer_ctx:
+        heal = int(new_pokemon.hp * transfer_ctx["leave_heal_ally"])
+        new_pokemon.current_hp = min(new_pokemon.hp, new_pokemon.current_hp + heal)
+    if "leave_buff_ally" in transfer_ctx:
+        from src.effect_engine import _apply_buff
+        _apply_buff(new_pokemon, transfer_ctx["leave_buff_ally"])
     _apply_mark_on_enter(state, team, new_pokemon)
-    # 触发新精灵入场特性
     if new_pokemon.ability_effects:
-        from src.engine._monolith import EffectExecutor
-        EffectExecutor.execute_ability(
-            state, new_pokemon, enemy, Timing.ON_ENTER,
-            new_pokemon.ability_effects, team,
-        )
-    # 迸发系统：记录入场回合号
+        EffectExecutor.execute_ability(state, new_pokemon, enemy, Timing.ON_ENTER, new_pokemon.ability_effects, team)
     burst_map = state.burst_entry_turn_a if team == "a" else state.burst_entry_turn_b
     burst_map[new_pokemon.name] = state.turn
     new_pokemon.entry_count += 1
+    barrel_pending = state._barrel_pending_a if team == "a" else state._barrel_pending_b
+    if barrel_pending:
+        new_pokemon.ability_state["barrel_active"] = True
+        if team == "a":
+            state._barrel_pending_a = False
+        else:
+            state._barrel_pending_b = False
     return True
 
 
@@ -842,6 +866,31 @@ def turn_end_effects(state: BattleState) -> None:
             else:
                 p.ability_state.pop("temporary_skill_cost_mods", None)
 
+    # 共鸣魔法冷却在整回合结束后递减。
+    for side in ("a", "b"):
+        field = "resonance_cooldown_a" if side == "a" else "resonance_cooldown_b"
+        value = getattr(state, field, 0)
+        if value > 0:
+            setattr(state, field, value - 1)
+
+    # 光合治愈绑定于被施加的精灵，不因换人清除。
+    for pokemon in state.team_a + state.team_b:
+        remaining = int(pokemon.ability_state.get("resonance_solar_heal_remaining", 0) or 0)
+        if remaining <= 0:
+            continue
+        if not pokemon.is_fainted:
+            heal = max(1, round(pokemon.hp * 0.15))
+            anti = pokemon.ability_state.get("anti_heal_multiplier", 0)
+            if anti:
+                pokemon.current_hp = max(0, pokemon.current_hp - heal)
+            else:
+                pokemon.current_hp = min(pokemon.hp, pokemon.current_hp + heal)
+        remaining -= 1
+        if remaining:
+            pokemon.ability_state["resonance_solar_heal_remaining"] = remaining
+        else:
+            pokemon.ability_state.pop("resonance_solar_heal_remaining", None)
+
     _process_revive_timers(state)
     _clear_turn_temporary_ability_logic(state)
 
@@ -1104,6 +1153,7 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
     switch_cb_a/b: 被动换人回调 (state, team_list, alive_indices) -> int
       精灵倒下后让玩家/AI选择下一只上场精灵。
     """
+    state.turn_report = []
     # 湿润印记：回合开始时应用全队能耗减少
     if not getattr(state, "turn_start_prepared", False):
         _trigger_battle_start_effects(state)
@@ -1151,9 +1201,12 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
     # 先手行动
     _first_p = _get_current_pokemon(state, first_team)
     _first_hp, _first_en = _first_p.current_hp, _first_p.energy
-    _execute_with_counter(state, first_team, first_act, second_team, second_act, is_first=True)
+    _execute_repeated_action(state, first_team, first_act, second_team, second_act, is_first=True)
     _apply_share_gains(state, first_team, _first_hp, _first_en)
     _check_fainted_and_deduct_mp(state)
+    if check_winner(state):
+        _clear_turn_temporary_ability_logic(state)
+        return
     auto_switch(state, switch_cb_a, switch_cb_b)
     # 特性：零能量自动换人
     ability_auto_switch(state, first_team, "zero_energy", switch_cb_b)
@@ -1169,9 +1222,12 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
         # 后手行动
         _second_p = _get_current_pokemon(state, second_team)
         _second_hp, _second_en = _second_p.current_hp, _second_p.energy
-        _execute_with_counter(state, second_team, second_act, first_team, first_act, is_first=False)
+        _execute_repeated_action(state, second_team, second_act, first_team, first_act, is_first=False)
         _apply_share_gains(state, second_team, _second_hp, _second_en)
         _check_fainted_and_deduct_mp(state)
+        if check_winner(state):
+            _clear_turn_temporary_ability_logic(state)
+            return
         auto_switch(state, switch_cb_a, switch_cb_b)
         # 特性：零能量自动换人
         ability_auto_switch(state, second_team, "zero_energy", switch_cb_b)
@@ -1182,12 +1238,51 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
 
     turn_end_effects(state)
     _check_fainted_and_deduct_mp(state)
+    if check_winner(state):
+        _clear_turn_temporary_ability_logic(state)
+        return
     auto_switch(state, switch_cb_a, switch_cb_b)
     # 特性：每回合末自动换人
     for _t in ("a", "b"):
         ability_auto_switch(state, _t, "every_turn", switch_cb_b)
     _apply_pending_skill_transforms(state)
     state.turn += 1
+
+
+def _skill_use_repetitions(state: BattleState, team: str, action: Action) -> int:
+    if action[0] < 0:
+        return 1
+    team_list = state.team_a if team == "a" else state.team_b
+    current_index = state.current_a if team == "a" else state.current_b
+    current = team_list[current_index]
+    if action[0] >= len(current.skills):
+        return 1
+    repetitions = max(1, int(getattr(current.skills[action[0]], "use_count", 1) or 1))
+    if current.ability_state.get("first_action_bonus"):
+        repetitions += 1
+    return repetitions
+
+
+def _execute_repeated_action(state: BattleState, team: str, action: Action,
+                             enemy_team: str, enemy_action: Action,
+                             is_first: bool) -> None:
+    """Execute a selected skill once per use count, as separate skill executions."""
+    repetitions = _skill_use_repetitions(state, team, action)
+    original_index = state.current_a if team == "a" else state.current_b
+    for repetition in range(repetitions):
+        current_index = state.current_a if team == "a" else state.current_b
+        current = (state.team_a if team == "a" else state.team_b)[current_index]
+        enemy_index = state.current_b if team == "a" else state.current_a
+        enemy = (state.team_b if team == "a" else state.team_a)[enemy_index]
+        if current_index != original_index or current.is_fainted or enemy.is_fainted:
+            break
+        if repetition > 0 and current.energy < current.skills[action[0]].energy_cost:
+            break
+        _execute_with_counter(state, team, action, enemy_team, enemy_action, is_first=is_first)
+        current_index_after = state.current_a if team == "a" else state.current_b
+        current_after = (state.team_a if team == "a" else state.team_b)[current_index_after]
+        if current_index_after != original_index or current_after.is_fainted:
+            break
 
 
 def _execute_with_counter(state: BattleState, team: str, action: Action,
@@ -1550,6 +1645,9 @@ def _execute_new_engine(state: BattleState, team: str, enemy_team: str,
                         team_list: list, idx: int, is_first: bool) -> None:
     """新引擎路径: 用 EffectExecutor 执行有 effects 的技能"""
 
+    counter_count_before = state.counter_count_a if team == "a" else state.counter_count_b
+    active_index_before = state.current_a if team == "a" else state.current_b
+    enemy_index_before = state.current_b if team == "a" else state.current_a
     # 获取对方技能 (用于应对判定)
     enemy_skill = None
     enemy_list = state.team_b if team == "a" else state.team_a
@@ -1608,6 +1706,24 @@ def _execute_new_engine(state: BattleState, team: str, enemy_team: str,
 
     # ── 阶段7: 后处理 ──
     _post_skill_effects(state, current, enemy, skill, enemy_skill, result, team)
+    counter_count_after = state.counter_count_a if team == "a" else state.counter_count_b
+    active_index_after = state.current_a if team == "a" else state.current_b
+    enemy_index_after = state.current_b if team == "a" else state.current_a
+    damage_details = current.ability_state.get("_last_damage_details", {})
+    state.turn_report.append({
+        "type": "skill",
+        "team": team,
+        "skill": skill.name,
+        "counter_success": counter_count_after > counter_count_before,
+        "final_power": result.get("final_power", damage_details.get("effective_power", skill.power)),
+        "energy_cost": getattr(skill, "_last_actual_cost", skill.energy_cost),
+        "final_damage": damage,
+        "fainted": enemy.is_fainted,
+        "switched": active_index_after != active_index_before,
+        "switched_to": (state.team_a if team == "a" else state.team_b)[active_index_after].name,
+        "target_switched": enemy_index_after != enemy_index_before,
+        "target_switched_to": (state.team_b if team == "a" else state.team_a)[enemy_index_after].name,
+    })
 
 
 def _apply_enemy_damage_reduction(enemy_skill, damage: int) -> int:
@@ -1805,90 +1921,25 @@ def _check_kill_effects(state, current, enemy, skill, result, team, enemy_team) 
 
 
 def _handle_post_skill_switches(state, current, enemy, result, team, team_list, idx) -> None:
-    """处理技能后的换人（脱离/强制换人/吓退）。已死精灵不触发任何换人。"""
+    """Handle skill-triggered disengage and forced switching."""
     enemy_team = "b" if team == "a" else "a"
 
-    # ── 攻击方自己脱离（技能自带 force_switch）──
     if result.get("force_switch") and not current.is_fainted:
-        alive = [i for i, p in enumerate(team_list) if not p.is_fainted and i != idx]
-        if alive:
-            current.on_switch_out()
-            state.pending_switch_requests.append({
-                "team": team,
-                "reason": "force_switch",
-                "alive": alive,
-            })
-            if team == "a":
-                state.current_a = alive[0]
-            else:
-                state.current_b = alive[0]
+        _random_disengage(state, team)
     elif current.ability_state.pop("force_switch_after_action", None):
-        alive = [i for i, p in enumerate(team_list) if not p.is_fainted and i != idx]
-        if alive:
-            current.on_switch_out()
-            new_idx = rng_choice(alive)
-            if team == "a":
-                state.current_a = new_idx
-            else:
-                state.current_b = new_idx
+        _random_disengage(state, team)
 
-    # ── 攻击方强制敌方脱离（技能自带 force_enemy_switch）──
     if result.get("force_enemy_switch") and not enemy.is_fainted:
-        eidx = state.current_b if team == "a" else state.current_a
-        enemy_list_ref = state.team_b if team == "a" else state.team_a
-        alive = [i for i, p in enumerate(enemy_list_ref) if not p.is_fainted and i != eidx]
-        if alive:
-            enemy.on_switch_out()
-            if enemy_team == "a":
-                # 玩家方被逼退 → 弹选人面板
-                state.current_a = alive[0]  # 暂时占位
-                state.pending_switch_requests.append({
-                    "team": "a",
-                    "reason": "force_switch",
-                    "alive": alive,
-                })
-            else:
-                # AI方被逼退 → AI随机选
-                new_idx = rng_choice(alive)
-                state.current_b = new_idx
+        _random_disengage(state, enemy_team)
+        return
 
-    # ── 应对方自己脱离（泡沫幻影等：应对成功后自己下场）──
     if result.get("_counter_enemy_self_switch") and not enemy.is_fainted:
-        eidx = state.current_b if team == "a" else state.current_a
-        enemy_list_ref = state.team_b if team == "a" else state.team_a
-        alive = [i for i, p in enumerate(enemy_list_ref) if not p.is_fainted and i != eidx]
-        if alive:
-            enemy.on_switch_out()
-            if enemy_team == "a":
-                # 玩家方脱离 → 弹选人面板
-                state.current_a = alive[0]  # 暂时占位
-                state.pending_switch_requests.append({
-                    "team": "a",
-                    "reason": "force_switch",
-                    "alive": alive,
-                })
-            else:
-                # AI方脱离 → AI随机选
-                new_idx = rng_choice(alive)
-                state.current_b = new_idx
+        _random_disengage(state, enemy_team)
+        return
 
-    # ── 应对方强制攻击方脱离（吓退等：应对成功后逼退攻击方）──
     if result.get("_counter_force_attacker_switch") and not current.is_fainted:
-        alive = [i for i, p in enumerate(team_list) if not p.is_fainted and i != idx]
-        if alive:
-            current.on_switch_out()
-            if team == "a":
-                # 玩家方被逼退 → 弹选人面板
-                state.current_a = alive[0]  # 暂时占位
-                state.pending_switch_requests.append({
-                    "team": "a",
-                    "reason": "force_switch",
-                    "alive": alive,
-                })
-            else:
-                # AI方被逼退 → AI随机选
-                new_idx = rng_choice(alive)
-                state.current_b = new_idx
+        _random_disengage(state, team)
+        return
 
 
 def _post_skill_effects(state, current, enemy, skill, enemy_skill, result, team) -> None:
@@ -1970,7 +2021,6 @@ def _post_skill_effects(state, current, enemy, skill, enemy_skill, result, team)
     # 按类别计数（"状态"/"防御"/"物攻"/"魔攻"）
     cat_cn = skill.category.value if hasattr(skill.category, "value") else str(skill.category)
     counts[cat_cn] = counts.get(cat_cn, 0) + 1
-    skill.use_count = getattr(skill, "use_count", 0) + 1
 
 
 def _is_first_action(state: BattleState, team: str, action: Action,
@@ -2007,5 +2057,13 @@ def check_winner(state: BattleState) -> Optional[str]:
         return "b"
     if state.mp_b <= 0:
         return "a"
+    alive_a = any(not pokemon.is_fainted for pokemon in state.team_a)
+    alive_b = any(not pokemon.is_fainted for pokemon in state.team_b)
+    if not alive_a and alive_b:
+        return "b"
+    if not alive_b and alive_a:
+        return "a"
+    if not alive_a and not alive_b:
+        return "b"
     return None
 

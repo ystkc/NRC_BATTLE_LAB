@@ -8,6 +8,7 @@ scripts/wiki_crawler/
 ├── __main__.py     模块启动入口
 ├── sync.py         BeautifulSoup 解析、网络请求、资源缓存、增量确认
 ├── database.py     v2 SQLite 业务表写入、JSON 同步日志、进化查询
+├── manual_data.yaml 固定的人工补充文件（含注释示例）
 └── README.md       使用说明与数据库结构
 ```
 
@@ -23,11 +24,12 @@ python -m scripts.wiki_crawler --kind all --crawl-skill-relations --verbose
 
 ## 使用与边界
 
-- 依赖 `beautifulsoup4`，已包含在项目的 `collector` 可选依赖组中。
+- 依赖 `beautifulsoup4` 和 `PyYAML`，已包含在项目的 `collector` 可选依赖组中。
 - 默认仅访问技能列表、精灵列表、精灵图鉴和游戏描述图鉴；直接读取服务器渲染的 HTML，不需要浏览器，也不跟随条目详情链接。
 - `--crawl-skill-relations` 默认为关闭，只适用于 `--kind skills/all`；显式启用后访问技能详情，采集 `default/blood/stone` 来源的精灵技能关联。
 - 资源正常下载到 `data/spirit_icons/`、`data/skill_icons/`、`data/ability_icons/`、`data/icon_rules/`，缓存命中立即返回，默认网络请求间隔为 0。
 - 信息先存入 `data/wiki_staging/` 的 CSV/JSON，打印已有、新增、变更、未找到记录及每项采集的第一条完整数据，再请求最终写入同意。
+- 差异比较只使用各类 canonical CSV 的业务字段，并统一为 CSV 文本格式：缺失字段、`null` 与空字符串等价，数字与相同文本（如 `1` 和 `"1"`）等价；抓取/提交时间等元数据不计入变化，业务字段实际变化仍会报告。
 - 确认后更新 `data/wiki/` 的 canonical CSV/JSON 和独立的 `data/nrc_wiki.db`；不会导入或修改旧战斗数据库 `data/nrc.db`。
 - `--stage-only` 不询问、也不写入 canonical 或数据库。`--yes` 表示明确允许自动写入；主要列表为空时即使带此参数也拒绝写库。
 - 未找到的旧记录默认保留，移除需明确选择；`--remove-missing` 与 `--keep-missing` 可指定策略。
@@ -35,6 +37,44 @@ python -m scripts.wiki_crawler --kind all --crawl-skill-relations --verbose
 - `--database` 可指定其他 v2 库或新的空数据库文件。`--verbose` 输出详细网络通信日志，`--quiet` 只输出警告和错误。
 - 当前仅支持已完成迁移的 v2 结构，或首次创建空库；已移除旧爬虫、兼容别名、v1 升级和旧 HTML `.divsort` 回退，不会自动修复/迁移其他结构。
 - 对战、手动录入及识别模块仍读取旧 `data/nrc.db`，本模块不会切换这些消费者。它们的初始化/审计工具不是爬虫，不属于此目录。
+
+## 人工 YAML 补充
+
+固定文件为 `scripts/wiki_crawler/manual_data.yaml`，默认每次运行都会读取，不受启动目录影响。文件已经提供技能、精灵、游戏描述、进化、精灵技能关系五类注释示例；示例都是虚构数据，默认五个列表为空，不会污染数据库。先安装依赖：
+
+```powershell
+pip install -e ".[collector]"
+python -m scripts.wiki_crawler --kind all --stage-only
+python -m scripts.wiki_crawler --kind all --yes --keep-missing
+python -m scripts.wiki_crawler --manual-data data/my_manual_data.yaml --stage-only
+python -m scripts.wiki_crawler --no-manual-data --stage-only
+```
+
+使用示例时，将相应分类的 `[]` 删除并取消示例注释。例如给已有技能补上描述，同时录入一个 Wiki 没有的技能：
+
+```yaml
+version: 1
+skills:
+  - 名称: "已有技能的完整名称"
+    描述: "人工核实后的技能描述。"
+  - 名称: "尚未收录的技能"
+    属性: "普通系"
+    分类: "物攻"
+    耗能: 0
+    威力: 35
+    描述: "人工录入的新技能。"
+    标签: ["回能", "连击"]
+```
+
+- **合并规则**：按名称匹配技能、精灵、游戏描述；进化按基本名称端点匹配；技能关系按完整精灵名称、技能名和技能类别匹配。人工明确填写的字段优先，未填写的字段保留本次 Wiki 值；Wiki 没有该条记录时先使用已有 canonical/已提交记录作为基线，再补充或新增。不修改 YAML 文件本身。
+- **清空与数值**：`null` 或 `""` 显式清空字段，0 保留为真实数值。编号/ID 应写成带引号的字符串（如 `"005"`）。布尔值接受 `true/false`，或带引号的 `"yes"/"no"`；未提供的数值仍按原流程保存 NULL。
+- **格式与校验**：顶层支持 `version: 1` 及五个分类列表；未使用的分类可省略或写 `[]`。字段名与 `sync.py` 中的 `CSV_FIELDS` 一致，不接受未知字段、重复 YAML 字段或重复记录标识。实体必须有名称；进化必须有两端名称；技能关系必须有精灵、技能、技能类别。错误会在联网前终止，不写数据库。
+- **多值字段**：精灵属性、标签、可学习精灵、立绘路径可用字符串列表，自动转为 `|` 分隔文本；也可直接填写已有 CSV 格式的字符串。
+- **资源与特性**：图片路径相对于 `data/`，文件需自行放入，不自动下载人工条目的图片。特性名称、效果及图标通过精灵的 `特性/特性效果/特性图标路径` 录入，再归纳到特性目录。纯人工条目的来源默认标记为 `manual:<YAML文件名>`，也可显式填写 `来源URL`。
+- **类型选择**：`--kind` 仍限制本次更新类型。人工进化仅随精灵更新；人工技能关系随技能或精灵更新，不要求启用 `--crawl-skill-relations`。未爬技能详情时，补充关系会保留已有关系，不因 `--remove-missing` 清空旧关系。
+- **进化**：补充精灵后，按合并后的编号、阶段重新推断进化；显式填写的 `evolutions` 随后覆盖同端点边或新增边，默认方法为 `manual`。独立精灵的进化摘要仍按推断结果生成；人工额外边以进化表为准。
+- **确认与安全**：合并后统一生成 staging、差异报告、canonical、数据库和同步日志，确认机制不变。`staging/snapshot.json` 同时记录 Wiki 数量、人工文件路径与各类人工条数。即使人工列表非空，只要所选 Wiki 主列表为空，仍拒绝正式写入，避免人工数据掩盖抓取失败。
+- **长期维护**：只要字段留在 YAML 中，就会在后续同步中持续优先使用；Wiki 补齐后可删除对应字段/条目，让 Wiki 接管。人工数据本次已参与采集，不会被 `--remove-missing` 误删；从 YAML 删除整条且 Wiki 也没有时，则遵循原有旧记录保留/移除策略。
 
 ## 表结构（版本 2）
 
@@ -81,7 +121,7 @@ python -m scripts.wiki_crawler --kind all --crawl-skill-relations --verbose
 - 数值未知保存 NULL，不再把缺失威力、能耗或种族值变成 0；真实的 0 仍保留。身高和体重展示范围不再被排序用的最小值替换。
 - 特性统一目录之外，每条独立精灵仍保存其原始特性效果。效果冲突时，统一目录描述留空并记录警告，各独立精灵与 JSON 完整快照不会丢失证据。
 - 同一批已确认的数据在一个 SQLite 事务中更新：目录、标签、资源引用、进化和技能关系一起提交；失败则全部回滚。
-- 只更新本次选中的类型；单独更新技能不会清空精灵或规则。未启用技能关系采集时，已有技能关系不被替换。
+- 只更新本次选中的类型；单独更新技能不会清空精灵或规则。未启用技能关系采集且没有人工关系补充时，已有技能关系不被替换。
 - 爬虫先按移除策略合并新旧记录，再把合并结果传给 `apply_database`。写入器将传入的类型视为该类型的完整快照，不应绕过合并层传入任意子集。
 - 表内使用外键和必要的非负/布尔约束；每次提交前运行 `PRAGMA foreign_key_check`。手动编辑数据库时也应开启 `PRAGMA foreign_keys=ON`。
 - `PRAGMA user_version` 保存结构版本；只接受 v2 或新建空库，其他结构拒绝写入，不再执行迁移。

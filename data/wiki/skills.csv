@@ -172,6 +172,7 @@
 惊鸿一瞥,翼,状态,2,-1,自己获得连击数+1，迅捷。,,skill_000714,S4,连击|迅捷,无,skill_icons/惊鸿一瞥.png,https://wiki.biligame.com/nrc/%E6%83%8A%E9%B8%BF%E4%B8%80%E7%9E%A5
 感染病,毒,魔攻,4,110,造成魔伤，若击败敌方则将中毒转化为中毒印记。,,skill_000613,S1,异常|印记,无,skill_icons/感染病.png,https://wiki.biligame.com/nrc/%E6%84%9F%E6%9F%93%E7%97%85
 感电,电,魔攻,2,60,造成魔伤，每离场1次，本技能使用次数永久+1。,,skill_000601,S1,离场,无,skill_icons/感电.png,https://wiki.biligame.com/nrc/%E6%84%9F%E7%94%B5
+愿力冲击,普通系,魔攻,2,80,造成物理/魔法伤害，应对成功时，本次威力提高150%，应对状态。,,,,应对,,skill_icons/愿力冲击.png,manual:manual_data.yaml
 截拳,武,物攻,3,85,造成物伤，应对状态：造成打断，回复被打断技能能耗的能量。,,skill_000666,S1,回能|应对|打断,有,skill_icons/截拳.png,https://wiki.biligame.com/nrc/%E6%88%AA%E6%8B%B3
 扇风,翼,物攻,3,75,造成物伤，若先于敌方攻击，本次技能威力+50%。,,skill_000687,S1,,无,skill_icons/扇风.png,https://wiki.biligame.com/nrc/%E6%89%87%E9%A3%8E
 打喷嚏,冰,状态,1,-1,3连击，每次连击敌方获得1层冻结。,,skill_000562,S3,异常|连击,无,skill_icons/打喷嚏.png,https://wiki.biligame.com/nrc/%E6%89%93%E5%96%B7%E5%9A%8F

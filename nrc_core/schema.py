@@ -50,7 +50,7 @@ class SkillSlotInput:
     name: Maybe[str] = field(default_factory=Maybe.unknown)
     current_energy_cost: Maybe[int] = field(default_factory=Maybe.unknown)
     current_power: Maybe[int] = field(default_factory=Maybe.unknown)
-    use_count: Maybe[int] = field(default_factory=lambda: Maybe.from_value(0))
+    use_count: Maybe[int] = field(default_factory=lambda: Maybe.from_value(1))
     known_to_observer: bool = True
     source: str = "team_input"
 
@@ -122,11 +122,13 @@ class TeamInput:
     creatures: list[CreatureInput] = field(default_factory=list)
     active_index: Maybe[int] = field(default_factory=lambda: Maybe.from_value(0))
     team_name: str = ""
+    resonance_magic: Maybe[str] = field(default_factory=Maybe.unknown)
     devotion: DevotionInput = field(default_factory=DevotionInput)
 
     def to_json(self) -> dict:
         return {
             "team_name": self.team_name,
+            "resonance_magic": self.resonance_magic.to_json(),
             "devotion": self.devotion.to_json(),
             "active_index": self.active_index.to_json(),
             "creatures": [creature.to_json() for creature in self.creatures],

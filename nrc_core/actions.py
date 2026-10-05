@@ -19,6 +19,7 @@ class ActionKind(str, Enum):
 class ItemKind(str, Enum):
     WILLPOWER = "willpower"
     BOSS = "boss"
+    SOLAR_HEAL = "solar_heal"
     UNKNOWN = "unknown"
 
 

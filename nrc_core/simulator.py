@@ -8,7 +8,7 @@
 * 输出双方完整回合后的可审计快照；
 * 将技能文本解析得到的可能分支附加到结果中。
 
-这使 mitmproxy、人工采集器和未来 MuZero 都只依赖 nrc_core，而不直接依赖旧内部对象。
+这使 人工采集器和未来 MuZero 都只依赖 nrc_core，而不直接依赖旧内部对象。
 """
 
 from __future__ import annotations
@@ -24,18 +24,18 @@ from typing import Any, Optional
 from collector.parsing.skill_description import SkillDescriptionParser
 from src.battle import (
     _skill_has_counter_for,
-    auto_switch,
-    execute_full_turn,
 )
 from src.effect_models import Timing
+from src.engine._monolith import EffectExecutor
 from src.models import BattleState, Pokemon, SkillCategory, Type, get_type_effectiveness
-from src.pokemon_db import calc_combat_stats, get_pokemon
+from src.pokemon_db import calc_combat_stats, get_boss_form, get_pokemon
 from src.skill_db import get_skill, load_ability_effects
 from src.rng import rng_scope
 
 from .actions import ActionIntent, ActionKind, SideTurnInput
 from .branching import AuditStatus, BranchDimension, BranchKey, BranchOption
 from .codec import battle_request_from_dict
+from .core import simulate_turn
 from .devotion import RANDOM_DEVOTION_CAPS
 from .schema import (
     BattleRequest,
@@ -104,19 +104,28 @@ class BattleSimulator:
         errors = self._validate_request(request)
         if errors:
             raise ValueError("; ".join(errors))
-        built = self._build_legacy(request)
-        before_own = self._snapshot_side(built.state, "a", request.own_team, built.own_names)
-        before_opponent = self._snapshot_side(built.state, "b", request.opponent_team, built.opponent_names)
-        shared_before = self._snapshot_shared(built.state)
-
         seed = request.seed if request.seed is not None else random.SystemRandom().randrange(2**32)
-        effectiveness_a = self._effectiveness_for_action(built.state, "a", request.own_turn.primary)
-        effectiveness_b = self._effectiveness_for_action(built.state, "b", request.opponent_turn.primary)
         with rng_scope(random.Random(seed)):
-            action_a = self._to_legacy_action(request.own_turn.primary, built.state, "a")
-            action_b = self._to_legacy_action(request.opponent_turn.primary, built.state, "b")
-            execute_full_turn(built.state, action_a, action_b)
-            auto_switch(built.state)
+            built = self._build_legacy(request)
+            before_own = self._snapshot_side(built.state, "a", request.own_team, built.own_names)
+            before_opponent = self._snapshot_side(built.state, "b", request.opponent_team, built.opponent_names)
+            shared_before = self._snapshot_shared(built.state)
+            cleanups = []
+            cleanups.extend(self._apply_resonance_items(
+                built.state, "a", request.own_turn.items, built.state.resonance_magic_a,
+            ))
+            cleanups.extend(self._apply_resonance_items(
+                built.state, "b", request.opponent_turn.items, built.state.resonance_magic_b,
+            ))
+            effectiveness_a = self._effectiveness_for_action(built.state, "a", request.own_turn.primary)
+            effectiveness_b = self._effectiveness_for_action(built.state, "b", request.opponent_turn.primary)
+            try:
+                action_a = self._to_legacy_action(request.own_turn.primary, built.state, "a")
+                action_b = self._to_legacy_action(request.opponent_turn.primary, built.state, "b")
+                turn_result = simulate_turn(built.state, action_a, action_b, seed=seed, clone=False)
+            finally:
+                self._restore_resonance_items(cleanups)
+            built.state = turn_result.state
 
         after_own = self._snapshot_side(built.state, "a", request.own_team, built.own_names)
         after_opponent = self._snapshot_side(built.state, "b", request.opponent_team, built.opponent_names)
@@ -130,6 +139,8 @@ class BattleSimulator:
             {"type": "seed", "value": seed},
             {"type": "action", "team": "own", "value": request.own_turn.primary.to_json()},
             {"type": "action", "team": "opponent", "value": request.opponent_turn.primary.to_json()},
+            *turn_result.report,
+            {"type": "display_power", "value": turn_result.display_power},
             *own_events,
             *opponent_events,
         ]
@@ -191,6 +202,8 @@ class BattleSimulator:
             weather=request.shared.weather.value if request.shared.weather.known and request.shared.weather.exists else None,
             mp_a=int(request.shared.mp.get("own").or_default(4)),
             mp_b=int(request.shared.mp.get("opponent").or_default(4)),
+            resonance_magic_a=self._canonical_resonance(request.own_team.resonance_magic.or_default(None)),
+            resonance_magic_b=self._canonical_resonance(request.opponent_team.resonance_magic.or_default(None)),
         )
         battle_context = dict(request.shared.metadata)
         for field_name in ("system_time", "weekend", "bypass"):
@@ -215,6 +228,130 @@ class BattleSimulator:
                 if raw_marks.known and raw_marks.exists and isinstance(raw_marks.value, dict):
                     marks.update({str(key): float(value) for key, value in raw_marks.value.items()})
         return _LegacyBuild(state, own_names, opponent_names, warnings, unknowns)
+
+    @staticmethod
+    def _canonical_resonance(value: Any) -> str | None:
+        if not value:
+            return None
+        aliases = {
+            "愿力": "willpower",
+            "愿力强化": "willpower",
+            "willpower": "willpower",
+            "进化之力": "boss",
+            "首领化": "boss",
+            "boss": "boss",
+            "光合治愈": "solar_heal",
+            "solar_heal": "solar_heal",
+            "闪焰爆发": "flame_burst",
+            "节流术": "throttle",
+        }
+        return aliases.get(str(value), str(value))
+
+    @staticmethod
+    def _bloodline_type(pokemon: Pokemon) -> Type | None:
+        metadata = pokemon.ability_state.get("lab_metadata", {})
+        values = metadata.get("bloodline_attributes") or []
+        if isinstance(values, str):
+            values = [values]
+        special = ("首领", "奇异", "污染")
+        for raw in values:
+            text = str(raw)
+            if any(marker in text for marker in special):
+                continue
+            for name, type_value in TYPE_MAP.items():
+                if name and name in text:
+                    return type_value
+        return None
+
+    def _apply_boss_resonance(self, state: BattleState, team: str) -> None:
+        used_name = "resonance_evolution_used_a" if team == "a" else "resonance_evolution_used_b"
+        if getattr(state, used_name):
+            raise ValueError("进化之力每场战斗只能使用一次")
+        active = state.get_current(team)
+        bloodline = active.ability_state.get("lab_metadata", {}).get("bloodline_attributes") or []
+        if isinstance(bloodline, str):
+            bloodline = [bloodline]
+        if not any("首领" in str(value) for value in bloodline):
+            raise ValueError("进化之力只能对首领血脉精灵使用")
+        metadata = active.ability_state.get("lab_metadata", {})
+        boss_name = metadata.get("boss_form") or metadata.get("boss_name")
+        candidates = [get_pokemon(boss_name)] if boss_name else get_boss_form(active.name)
+        candidates = [item for item in candidates if item]
+        if len(candidates) != 1:
+            raise ValueError("当前精灵缺少唯一的首领形态映射，请通过 metadata.boss_form 指定")
+        record = candidates[0]
+        old_hp = max(1, active.hp)
+        hp_ratio = max(0.0, min(1.0, active.current_hp / old_hp))
+        stats = calc_combat_stats(
+            record["base_hp"], record["base_attack"], record["base_magic_attack"],
+            record["base_defense"], record["base_magic_defense"], record["base_speed"],
+            nature_name=active.nature,
+        )
+        active.name = record["name"]
+        active.hp = int(stats["hp"])
+        active.attack = int(stats["atk"])
+        active.defense = int(stats["def"])
+        active.sp_attack = int(stats["spatk"])
+        active.sp_defense = int(stats["spdef"])
+        active.speed = int(stats["speed"])
+        active.current_hp = min(active.hp, max(0, round(active.hp * hp_ratio)))
+        active.ability = record.get("ability", "")
+        active.ability_effects = load_ability_effects(active.ability)
+        active.ability_state["lab_metadata"]["bossified"] = True
+        enemy = state.get_current("b" if team == "a" else "a")
+        if active.ability_effects:
+            EffectExecutor.execute_ability(state, active, enemy, Timing.ON_ENTER, active.ability_effects, team)
+        setattr(state, used_name, True)
+
+    def _apply_resonance_items(self, state: BattleState, team: str, items: list[ActionIntent], carried: str | None) -> list[tuple[Pokemon, Any]]:
+        cleanups: list[tuple[Pokemon, Any]] = []
+        if not items:
+            return cleanups
+        if len(items) > 1:
+            raise ValueError("每回合最多使用一种共鸣魔法")
+        item = items[0]
+        kind = item.item_kind.value if item.item_kind else ""
+        if kind != carried:
+            raise ValueError("使用的共鸣魔法不是本方携带的共鸣魔法")
+        active = state.get_current(team)
+        if active.is_fainted:
+            raise ValueError("倒下的精灵不能使用共鸣魔法")
+        if kind == "willpower":
+            uses_name = "resonance_uses_a" if team == "a" else "resonance_uses_b"
+            cooldown_name = "resonance_cooldown_a" if team == "a" else "resonance_cooldown_b"
+            if getattr(state, uses_name) >= 2 or getattr(state, cooldown_name) > 0:
+                raise ValueError("愿力强化当前不可用")
+            bloodline_type = self._bloodline_type(active)
+            if bloodline_type is None:
+                raise ValueError("愿力强化只能对系别血脉精灵使用")
+            replacement = get_skill("愿力冲击")
+            replacement.skill_id = "resonance:willpower_strike"
+            replacement.skill_type = bloodline_type
+            replacement._resonance_dual_path = True
+            replacement.description = "基础威力80，能耗2，造成物理/魔法伤害；应对状态时威力提高150%"
+            original = active.skills[0]
+            active.skills[0] = replacement
+            cleanups.append((active, original))
+            setattr(state, uses_name, getattr(state, uses_name) + 1)
+            setattr(state, cooldown_name, 3)
+        elif kind == "boss":
+            self._apply_boss_resonance(state, team)
+        elif kind == "solar_heal":
+            used_name = "resonance_solar_heal_used_a" if team == "a" else "resonance_solar_heal_used_b"
+            if getattr(state, used_name):
+                raise ValueError("光合治愈每场战斗只能使用一次")
+            active.ability_state["resonance_solar_heal_remaining"] = 3
+            heal = max(1, round(active.hp * 0.15))
+            active.current_hp = min(active.hp, active.current_hp + heal)
+            setattr(state, used_name, True)
+        else:
+            raise ValueError(f"共鸣魔法尚未上线: {kind}")
+        return cleanups
+
+    @staticmethod
+    def _restore_resonance_items(cleanups: list[tuple[Pokemon, Any]]) -> None:
+        for pokemon, original in cleanups:
+            pokemon.skills[0] = original
 
     @staticmethod
     def _canonical_devotion_key(value: str) -> str:
@@ -258,16 +395,34 @@ class BattleSimulator:
             for key, value in self._normalize_devotion_counts(random_counts.value or {}).items()
         }
         draws = int(team.devotion.random_draws.or_default(0))
+        if draws > 0 and not random_counts.known:
+            from src.engine._monolith import DEVOTION_TYPES
+            sampled: dict[str, int] = {}
+            for _ in range(draws):
+                chosen = rng_choice(DEVOTION_TYPES)
+                canonical = self._canonical_devotion_key(chosen)
+                sampled[canonical] = sampled.get(canonical, 0) + 1
+            for key, value in sampled.items():
+                capped = min(value, RANDOM_DEVOTION_CAPS[key])
+                known[key] = known.get(key, 0) + capped
+                legacy_known[LEGACY_DEVOTION_KEYS[key]] = legacy_known.get(LEGACY_DEVOTION_KEYS[key], 0) + capped
+            legacy_random = {
+                LEGACY_DEVOTION_KEYS[key]: value
+                for key, value in sampled.items()
+            }
+            draws = 0
+        elif random_counts.known:
+            draws = 0
         if side == "a":
             state.devotion_a = legacy_known
             state.specified_devotion_a = legacy_specified
-            state.random_devotion_draws_a = draws if not random_counts.known else 0
-            state.random_devotion_counts_a = legacy_random if random_counts.known and random_counts.exists else {}
+            state.random_devotion_draws_a = draws
+            state.random_devotion_counts_a = legacy_random if legacy_random else {}
         else:
             state.devotion_b = legacy_known
             state.specified_devotion_b = legacy_specified
-            state.random_devotion_draws_b = draws if not random_counts.known else 0
-            state.random_devotion_counts_b = legacy_random if random_counts.known and random_counts.exists else {}
+            state.random_devotion_draws_b = draws
+            state.random_devotion_counts_b = legacy_random if legacy_random else {}
 
     def _creature_to_legacy(self, item: CreatureInput, fallback: str, warnings: list[str], unknowns: list[str]) -> Pokemon:
         name = item.resolved_name(fallback)
@@ -313,6 +468,8 @@ class BattleSimulator:
             if not skill_name:
                 skill_name = f"__unknown_skill_{index}"
                 unknowns.append(f"{name}.skills[{index}]")
+            if skill_name == "愿力冲击":
+                raise ValueError("愿力冲击不能作为精灵携带技能，只能由愿力强化临时提供")
             skill = get_skill(skill_name)
             skill.skill_id = skill_id or skill.name
             if slot:
@@ -320,7 +477,7 @@ class BattleSimulator:
                     skill.energy_cost = int(slot.current_energy_cost.value)
                 if slot.current_power.known and slot.current_power.exists:
                     skill.power = int(slot.current_power.value)
-                skill.use_count = int(slot.use_count.or_default(0))
+                skill.use_count = max(1, int(slot.use_count.or_default(1) or 1))
             skills.append(skill)
         state = item.state
         max_hp = int(state.max_hp.or_default(stats.get("hp", 100)))
@@ -374,6 +531,7 @@ class BattleSimulator:
             "combat_attributes": list(type_value),
             "skill_pool": item.skill_pool.value if item.skill_pool.known else None,
             "gulu_ball": item.metadata.get("gulu_ball"),
+            "boss_form": item.metadata.get("boss_form") or item.metadata.get("boss_name"),
         }
         for field_name, field in (("hp", state.hp), ("energy", state.energy), ("ability", item.ability.name)):
             if not field.known:
@@ -391,9 +549,13 @@ class BattleSimulator:
             return (-1,)
         current = state.get_current(team)
         if action.skill_slot is not None:
+            if not 0 <= int(action.skill_slot) < len(current.skills):
+                raise ValueError(f"{team} skill_slot out of range")
+            current.skills[int(action.skill_slot)].selected_choice = action.choice or ""
             return (int(action.skill_slot),)
         for index, skill in enumerate(current.skills):
             if skill.name == action.skill_name or getattr(skill, "skill_id", "") == action.skill_id:
+                skill.selected_choice = action.choice or ""
                 return (index,)
         raise ValueError(f"{team} 当前精灵没有技能: {action.skill_name or action.skill_id}")
 
@@ -546,7 +708,8 @@ class BattleSimulator:
         warnings: list[str] = []
         action = own_turn.primary
         for item in own_turn.items:
-            warnings.append(f"道具暂未接入规则内核: {item.item_kind.value if item.item_kind else 'unknown'}")
+            if item.item_kind is not None and item.item_kind.value not in {"willpower", "boss", "solar_heal"}:
+                warnings.append(f"道具暂未接入规则内核: {item.item_kind.value if item.item_kind else 'unknown'}")
         current = state.get_current(team)
         enemy = state.get_current("b" if team == "a" else "a")
         if current.ability_effects:
@@ -624,7 +787,7 @@ class BattleSimulator:
                             "name": skill.name,
                             "current_energy_cost": skill.energy_cost,
                             "current_power": skill.power,
-                            "use_count": getattr(skill, "use_count", 0),
+                            "use_count": max(1, int(getattr(skill, "use_count", 1) or 1)),
                         }
                         for skill in pokemon.skills
                     ],

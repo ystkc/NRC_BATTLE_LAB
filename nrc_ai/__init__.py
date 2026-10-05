@@ -11,6 +11,7 @@ from .replay import Episode, ReplayBuffer, StepRecord
 from .search import BeliefTreeSearch, SearchEstimate, SearchResult
 from .belief_setup import belief_from_setups
 from .selfplay import generate_episode, generate_search_episode
+from .online import BeliefUpdateResult, OnlineBeliefAgent, OnlineBeliefUpdater, observation_likelihood
 
 __all__ = [
     "CoreBackend", "CoreManifest", "Decision", "LegalAction", "Observation", "Transition",
@@ -18,5 +19,5 @@ __all__ = [
     "UniformOpponentPolicy", "Episode", "ReplayBuffer", "StepRecord",
     "BeliefTreeSearch", "SearchEstimate", "SearchResult",
     "belief_from_setups",
-    "generate_episode", "generate_search_episode",
+    "generate_episode", "generate_search_episode", "BeliefUpdateResult", "OnlineBeliefAgent", "OnlineBeliefUpdater", "observation_likelihood",
 ]

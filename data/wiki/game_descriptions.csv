@@ -5,6 +5,7 @@
 传动,rule,,,,回合开始时，带有“传动X”的技能会向下移动X个位置，该效果可叠加。,https://wiki.biligame.com/nrc/%E4%BC%A0%E5%8A%A8
 先手,rule,,,icon_rules/先手.png,技能行动的优先级，先手度更高的技能忽略双方精灵速度差异，优先释放，先手度可叠加。,https://wiki.biligame.com/nrc/%E5%85%88%E6%89%8B
 光合印记,mark,草,dept_icons/草.png,icon_rules/光合印记.png,印记效果，回合结束时获得1能量。,https://wiki.biligame.com/nrc/%E5%85%89%E5%90%88%E5%8D%B0%E8%AE%B0
+光合治愈,共鸣魔法,,,icon_rules/光合治愈.png,对任意血脉的精灵使用，立即回复15%生命，每回合结束时回复15%生命，持续3回合。,manual:manual_data.yaml
 冻结,status,冰,dept_icons/冰.png,icon_rules/冻结.png,冻结5%生命，若当前生命低于冻结比例，则力竭。（冰系精灵免疫此效果）,https://wiki.biligame.com/nrc/%E5%86%BB%E7%BB%93
 减益,status,,,,降低属性、技能威力、连击数，以及增加能耗、中毒、灼烧、寄生、冻结、萌化、引电等效果。（不包括类型为“印记”、“特性”、“其他”的效果）,https://wiki.biligame.com/nrc/%E5%87%8F%E7%9B%8A
 减速印记,mark,,,icon_rules/减速印记.png,印记效果，速度-10。,https://wiki.biligame.com/nrc/%E5%87%8F%E9%80%9F%E5%8D%B0%E8%AE%B0
@@ -20,6 +21,7 @@
 应对状态,action,,,,若敌方使用状态技能，则本技能应对成功，本次行动必定先手，且触发应对效果。,https://wiki.biligame.com/nrc/%E5%BA%94%E5%AF%B9%E7%8A%B6%E6%80%81
 应对防御,action,,,,若敌方使用防御技能，则本技能应对成功，本次行动必定先手，且触发应对效果。,https://wiki.biligame.com/nrc/%E5%BA%94%E5%AF%B9%E9%98%B2%E5%BE%A1
 引电,status,电,dept_icons/电.png,icon_rules/引电.png,获得2层引电时，立即受到25%生命的电系伤害，并失去2层引电。（电系精灵免疫此效果）,https://wiki.biligame.com/nrc/%E5%BC%95%E7%94%B5
+愿力强化,共鸣魔法,,,icon_rules/愿力强化.png,对任意系别血脉的精灵使用，本回合技能栏首个技能替换为【愿力冲击】，每场战斗可使用2次，冷却3回合。,manual:manual_data.yaml
 打断,action,,,,使敌方本次无法释放对应技能。,https://wiki.biligame.com/nrc/%E6%89%93%E6%96%AD
 攻击印记,mark,,,icon_rules/攻击印记.png,印记效果，全技能威力+10%。,https://wiki.biligame.com/nrc/%E6%94%BB%E5%87%BB%E5%8D%B0%E8%AE%B0
 星陨印记,mark,幻,dept_icons/幻.png,icon_rules/星陨印记.png,印记效果，使用非幻系技能攻击拥有此印记的精灵时，会触发星陨印记，消耗全部星陨层数，对其造成额外的幻系伤害。,https://wiki.biligame.com/nrc/%E6%98%9F%E9%99%A8%E5%8D%B0%E8%AE%B0
@@ -43,6 +45,7 @@
 蓄电印记,mark,电,dept_icons/电.png,icon_rules/蓄电印记.png,印记效果，攻击技能获得迸发：本次威力+10。,https://wiki.biligame.com/nrc/%E8%93%84%E7%94%B5%E5%8D%B0%E8%AE%B0
 迅捷,rule,,,icon_rules/迅捷.png,通过主动更换精灵的方式入场时，使用第一个能量满足要求，并带有迅捷的技能。,https://wiki.biligame.com/nrc/%E8%BF%85%E6%8D%B7
 返场,action,,,,精灵离场，并立即入场。本回合入场的精灵免疫此效果。,https://wiki.biligame.com/nrc/%E8%BF%94%E5%9C%BA
+进化之力,共鸣魔法,,,icon_rules/进化之力.png,对首领血脉的精灵使用，可以使该精灵在本场战斗中进化，部分精灵会激活远古血脉。,manual:manual_data.yaml
 连击数,rule,,,,改变连击次数，仅对有连击的技能生效。,https://wiki.biligame.com/nrc/%E8%BF%9E%E5%87%BB%E6%95%B0
 迸发,other,,,,入场后的首次行动，会获得额外效果。,https://wiki.biligame.com/nrc/%E8%BF%B8%E5%8F%91
 选择,action,,,,可以从2个效果中选择1个使用。（2个效果视为相同技能，分别记为「明」和「暗」）,https://wiki.biligame.com/nrc/%E9%80%89%E6%8B%A9

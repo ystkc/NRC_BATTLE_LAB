@@ -118,6 +118,15 @@ def load_skills(csv_path: str = None) -> dict:
             agility=agility, priority_mod=priority_mod,
         )
         skill.description = description
+        choice_match = re.search(r"选择[:：]\s*([^。]+)", description)
+        if choice_match:
+            options = tuple(
+                item.strip()
+                for item in re.split(r"或", choice_match.group(1))
+                if item.strip()
+            )
+            if len(options) == 2:
+                skill.choice_options = options
         transform_match = re.search(r"巧变：([^。]+)", description)
         if transform_match:
             skill.transform_scope = transform_match.group(1).strip()

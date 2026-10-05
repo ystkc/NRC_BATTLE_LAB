@@ -55,6 +55,19 @@ def train_replay(replay_path: str, action_keys_path: str, input_dim: int, hidden
     return 0
 
 
+def build_action_keys(replay_path: str, output: str) -> int:
+    from .replay import ReplayBuffer
+    buffer = ReplayBuffer.load_jsonl(replay_path)
+    action_keys = sorted({key for step in buffer.steps() for key in step.legal_action_keys})
+    if not action_keys:
+        raise ValueError("replay contains no legal action keys")
+    target = Path(output)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(action_keys, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"actions": len(action_keys), "output": output}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def real_plan(setup_path: str, simulations: int, horizon: int, seed: int) -> int:
     backend = _build_core_backend()
     setup = json.loads(Path(setup_path).read_text(encoding="utf-8"))
@@ -164,6 +177,9 @@ def main() -> int:
     replay.add_argument("--input-dim", type=int, default=256)
     replay.add_argument("--hidden-dim", type=int, default=128)
     replay.add_argument("--epochs", type=int, default=1)
+    action_keys = subparsers.add_parser("build-action-keys")
+    action_keys.add_argument("--replay", required=True)
+    action_keys.add_argument("--output", required=True)
     plan = subparsers.add_parser("plan")
     plan.add_argument("--setup", required=True)
     plan.add_argument("--simulations", type=int, default=128)
@@ -188,6 +204,8 @@ def main() -> int:
         return real_search_selfplay(args.setup, args.episodes, args.max_decisions, args.simulations, args.horizon, args.output)
     if args.command == "train-replay":
         return train_replay(args.replay, args.action_keys, args.input_dim, args.hidden_dim, args.epochs)
+    if args.command == "build-action-keys":
+        return build_action_keys(args.replay, args.output)
     if args.command == "plan":
         return real_plan(args.setup, args.simulations, args.horizon, args.seed)
     return real_plan_belief(args.setup, args.candidates, args.simulations, args.horizon, args.seed)

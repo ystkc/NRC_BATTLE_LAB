@@ -1,3 +1,6 @@
+import pytest
+
+from scripts.wiki_crawler import sync
 from scripts.wiki_crawler.sync import (
     _rebuild_spirit_evolution,
     _row_key,
@@ -210,3 +213,39 @@ def test_evolution_separates_consecutive_independent_chains():
 def test_deprecated_divsort_cards_are_not_parsed():
     html = '<div class="divsort" data-number="001" data-param1="1"><span class="font-mainfeiziti">旧卡片</span></div>'
     assert parse_spirit_list(html) == []
+
+
+@pytest.mark.parametrize("kind,row", [
+    ("skills", {"名称": "技能", "耗能": 0, "威力": 35, "描述": None}),
+    ("spirits", {"名称": "幼体", "编号": "005", "阶段": 1, "生命": 78}),
+    ("game_descriptions", {"名称": "规则", "描述": None}),
+    ("evolutions", {"from_name": "幼体", "to_name": "成体", "from_stage": 1, "to_stage": 2, "level": None}),
+    ("spirit_skills", {"精灵": "幼体", "技能": "技能", "技能类别": "default-skill"}),
+])
+def test_diff_ignores_csv_round_trip_and_timestamp_metadata(tmp_path, monkeypatch, kind, row):
+    monkeypatch.setattr(sync, "CANONICAL_DIR", tmp_path)
+    sync.write_canonical(kind, [{**row, "created_at": "2026-10-04T00:00:00Z"}])
+    incoming = [{**row, "created_at": "2026-10-05T00:00:00Z"}]
+    summary = sync.diff_rows(kind, incoming)
+    assert summary == {"current": 1, "incoming": 1, "new": [], "missing": [], "changed": []}
+    assert incoming == [{**row, "created_at": "2026-10-05T00:00:00Z"}]
+
+
+@pytest.mark.parametrize("kind,row,patch", [
+    ("spirits", {"名称": "幼体", "生命": "78"}, {"生命": 79}),
+    ("spirits", {"名称": "幼体", "进化条件": "道具"}, {"进化条件": None}),
+    ("evolutions", {"from_name": "幼体", "to_name": "成体", "level": "30"}, {"level": 31}),
+    ("skills", {"名称": "技能", "耗能": "0"}, {"耗能": ""}),
+])
+def test_diff_still_reports_business_field_changes(tmp_path, monkeypatch, kind, row, patch):
+    monkeypatch.setattr(sync, "CANONICAL_DIR", tmp_path)
+    sync.write_canonical(kind, [row])
+    summary = sync.diff_rows(kind, [{**row, **patch}])
+    assert summary["changed"] == [sync._row_key(kind, row)]
+    assert summary["new"] == summary["missing"] == []
+
+
+def test_diff_preserves_added_and_missing_keys(monkeypatch):
+    monkeypatch.setattr(sync, "current_rows", lambda kind: [{"名称": "旧精灵"}])
+    summary = sync.diff_rows("spirits", [{"名称": "新精灵"}])
+    assert summary == {"current": 1, "incoming": 1, "new": ["新精灵"], "missing": ["旧精灵"], "changed": []}

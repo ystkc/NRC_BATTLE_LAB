@@ -10,6 +10,7 @@ from nrc_ai.selfplay import generate_episode
 from nrc_ai.toy_backend import ToyBackend
 from nrc_ai.training import train_policy_value
 from nrc_ai.search import BeliefTreeSearch
+from nrc_ai.online import OnlineBeliefAgent, OnlineBeliefUpdater, observation_likelihood
 
 
 def test_toy_backend_is_simultaneous_and_observation_hides_style():
@@ -73,3 +74,17 @@ def test_truncated_episode_does_not_force_terminal_value():
     model = RecurrentPolicyValue(16, 3, hidden_dim=8)
     metrics = train_policy_value(model, episodes, ["attack", "guard", "charge"], encoder=JsonObservationEncoder(16))
     assert metrics.value_loss >= 0.0
+
+
+def test_online_belief_update_consumes_public_observation():
+    backend = ToyBackend()
+    state = backend.new_game({}, 0)
+    belief = ParticleBelief([Particle(backend.clone(state)), Particle(backend.clone(state))])
+    agent = OnlineBeliefAgent(backend, EmpiricalOpponentPolicy(), belief, seed=9, samples_per_particle=3, simulations=4, horizon=2)
+    result = agent.plan()
+    actual = backend.advance(state, {0: result.action_key, 1: "guard"}, 17)
+    update = agent.observe(actual.observations[0])
+    assert update.attempted == 6
+    assert update.accepted > 0
+    assert agent.belief.particles
+    assert observation_likelihood(actual.observations[0], actual.observations[0], exact=True) == 1.0

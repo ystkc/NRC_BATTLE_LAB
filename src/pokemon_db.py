@@ -48,9 +48,7 @@ def _get_speed_median() -> float:
 #  PvP 战斗五维计算
 # ────────────────────────────────────────────────────────────
 #
-# 公式:
-#   HP    = [1.7 × base_hp    + 0.85 × IV + 70] × (1 + mod) + 100
-#   其他  = [1.1 × base_stat  + 0.55 × IV + 10] × (1 + mod) + 50
+# 公式见 data/属性数值计算.md；中间值和最终值均按四舍五入处理。
 #
 # 个体值 (IV): 用户配置，6 项属性中选择 3 项为 60，其余 3 项为 0
 # 性格修正：从 pokemon_nature_table.py 获取，25 种性格之一
@@ -90,12 +88,12 @@ def calc_combat_stats(
         nature_bonus = get_nature_bonus(nature_name)
     except KeyError:
         # 未知性格时使用坦率（无修正）
-        nature_bonus = {"atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0}
+        nature_bonus = {"hp": 0.0, "atk": 0.0, "defense": 0.0, "sp_atk": 0.0, "sp_defense": 0.0, "speed": 0.0}
 
     # 性格加成字段名映射：pokemon_nature_table.py → calc_combat_stats
     # atk → atk, defense → def, sp_atk → spatk, sp_defense → spdef, speed → speed
     nature_config = {
-        "hp": 0.0,
+        "hp": nature_bonus.get("hp", 0.0),
         "atk": nature_bonus.get("atk", 0.0),
         "spatk": nature_bonus.get("sp_atk", 0.0),
         "def": nature_bonus.get("defense", 0.0),
@@ -109,12 +107,15 @@ def calc_combat_stats(
         b = bases[stat]
         iv = iv_config.get(stat, 0)
         mod = nature_config.get(stat, 0.0)
+        growth = b * 0.01 + iv * 0.005
         if stat == "hp":
-            raw = 1.7 * b + 0.85 * iv + 70
-            result[stat] = round(raw * (1.0 + mod) + 100)
+            intermediate = 70 + growth * 170
+            growth_value = 100
         else:
-            raw = 1.1 * b + 0.55 * iv + 10
-            result[stat] = round(raw * (1.0 + mod) + 50)
+            intermediate = 10 + growth * 110
+            growth_value = 50
+        intermediate = math.floor(intermediate + 0.5)
+        result[stat] = math.floor(intermediate * (1.0 + mod) + growth_value + 0.5)
     return result
 
 
@@ -183,6 +184,21 @@ def get_pokemon(name: str) -> Optional[Dict]:
     conn = _get_conn()
     row = conn.execute("SELECT * FROM spirit_forms WHERE name = ?", (name,)).fetchone()
     return _row_to_dict(row) if row else None
+
+
+def get_boss_form(name: str) -> List[Dict]:
+    """Return lord forms sharing the source creature's catalog number."""
+    conn = _get_conn()
+    source = conn.execute(
+        "SELECT catalog_number FROM spirit_forms WHERE name = ? LIMIT 1", (name,)
+    ).fetchone()
+    if not source or not source[0]:
+        return []
+    rows = conn.execute(
+        "SELECT * FROM spirit_forms WHERE catalog_number = ? AND is_lord = 1 ORDER BY id",
+        (source[0],),
+    ).fetchall()
+    return [_row_to_dict(row) for row in rows]
 
 
 def search_pokemon(keyword: str) -> List[Dict]:
@@ -288,6 +304,8 @@ def _row_to_dict(row) -> Dict:
             "ability": ability[0] if ability else "",
             "ability_description": row["ability_description"],
             "evolution_stage": row["evolution_stage"],
+            "catalog_number": row["catalog_number"],
+            "is_lord": bool(row["is_lord"]),
             "base_hp": row["base_hp"], "base_attack": row["base_attack"],
             "base_magic_attack": row["base_magic_attack"],
             "base_defense": row["base_defense"],

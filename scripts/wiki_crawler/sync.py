@@ -45,6 +45,7 @@ DB_PATH = DATA / "nrc_wiki.db"
 STAGING_DIR = DATA / "wiki_staging"
 CANONICAL_DIR = DATA / "wiki"
 MANIFEST_PATH = DATA / "wiki_assets_manifest.json"
+MANUAL_DATA_PATH = Path(__file__).resolve().with_name("manual_data.yaml")
 
 BASE_URL = "https://wiki.biligame.com"
 NAMESPACE = "/nrc/"
@@ -749,6 +750,11 @@ def current_rows(kind: str) -> list[dict]:
     return read_committed_rows(DB_PATH, kind)
 
 
+def _comparison_values(kind: str, row: dict) -> tuple[str, ...]:
+    record = normalize_record(kind, row)
+    return tuple("" if record.get(field) is None else str(record[field]) for field in CSV_FIELDS[kind])
+
+
 def diff_rows(kind: str, incoming: list[dict]) -> dict:
     old_rows = current_rows(kind)
     old = {_row_key(kind, row): row for row in old_rows if _row_key(kind, row)}
@@ -758,7 +764,7 @@ def diff_rows(kind: str, incoming: list[dict]) -> dict:
         "incoming": len(new),
         "new": sorted(set(new) - set(old)),
         "missing": sorted(set(old) - set(new)),
-        "changed": sorted(name for name in set(old) & set(new) if old[name] != new[name]),
+        "changed": sorted(name for name in set(old) & set(new) if _comparison_values(kind, old[name]) != _comparison_values(kind, new[name])),
     }
 
 
@@ -770,6 +776,111 @@ def merge_rows(kind: str, incoming: list[dict], remove_missing: bool) -> list[di
         for old_key, row in old.items():
             new.setdefault(old_key, row)
     return [new[name] for name in sorted(new)]
+
+
+def load_manual_data(path: Path) -> dict[str, list[dict]]:
+    try:
+        import yaml
+    except ImportError as error:
+        raise ValueError("人工 YAML 需要 PyYAML；请安装 pip install -e '.[collector]'") from error
+
+    class UniqueKeyLoader(yaml.SafeLoader):
+        pass
+
+    def unique_mapping(loader, node):
+        loader.flatten_mapping(node)
+        result = {}
+        for key_node, value_node in node.value:
+            key = loader.construct_object(key_node)
+            if not isinstance(key, str) or key in result:
+                raise ValueError(f"YAML 字段必须是字符串且不能重复：{key!r}")
+            result[key] = loader.construct_object(value_node)
+        return result
+
+    UniqueKeyLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, unique_mapping)
+    try:
+        payload = yaml.load(path.read_text(encoding="utf-8-sig"), Loader=UniqueKeyLoader)
+    except (OSError, UnicodeError, yaml.YAMLError) as error:
+        raise ValueError(f"无法读取人工 YAML {path}：{error}") from error
+    if not isinstance(payload, dict):
+        raise ValueError("人工 YAML 顶层必须是分类映射")
+    unknown = set(payload) - set(CSV_FIELDS) - {"version"}
+    if unknown:
+        raise ValueError(f"人工 YAML 存在未知分类：{sorted(unknown)}")
+    if type(payload.get("version", 1)) is not int or payload.get("version", 1) != 1:
+        raise ValueError("人工 YAML version 仅支持 1")
+    required_fields = {
+        "skills": ("名称",), "spirits": ("名称",), "game_descriptions": ("名称",),
+        "evolutions": ("from_name", "to_name"), "spirit_skills": ("精灵", "技能", "技能类别"),
+    }
+    list_fields = {"标签", "立绘路径", "可学习精灵"}
+    result = {}
+    for kind, fields in CSV_FIELDS.items():
+        entries = payload.get(kind, [])
+        if not isinstance(entries, list):
+            raise ValueError(f"人工 YAML {kind} 必须是列表（无数据请使用 []）")
+        rows = []
+        seen = set()
+        for index, entry in enumerate(entries, 1):
+            location = f"{kind}[{index}]"
+            if not isinstance(entry, dict) or set(entry) - set(fields):
+                raise ValueError(f"人工 YAML {location} 必须是记录映射，字段需与 CSV_FIELDS 一致")
+            row = {}
+            for field, value in entry.items():
+                if isinstance(value, list) and (field in list_fields or (kind == "spirits" and field == "属性")):
+                    if not all(isinstance(item, str) for item in value):
+                        raise ValueError(f"人工 YAML {location}.{field} 列表项必须是字符串")
+                    row[field] = "|".join(item.strip() for item in value)
+                elif value is None:
+                    row[field] = ""
+                elif isinstance(value, bool):
+                    row[field] = "yes" if value else "no"
+                elif isinstance(value, (str, int, float)):
+                    row[field] = str(value).strip()
+                else:
+                    raise ValueError(f"人工 YAML {location}.{field} 必须是文本、数值、布尔值或 null")
+            if kind == "evolutions":
+                row = normalize_record(kind, row)
+                row.setdefault("method", "manual")
+            if any(not row.get(field) for field in required_fields[kind]):
+                raise ValueError(f"人工 YAML {location} 缺少必填字段：{required_fields[kind]}")
+            if kind == "spirit_skills" and row["技能类别"] not in {"default-skill", "blood-skill", "stone-skill"}:
+                raise ValueError(f"人工 YAML {location} 技能类别必须是 default-skill/blood-skill/stone-skill")
+            key = _row_key(kind, row)
+            if key in seen:
+                raise ValueError(f"人工 YAML {location} 记录标识重复")
+            seen.add(key)
+            rows.append(row)
+        result[kind] = rows
+    return result
+
+
+def merge_manual_rows(kind: str, incoming: list[dict], manual_rows: list[dict], source: str) -> list[dict]:
+    if not manual_rows:
+        return incoming
+    merged = {_row_key(kind, row): dict(row) for row in incoming}
+    baseline = {_row_key(kind, row): row for row in current_rows(kind)}
+    for patch in manual_rows:
+        key = _row_key(kind, patch)
+        row = merged.get(key, dict(baseline.get(key, {})))
+        row.update(patch)
+        if "来源URL" in CSV_FIELDS[kind] and not row.get("来源URL"):
+            row["来源URL"] = source
+        merged[key] = normalize_record(kind, row)
+    return list(merged.values())
+
+
+def apply_manual_data(rows_by_kind: dict[str, list[dict]], manual: dict[str, list[dict]], source: str) -> None:
+    selected = set(rows_by_kind)
+    if "spirits" in selected and manual.get("spirits"):
+        spirits = merge_manual_rows("spirits", rows_by_kind["spirits"], manual["spirits"], source)
+        rows_by_kind["evolutions"] = _rebuild_spirit_evolution(spirits)
+        rows_by_kind["spirits"] = spirits
+    if "spirits" in selected or "skills" in selected:
+        if manual.get("spirit_skills") and "spirit_skills" not in rows_by_kind:
+            rows_by_kind["spirit_skills"] = current_rows("spirit_skills")
+    for kind in list(rows_by_kind):
+        rows_by_kind[kind] = merge_manual_rows(kind, rows_by_kind[kind], manual.get(kind, []), source)
 
 
 def write_canonical(kind: str, rows: list[dict]) -> Path:
@@ -794,11 +905,11 @@ def print_diff(kind: str, summary: dict) -> None:
     def display(value: str) -> str:
         return value.replace("\x00", " / ")
 
-    print(f"{kind}: 当前 {summary['current']}，wiki {summary['incoming']}，新增 {len(summary['new'])}，变化 {len(summary['changed'])}，wiki 未找到 {len(summary['missing'])}")
+    print(f"{kind}: 当前 {summary['current']}，wiki/人工合并 {summary['incoming']}，新增 {len(summary['new'])}，变化 {len(summary['changed'])}，本次未找到 {len(summary['missing'])}")
     if summary["new"]:
         print("  新增：" + "、".join(display(item) for item in summary["new"][:20]) + (" …" if len(summary["new"]) > 20 else ""))
     if summary["missing"]:
-        print("  wiki 未找到：" + "、".join(display(item) for item in summary["missing"][:20]) + (" …" if len(summary["missing"]) > 20 else ""))
+        print("  本次未找到：" + "、".join(display(item) for item in summary["missing"][:20]) + (" …" if len(summary["missing"]) > 20 else ""))
 
 
 def configure_logging(level: str = "INFO", quiet: bool = False) -> None:
@@ -832,34 +943,42 @@ def run(args: argparse.Namespace) -> int:
     if getattr(args, "crawl_skill_relations", False) and "skills" not in selected:
         LOGGER.error("[RELATION] --crawl-skill-relations requires --kind skills or --kind all")
         return 2
+    manual_path = None if getattr(args, "no_manual_data", False) else Path(getattr(args, "manual_data", MANUAL_DATA_PATH)).resolve()
+    try:
+        manual = load_manual_data(manual_path) if manual_path else {}
+    except ValueError as error:
+        LOGGER.error("[MANUAL] %s", error)
+        return 2
     fetcher = WikiFetcher(delay=args.delay)
     rows_by_kind: dict[str, list[dict]] = {}
     if "skills" in selected:
         LOGGER.info("[JOB] skills list + icons; detail pages disabled")
         rows_by_kind["skills"] = _skill_snapshot(fetcher, args.limit)
-        write_snapshot("skills", rows_by_kind["skills"])
         if getattr(args, "crawl_skill_relations", False):
             rows_by_kind["spirit_skills"] = _skill_relation_snapshot(fetcher, rows_by_kind["skills"])
-            write_snapshot("spirit_skills", rows_by_kind["spirit_skills"])
     if "spirits" in selected:
         LOGGER.info("[JOB] spirit list + atlas; detail pages disabled")
         spirits, evolutions = _spirit_snapshot(fetcher, args.limit)
         rows_by_kind["spirits"] = spirits
         rows_by_kind["evolutions"] = evolutions
-        write_snapshot("spirits", spirits)
-        write_snapshot("evolutions", evolutions)
     if "game_descriptions" in selected:
         LOGGER.info("[JOB] game description atlas + icons; detail pages disabled")
         rows_by_kind["game_descriptions"] = _game_description_snapshot(fetcher, args.limit)
-        write_snapshot("game_descriptions", rows_by_kind["game_descriptions"])
     if not rows_by_kind:
         print("[ERROR] 没有抓到任何数据；未触碰数据库。", file=sys.stderr)
         return 1
+
+    wiki_counts = {kind: len(rows) for kind, rows in rows_by_kind.items()}
+    apply_manual_data(rows_by_kind, manual, f"manual:{manual_path.name}" if manual_path else "")
+    for kind, rows in rows_by_kind.items():
+        write_snapshot(kind, rows)
 
     snapshot = {
         "created_at": datetime.now(timezone.utc).isoformat(),
         "sources": {"skills": SKILL_LIST_URL, "spirits": SPIRIT_LIST_URL, "atlas": SPIRIT_ATLAS_URL, "game_descriptions": GAME_DESCRIPTION_ATLAS_URL},
         "skill_relation_pages": bool(getattr(args, "crawl_skill_relations", False)),
+        "wiki_counts": wiki_counts,
+        "manual_data": {"path": str(manual_path) if manual_path else None, "counts": {kind: len(manual.get(kind, [])) for kind in rows_by_kind}},
         "counts": {kind: len(rows) for kind, rows in rows_by_kind.items()},
         "errors": [error.__dict__ for error in fetcher.errors],
     }
@@ -879,7 +998,7 @@ def run(args: argparse.Namespace) -> int:
         print("[DONE] 仅生成 staging，未写入 canonical CSV/数据库。")
         return 0
 
-    empty_kinds = [kind for kind in selected if not rows_by_kind.get(kind)]
+    empty_kinds = [kind for kind in selected if not wiki_counts.get(kind)]
     if empty_kinds:
         LOGGER.error("[DB] 列表采集为空，禁止写库，以免清空已有数据：%s", empty_kinds)
         return 1
@@ -890,7 +1009,7 @@ def run(args: argparse.Namespace) -> int:
     elif args.keep_missing:
         remove_missing = False
     elif missing_exists:
-        remove_missing = ask_yes_no("是否移除 wiki 中未找到的旧记录？", default=False)
+        remove_missing = ask_yes_no("是否移除本次 Wiki 和人工数据中均未找到的旧记录？", default=False)
     else:
         remove_missing = False
     if args.yes:
@@ -918,12 +1037,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="NRC wiki 增量同步：先下载并生成 staging，确认后才写入数据库")
     parser.add_argument("--kind", choices=("all", "skills", "spirits", "game-descriptions"), default="all")
     parser.add_argument("--database", type=Path, default=DB_PATH, help="新 Wiki 数据库路径，默认 data/nrc_wiki.db；不向旧战斗数据库写入")
+    manual_options = parser.add_mutually_exclusive_group()
+    manual_options.add_argument("--manual-data", type=Path, default=MANUAL_DATA_PATH, help="人工补充 YAML，默认 scripts/wiki_crawler/manual_data.yaml；指定字段优先于 Wiki")
+    manual_options.add_argument("--no-manual-data", action="store_true", help="禁用人工 YAML，仅采集 Wiki")
     parser.add_argument("--limit", type=int, default=0, help="限制每类记录数量，0 为全部")
     parser.add_argument("--delay", type=float, default=0.0, help="请求间隔秒数；缓存命中不等待，默认 0")
     parser.add_argument("--stage-only", action="store_true", help="只抓取、下载和生成差异快照，不询问写入")
     parser.add_argument("--yes", action="store_true", help="自动确认写入 canonical CSV 和 SQLite")
-    parser.add_argument("--remove-missing", action="store_true", help="自动移除 wiki 未找到的旧记录")
-    parser.add_argument("--keep-missing", action="store_true", help="保留 wiki 未找到的旧记录")
+    parser.add_argument("--remove-missing", action="store_true", help="自动移除本次 Wiki 和人工数据均未找到的旧记录")
+    parser.add_argument("--keep-missing", action="store_true", help="保留本次 Wiki 和人工数据均未找到的旧记录")
     parser.add_argument("--crawl-skill-relations", action="store_true", help="额外逐个请求技能详情页，抓取 nrc-skill-pet-card 关系")
     parser.add_argument("--log-level", choices=("DEBUG", "INFO", "WARNING", "ERROR"), default="INFO", help="日志级别，默认 INFO")
     parser.add_argument("--verbose", action="store_true", help="等同于 --log-level DEBUG")

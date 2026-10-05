@@ -1,5 +1,9 @@
 # NRC Battle Lab
 
+## AI training phase
+
+The current training and verification handoff is maintained in docs/nrc_ai_phase1_README.md. It records prerequisites, preserved artifacts, reproducible commands, training principles, capability limits, and the retraining procedure after nrc_core fixes. The next phase starts with online belief updates in nrc_ai/online.py.
+
 ## Manual battle input
 
 OCR is no longer required for manual collection. Start the browser recorder from the repository root:

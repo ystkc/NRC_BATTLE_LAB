@@ -454,9 +454,6 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
                 hit_count += ctx.user.cute_stacks * cute_per
 
         # ── 噼啪！: 入场首次行动使用次数+1 ──
-        if ctx.user.ability_state.get("first_action_bonus"):
-            hit_count += 1
-
         # ── 无差别过滤: 任一方有此标记则连击数固定为2 ──
         fixed_hit = ctx.user.ability_state.get("fixed_hit_count_all") or ctx.target.ability_state.get("fixed_hit_count_all")
         if fixed_hit:
@@ -473,6 +470,7 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
         dmg = DamageCalculator.calculate(ctx.user, ctx.target, skill,
                                          power_override=power, weather=weather,
                                          hit_count_override=hit_count)
+        ctx.result["final_power"] = ctx.user.ability_state.get("_last_damage_details", {}).get("effective_power", power * power_mult)
 
         # 恢复临时修正
         ctx.user.atk_up = old_atk_up
