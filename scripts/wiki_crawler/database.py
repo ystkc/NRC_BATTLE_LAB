@@ -11,9 +11,9 @@ from pathlib import Path
 from uuid import uuid4
 
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 LOGGER = logging.getLogger("nrc.wiki.database")
-KINDS = {"skills", "spirits", "evolutions", "spirit_skills", "game_descriptions"}
+KINDS = {"skills", "spirits", "evolutions", "spirit_skills", "game_descriptions", "skill", "nature", "blood", "talent"}
 SCHEMA = (
     """CREATE TABLE IF NOT EXISTS assets (
         id INTEGER PRIMARY KEY,
@@ -142,6 +142,15 @@ SCHEMA = (
     "CREATE INDEX IF NOT EXISTS idx_evolution_from ON evolution_links(from_name)",
     "CREATE INDEX IF NOT EXISTS idx_evolution_to ON evolution_links(to_name)",
     "CREATE INDEX IF NOT EXISTS idx_spirit_skill_spirit ON spirit_skills(spirit_id)",
+    """CREATE TABLE IF NOT EXISTS distribution_records (
+        id INTEGER PRIMARY KEY,
+        distribution_kind TEXT NOT NULL,
+        spirit_name TEXT NOT NULL,
+        item_name TEXT NOT NULL,
+        percentage TEXT NOT NULL DEFAULT '',
+        position INTEGER NOT NULL,
+        UNIQUE(distribution_kind, spirit_name, item_name)
+    )""",
     "CREATE INDEX IF NOT EXISTS idx_spirit_skill_skill ON spirit_skills(skill_id)",
     """CREATE VIEW IF NOT EXISTS spirit_evolution_neighbors AS
         SELECT from_name AS spirit_name, 'next' AS direction, to_name AS neighbor_name
@@ -389,6 +398,14 @@ def _relation_key(row: dict) -> str:
     return json.dumps([_text(row.get("精灵")), _text(row.get("技能")), _text(row.get("技能类别"))], ensure_ascii=False, separators=(",", ":"))
 
 
+def _write_distributions(connection: sqlite3.Connection, kind: str, rows: list[dict]) -> None:
+    for row in rows:
+        _upsert(connection, "distribution_records", ("distribution_kind", "spirit_name", "item_name"), {
+            "distribution_kind": kind, "spirit_name": _text(row.get("精灵")),
+            "item_name": _text(row.get("名称")), "percentage": _text(row.get("百分比")),
+            "position": _optional_int(row.get("排序")) or 0,
+        })
+
 def _write_spirit_skills(connection: sqlite3.Connection, rows: list[dict]) -> None:
     for row in rows:
         if not _text(row.get("精灵")) or not _text(row.get("技能")):
@@ -430,7 +447,7 @@ def write_database(database: Path, rows_by_kind: dict[str, list[dict]], manifest
         if {"skill", "pokemon", "pokemon_skill"} & existing:
             raise ValueError("拒绝向旧战斗数据库写入新结构；请选择新的数据库文件，例如 data/nrc_wiki.db")
         version = connection.execute("PRAGMA user_version").fetchone()[0]
-        if version not in (0, SCHEMA_VERSION):
+        if version not in (0, 2, SCHEMA_VERSION):
             raise ValueError(f"不支持的 wiki 数据库版本：{version}")
         if version == 0 and existing:
             raise ValueError("目标数据库已有无版本表结构；请使用当前 v2 数据库或新的空文件")
@@ -449,6 +466,9 @@ def write_database(database: Path, rows_by_kind: dict[str, list[dict]], manifest
                 _write_evolutions(connection, rows_by_kind["evolutions"])
             if "spirit_skills" in rows_by_kind:
                 _write_spirit_skills(connection, rows_by_kind["spirit_skills"])
+            for distribution_kind in ("skill", "nature", "blood", "talent"):
+                if distribution_kind in rows_by_kind:
+                    _write_distributions(connection, distribution_kind, rows_by_kind[distribution_kind])
             _resolve_relations(connection)
             violations = connection.execute("PRAGMA foreign_key_check").fetchall()
             if violations:

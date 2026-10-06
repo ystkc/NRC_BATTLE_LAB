@@ -6,11 +6,12 @@ from nrc_ai.model import RecurrentPolicyValue
 from nrc_ai.opponent import EmpiricalOpponentPolicy
 from nrc_ai.replay import Episode, ReplayBuffer, StepRecord
 from nrc_ai.rollout import RootActionEvaluator
-from nrc_ai.selfplay import generate_episode
+from nrc_ai.selfplay import generate_episode, generate_population_search_episode
 from nrc_ai.toy_backend import ToyBackend
 from nrc_ai.training import train_policy_value
 from nrc_ai.search import BeliefTreeSearch
 from nrc_ai.online import OnlineBeliefAgent, OnlineBeliefUpdater, observation_likelihood
+from nrc_ai.population_prior import PopulationPrior
 
 
 def test_toy_backend_is_simultaneous_and_observation_hides_style():
@@ -88,3 +89,31 @@ def test_online_belief_update_consumes_public_observation():
     assert update.accepted > 0
     assert agent.belief.particles
     assert observation_likelihood(actual.observations[0], actual.observations[0], exact=True) == 1.0
+
+
+def test_population_prior_respects_skill_and_talent_cardinality():
+    prior = PopulationPrior.from_database("data/nrc_wiki.db")
+    spirit = prior.spirits()[0]
+    build = prior.sample_build(spirit, __import__("random").Random(11))
+    assert len(build.skills) == 4
+    assert 0 <= len(build.aptitudes) <= 3
+    assert len(set(build.aptitudes)) == len(build.aptitudes)
+    assert build.personality in prior.distribution(spirit, "nature")
+    assert build.bloodline in prior.distribution(spirit, "blood")
+
+
+def test_population_candidates_preserve_public_setup_fields():
+    prior = PopulationPrior.from_database("data/nrc_wiki.db")
+    spirit = prior.spirits()[0]
+    setup = {"own_team": {"creatures": [{"name": {"value": spirit}}]}, "opponent_team": {"creatures": [{"name": {"value": spirit}}]}, "shared": {"turn": 1}}
+    candidates = prior.candidate_setups(setup, count=3, seed=4)
+    assert len(candidates) == 3
+    assert all(candidate["setup"]["own_team"] == setup["own_team"] for candidate in candidates)
+    assert all(len(candidate["setup"]["opponent_team"]["creatures"][0]["skills"]) == 4 for candidate in candidates)
+    assert all(len(candidate["setup"]["opponent_team"]["creatures"][0]["metadata"]["population_prior"]["aptitude_selection"]) <= 3 for candidate in candidates)
+
+
+def test_population_search_episode_records_prior_source():
+    prior = PopulationPrior({"toy": {"skill": {"attack": 1.0, "guard": 1.0, "charge": 1.0, "extra": 1e-3}, "nature": {"steady": 1.0}, "blood": {"normal": 1.0}, "talent": {"hp": 0.5, "speed": 0.5}}}, source="test", source_digest="test")
+    episode = generate_population_search_episode(ToyBackend(), {"styles": ("aggressive", "defensive")}, prior, seed=1, max_decisions=1, simulations=2, horizon=1)
+    assert episode.metadata["information_mode"] == "population-top-k-oracle-teacher"

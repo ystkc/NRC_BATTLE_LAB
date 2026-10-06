@@ -22,15 +22,15 @@ from pathlib import Path
 from typing import Any, Optional
 
 from collector.parsing.skill_description import SkillDescriptionParser
-from src.battle import (
+from nrc_core.battle import (
     _skill_has_counter_for,
 )
-from src.effect_models import Timing
-from src.engine._monolith import EffectExecutor
-from src.models import BattleState, Pokemon, SkillCategory, Type, get_type_effectiveness
-from src.pokemon_db import calc_combat_stats, get_boss_form, get_pokemon
-from src.skill_db import get_skill, load_ability_effects
-from src.rng import rng_scope
+from nrc_core.effect_models import Timing
+from nrc_core.engine._monolith import EffectExecutor
+from nrc_core.models import BattleState, Pokemon, SkillCategory, Type, get_type_effectiveness
+from nrc_core.pokemon_db import calc_combat_stats, get_boss_form, get_pokemon
+from nrc_core.skill_db import get_skill, load_ability_effects
+from nrc_core.rng import rng_scope
 
 from .actions import ActionIntent, ActionKind, SideTurnInput
 from .branching import AuditStatus, BranchDimension, BranchKey, BranchOption
@@ -79,6 +79,95 @@ TYPE_MAP = {
 }
 
 
+TYPE_LABELS = {
+    Type.NORMAL: "normal",
+    Type.FIRE: "fire",
+    Type.WATER: "water",
+    Type.ELECTRIC: "electric",
+    Type.GRASS: "grass",
+    Type.ICE: "ice",
+    Type.FIGHTING: "martial",
+    Type.POISON: "poison",
+    Type.GROUND: "ground",
+    Type.FLYING: "wing",
+    Type.PSYCHIC: "psychic",
+    Type.BUG: "insect",
+    Type.GHOST: "ghost",
+    Type.DRAGON: "dragon",
+    Type.DARK: "devil",
+    Type.STEEL: "machinery",
+    Type.FAIRY: "cute",
+    Type.LIGHT: "light",
+}
+
+def _type_label(value: Type) -> str:
+    return TYPE_LABELS.get(value, "unknown")
+
+_STAT_LAYER_ALIASES = {
+    "atk": "atk", "attack": "atk",
+    "def": "def", "defense": "def",
+    "spatk": "spatk", "sp_attack": "spatk",
+    "spdef": "spdef", "sp_defense": "spdef",
+    "speed": "speed",
+    "物攻": "atk", "物攻强化": "atk", "物防": "def", "物防强化": "def",
+    "魔攻": "spatk", "魔攻强化": "spatk", "魔防": "spdef", "魔防强化": "spdef",
+    "攻击": "atk", "攻击强化": "atk", "防御": "def", "防御强化": "def",
+    "魔攻": "spatk", "魔攻强化": "spatk", "魔防": "spdef", "魔防强化": "spdef",
+    "速度": "speed", "速度强化": "speed",
+}
+
+_STATUS_LAYER_FIELDS = {
+    "poison": "poison_stacks", "burn": "burn_stacks",
+    "freeze": "freeze_stacks", "frostbite_damage": "frostbite_damage",
+    "leech": "leech_stacks", "electric": "electric_stacks",
+    "meteor": "meteor_stacks", "cute": "cute_stacks",
+    "combo": "hit_count_mod",
+}
+
+_STATUS_LAYER_ALIASES = {
+    "中毒": "poison", "灼烧": "burn", "冻结": "freeze", "寄生": "leech",
+    "引电": "electric", "星陨": "meteor", "萌化": "cute", "连击": "combo",
+}
+
+def _layer_entries(raw: Any) -> list[dict[str, Any]]:
+    if raw is None:
+        return []
+    if isinstance(raw, dict):
+        return [{"name": str(name), "unit": "legacy", "stacks": value, "_legacy": True} for name, value in raw.items()]
+    if not isinstance(raw, list):
+        return []
+    result = []
+    for item in raw:
+        if isinstance(item, str):
+            result.append({"name": item, "unit": item, "stacks": 1})
+        elif isinstance(item, dict):
+            result.append(dict(item))
+    return result
+
+def _layer_name(entry: dict[str, Any]) -> str:
+    return str(entry.get("name") or entry.get("status") or entry.get("stat") or "unknown")
+
+def _layer_stacks(entry: dict[str, Any]) -> int:
+    try:
+        return max(0, int(round(float(entry.get("stacks", entry.get("count", 0))))))
+    except (TypeError, ValueError):
+        return 0
+
+def _layer_unit_value(unit: Any) -> float:
+    if isinstance(unit, (int, float)):
+        return float(unit)
+    text = str(unit or "").strip().replace("％", "%")
+    value = float(text.replace("%", "") or 0)
+    return value / 100.0
+
+def _stat_layer_key(name: str) -> str | None:
+    normalized = name.lower().replace("_up", "").replace("_down", "")
+    return _STAT_LAYER_ALIASES.get(normalized) or _STAT_LAYER_ALIASES.get(name)
+
+def _status_layer_key(name: str) -> str:
+    normalized = name.lower().replace("_stacks", "")
+    return _STATUS_LAYER_ALIASES.get(normalized, normalized)
+
 @dataclass
 class _LegacyBuild:
     state: BattleState
@@ -117,8 +206,8 @@ class BattleSimulator:
             cleanups.extend(self._apply_resonance_items(
                 built.state, "b", request.opponent_turn.items, built.state.resonance_magic_b,
             ))
-            effectiveness_a = self._effectiveness_for_action(built.state, "a", request.own_turn.primary)
-            effectiveness_b = self._effectiveness_for_action(built.state, "b", request.opponent_turn.primary)
+            type_effectiveness_a = self._effectiveness_for_action(built.state, "a", request.own_turn.primary)
+            type_effectiveness_b = self._effectiveness_for_action(built.state, "b", request.opponent_turn.primary)
             try:
                 action_a = self._to_legacy_action(request.own_turn.primary, built.state, "a")
                 action_b = self._to_legacy_action(request.opponent_turn.primary, built.state, "b")
@@ -134,6 +223,16 @@ class BattleSimulator:
         opponent_events, opponent_warnings = self._side_events(request.opponent_turn, request.own_turn, built.state, "b")
         branches = self._possible_branches(request, built.state)
         latent_uncertainties = self._latent_uncertainties(request, built.state)
+        debug = {
+            "attribute_calculation": {
+                "own": [pokemon.ability_state.get("lab_metadata", {}).get("attribute_calculation") for pokemon in built.state.team_a],
+                "opponent": [pokemon.ability_state.get("lab_metadata", {}).get("attribute_calculation") for pokemon in built.state.team_b],
+            },
+            "damage_calculation": {
+                "own": [event.get("debug", {}).get("damage_calculation") for event in turn_result.report if event.get("type") == "skill" and event.get("team") == "a" and event.get("debug")],
+                "opponent": [event.get("debug", {}).get("damage_calculation") for event in turn_result.report if event.get("type") == "skill" and event.get("team") == "b" and event.get("debug")],
+            },
+        }
 
         events = [
             {"type": "seed", "value": seed},
@@ -142,6 +241,7 @@ class BattleSimulator:
             *turn_result.report,
             {"type": "display_power", "value": turn_result.display_power},
             *own_events,
+            {"type": "turn_start_skill_display", "value": turn_result.turn_start_skill_display},
             *opponent_events,
         ]
         return BattleResult(
@@ -151,7 +251,7 @@ class BattleSimulator:
                 triggered_abilities=[event["id"] for event in own_events if event["type"] == "ability_candidate"],
                 triggered_weather=[event["id"] for event in own_events if event["type"] == "weather_candidate"],
                 triggered_counters=[event["id"] for event in own_events if event["type"] == "counter_candidate"],
-                effectiveness=effectiveness_a,
+                type_effectiveness=type_effectiveness_a,
                 unsupported_actions=own_warnings,
             ),
             opponent=SideResult(
@@ -160,15 +260,17 @@ class BattleSimulator:
                 triggered_abilities=[event["id"] for event in opponent_events if event["type"] == "ability_candidate"],
                 triggered_weather=[event["id"] for event in opponent_events if event["type"] == "weather_candidate"],
                 triggered_counters=[event["id"] for event in opponent_events if event["type"] == "counter_candidate"],
-                effectiveness=effectiveness_b,
+                type_effectiveness=type_effectiveness_b,
                 unsupported_actions=opponent_warnings,
             ),
             shared_before=shared_before,
             shared_after=shared_after,
+            turn_start_skill_display=turn_result.turn_start_skill_display,
             possible_branches=branches,
             observed_branch_id=None if len(branches) > 1 else (branches[0].branch_id if branches else None),
             events=events,
             warnings=built.warnings,
+            debug=debug,
             input_unknowns=built.unknowns,
             latent_uncertainties=latent_uncertainties,
         )
@@ -225,8 +327,10 @@ class BattleSimulator:
             active = source.active_index.or_default(0)
             if 0 <= active < len(source.creatures):
                 raw_marks = source.creatures[active].state.marks
-                if raw_marks.known and raw_marks.exists and isinstance(raw_marks.value, dict):
-                    marks.update({str(key): float(value) for key, value in raw_marks.value.items()})
+                if raw_marks.known and raw_marks.exists:
+                    for entry in _layer_entries(raw_marks.value):
+                        mark_name = _layer_name(entry)
+                        marks[mark_name] = marks.get(mark_name, 0) + _layer_stacks(entry)
         return _LegacyBuild(state, own_names, opponent_names, warnings, unknowns)
 
     @staticmethod
@@ -248,12 +352,26 @@ class BattleSimulator:
         return aliases.get(str(value), str(value))
 
     @staticmethod
-    def _bloodline_type(pokemon: Pokemon) -> Type | None:
+    def _bloodline_values(pokemon: Pokemon) -> list[str]:
         metadata = pokemon.ability_state.get("lab_metadata", {})
         values = metadata.get("bloodline_attributes") or []
         if isinstance(values, str):
-            values = [values]
-        special = ("首领", "奇异", "污染")
+            values = [part.strip() for part in values.replace("/", "|").split("|") if part.strip()]
+        return [str(value).strip() for value in values if str(value).strip()]
+
+    @classmethod
+    def _is_boss_bloodline(cls, pokemon: Pokemon) -> bool:
+        values = cls._bloodline_values(pokemon)
+        return any(
+            text.lower() in {"boss", "lord", "leader"}
+            or any(marker in text for marker in ("首领", "首領"))
+            for text in values
+        )
+
+    @classmethod
+    def _bloodline_type(cls, pokemon: Pokemon) -> Type | None:
+        values = cls._bloodline_values(pokemon)
+        special = ("首领", "首領", "奇异", "奇異", "污染", "boss", "lord", "leader")
         for raw in values:
             text = str(raw)
             if any(marker in text for marker in special):
@@ -268,10 +386,7 @@ class BattleSimulator:
         if getattr(state, used_name):
             raise ValueError("进化之力每场战斗只能使用一次")
         active = state.get_current(team)
-        bloodline = active.ability_state.get("lab_metadata", {}).get("bloodline_attributes") or []
-        if isinstance(bloodline, str):
-            bloodline = [bloodline]
-        if not any("首领" in str(value) for value in bloodline):
+        if not self._is_boss_bloodline(active):
             raise ValueError("进化之力只能对首领血脉精灵使用")
         metadata = active.ability_state.get("lab_metadata", {})
         boss_name = metadata.get("boss_form") or metadata.get("boss_name")
@@ -396,7 +511,7 @@ class BattleSimulator:
         }
         draws = int(team.devotion.random_draws.or_default(0))
         if draws > 0 and not random_counts.known:
-            from src.engine._monolith import DEVOTION_TYPES
+            from nrc_core.engine._monolith import DEVOTION_TYPES
             sampled: dict[str, int] = {}
             for _ in range(draws):
                 chosen = rng_choice(DEVOTION_TYPES)
@@ -424,6 +539,106 @@ class BattleSimulator:
             state.random_devotion_draws_b = draws
             state.random_devotion_counts_b = legacy_random if legacy_random else {}
 
+    def _distribution_rows(self, spirit_name: str, distribution_kind: str) -> list[dict[str, Any]]:
+        database_path = self.data_dir / "nrc_wiki.db"
+        if not database_path.exists():
+            return []
+        try:
+            with sqlite3.connect(database_path) as connection:
+                rows = connection.execute(
+                    "SELECT item_name, percentage, position FROM distribution_records "
+                    "WHERE spirit_name = ? AND distribution_kind = ?",
+                    (spirit_name, distribution_kind),
+                ).fetchall()
+        except sqlite3.Error:
+            return []
+        result = []
+        for item_name, percentage, position in rows:
+            try:
+                score = float(str(percentage).replace("%", ""))
+            except (TypeError, ValueError):
+                score = 0.0
+            result.append({
+                "item": str(item_name),
+                "percentage": score,
+                "position": int(position or 0),
+            })
+        return sorted(result, key=lambda row: (-row["percentage"], row["position"]))
+
+    @staticmethod
+    def _normalize_individual_values(raw: Any) -> dict[str, int]:
+        aliases = {
+            "hp": "hp", "生命": "hp", "生命值": "hp",
+            "atk": "atk", "attack": "atk", "物攻": "atk",
+            "spatk": "spatk", "sp_attack": "spatk", "魔攻": "spatk",
+            "def": "def", "defense": "def", "物防": "def",
+            "spdef": "spdef", "sp_defense": "spdef", "魔防": "spdef",
+            "speed": "speed", "速度": "speed",
+        }
+        result = {key: 0 for key in ("hp", "atk", "spatk", "def", "spdef", "speed")}
+        items = raw.items() if isinstance(raw, dict) else ()
+        for key, value in items:
+            text = str(key).strip()
+            normalized = aliases.get(text.lower(), aliases.get(text))
+            if normalized is None:
+                continue
+            try:
+                result[normalized] = max(0, min(60, int(value)))
+            except (TypeError, ValueError):
+                continue
+        return result
+
+    def _resolve_combat_config(
+        self,
+        item: CreatureInput,
+        name: str,
+        provided_stats: bool,
+    ) -> tuple[str, dict[str, int], dict[str, Any]]:
+        metadata = item.metadata if isinstance(item.metadata, dict) else {}
+        mode = str(metadata.get("attribute_assumption", "database") or "database").lower()
+        nature_rows = self._distribution_rows(name, "nature")
+        talent_rows = self._distribution_rows(name, "talent")
+        nature_explicit = item.base.nature.known and item.base.nature.exists and bool(item.base.nature.value)
+        if nature_explicit:
+            nature_name = str(item.base.nature.value)
+            nature_source = "input"
+        elif mode in {"neutral", "zero", "all_zero"}:
+            nature_name = "坦率"
+            nature_source = "assumption:neutral"
+        elif nature_rows:
+            nature_name = nature_rows[0]["item"]
+            nature_source = "nrc_wiki.db:distribution_records"
+        else:
+            nature_name = "坦率"
+            nature_source = "fallback:neutral"
+
+        iv_explicit = item.base.individual_values.known and item.base.individual_values.exists
+        if iv_explicit:
+            iv_config = self._normalize_individual_values(item.base.individual_values.value)
+            iv_source = "input"
+        elif mode in {"neutral", "zero", "all_zero"} or provided_stats:
+            iv_config = self._normalize_individual_values({})
+            iv_source = "assumption:zero" if not provided_stats else "not_used:provided_stats"
+        else:
+            talent_map = {
+                "生命": "hp", "物攻": "atk", "魔攻": "spatk",
+                "物防": "def", "魔防": "spdef", "速度": "speed",
+            }
+            selected = [row for row in talent_rows if row["item"] in talent_map][:3]
+            iv_config = self._normalize_individual_values({talent_map[row["item"]]: 60 for row in selected})
+            iv_source = "nrc_wiki.db:distribution_records" if talent_rows else "fallback:zero"
+
+        assumption = {
+            "mode": mode,
+            "nature": nature_name,
+            "nature_source": nature_source,
+            "individual_values": dict(iv_config),
+            "individual_values_source": iv_source,
+            "nature_distribution": nature_rows,
+            "talent_distribution": talent_rows,
+        }
+        return nature_name, iv_config, assumption
+
     def _creature_to_legacy(self, item: CreatureInput, fallback: str, warnings: list[str], unknowns: list[str]) -> Pokemon:
         name = item.resolved_name(fallback)
         db_record = None
@@ -431,13 +646,16 @@ class BattleSimulator:
             db_record = get_pokemon(name)
         except Exception:
             db_record = None
-        stats = item.base.stats.value if item.base.stats.known and item.base.stats.exists else None
+        provided_stats = item.base.stats.known and item.base.stats.exists and bool(item.base.stats.value)
+        stats = item.base.stats.value if provided_stats else None
+        nature_name, iv_config, attribute_assumption = self._resolve_combat_config(item, name, provided_stats)
         if not stats:
             if db_record:
                 stats = calc_combat_stats(
                     db_record["base_hp"], db_record["base_attack"], db_record["base_magic_attack"],
                     db_record["base_defense"], db_record["base_magic_defense"], db_record["base_speed"],
-                    nature_name=item.base.nature.or_default("坦率"),
+                    iv_config=iv_config,
+                    nature_name=nature_name,
                 )
             else:
                 stats = {"hp": 100, "atk": 100, "def": 100, "spatk": 100, "spdef": 100, "speed": 100}
@@ -499,21 +717,45 @@ class BattleSimulator:
             energy=energy,
             entry_count=int(item.entry_count.or_default(0)),
             fatigue_turns=int(state.fatigue_turns.or_default(0)),
-            nature=item.base.nature.or_default("坦率"),
+            nature=nature_name,
+            iv_hp=iv_config["hp"],
+            iv_atk=iv_config["atk"],
+            iv_spatk=iv_config["spatk"],
+            iv_def=iv_config["def"],
+            iv_spdef=iv_config["spdef"],
+            iv_speed=iv_config["speed"],
         )
-        for direction, modifiers in (("up", state.buffs), ("down", state.debuffs)):
-            for stat, value in modifiers.or_default({}).items():
-                if stat in {"atk", "def", "spatk", "spdef", "speed"}:
-                    setattr(pokemon, f"{stat}_{direction}", max(0.0, float(value)))
+        layered_state = {"buffs": [], "debuffs": [], "statuses": []}
+        for direction, raw in (("up", state.buffs.or_default([])), ("down", state.debuffs.or_default([]))):
+            entries = _layer_entries(raw)
+            bucket = "buffs" if direction == "up" else "debuffs"
+            layered_state[bucket] = [
+                {"name": _layer_name(entry), "unit": str(entry.get("unit", "legacy")), "stacks": _layer_stacks(entry)}
+                for entry in entries
+            ]
+            for entry in entries:
+                stat = _stat_layer_key(_layer_name(entry))
+                if stat:
+                    value = (float(entry.get("stacks", 0)) / 10.0) if entry.get("_legacy") else _layer_unit_value(entry.get("unit")) * _layer_stacks(entry)
+                    setattr(pokemon, f"{stat}_{direction}", max(0.0, value))
         status_fields = {
             "poison": "poison_stacks", "burn": "burn_stacks", "freeze": "freeze_stacks",
             "frostbite_damage": "frostbite_damage", "leech": "leech_stacks",
             "electric": "electric_stacks",
             "meteor": "meteor_stacks", "cute": "cute_stacks", "combo": "hit_count_mod",
         }
-        for key, value in item.metadata.get("status_stacks", {}).items():
+        raw_statuses = state.statuses.or_default(None)
+        status_entries = _layer_entries(raw_statuses if raw_statuses is not None else item.metadata.get("status_stacks", {}))
+        layered_state["statuses"] = [
+            {"name": _layer_name(entry), "unit": str(entry.get("unit", _layer_name(entry))), "stacks": _layer_stacks(entry)}
+            for entry in status_entries
+        ]
+        for entry in status_entries:
+            key = _status_layer_key(_layer_name(entry))
             if key in status_fields:
-                setattr(pokemon, status_fields[key], max(0, int(value)))
+                current = getattr(pokemon, status_fields[key])
+                setattr(pokemon, status_fields[key], max(0, int(current) + _layer_stacks(entry)))
+        pokemon.ability_state["layered_state"] = layered_state
         if pokemon.freeze_stacks and not pokemon.frostbite_damage:
             pokemon.frostbite_damage = max(1, round(pokemon.hp * 0.05 * pokemon.freeze_stacks))
             if pokemon.current_hp <= pokemon.frostbite_damage:
@@ -529,6 +771,17 @@ class BattleSimulator:
             "bossified": item.bossified.value if item.bossified.known else None,
             "bloodline_attributes": item.base.bloodline_attributes.value if item.base.bloodline_attributes.known else None,
             "combat_attributes": list(type_value),
+            "attribute_calculation": {
+                "formula": "provided_stats" if provided_stats else "hp: intermediate=round_half_up(70 + growth * 170); final=round_half_up(intermediate * (1 + nature_bonus) + 100); other: intermediate=round_half_up(10 + growth * 110); final=round_half_up(intermediate * (1 + nature_bonus) + 50)",
+                "growth_formula": "growth = base * 0.01 + iv * 0.005",
+                "rounding": "floor(value + 0.5)",
+                "provided_stats": bool(provided_stats),
+                "nature": nature_name,
+                "individual_values": dict(iv_config),
+                "assumption": attribute_assumption,
+                "base_stats": {key: db_record[key] for key in ("base_hp", "base_attack", "base_magic_attack", "base_defense", "base_magic_defense", "base_speed") } if db_record else None,
+                "result": dict(stats),
+            },
             "skill_pool": item.skill_pool.value if item.skill_pool.known else None,
             "gulu_ball": item.metadata.get("gulu_ball"),
             "boss_form": item.metadata.get("boss_form") or item.metadata.get("boss_name"),
@@ -685,14 +938,16 @@ class BattleSimulator:
         skill = self._skill_for_action(action, attacker)
         if skill is None:
             return []
+        if skill.category not in {SkillCategory.PHYSICAL, SkillCategory.MAGICAL}:
+            return []
         multiplier = get_type_effectiveness(skill.skill_type, defender.pokemon_types)
         return [{
-            "role": "dealt",
-            "attacker": attacker.name,
-            "defender": defender.name,
+            "role": "type_effectiveness",
+            "respondent": attacker.name,
+            "respondee": defender.name,
             "skill_id": getattr(skill, "skill_id", "") or skill.name,
             "skill_name": skill.name,
-            "skill_type": skill.skill_type.value,
+            "skill_type": _type_label(skill.skill_type),
             "skill_category": skill.category.value,
             "applies_to_damage": skill.category in {SkillCategory.PHYSICAL, SkillCategory.MAGICAL},
             "type_multiplier": multiplier,
@@ -737,6 +992,54 @@ class BattleSimulator:
                 events.append({"type": "counter_candidate", "id": "counter:success-or-failure", "certainty": "requires_audit"})
         return events, warnings
 
+    @staticmethod
+    def _snapshot_layers(pokemon: Pokemon, direction: str) -> list[dict[str, Any]]:
+        stored = pokemon.ability_state.get("layered_state", {}).get("buffs" if direction == "up" else "debuffs", [])
+        if stored:
+            result = []
+            for item in stored:
+                name = str(item.get("name"))
+                unit = str(item.get("unit"))
+                stacks = max(0, int(item.get("stacks", 0)))
+                stat = _stat_layer_key(name)
+                if stat and unit != "legacy":
+                    unit_value = _layer_unit_value(unit)
+                    if unit_value > 0:
+                        stacks = max(0, int(round(float(getattr(pokemon, f"{stat}_{direction}", 0.0)) / unit_value)))
+                result.append({"name": name, "unit": unit, "stacks": stacks})
+            action_speed_layers = int(pokemon.ability_state.get("action_speed_bonus_layers", 0))
+            if direction == "up" and action_speed_layers > 0:
+                result.append({"name": "变形活画速度", "unit": "+5", "stacks": action_speed_layers})
+            return result
+        result = []
+        for stat in ("atk", "def", "spatk", "spdef", "speed"):
+            value = max(0.0, float(getattr(pokemon, f"{stat}_{direction}", 0.0)))
+            if value:
+                result.append({"name": f"{stat}_{direction}", "unit": "+10%", "stacks": int(round(value * 10))})
+        action_speed_layers = int(pokemon.ability_state.get("action_speed_bonus_layers", 0))
+        if direction == "up" and action_speed_layers > 0:
+            result.append({"name": "变形活画速度", "unit": "+5", "stacks": action_speed_layers})
+        return result
+
+    @staticmethod
+    def _snapshot_statuses(pokemon: Pokemon) -> list[dict[str, Any]]:
+        stored = pokemon.ability_state.get("layered_state", {}).get("statuses", [])
+        if stored:
+            result = []
+            for item in stored:
+                name = str(item.get("name"))
+                key = _status_layer_key(name)
+                field = _STATUS_LAYER_FIELDS.get(key)
+                stacks = max(0, int(getattr(pokemon, field, 0))) if field else max(0, int(item.get("stacks", 0)))
+                result.append({"name": name, "unit": str(item.get("unit")), "stacks": stacks})
+            return result
+        fields = (("poison", "poison_stacks"), ("burn", "burn_stacks"), ("freeze", "freeze_stacks"), ("frostbite_damage", "frostbite_damage"), ("leech", "leech_stacks"), ("electric", "electric_stacks"), ("meteor", "meteor_stacks"), ("cute", "cute_stacks"), ("combo", "hit_count_mod"))
+        return [{"name": name, "unit": name, "stacks": max(0, int(getattr(pokemon, field, 0)))} for name, field in fields if int(getattr(pokemon, field, 0)) > 0]
+
+    @staticmethod
+    def _snapshot_marks(marks: dict[str, Any]) -> list[dict[str, Any]]:
+        return [{"name": str(name), "unit": str(name), "stacks": max(0, int(round(float(value))))} for name, value in marks.items() if isinstance(value, (int, float)) and value > 0]
+
     def _snapshot_side(self, state: BattleState, team: str, source: TeamInput, names: list[str]) -> dict[str, Any]:
         team_list = state.team_a if team == "a" else state.team_b
         active_index = state.current_a if team == "a" else state.current_b
@@ -744,12 +1047,12 @@ class BattleSimulator:
         return {
             "team_name": source.team_name,
             "active_index": active_index,
-            "team_marks": dict(marks),
+            "team_marks": self._snapshot_marks(marks),
             "devotion": self._snapshot_devotion(state, source, team),
             "creatures": [
                 {
                     "index": index,
-                    "name": names[index] if index < len(names) else pokemon.name,
+                    "name": pokemon.name,
                     "hp": pokemon.current_hp,
                     "max_hp": pokemon.hp,
                     "energy": pokemon.energy,
@@ -757,39 +1060,26 @@ class BattleSimulator:
                     "entry_count": getattr(pokemon, "entry_count", 0),
                     "fatigue_turns": getattr(pokemon, "fatigue_turns", 0),
                     "ability": pokemon.ability,
-                    "attributes": [type_value.value for type_value in pokemon.pokemon_types],
+                    "attributes": [_type_label(type_value) for type_value in pokemon.pokemon_types],
                     "bloodline_attributes": pokemon.ability_state.get("lab_metadata", {}).get("bloodline_attributes"),
                     "stats": {
                         "atk": pokemon.attack, "def": pokemon.defense,
                         "spatk": pokemon.sp_attack, "spdef": pokemon.sp_defense,
                         "speed": pokemon.speed,
                     },
-                    "modifiers": {
-                        "atk_up": pokemon.atk_up, "atk_down": pokemon.atk_down,
-                        "def_up": pokemon.def_up, "def_down": pokemon.def_down,
-                        "spatk_up": pokemon.spatk_up, "spatk_down": pokemon.spatk_down,
-                        "spdef_up": pokemon.spdef_up, "spdef_down": pokemon.spdef_down,
-                        "speed_up": pokemon.speed_up, "speed_down": pokemon.speed_down,
-                    },
-                    "statuses": {
-                        "poison": pokemon.poison_stacks,
-                        "burn": pokemon.burn_stacks,
-                        "freeze": pokemon.freeze_stacks,
-                        "frostbite_damage": pokemon.frostbite_damage,
-                        "leech": pokemon.leech_stacks,
-                        "meteor": pokemon.meteor_stacks,
-                        "cute": pokemon.cute_stacks,
-                        "combo": pokemon.hit_count_mod,
-                    },
+                    "buffs": self._snapshot_layers(pokemon, "up"),
+                    "debuffs": self._snapshot_layers(pokemon, "down"),
+                    "statuses": self._snapshot_statuses(pokemon),
                     "skills": [
                         {
                             "skill_id": getattr(skill, "skill_id", skill.name),
                             "name": skill.name,
                             "current_energy_cost": skill.energy_cost,
                             "current_power": skill.power,
-                            "use_count": max(1, int(getattr(skill, "use_count", 1) or 1)),
+                            "use_count": int((state.turn_skill_use_counts_a if team == "a" else state.turn_skill_use_counts_b).get(str(index) + ":" + str(slot), 0)),
+                            "planned_use_count": max(1, int(getattr(skill, "use_count", 1) or 1)),
                         }
-                        for skill in pokemon.skills
+                        for slot, skill in enumerate(pokemon.skills)
                     ],
                 }
                 for index, pokemon in enumerate(team_list)

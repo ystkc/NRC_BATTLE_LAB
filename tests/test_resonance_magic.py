@@ -14,11 +14,12 @@ def _catalog_setup(resonance=None, bloodline=None, metadata=None):
         value = {
             "name": name,
             "skills": [{"name": skill} for skill in skills],
+            "metadata": {"attribute_assumption": "neutral"},
         }
         if bloodline:
             value["base"] = {"bloodline_attributes": [bloodline]}
         if metadata:
-            value["metadata"] = dict(metadata)
+            value["metadata"].update(metadata)
         return value
 
     return {
@@ -36,6 +37,12 @@ def _catalog_setup(resonance=None, bloodline=None, metadata=None):
 
 
 class ResonanceMagicTests(unittest.TestCase):
+    def test_boss_alias_is_recognized(self):
+        backend = create_backend()
+        state = backend.new_game(_catalog_setup(None, 'boss'), seed=1)
+        self.assertTrue(backend._simulator._is_boss_bloodline(state.battle.team_a[0]))
+        self.assertTrue(backend._simulator._is_boss_bloodline(state.battle.team_a[0]))
+
     def test_willpower_replaces_first_skill_and_enters_cooldown(self):
         backend = create_backend()
         state = backend.new_game(_catalog_setup("willpower", "火血脉"), seed=1)
@@ -54,7 +61,7 @@ class ResonanceMagicTests(unittest.TestCase):
     def test_solar_heal_has_three_end_turn_ticks(self):
         backend = create_backend()
         state = backend.new_game(_catalog_setup("solar_heal"), seed=1)
-        state.battle.team_a[0].current_hp = 100
+        state.battle.team_a[0].current_hp = 1000
         action = next(
             item.key for item in backend.legal_actions(state, 0)
             if item.key.endswith("|resonance=solar_heal")

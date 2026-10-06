@@ -27,19 +27,19 @@ from nrc_ai.contracts import (
     Transition,
 )
 
-from src.battle import (
+from nrc_core.battle import (
     _apply_mark_on_enter,
     _apply_moisture_mark,
     _apply_turn_start_ability_logic,
     _trigger_battle_start_effects,
     check_winner,
 )
-from src.effect_models import Timing
-from src.engine._monolith import EffectExecutor
-from src.models import BattleState, Pokemon
-from src.pokemon_db import get_pokemon
-from src.rng import rng_scope
-from src.skill_db import get_all_skill_names, get_skill, load_ability_effects
+from nrc_core.effect_models import Timing
+from nrc_core.engine._monolith import EffectExecutor
+from nrc_core.models import BattleState, Pokemon
+from nrc_core.pokemon_db import get_pokemon
+from nrc_core.rng import rng_scope
+from nrc_core.skill_db import get_all_skill_names, get_skill, load_ability_effects
 
 from .codec import battle_request_from_dict, side_turn_from_dict
 from .core import simulate_turn
@@ -442,8 +442,7 @@ class NRCTrainingBackend:
                     continue
             elif carried == "boss":
                 used = state.battle.resonance_evolution_used_a if side == "a" else state.battle.resonance_evolution_used_b
-                bloodline = active.ability_state.get("lab_metadata", {}).get("bloodline_attributes") or []
-                if used or not any("首领" in str(value) for value in (bloodline if isinstance(bloodline, list) else [bloodline])):
+                if used or not self._simulator._is_boss_bloodline(active):
                     continue
             elif carried == "solar_heal":
                 used = state.battle.resonance_solar_heal_used_a if side == "a" else state.battle.resonance_solar_heal_used_b

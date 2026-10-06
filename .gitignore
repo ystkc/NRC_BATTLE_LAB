@@ -13,3 +13,5 @@ data/mitm/
 *.jpg
 *.json
 /data/wiki_staging
+*.pt
+/data/ai_runs

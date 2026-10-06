@@ -80,6 +80,7 @@ def creature_from_dict(raw: dict[str, Any]) -> CreatureInput:
             speed_range=_maybe(base.get("speed_range")),
             nature=_maybe(base.get("nature")),
             nature_modifiers=_maybe(base.get("nature_modifiers")),
+            individual_values=_maybe(base.get("individual_values")),
             stats=_maybe(base.get("stats")),
         ),
         ability=AbilityInput(
@@ -108,6 +109,7 @@ def creature_from_dict(raw: dict[str, Any]) -> CreatureInput:
             buffs=_maybe_dict(state.get("buffs")),
             debuffs=_maybe_dict(state.get("debuffs")),
             marks=_maybe_dict(state.get("marks")),
+            statuses=_maybe(state.get("statuses")),
             status=_maybe(state.get("status")),
             fatigue_turns=_maybe(state.get("fatigue_turns")),
         ),

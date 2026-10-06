@@ -4,6 +4,7 @@ import sqlite3
 from nrc_ai.belief import Particle, ParticleBelief
 from nrc_ai.opponent import UniformOpponentPolicy
 from nrc_ai.search import BeliefTreeSearch
+from nrc_ai.population_prior import PopulationPrior
 from nrc_core.training import create_backend
 
 
@@ -42,3 +43,12 @@ def test_real_backend_search_runs_through_replacement_nodes():
     )
     assert result.action_key in {action.key for action in backend.legal_actions(state, 0)}
     assert abs(sum(result.policy.values()) - 1.0) < 1e-9
+
+
+def test_population_prior_candidates_are_accepted_by_real_backend():
+    backend = create_backend()
+    prior = PopulationPrior.from_database("data/nrc_wiki.db")
+    candidates = prior.candidate_setups(_setup(team_size=1), count=4, seed=21, aptitude_iv=54)
+    for index, candidate in enumerate(candidates):
+        state = backend.new_game(candidate["setup"], seed=index)
+        assert backend.decision(state).players == (0, 1)

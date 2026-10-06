@@ -76,6 +76,10 @@ CSV_FIELDS = {
     "game_descriptions": ["名称", "类别", "系别", "系别图标路径", "规则图标路径", "描述", "来源URL"],
     "evolutions": ["from_name", "to_name", "from_number", "to_number", "from_stage", "to_stage", "method", "level", "condition", "chain_text"],
     "spirit_skills": ["精灵", "技能", "技能类别", "来源URL"],
+    "skill": ["精灵", "名称", "百分比", "排序"],
+    "nature": ["精灵", "名称", "百分比", "排序"],
+    "blood": ["精灵", "名称", "百分比", "排序"],
+    "talent": ["精灵", "名称", "百分比", "排序"],
 }
 
 CSV_KEYS = {
@@ -84,6 +88,10 @@ CSV_KEYS = {
     "game_descriptions": "名称",
     "evolutions": "_evolution_key",
     "spirit_skills": "_spirit_skill_key",
+    "skill": "_distribution_key",
+    "nature": "_distribution_key",
+    "blood": "_distribution_key",
+    "talent": "_distribution_key",
 }
 
 LOGGER = logging.getLogger("nrc.wiki")
@@ -327,6 +335,7 @@ def _strict_spirit_tables(html: str, source_url: str, image_role: str) -> list[d
                 "_avatar_urls": _strict_img_urls(_strict_cell(row, columns, "avatar") or row, source_url)[:1],
                 "_portrait_urls": _strict_img_urls(row, source_url) if image_role == "portrait" else [],
                 "_ability_icon_urls": _strict_img_urls(feature_cell or "", source_url)[:1],
+                "_detail_url": normalize_url(f"{NAMESPACE}{quote(name, safe='')}", source_url),
             })
     return records
 
@@ -461,6 +470,8 @@ def _row_key(kind: str, row: dict) -> str:
         return evolution_key(row)
     if kind == "spirit_skills":
         return "\x00".join((str(row.get("精灵", "")).strip(), str(row.get("技能", "")).strip(), str(row.get("技能类别", "")).strip()))
+    if kind in REFERENCE_KINDS.values():
+        return "\x00".join((str(row.get("精灵", "")).strip(), str(row.get("名称", "")).strip()))
     if kind == "spirits":
         return spirit_key(row)
     return str(row.get(CSV_KEYS[kind], "")).strip()
@@ -613,7 +624,23 @@ def _skill_relation_snapshot(fetcher: WikiFetcher, skills: list[dict]) -> list[d
     return rows
 
 
-def _spirit_snapshot(fetcher: WikiFetcher, limit: int) -> tuple[list[dict], list[dict]]:
+REFERENCE_KINDS = {"skill": "skill", "nature": "nature", "blood": "blood", "talent": "talent"}
+
+def parse_spirit_distributions(html: str, spirit_name: str, source_url: str) -> dict[str, list[dict]]:
+    soup = BeautifulSoup(html or "", "html.parser")
+    result = {kind: [] for kind in REFERENCE_KINDS.values()}
+    for chart_name, kind in REFERENCE_KINDS.items():
+        chart = soup.select_one(f'[data-reference-chart="{chart_name}"]')
+        if not chart:
+            continue
+        for position, row in enumerate(chart.select(".roco-reference-row"), 1):
+            name = clean_text(row.select_one(".roco-reference-name") or "")
+            percentage = clean_text(row.select_one(".roco-reference-value") or "")
+            if name and percentage:
+                result[kind].append({"精灵": spirit_name, "名称": name, "百分比": percentage, "排序": position})
+    return result
+
+def _spirit_snapshot(fetcher: WikiFetcher, limit: int, include_detail: bool = False) -> tuple[list[dict], list[dict], dict[str, list[dict]]]:
     LOGGER.info("[PAGE] FETCH spirits list url=%s", SPIRIT_LIST_URL)
     list_html = fetcher.get_text(SPIRIT_LIST_URL)
     LOGGER.info("[PAGE] FETCH spirits atlas url=%s", SPIRIT_ATLAS_URL)
@@ -621,7 +648,7 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int) -> tuple[list[dict], list
     if not list_html and not atlas_html:
         _log_first_record("spirits", [])
         _log_first_record("evolutions", [])
-        return [], []
+        return [], [], {kind: [] for kind in REFERENCE_KINDS.values()}
     records = parse_spirit_list(list_html) if list_html else []
     atlas_records = parse_spirit_list(atlas_html, SPIRIT_ATLAS_URL, image_role="portrait") if atlas_html else []
     by_key = {
@@ -645,6 +672,7 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int) -> tuple[list[dict], list
         records = records[:limit]
     manifest = load_manifest()
     result: list[dict] = []
+    detail_rows = {kind: [] for kind in REFERENCE_KINDS.values()}
     for index, record in enumerate(records, 1):
         identity_parts = (
             str(record.get("精灵ID", "")).strip(),
@@ -681,6 +709,12 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int) -> tuple[list[dict], list
         merged["头像路径"] = avatar_path
         merged["立绘路径"] = "|".join(portrait_paths)
         merged["特性图标路径"] = ability_path
+        detail_url = str(record.get("_detail_url", "")).strip()
+        if include_detail and detail_url:
+            distributions = parse_spirit_distributions(fetcher.get_text(detail_url), str(record['名称']), detail_url)
+            LOGGER.info("[PARSE] obtain spirit distributions %s", record['名称'])
+            for distribution_kind, distribution_rows in distributions.items():
+                detail_rows[distribution_kind].extend(distribution_rows)
         public = _public_record(merged)
         result.append(public)
         if index % 100 == 0:
@@ -692,7 +726,7 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int) -> tuple[list[dict], list
     unique_evolutions = list(evolution_map.values())
     _log_first_record("spirits", result)
     _log_first_record("evolutions", unique_evolutions)
-    return result, unique_evolutions
+    return result, unique_evolutions, detail_rows
 
 
 def _game_description_snapshot(fetcher: WikiFetcher, limit: int) -> list[dict]:
@@ -957,10 +991,11 @@ def run(args: argparse.Namespace) -> int:
         if getattr(args, "crawl_skill_relations", False):
             rows_by_kind["spirit_skills"] = _skill_relation_snapshot(fetcher, rows_by_kind["skills"])
     if "spirits" in selected:
-        LOGGER.info("[JOB] spirit list + atlas; detail pages disabled")
-        spirits, evolutions = _spirit_snapshot(fetcher, args.limit)
+        LOGGER.info("[JOB] spirit list + atlas + detail distributions")
+        spirits, evolutions, detail_rows = _spirit_snapshot(fetcher, args.limit, args.spirit_detail)
         rows_by_kind["spirits"] = spirits
         rows_by_kind["evolutions"] = evolutions
+        rows_by_kind.update(detail_rows)
     if "game_descriptions" in selected:
         LOGGER.info("[JOB] game description atlas + icons; detail pages disabled")
         rows_by_kind["game_descriptions"] = _game_description_snapshot(fetcher, args.limit)
@@ -1036,6 +1071,7 @@ def run(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="NRC wiki 增量同步：先下载并生成 staging，确认后才写入数据库")
     parser.add_argument("--kind", choices=("all", "skills", "spirits", "game-descriptions"), default="all")
+    parser.add_argument("--spirit-detail", action="store_true", help="额外逐个请求精灵详情页，抓取 nrc-spirit-pet-card 关系")
     parser.add_argument("--database", type=Path, default=DB_PATH, help="新 Wiki 数据库路径，默认 data/nrc_wiki.db；不向旧战斗数据库写入")
     manual_options = parser.add_mutually_exclusive_group()
     manual_options.add_argument("--manual-data", type=Path, default=MANUAL_DATA_PATH, help="人工补充 YAML，默认 scripts/wiki_crawler/manual_data.yaml；指定字段优先于 Wiki")

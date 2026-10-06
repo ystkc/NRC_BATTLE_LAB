@@ -23,6 +23,7 @@ class CreatureBaseInfo:
     speed_range: Maybe[dict[str, float]] = field(default_factory=Maybe.unknown)
     nature: Maybe[str] = field(default_factory=Maybe.unknown)
     nature_modifiers: Maybe[dict[str, float]] = field(default_factory=Maybe.unknown)
+    individual_values: Maybe[dict[str, int]] = field(default_factory=Maybe.unknown)
     stats: Maybe[dict[str, float]] = field(default_factory=Maybe.unknown)
 
     def to_json(self) -> dict:
@@ -34,9 +35,10 @@ class CreatureState:
     hp: Maybe[float] = field(default_factory=Maybe.unknown)
     max_hp: Maybe[float] = field(default_factory=Maybe.unknown)
     energy: Maybe[float] = field(default_factory=Maybe.unknown)
-    buffs: Maybe[dict[str, Any]] = field(default_factory=Maybe.unknown)
-    debuffs: Maybe[dict[str, Any]] = field(default_factory=Maybe.unknown)
-    marks: Maybe[dict[str, Any]] = field(default_factory=Maybe.unknown)
+    buffs: Maybe[Any] = field(default_factory=Maybe.unknown)
+    debuffs: Maybe[Any] = field(default_factory=Maybe.unknown)
+    marks: Maybe[Any] = field(default_factory=Maybe.unknown)
+    statuses: Maybe[Any] = field(default_factory=Maybe.unknown)
     status: Maybe[str] = field(default_factory=Maybe.unknown)
     fatigue_turns: Maybe[int] = field(default_factory=Maybe.unknown)
 
@@ -199,7 +201,7 @@ class SideResult:
     triggered_abilities: list[str] = field(default_factory=list)
     triggered_weather: list[str] = field(default_factory=list)
     triggered_counters: list[str] = field(default_factory=list)
-    effectiveness: list[dict[str, Any]] = field(default_factory=list)
+    type_effectiveness: list[dict[str, Any]] = field(default_factory=list)
     unsupported_actions: list[str] = field(default_factory=list)
 
     def to_json(self) -> dict:
@@ -230,12 +232,14 @@ class BattleResult:
     opponent: SideResult
     shared_before: dict[str, Any]
     shared_after: dict[str, Any]
+    turn_start_skill_display: dict[str, Any] = field(default_factory=dict)
     possible_branches: list[ResolutionBranch] = field(default_factory=list)
     observed_branch_id: Optional[str] = None
     events: list[dict[str, Any]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     input_unknowns: list[str] = field(default_factory=list)
     latent_uncertainties: list[dict[str, Any]] = field(default_factory=list)
+    debug: dict[str, Any] = field(default_factory=dict)
 
     def to_json(self) -> dict:
         return {
@@ -243,10 +247,12 @@ class BattleResult:
             "opponent": self.opponent.to_json(),
             "shared_before": self.shared_before,
             "shared_after": self.shared_after,
+            "turn_start_skill_display": self.turn_start_skill_display,
             "possible_branches": [branch.to_json() for branch in self.possible_branches],
             "observed_branch_id": self.observed_branch_id,
             "events": self.events,
             "warnings": self.warnings,
             "input_unknowns": self.input_unknowns,
             "latent_uncertainties": self.latent_uncertainties,
+            "debug": self.debug,
         }

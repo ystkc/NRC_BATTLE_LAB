@@ -86,7 +86,7 @@ def test_catalog_reads_new_wiki_database():
 @pytest.fixture
 def isolated_core(monkeypatch, tmp_path):
     import nrc_core.simulator as core
-    from src.models import Skill, SkillCategory, Type
+    from nrc_core.models import Skill, SkillCategory, Type
 
     monkeypatch.setattr(core, "get_pokemon", lambda name: None)
     monkeypatch.setattr(core, "get_skill", lambda name: Skill(name, Type.NORMAL, SkillCategory.PHYSICAL, 0, 0))
@@ -98,20 +98,26 @@ def test_simulator_receives_modifiers_and_status_layers(isolated_core):
     request = opening_request()
     request["own_team"]["creatures"] = [json.loads(json.dumps(creature)) for creature in request["own_team"]["creatures"]]
     active = request["own_team"]["creatures"][0]
-    active["state"]["buffs"] = known({"atk": 2, "speed": 1})
-    active["state"]["debuffs"] = known({"def": 3})
-    active["metadata"] = {"status_stacks": {"poison": 2, "combo": 3, "cute": 1}}
+    active["state"]["buffs"] = known([
+        {"name": "atk_up", "unit": "+100%", "stacks": 2},
+        {"name": "speed_up", "unit": "+100%", "stacks": 1},
+    ])
+    active["state"]["debuffs"] = known([
+        {"name": "def_down", "unit": "+100%", "stacks": 3},
+    ])
+    active["state"]["statuses"] = known([
+        {"name": "poison", "unit": "poison", "stacks": 2},
+        {"name": "combo", "unit": "hit", "stacks": 3},
+        {"name": "cute", "unit": "cute", "stacks": 1},
+    ])
     request["shared"]["weather"] = known("rain")
     request["shared"]["weather_turns"] = known(3)
     request["seed"] = 7
     result = isolated_core.resolve_turn(request).to_json()
     before = result["own"]["before"]["creatures"][0]
-    assert before["modifiers"]["atk_up"] == 2
-    assert before["modifiers"]["speed_up"] == 1
-    assert before["modifiers"]["def_down"] == 3
-    assert before["statuses"]["poison"] == 2
-    assert before["statuses"]["combo"] == 3
-    assert before["statuses"]["cute"] == 1
+    assert {item["name"]: item["stacks"] for item in before["buffs"]} == {"atk_up": 2, "speed_up": 1}
+    assert {item["name"]: item["stacks"] for item in before["debuffs"]} == {"def_down": 3}
+    assert {item["name"]: item["stacks"] for item in before["statuses"]} == {"poison": 2, "combo": 3, "cute": 1}
     assert result["shared_before"]["weather"] == "rain"
     assert result["shared_after"]["weather_turns"] == 2
     assert result["own"]["after"]["creatures"][0]["hp"] < 100

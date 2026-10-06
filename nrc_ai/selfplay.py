@@ -10,6 +10,7 @@ from .belief import Particle, ParticleBelief
 from .opponent import OpponentPolicy, UniformOpponentPolicy
 from .replay import Episode, StepRecord
 from .search import BeliefTreeSearch
+from .population_prior import PopulationPrior
 
 
 def generate_episode(backend: CoreBackend, setup: dict, *, seed: int = 0, max_decisions: int = 64, player_policy: OpponentPolicy | None = None, opponent_policy: OpponentPolicy | None = None) -> Episode:
@@ -105,4 +106,24 @@ def generate_search_episode(backend: CoreBackend, setup: dict, *, seed: int = 0,
             episode.terminal_winner = transition.winner
             return episode
     episode.truncated = True
+    return episode
+
+
+def generate_population_search_episode(backend: CoreBackend, setup: dict, prior: PopulationPrior, *, seed: int = 0, max_decisions: int = 64, simulations: int = 64, horizon: int = 8, opponent_policy: OpponentPolicy | None = None, aptitude_iv: int = 60) -> Episode:
+    """Generate a search-teacher episode from the deterministic population-top-K setup.
+
+    Search still uses the completed state as its teacher state. The actor
+    observation remains private/public separated by the backend, so this is not
+    a claim that the actor sees hidden data. Phase one deliberately avoids
+    random population sampling until actual battle replay is available.
+    """
+    candidates = prior.candidate_setups(setup, count=1, seed=seed, aptitude_iv=aptitude_iv)
+    episode = generate_search_episode(backend, candidates[0]["setup"], seed=seed, max_decisions=max_decisions, simulations=simulations, horizon=horizon, opponent_policy=opponent_policy)
+    episode.metadata = {
+        **dict(episode.metadata),
+        "information_mode": "population-top-k-oracle-teacher",
+        "population_prior_source": prior.source,
+        "population_prior_digest": prior.source_digest,
+        "aptitude_iv_assumption": aptitude_iv,
+    }
     return episode
