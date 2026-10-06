@@ -1,4 +1,4 @@
-"""Training-facing stateful adapter for the NRC battle core.
+﻿"""Training-facing stateful adapter for the NRC battle core.
 
 The adapter deliberately exposes only exact action keys.  It does not provide
 name matching, placeholder creatures, automatic replacement choices, or a toy
@@ -9,14 +9,11 @@ from __future__ import annotations
 
 import base64
 import copy
-import hashlib
 import pickle
 import random
-import sqlite3
 import threading
 from contextlib import contextmanager
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any, Mapping, Protocol
 
 from nrc_ai.contracts import (
@@ -36,10 +33,9 @@ from nrc_core.battle import (
 )
 from nrc_core.effect_models import Timing
 from nrc_core.engine._monolith import EffectExecutor
+from nrc_core.catalog import CoreCatalog, EMPTY_CATALOG
 from nrc_core.models import BattleState, Pokemon
-from nrc_core.pokemon_db import get_pokemon
 from nrc_core.rng import rng_scope
-from nrc_core.skill_db import get_all_skill_names, get_skill, load_ability_effects
 
 from .codec import battle_request_from_dict, side_turn_from_dict
 from .core import simulate_turn
@@ -93,33 +89,8 @@ def _isolated_rng(seed: int):
             yield
 
 
-def _hash_files(paths: list[Path]) -> str:
-    digest = hashlib.sha256()
-    for path in paths:
-        digest.update(str(path).encode("utf-8"))
-        if path.exists():
-            digest.update(path.read_bytes())
-    return digest.hexdigest()[:16]
-
-
-def _manifest(project_dir: Path, environment: str, data_dir: Path | None = None) -> CoreManifest:
-    data_dir = data_dir or (project_dir / "data")
-    rules = _hash_files([
-        data_dir / "属性克制表.md",
-        data_dir / "回合顺序.md",
-        data_dir / "共鸣魔法.md",
-        data_dir / "伤害数值计算.md",
-        data_dir / "属性数值计算.md",
-        data_dir / "wiki" / "game_descriptions.csv",
-        project_dir / "src" / "battle.py",
-        project_dir / "src" / "engine" / "_monolith.py",
-        project_dir / "src" / "models.py",
-        project_dir / "src" / "skill_db.py",
-        project_dir / "src" / "effect_data.py",
-        project_dir / "src" / "rng.py",
-    ])
-    catalog = _hash_files([data_dir / "nrc_wiki.db"])
-    return CoreManifest("1", rules, catalog, "1", "1", environment)
+def _manifest(environment: str) -> CoreManifest:
+    return CoreManifest("1", "injected", "injected", "1", "1", environment)
 
 
 def _manifest_json(value: CoreManifest) -> dict[str, str]:
@@ -223,23 +194,22 @@ def _restore_weather_backups(state: BattleState, values: list[tuple[str, int, in
 class NRCTrainingBackend:
     """Stateful adapter implementing the v1 training contract."""
 
-    def __init__(self, *, environment: str = "nrc", data_dir: str | Path | None = None):
+    def __init__(self, *, environment: str = "nrc", catalog: CoreCatalog | None = None, data_dir: str | None = None):
         if environment not in {"nrc", "test"}:
             raise ValueError("environment must be 'nrc' or 'test'")
-        self.project_dir = Path(__file__).resolve().parents[1]
-        self.data_dir = Path(data_dir) if data_dir else self.project_dir / "data"
-        self._manifest = _manifest(self.project_dir, environment, self.data_dir)
-        self._simulator = BattleSimulator(self.data_dir)
-        self._skill_names: set[str] | None = None
+        if catalog is None and data_dir is not None:
+            from nrc_platform.catalog import load_catalog
+            catalog = load_catalog(data_dir)
+        self.catalog = catalog or EMPTY_CATALOG
+        self._manifest = _manifest(environment)
+        self._simulator = BattleSimulator(catalog=self.catalog)
 
     @property
     def manifest(self) -> CoreManifest:
         return self._manifest
 
     def _known_skill_names(self) -> set[str]:
-        if self._skill_names is None:
-            self._skill_names = set(get_all_skill_names())
-        return self._skill_names
+        return set(self.catalog.skills)
 
     def _validate_setup(self, request: BattleRequest) -> None:
         if not request.own_team.creatures or not request.opponent_team.creatures:
@@ -256,10 +226,7 @@ class NRCTrainingBackend:
                 raise ValueError(f"player {side} active_index is out of range")
             for index, creature in enumerate(team.creatures):
                 name = creature.resolved_name(f"{side}_{index}")
-                try:
-                    db_record = get_pokemon(name)
-                except Exception as exc:
-                    raise ValueError(f"unknown creature {name!r}") from exc
+                db_record = self.catalog.get_pokemon(name)
                 if not db_record:
                     raise ValueError(f"unknown creature {name!r}")
                 if creature.bossified.known and creature.bossified.or_default(False):
@@ -275,11 +242,13 @@ class NRCTrainingBackend:
                     if item.name.known and item.name.exists
                 )
                 for ability in ability_names:
+                    if not ability:
+                        continue
                     if ability.split(":", 1)[0].split("：", 1)[0].strip() == "契约的形状":
                         ball = (creature.metadata or {}).get("gulu_ball")
                         if ball not in {"普通咕噜球", "高级咕噜球", "国王球", "美妙球", "好战球", "光合球", "网兜球", "暗星球", "调温球", "绝缘球", "淘沙球", "变幻球", "柔软咕噜球"}:
                             unsupported.append(f"{name}: contract mechanic requires valid gulu_ball")
-                    if not load_ability_effects(ability):
+                    if not self.catalog.get_ability_effects(ability):
                         unsupported.append(f"{name}: ability {ability}")
                 if not creature.skills:
                     raise ValueError(f"{name} must provide all skill slots")
@@ -289,23 +258,18 @@ class NRCTrainingBackend:
                         raise ValueError(f"unknown skill {skill_name!r} at {name}[{slot}]")
                     if skill_name == "愿力冲击":
                         unsupported.append(f"{name}[{slot}] 愿力冲击: resonance-only skill")
-                    description = self._skill_description(skill_name)
-                    parsed_skill = get_skill(skill_name)
-                    if "选择" in description and len(getattr(parsed_skill, "choice_options", ())) != 2:
+                    parsed_skill = self.catalog.get_skill(skill_name)
+                    if parsed_skill is None:
+                        raise ValueError(f"unknown skill {skill_name!r} at {name}[{slot}]")
+                    if parsed_skill.choice_options and len(parsed_skill.choice_options) != 2:
                         unsupported.append(f"{name}[{slot}] {skill_name}: choice skill must expose exactly two options")
-                    if any(marker in description for marker in ("随机选择", "随机抽取")):
+                    if parsed_skill.random_source:
                         unsupported.append(f"{name}[{slot}] {skill_name}: random target/choice skill")
                 for key in ("items", "contract", "random_skill"):
                     if (creature.metadata or {}).get(key):
                         unsupported.append(f"{name}: {key}")
         if unsupported:
             raise UnsupportedMechanicError("unsupported mechanics: " + "; ".join(unsupported))
-
-    def _skill_description(self, name: str) -> str:
-        database = self.data_dir / "nrc_wiki.db"
-        with sqlite3.connect(database) as connection:
-            row = connection.execute("SELECT description FROM skill_catalog WHERE name = ?", (name,)).fetchone()
-        return (row[0] if row else "") or ""
 
     def new_game(self, setup: Mapping[str, Any], seed: int) -> TrainingState:
         raw = dict(setup)
@@ -569,9 +533,17 @@ class NRCTrainingBackend:
         return current
 
 
-def create_backend(*, environment: str = "nrc", data_dir: str | Path | None = None) -> NRCTrainingBackend:
-    """Factory used by the nrc_ai backend probe."""
-    return NRCTrainingBackend(environment=environment, data_dir=data_dir)
+def create_backend(*, environment: str = "nrc", catalog: CoreCatalog | None = None, data_dir: str | None = None) -> NRCTrainingBackend:
+    """Factory used by the nrc_ai backend probe and legacy callers.
+
+    The core still receives a resolved catalog.  When a caller omits one, the
+    compatibility factory obtains it from the platform catalog loader so old
+    probes continue to exercise the real rules database.
+    """
+    if catalog is None:
+        from nrc_platform.catalog import load_catalog
+        catalog = load_catalog(data_dir)
+    return NRCTrainingBackend(environment=environment, catalog=catalog)
 
 
 __all__ = ["CoreBackend", "CoreManifest", "Decision", "LegalAction", "Observation", "Transition", "NRCTrainingBackend", "TrainingState", "UnsupportedMechanicError", "VersionMismatchError", "create_backend"]

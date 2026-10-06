@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NRC Battle Server</title><link rel="stylesheet" href="/static/app.css"><link rel="stylesheet" href="/static/overrides.css">
+</head>
+<body>
+  <div id="setup" class="screen setup-screen">
+    <header class="bar"><div class="logo">NRC<span>/SERVER</span></div><button id="rehearse" class="bar-button">本地演示</button></header>
+    <main class="setup-main">
+      <div class="setup-title"><div><span class="kicker">BATTLE SETUP</span><h1>选择阵容</h1><span id="catalog-status" class="sync">INDEXING…</span><p id="match-status" class="match-status">创建对局后复制 ID，另一位用户在此输入 ID 加入</p></div><div class="quick-search"><input id="quick-search" autocomplete="off" placeholder="快速索引：精灵 / 技能 / 拼音"><div id="quick-suggest" class="suggest"></div></div></div>
+      <div class="team-columns"><section class="team-box"><div class="team-label"><b>我方</b><span id="own-count">0/6</span></div><div class="search-wrap"><input id="own-search" autocomplete="off" placeholder="精灵名称 / 拼音 / 首字母"><div id="own-suggest" class="suggest"></div></div><div id="own-team" class="team-list"></div></section><section class="team-box enemy-team"><div class="team-label"><b>对方</b><span id="opponent-count">0/6</span></div><div class="search-wrap"><input id="opponent-search" autocomplete="off" placeholder="对手加入后自动匹配" disabled><div id="opponent-suggest" class="suggest"></div></div><div id="opponent-team" class="team-list"></div></section></div>
+      <div class="setup-bottom"><div class="match-actions"><label class="seed">SEED <input id="seed" value="1002"></label><div class="match-code"><input id="battle-code" placeholder="输入对战 ID"><button id="join" class="bar-button">加入对局</button><button id="copy-id" class="bar-button">复制 ID</button></div></div><button id="start" class="start-button" disabled>创建并提交阵容</button></div>
+    </main>
+  </div>
+  <div id="battle" class="screen battle-screen hidden">
+    <header class="bar battle-bar"><div class="logo">NRC<span>/SERVER</span></div><div class="round"><b id="turn">1</b><span>ROUND</span></div><div class="battle-id" id="battle-id"></div><button id="reset" class="bar-button">退出</button></header>
+    <main class="battle-main">
+      <section class="field">
+        <div class="side-state own-state"><div class="spirit-inline"><div class="field-avatar"><img id="own-active-art" alt=""><div id="own-active-types" class="field-types"></div></div><div class="spirit-copy"><div class="side-name"><span>我方</span><b id="own-active-name">-</b></div><div class="hp-line"><span id="own-hp-text">-</span><div class="hp-track"><i id="own-hp-bar"></i></div></div><div class="energy-line" id="own-energy">★ 10</div></div></div><div id="own-pips" class="pips"></div></div>
+        <div class="field-line"><span id="phase">TURN CHOICE</span></div>
+        <div class="side-state enemy-state"><div class="spirit-inline"><div class="field-avatar"><img id="enemy-active-art" alt=""><div id="enemy-active-types" class="field-types"></div></div><div class="spirit-copy"><div class="side-name"><span>对方</span><b id="enemy-active-name">?</b></div><div class="hp-line"><span id="enemy-hp-text">?</span><div class="hp-track"><i id="enemy-hp-bar"></i></div></div><div class="energy-line" id="enemy-energy">★ ?</div></div></div><div id="enemy-pips" class="pips"></div></div>
+      </section>
+      <section class="combat-panel"><div class="skill-column" id="skills"></div><div class="action-column"><button id="charge" class="action-main"><span class="action-glyph">✦</span><b>聚能</b></button><div class="action-grid"><button data-action="creature"><span>◉</span>精灵</button><button data-action="bag"><span>▣</span>背包</button><button data-action="flee"><span>×</span>逃跑</button></div></div></section>
+      <section class="event-panel"><div class="event-head"><span>战报</span><span id="lock-state">选择操作</span></div><div id="events" class="events"></div></section>
+    </main>
+  </div>
+  <div id="drawer" class="drawer hidden"><div class="drawer-head"><b id="drawer-title">精灵</b><button id="drawer-close">×</button></div><div id="drawer-body"></div></div>
+  <div id="hover-card" class="hover-card hidden"></div>
+  <div id="toast" class="toast"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

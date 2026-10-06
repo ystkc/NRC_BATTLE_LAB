@@ -9,8 +9,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from nrc_core import BattleSimulator
 from scripts.manual_verify_core import bind_catalog_fields
-from nrc_core.pokemon_db import get_pokemon
-from nrc_core.skill_db import get_all_skills
+from nrc_core.pokemon_db import configure_catalog, get_pokemon
+from nrc_core.skill_db import configure_catalog as configure_skill_catalog, get_all_skills
+from nrc_platform.catalog import load_catalog
 
 
 def u(value: str) -> str:
@@ -26,6 +27,7 @@ GIANT = u(r"\u5de8\u7075\u77f3")
 EVIL = u(r"\u6076\u9b54\u72fc")
 SEA = u(r"\u6d77\u8c79\u8239\u957f")
 SILVER = u(r"\u94f6\u6708\u72fc\u738b")
+NEUTRAL_NATURE = u(r"\u5766\u7387")
 
 SKILLS = {
     "claw": u(r"\u8fde\u7eed\u722a\u51fb"), "counter": u(r"\u53cd\u51fb\u62f3"),
@@ -39,7 +41,7 @@ SKILLS = {
     "sound": u(r"\u9e23\u97f3"), "retreat": u(r"\u5413\u9000"),
     "dart": u(r"\u6bd2\u8a93"), "answer": u(r"\u89c1\u62db\u62c6\u62db"),
     "membrane": u(r"\u8721\u8d28\u819c"), "punch": u(r"\u4e00\u62f3"),
-   "slash": u(r"\u65a9\u65ad"), "charge": u(r"\u805a\u80fd"),
+   "slash": u(r"\u65a9\u65ad"), "charge": u(r"\u529b\u91cf\u589e\u6548"),
     "eclipse": u(r"\u6708\u8680"), "water": "水幕冲击",
 }
 
@@ -47,7 +49,7 @@ SKILLS = {
 def creature(name, skills, hp, energy=10, buffs=None, statuses=None):
     return {
         "name": name,
-        "base": {"nature": None, "individual_values": None, "stats": None, "bloodline_attributes": None},
+        "base": {"nature": NEUTRAL_NATURE, "individual_values": {}, "stats": None, "bloodline_attributes": None},
         "abilities": [], "skills": [{"name": skill} for skill in skills],
         "state": {"hp": hp, "max_hp": hp, "energy": energy, "buffs": buffs or [], "debuffs": [], "marks": {}, "statuses": statuses or [], "fatigue_turns": 0},
         "entry_count": 1, "metadata": {},
@@ -129,12 +131,15 @@ def _unresolved_skill_names(payload):
 
 
 def main():
-    simulator = BattleSimulator(Path("data"))
+    catalog = load_catalog(Path("data"))
+    configure_catalog(catalog)
+    configure_skill_catalog(catalog)
+    simulator = BattleSimulator(catalog=catalog)
     results = []
     for round_no, own_index, own_action, opponent_index, opponent_action in CASES:
-        required = [OWN_NAMES[own_index]]
+        required = [_available_roster_name(OWN_NAMES[own_index])]
         if own_action.get("kind") == "switch":
-            required.append(OWN_NAMES[own_action["switch_index"]])
+            required.append(_available_roster_name(OWN_NAMES[own_action["switch_index"]]))
         missing = [name for name in required if not get_pokemon(name)]
         if missing:
             results.append({

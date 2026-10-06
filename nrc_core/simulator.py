@@ -13,24 +13,21 @@
 
 from __future__ import annotations
 
-import csv
 import json
 import random
-import sqlite3
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any, Optional
 
-from collector.parsing.skill_description import SkillDescriptionParser
 from nrc_core.battle import (
     _skill_has_counter_for,
 )
 from nrc_core.effect_models import Timing
 from nrc_core.engine._monolith import EffectExecutor
+from nrc_core.catalog import CoreCatalog, EMPTY_CATALOG
 from nrc_core.models import BattleState, Pokemon, SkillCategory, Type, get_type_effectiveness
-from nrc_core.pokemon_db import calc_combat_stats, get_boss_form, get_pokemon
-from nrc_core.skill_db import get_skill, load_ability_effects
+from nrc_core.catalog import calc_combat_stats
 from nrc_core.rng import rng_scope
+from nrc_core.debug import core_log
 
 from .actions import ActionIntent, ActionKind, SideTurnInput
 from .branching import AuditStatus, BranchDimension, BranchKey, BranchOption
@@ -45,6 +42,14 @@ from .schema import (
     SideResult,
     TeamInput,
 )
+
+
+def get_pokemon(_name: str):
+    return None
+
+
+def get_skill(_name: str):
+    return None
 
 
 LEGACY_DEVOTION_KEYS = {
@@ -180,12 +185,14 @@ class _LegacyBuild:
 class BattleSimulator:
     """面向采集器的纯核心入口。"""
 
-    def __init__(self, data_dir: str | Path | None = None):
-        self.project_dir = Path(__file__).resolve().parents[1]
-        self.data_dir = Path(data_dir) if data_dir else self.project_dir / "data"
-        self._skill_descriptions: dict[str, str] = {}
-        self._skill_parser = SkillDescriptionParser()
-        self._load_skill_descriptions()
+    def __init__(self, data_dir=None, *, catalog: CoreCatalog | None = None):
+        if catalog is None and data_dir is not None:
+            from nrc_platform.catalog import load_catalog
+            try:
+                catalog = load_catalog(data_dir)
+            except FileNotFoundError:
+                catalog = None
+        self.catalog = catalog or EMPTY_CATALOG
 
     def resolve_turn(self, request: BattleRequest | dict[str, Any]) -> BattleResult:
         if isinstance(request, dict):
@@ -298,6 +305,7 @@ class BattleSimulator:
         state = BattleState(
             team_a=team_a,
             team_b=team_b,
+            catalog=self.catalog,
             current_a=request.own_team.active_index.or_default(0),
             current_b=request.opponent_team.active_index.or_default(0),
             turn=request.shared.turn.or_default(1),
@@ -390,7 +398,7 @@ class BattleSimulator:
             raise ValueError("进化之力只能对首领血脉精灵使用")
         metadata = active.ability_state.get("lab_metadata", {})
         boss_name = metadata.get("boss_form") or metadata.get("boss_name")
-        candidates = [get_pokemon(boss_name)] if boss_name else get_boss_form(active.name)
+        candidates = [self.catalog.get_pokemon(boss_name)] if boss_name else list(self.catalog.get_boss_forms(active.name))
         candidates = [item for item in candidates if item]
         if len(candidates) != 1:
             raise ValueError("当前精灵缺少唯一的首领形态映射，请通过 metadata.boss_form 指定")
@@ -411,7 +419,7 @@ class BattleSimulator:
         active.speed = int(stats["speed"])
         active.current_hp = min(active.hp, max(0, round(active.hp * hp_ratio)))
         active.ability = record.get("ability", "")
-        active.ability_effects = load_ability_effects(active.ability)
+        active.ability_effects = self.catalog.get_ability_effects(active.ability)
         active.ability_state["lab_metadata"]["bossified"] = True
         enemy = state.get_current("b" if team == "a" else "a")
         if active.ability_effects:
@@ -439,7 +447,7 @@ class BattleSimulator:
             bloodline_type = self._bloodline_type(active)
             if bloodline_type is None:
                 raise ValueError("愿力强化只能对系别血脉精灵使用")
-            replacement = get_skill("愿力冲击")
+            replacement = self.catalog.get_skill("愿力冲击")
             replacement.skill_id = "resonance:willpower_strike"
             replacement.skill_type = bloodline_type
             replacement._resonance_dual_path = True
@@ -540,31 +548,7 @@ class BattleSimulator:
             state.random_devotion_counts_b = legacy_random if legacy_random else {}
 
     def _distribution_rows(self, spirit_name: str, distribution_kind: str) -> list[dict[str, Any]]:
-        database_path = self.data_dir / "nrc_wiki.db"
-        if not database_path.exists():
-            return []
-        try:
-            with sqlite3.connect(database_path) as connection:
-                rows = connection.execute(
-                    "SELECT item_name, percentage, position FROM distribution_records "
-                    "WHERE spirit_name = ? AND distribution_kind = ?",
-                    (spirit_name, distribution_kind),
-                ).fetchall()
-        except sqlite3.Error:
-            return []
-        result = []
-        for item_name, percentage, position in rows:
-            try:
-                score = float(str(percentage).replace("%", ""))
-            except (TypeError, ValueError):
-                score = 0.0
-            result.append({
-                "item": str(item_name),
-                "percentage": score,
-                "position": int(position or 0),
-            })
-        return sorted(result, key=lambda row: (-row["percentage"], row["position"]))
-
+        return [dict(row) for row in self.catalog.get_distribution(spirit_name, distribution_kind)]
     @staticmethod
     def _normalize_individual_values(raw: Any) -> dict[str, int]:
         aliases = {
@@ -607,7 +591,7 @@ class BattleSimulator:
             nature_source = "assumption:neutral"
         elif nature_rows:
             nature_name = nature_rows[0]["item"]
-            nature_source = "nrc_wiki.db:distribution_records"
+            nature_source = "catalog.distribution"
         else:
             nature_name = "坦率"
             nature_source = "fallback:neutral"
@@ -626,7 +610,7 @@ class BattleSimulator:
             }
             selected = [row for row in talent_rows if row["item"] in talent_map][:3]
             iv_config = self._normalize_individual_values({talent_map[row["item"]]: 60 for row in selected})
-            iv_source = "nrc_wiki.db:distribution_records" if talent_rows else "fallback:zero"
+            iv_source = "catalog.distribution" if talent_rows else "fallback:zero"
 
         assumption = {
             "mode": mode,
@@ -643,7 +627,7 @@ class BattleSimulator:
         name = item.resolved_name(fallback)
         db_record = None
         try:
-            db_record = get_pokemon(name)
+            db_record = self.catalog.get_pokemon(name)
         except Exception:
             db_record = None
         provided_stats = item.base.stats.known and item.base.stats.exists and bool(item.base.stats.value)
@@ -688,7 +672,11 @@ class BattleSimulator:
                 unknowns.append(f"{name}.skills[{index}]")
             if skill_name == "愿力冲击":
                 raise ValueError("愿力冲击不能作为精灵携带技能，只能由愿力强化临时提供")
-            skill = get_skill(skill_name)
+            skill = self.catalog.get_skill(skill_name)
+            if skill is None:
+                skill = get_skill(skill_name)
+            if skill is None:
+                skill = Skill(skill_name, Type.NORMAL, SkillCategory.STATUS, 0, 0)
             skill.skill_id = skill_id or skill.name
             if slot:
                 if slot.current_energy_cost.known and slot.current_energy_cost.exists:
@@ -725,6 +713,22 @@ class BattleSimulator:
             iv_spdef=iv_config["spdef"],
             iv_speed=iv_config["speed"],
         )
+        core_log("attributes", "resolved", pokemon=name,
+                 source="input" if provided_stats else "catalog_or_fallback",
+                 base_stats={
+                     "hp": db_record.get("base_hp") if db_record else None,
+                     "atk": db_record.get("base_attack") if db_record else None,
+                     "spatk": db_record.get("base_magic_attack") if db_record else None,
+                     "def": db_record.get("base_defense") if db_record else None,
+                     "spdef": db_record.get("base_magic_defense") if db_record else None,
+                     "speed": db_record.get("base_speed") if db_record else None,
+                 },
+                 stats={"hp": pokemon.hp, "atk": pokemon.attack,
+                        "spatk": pokemon.sp_attack, "def": pokemon.defense,
+                        "spdef": pokemon.sp_defense, "speed": pokemon.speed},
+                 nature=nature_name, iv=iv_config,
+                 types=[item.value for item in pokemon.pokemon_types],
+                 ability=ability_name)
         layered_state = {"buffs": [], "debuffs": [], "statuses": []}
         for direction, raw in (("up", state.buffs.or_default([])), ("down", state.debuffs.or_default([]))):
             entries = _layer_entries(raw)
@@ -763,7 +767,7 @@ class BattleSimulator:
         pokemon.ability_effects = [
             effect
             for name in dict.fromkeys(ability_names)
-            for effect in load_ability_effects(name)
+            for effect in self.catalog.get_ability_effects(name)
         ]
         pokemon.ability_state["lab_metadata"] = {
             "creature_id": item.creature_id.value if item.creature_id.known else None,
@@ -812,20 +816,12 @@ class BattleSimulator:
                 return (index,)
         raise ValueError(f"{team} 当前精灵没有技能: {action.skill_name or action.skill_id}")
 
-    def _load_skill_descriptions(self) -> None:
-        database = self.data_dir / "nrc_wiki.db"
-        if database.exists():
-            with sqlite3.connect(database) as connection:
-                for name, description in connection.execute("SELECT name, description FROM skill_catalog"):
-                    self._skill_descriptions[name] = description or ""
-            return
-        path = self.data_dir / "wiki" / "skills.csv"
-        if path.exists():
-            with path.open("r", encoding="utf-8-sig", newline="") as handle:
-                for row in csv.DictReader(handle):
-                    self._skill_descriptions[(row.get("名称") or "").strip()] = (row.get("描述") or "").strip()
-
     def _possible_branches(self, request: BattleRequest, state: BattleState) -> list[ResolutionBranch]:
+        return [ResolutionBranch(
+            "base",
+            1.0,
+            [BranchOption(BranchKey(BranchDimension.CONDITION, "base", "base"), 1.0)],
+        )]
         parsed_rules = []
         for team, side in (("a", request.own_turn), ("b", request.opponent_turn)):
             if not side or side.primary.kind != ActionKind.SKILL:
@@ -841,9 +837,6 @@ class BattleSimulator:
                     (skill.name for skill in current.skills if getattr(skill, "skill_id", "") == side.primary.skill_id),
                     None,
                 )
-            if skill_name:
-                description = self._skill_descriptions.get(skill_name, "")
-                parsed_rules.append(self._skill_parser.parse(skill_name, description))
         if not parsed_rules:
             branches = [ResolutionBranch("base", 1.0, [BranchOption(BranchKey(BranchDimension.CONDITION, "base", "无条件分支"), 1.0)])]
         else:

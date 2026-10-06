@@ -915,6 +915,10 @@ def AE(timing: Timing, effects: list, **filter_kw) -> AbilityEffect:
 
 ABILITY_EFFECTS = {
 
+    "王子的诺言": [
+        AE(Timing.PASSIVE, [T(E.ABILITY_COMPUTE, action="prince_promise")]),
+    ],
+
     # 千棘盔 — 溶解扩散
     # 战斗开始时计算携带毒系技能数量；使用水系技能后敌方获得对应层数中毒
     "溶解扩散": [

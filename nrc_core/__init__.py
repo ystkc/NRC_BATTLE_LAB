@@ -3,8 +3,10 @@
 from .actions import ActionKind, ActionIntent, SideTurnInput
 from .branching import BranchDimension, BranchKey, BranchOption
 from .devotion import DevotionInput
+from .catalog import CoreCatalog
 from .schema import BattleRequest, BattleResult
 from .core import TurnResult, simulate_turn
+from .debug import configure_core_logging, core_log
 
 
 def __getattr__(name):
@@ -29,10 +31,13 @@ __all__ = [
     "BranchKey",
     "BranchOption",
     "DevotionInput",
+    "CoreCatalog",
     "BattleRequest",
     "BattleResult",
     "TurnResult",
     "simulate_turn",
+    "configure_core_logging",
+    "core_log",
     "BattleSimulator",
     "NRCTrainingBackend",
     "UnsupportedMechanicError",

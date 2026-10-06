@@ -16,6 +16,7 @@ from typing import List, Optional, Dict, Callable, TYPE_CHECKING
 
 from nrc_core.effect_models import E, EffectTag, Timing, AbilityEffect, SkillTiming, SkillEffect
 from nrc_core.rng import choice as rng_choice, shuffle as rng_shuffle
+from nrc_core.debug import core_log
 
 if TYPE_CHECKING:
     from nrc_core.models import Pokemon, Skill, BattleState, SkillCategory
@@ -1251,7 +1252,7 @@ def _h_permanent_mod_ability(tag: EffectTag, ctx: Ctx) -> None:
         bonus_pct = per_counter * counter_count
         skill_filter = tag.params.get("skill_filter", {})
         elements = skill_filter.get("element", [])
-        from nrc_core.skill_db import _TYPE_MAP
+        from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
         for s in ctx.user.skills:
             if positions and _find_skill_index(ctx.user, s) not in positions:
                 continue
@@ -1307,8 +1308,15 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
     elif action in {"magic_hat", "sleep_context", "context_time_buff", "autumn_harvest"}:
         pokemon.ability_state[action] = True
 
+    elif action == "prince_promise":
+        current = _promise_modifiers(pokemon)
+        previous = pokemon.ability_state.get("prince_promise_snapshot")
+        if previous is not None:
+            _apply_prince_promise(pokemon, previous, ctx.state.turn)
+        pokemon.ability_state["prince_promise_snapshot"] = current
+
     elif action == "count_poison_skills":
-        from nrc_core.skill_db import _TYPE_MAP
+        from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
         from nrc_core.models import Type, has_type
         count = sum(1 for s in pokemon.skills if s.skill_type == Type.POISON)
         if not hasattr(pokemon, "ability_state"):
@@ -1477,9 +1485,9 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
 
     elif action == "copy_random_skill":
         # 复写：变成自己未携带的随机技能，能耗-2
-        from nrc_core.skill_db import get_all_skill_names, get_skill
         current_names = {s.name for s in pokemon.skills}
-        all_names = get_all_skill_names()
+        all_skills = ctx.state.catalog.all_skills() if ctx.state.catalog is not None else {}
+        all_names = list(all_skills)
         candidates = [n for n in all_names if n not in current_names]
         if candidates:
             slots = [
@@ -1489,7 +1497,7 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
             if not pokemon.ability_state.get("multiple_borrow"):
                 slots = slots[:1]
             for slot in slots:
-                chosen = get_skill(rng_choice(candidates))
+                chosen = all_skills.get(rng_choice(candidates))
                 if chosen is None:
                     continue
                 replacement = chosen.copy()
@@ -1556,7 +1564,7 @@ def _h_ability_increment_counter(tag: EffectTag, ctx: Ctx) -> None:
 def _skill_matches_ability_filter(skill: "Skill", params: Dict) -> bool:
     """判断技能是否匹配特性筛选条件。"""
     from nrc_core.models import SkillCategory
-    from nrc_core.skill_db import _TYPE_MAP
+    from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
 
     elements = params.get("element")
     if elements:
@@ -1604,7 +1612,7 @@ def _apply_matching_skill_mods(pokemon: "Pokemon", enemy: "Pokemon", params: Dic
     count_source = params.get("count_source", "")
     count = 1
     if count_source == "self_element":
-        from nrc_core.skill_db import _TYPE_MAP
+        from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
         elements = params.get("count_element", params.get("element", []))
         if not isinstance(elements, (list, tuple, set)):
             elements = [elements]
@@ -2215,7 +2223,7 @@ def _h_carry_skill_cost_reduce(tag: EffectTag, ctx: Ctx) -> None:
 
 def _h_carry_element_count_buff(tag: EffectTag, ctx: Ctx) -> None:
     """CARRY_ELEMENT_COUNT_BUFF: 每携带N个某系技能获得效果（消波块）"""
-    from nrc_core.skill_db import _TYPE_MAP
+    from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
     element = tag.params.get("element", "")
     per_skill = tag.params.get("per_skill", {})
     target_type = _TYPE_MAP.get(element)
@@ -2394,7 +2402,7 @@ def _h_entry_buff_per_skill_count(tag: EffectTag, ctx: Ctx) -> None:
         grant_agility: bool — 获得迅捷
       element_filter: list — 只对某些系别技能生效（可选）
     """
-    from nrc_core.skill_db import _TYPE_MAP
+    from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
     counts = ctx.state.skill_use_counts_a if ctx.team == "a" else ctx.state.skill_use_counts_b
     count_key = tag.params.get("count_key", "")
     count_keys = tag.params.get("count_keys", [])
@@ -3448,17 +3456,69 @@ _ABILITY_HANDLER_OVERRIDES: Dict[E, Callable] = {
 
 def _apply_tag(tag: EffectTag, ctx: Ctx, ability_mode: bool = False) -> None:
     """统一效果分发入口。ability_mode=True 时优先用特性专属 handler。"""
+    promise_before = [(pokemon, _promise_modifiers(pokemon)) for pokemon in (ctx.user, ctx.target)]
+    before = {
+        "user_hp": ctx.user.current_hp,
+        "target_hp": ctx.target.current_hp,
+        "user_energy": ctx.user.energy,
+        "target_energy": ctx.target.energy,
+        "target_poison": ctx.target.poison_stacks,
+        "target_burn": ctx.target.burn_stacks,
+    }
     if ability_mode:
         handler = _ABILITY_HANDLER_OVERRIDES.get(tag.type) or _HANDLERS.get(tag.type)
     else:
         handler = _HANDLERS.get(tag.type)
     if handler:
         handler(tag, ctx)
+    for pokemon, modifiers in promise_before:
+        _apply_prince_promise(pokemon, modifiers, ctx.state.turn)
+    core_log("ability" if ability_mode else "skill", "effect_tag",
+             turn=getattr(ctx.state, "turn", None),
+             user=ctx.user.name, target=ctx.target.name,
+             skill=ctx.skill.name if ctx.skill else None,
+             tag=getattr(tag.type, "value", str(tag.type)), params=tag.params,
+             handled=handler is not None, before=before,
+             after={
+                 "user_hp": ctx.user.current_hp,
+                 "target_hp": ctx.target.current_hp,
+                 "user_energy": ctx.user.energy,
+                 "target_energy": ctx.target.energy,
+                 "target_poison": ctx.target.poison_stacks,
+                 "target_burn": ctx.target.burn_stacks,
+             }, result=ctx.result)
 
 
 # ============================================================
 #  效果执行引擎
 # ============================================================
+
+def _promise_modifiers(pokemon: "Pokemon") -> tuple[tuple[float, ...], tuple[float, ...]]:
+    buffs = tuple(getattr(pokemon, attribute, 0) for attribute in (
+        "atk_up", "def_up", "spatk_up", "spdef_up", "speed_up", "life_drain_mod",
+        "skill_power_bonus", "skill_power_pct_mod", "hit_count_mod", "power_multiplier", "cute_stacks",
+    ))
+    debuffs = tuple(getattr(pokemon, attribute, 0) for attribute in (
+        "atk_down", "def_down", "spatk_down", "spdef_down", "speed_down",
+        "poison_stacks", "burn_stacks", "freeze_stacks", "leech_stacks", "electric_stacks",
+    ))
+    return buffs, debuffs
+
+
+def _apply_prince_promise(pokemon: "Pokemon", before: tuple, turn: int) -> None:
+    if _ability_name(pokemon) != "王子的诺言":
+        return
+    after = _promise_modifiers(pokemon)
+    for index, kind, delta in ((0, "buff", -1), (1, "debuff", 1)):
+        if not any(current > previous for current, previous in zip(after[index], before[index])):
+            continue
+        key = f"prince_promise_{kind}_turn"
+        if pokemon.ability_state.get(key) == turn:
+            continue
+        pokemon.ability_state[key] = turn
+        for skill in pokemon.skills:
+            skill.energy_cost = max(0, skill.energy_cost + _adjust_cost_delta(pokemon, delta))
+
 
 class EffectExecutor:
     """
@@ -3484,16 +3544,25 @@ class EffectExecutor:
         执行技能的全部效果。
         自动检测 effects 是 List[SkillEffect] 还是 List[EffectTag]，分别走新/旧路径。
         """
+        core_log("skill", "effect_start", turn=getattr(state, "turn", None),
+                 team=team, user=user.name, target=target.name,
+                 skill=skill.name, effect_count=len(effects or []),
+                 engine="skill_effect" if effects and isinstance(effects[0], SkillEffect) else "legacy")
         if effects and isinstance(effects[0], SkillEffect):
-            return EffectExecutor._execute_skill_se(
+            result = EffectExecutor._execute_skill_se(
                 state, user, target, skill, effects,
                 is_first=is_first, enemy_skill=enemy_skill, team=team,
             )
         # ── 旧格式: List[EffectTag] ──
-        return EffectExecutor._execute_skill_legacy(
+        else:
+            result = EffectExecutor._execute_skill_legacy(
             state, user, target, skill, effects,
             is_first=is_first, enemy_skill=enemy_skill, team=team,
-        )
+            )
+        core_log("skill", "effect_done", turn=getattr(state, "turn", None),
+                 team=team, user=user.name, target=target.name,
+                 skill=skill.name, result=result)
+        return result
 
     @staticmethod
     def _execute_skill_legacy(
@@ -3692,6 +3761,9 @@ class EffectExecutor:
             matched = True
 
         if not matched:
+            core_log("skill", "counter_miss", turn=getattr(state, "turn", None),
+                     team=team, user=user.name, target=target.name,
+                     skill=skill.name, enemy_skill=enemy_skill.name)
             return None
 
         # 应对成功：更新计数
@@ -3747,6 +3819,10 @@ class EffectExecutor:
                 power_override=power, weather=weather, hit_count_override=hit_count,
             )
 
+        core_log("skill", "counter_done", turn=getattr(state, "turn", None),
+                 team=team, user=user.name, target=target.name,
+                 skill=skill.name, enemy_skill=enemy_skill.name,
+                 result=result)
         return result
 
     # ────────────────────────────────────────
@@ -3896,6 +3972,12 @@ class EffectExecutor:
                 if tag.type == E.DAMAGE_REDUCTION:
                     result["damage_reduction"] = tag.params.get("pct", 0)
 
+            core_log("ability", "triggered", turn=getattr(state, "turn", None),
+                     team=team, pokemon=pokemon.name, enemy=enemy.name,
+                     timing=getattr(timing, "name", str(timing)),
+                     tags=[getattr(tag.type, "value", str(tag.type)) for tag in ae.effects],
+                     result=context)
+
         return result
 
     # ────────────────────────────────────────
@@ -3994,7 +4076,7 @@ class EffectExecutor:
             skill = context.get("skill")
             if not skill:
                 return False
-            from nrc_core.skill_db import _TYPE_MAP
+            from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
             elements = f["element"]
             if not isinstance(elements, (list, tuple, set)):
                 elements = [elements]
@@ -4026,6 +4108,3 @@ class EffectExecutor:
                 pass
 
         return True
-
-
-

@@ -16,6 +16,7 @@ from nrc_core.battle import (
 )
 from nrc_core.models import BattleState, SkillCategory
 from nrc_core.rng import rng_scope
+from nrc_core.debug import core_log
 
 
 @dataclass(frozen=True)
@@ -45,13 +46,17 @@ def _display_power(state: BattleState, team: str, action: tuple[int, ...]) -> di
     current = team_list[current_index]
     enemy = enemy_list[enemy_index]
     if not action or action[0] < 0 or action[0] >= len(current.skills):
-        return {"kind": "non_skill", "value": 0}
+        result = {"kind": "non_skill", "value": 0}
+        core_log("display", "action", team=team, skill=None, result=result)
+        return result
     skill = current.skills[action[0]]
     if skill.power <= 0:
-        return {"kind": "skill", "skill": skill.name, "value": 0}
+        result = {"kind": "skill", "skill": skill.name, "value": 0}
+        core_log("display", "action", team=team, skill=skill.name, result=result)
+        return result
     value = DamageCalculator.calculate(current, enemy, skill, weather=state.weather)
     details = dict(current.ability_state.get("_last_damage_details", {}))
-    return {
+    result = {
         "kind": "skill",
         "skill": skill.name,
         "base_power": skill.power,
@@ -61,6 +66,8 @@ def _display_power(state: BattleState, team: str, action: tuple[int, ...]) -> di
         "hits": details.get("hits", max(1, skill.hit_count)),
         "type_effectiveness": current.ability_state.get("_last_effectiveness", 1.0),
     }
+    core_log("display", "action", team=team, skill=skill.name, result=result)
+    return result
 
 
 def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
@@ -103,6 +110,17 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
             "display_hits": int(display_hits),
             "type_effectiveness": type_effectiveness,
         })
+        core_log(
+            "display",
+            "skill",
+            team=team,
+            slot=index,
+            skill=skill.name,
+            display_power=display_power,
+            display_energy_cost=skill.energy_cost,
+            display_hits=display_hits,
+            type_effectiveness=type_effectiveness,
+        )
     return {
         "active_index": active_index,
         "skills": displayed_skills,
@@ -111,8 +129,20 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
 def simulate_turn(state: BattleState, action_a: tuple[int, ...], action_b: tuple[int, ...], *, seed: int, clone: bool = True) -> TurnResult:
     """Execute exactly one supplied turn; episode history belongs to platform."""
     next_state = state.copy_state() if clone else state
-    next_state.turn_skill_use_counts_a.clear()
-    next_state.turn_skill_use_counts_b.clear()
+    core_log(
+        "turn",
+        "start",
+        turn=next_state.turn,
+        seed=seed,
+        active_a=next_state.team_a[next_state.current_a].name,
+        active_b=next_state.team_b[next_state.current_b].name,
+        hp_a=next_state.team_a[next_state.current_a].current_hp,
+        hp_b=next_state.team_b[next_state.current_b].current_hp,
+        energy_a=next_state.team_a[next_state.current_a].energy,
+        energy_b=next_state.team_b[next_state.current_b].energy,
+        action_a=action_a,
+        action_b=action_b,
+    )
     if not getattr(next_state, "turn_start_prepared", False):
         _trigger_battle_start_effects(next_state)
         _apply_turn_start_ability_logic(next_state)
@@ -138,6 +168,19 @@ def simulate_turn(state: BattleState, action_a: tuple[int, ...], action_b: tuple
         "mp": {"a": next_state.mp_a, "b": next_state.mp_b},
     }
     report = tuple(next_state.turn_report) + ({"type": "turn", "before": before, "after": after},)
+    core_log(
+        "turn",
+        "end",
+        turn=before["turn"],
+        next_turn=next_state.turn,
+        active_a=after["active"]["a"],
+        active_b=after["active"]["b"],
+        hp_a=after["hp"]["a"],
+        hp_b=after["hp"]["b"],
+        mp_a=after["mp"]["a"],
+        mp_b=after["mp"]["b"],
+        report_events=len(next_state.turn_report),
+    )
     return TurnResult(next_state, check_winner(next_state), report, display_power, turn_start_skill_display)
 
 

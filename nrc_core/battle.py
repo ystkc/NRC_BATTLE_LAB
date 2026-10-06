@@ -15,10 +15,10 @@ from nrc_core.models import (
     Pokemon, Skill, BattleState, Type, SkillCategory,
     StatusType, get_type_effectiveness, get_mark_stacks
 )
-from nrc_core.skill_db import get_all_skills, get_skill
 from nrc_core.effect_models import E, Timing
 from nrc_core.effect_engine import EffectExecutor, _apply_permanent_mod, _adjust_cost_delta
 from nrc_core.rng import choice as rng_choice
+from nrc_core.debug import core_log
 
 
 def _iter_flat_tags(effects):
@@ -74,6 +74,9 @@ def _apply_turn_start_ability_logic(state: BattleState) -> None:
         if current.is_fainted or not current.ability_effects:
             continue
         enemy = enemy_team[enemy_idx]
+        core_log("ability", "turn_start", turn=state.turn, team=team_id,
+                 pokemon=current.name, enemy=enemy.name,
+                 hp=current.current_hp, energy=current.energy)
         _apply_context_abilities(state, current, enemy, team_id)
         EffectExecutor.execute_ability(
             state, current, enemy, Timing.ON_TURN_START,
@@ -177,17 +180,19 @@ def _temporary_skill_cost_delta(user: Pokemon, skill: Skill) -> int:
 
 
 def _transform_to_guard_queen(pokemon: Pokemon) -> None:
-    from nrc_core.pokemon_db import get_pokemon, calc_combat_stats
+    catalog = pokemon.ability_state.get("_catalog")
+    if catalog is None:
+        return
 
     if "棋绮后" in pokemon.name:
         return
     target_name = "棋绮后（白子）" if "白子" in pokemon.name else "棋绮后（黑子）"
-    data = get_pokemon(target_name)
+    data = catalog.get_pokemon(target_name)
     if not data:
         return
 
     # 从种族值计算战斗五维，保留原个体的 IV 和性格
-    stats = calc_combat_stats(
+    stats = catalog.calc_combat_stats(
         base_hp=data["base_hp"],
         base_atk=data["base_attack"],
         base_spatk=data["base_magic_attack"],
@@ -281,6 +286,7 @@ class DamageCalculator:
                   hit_count_override: int = 0) -> int:
         power = power_override or skill.power
         if power <= 0:
+            core_log("damage", "skip", attacker=attacker.name, defender=defender.name, skill=skill.name, power=power)
             return 0
 
         # 属性克制
@@ -310,7 +316,7 @@ class DamageCalculator:
 
         effective_power = power * eff * stab * weather_mult * power_mult_buff
 
-        def calculate_path(category: SkillCategory) -> tuple[int, float]:
+        def calculate_path(category: SkillCategory) -> tuple[int, float, dict]:
             if category == SkillCategory.MAGICAL:
                 base_atk = attacker.sp_attack
                 base_def = defender.sp_defense
@@ -324,13 +330,28 @@ class DamageCalculator:
                 atk_up = attacker.atk_up
                 atk_down = attacker.atk_down
                 def_up = defender.def_up
-                def_down = defender.spdef_down
+                def_down = defender.def_down
             ability_level = (1.0 + atk_up + def_down) / max(0.1, 1.0 + atk_down + def_up)
             atk = base_atk * ability_level
             dfn = max(1.0, float(base_def))
             raw = effective_power * atk * 37 / 41
             per_hit = max(1, math.floor(math.floor(raw + 0.5) / dfn))
-            return per_hit * max(1, hits), raw
+            return per_hit * max(1, hits), raw, {
+                "category": category.value,
+                "base_attack": base_atk,
+                "base_defense": base_def,
+                "attack_modifier_up": atk_up,
+                "attack_modifier_down": atk_down,
+                "defense_modifier_up": def_up,
+                "defense_modifier_down": def_down,
+                "ability_level": ability_level,
+                "attack_used": atk,
+                "defense_used": dfn,
+                "raw_damage": raw,
+                "damage_per_hit": per_hit,
+                "hits": max(1, hits),
+                "damage": per_hit * max(1, hits),
+            }
 
         categories = (
             (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)
@@ -338,8 +359,26 @@ class DamageCalculator:
             else (skill.category,)
         )
         paths = [(calculate_path(category), category) for category in categories]
-        (damage, _), selected_category = max(paths, key=lambda item: item[0][0])
+        (damage, _, selected_path), selected_category = max(paths, key=lambda item: item[0][0])
         damage_per_hit = max(1, damage // max(1, hits))
+        enemy_positive_buff_layers = round(
+            10 * sum(max(0.0, getattr(defender, name, 0.0)) for name in (
+                "atk_up", "def_up", "spatk_up", "spdef_up", "speed_up"
+            )) + 10 * max(0.0, getattr(defender, "life_drain_mod", 0.0))
+        )
+        ability_power_multiplier = 1.0
+        paint_config = getattr(attacker, "ability_state", {}).get("enemy_tech_total_power")
+        if paint_config:
+            ability_power_multiplier += enemy_positive_buff_layers * float(paint_config.get("bonus_pct_per_layer", 0.0))
+            effective_power *= ability_power_multiplier
+            damage_paths = []
+            for category in categories:
+                path_damage, raw, path = calculate_path(category)
+                path["raw_damage"] = raw
+                path["damage"] = path_damage
+                damage_paths.append((path_damage, category, path))
+            damage, selected_category, selected_path = max(damage_paths, key=lambda item: item[0])
+            damage_per_hit = max(1, damage // max(1, hits))
         attacker.ability_state["_last_damage_details"] = {
             "effective_power": effective_power,
             "damage_per_hit": max(1, damage_per_hit),
@@ -349,9 +388,32 @@ class DamageCalculator:
             "stab": stab,
             "effectiveness": eff,
             "weather": weather_mult,
+            "type_multiplier": eff,
+            "ability_power_multiplier": ability_power_multiplier,
+            "enemy_positive_buff_layers": enemy_positive_buff_layers,
+            "formula": "floor(floor(raw_damage + 0.5) / defense_used) * hits",
+            "formula_inputs": {"constant": "37/41"},
+            "path": dict(selected_path),
         }
         # 保存属性克制到攻击方临时状态，供前端事件使用
         attacker.ability_state["_last_effectiveness"] = eff
+        core_log(
+            "damage",
+            "calculated",
+            attacker=attacker.name,
+            defender=defender.name,
+            skill=skill.name,
+            skill_category=selected_category.value,
+            base_power=power,
+            effective_power=effective_power,
+            type_multiplier=eff,
+            stab=stab,
+            weather_multiplier=weather_mult,
+            hits=max(1, hits),
+            damage_per_hit=damage_per_hit,
+            damage=damage,
+            path=selected_path,
+        )
         return max(1, int(damage))
 
 
@@ -404,7 +466,7 @@ def _transform_scope_matches(source: Skill, candidate: Skill) -> bool:
 
 def _apply_pending_skill_transforms(state: BattleState) -> None:
     """Resolve each used 巧变 slot once, immediately after the turn ends."""
-    all_skills = get_all_skills()
+    all_skills = state.catalog.all_skills() if state.catalog is not None else {}
     candidates_by_scope: dict[tuple[str, object, object], list[Skill]] = {}
     for team in (state.team_a, state.team_b):
         for pokemon in team:
@@ -554,6 +616,10 @@ def _random_disengage(state: BattleState, team: str) -> bool:
         state.switch_this_turn_b = True
     state.pending_switch_requests = [item for item in state.pending_switch_requests if item.get("team") != team]
     new_pokemon = team_list[new_index]
+    core_log("switch", "automatic", turn=state.turn, team=team,
+             from_pokemon=current.name, to_pokemon=new_pokemon.name,
+             reason="disengage", from_hp=current.current_hp,
+             to_hp=new_pokemon.current_hp)
     if "transfer_mods" in transfer_ctx:
         for attribute, value in transfer_ctx["transfer_mods"].items():
             setattr(new_pokemon, attribute, getattr(new_pokemon, attribute) + value)
@@ -672,6 +738,10 @@ def _trigger_ally_counter_effects(state: BattleState, team: str, enemy: Pokemon)
 
 
 def turn_end_effects(state: BattleState) -> None:
+    core_log("status", "turn_end_start", turn=state.turn,
+             weather=state.weather,
+             active_a=state.team_a[state.current_a].name,
+             active_b=state.team_b[state.current_b].name)
     for pokemon in state.team_a + state.team_b:
         if pokemon.is_fainted:
             pokemon.fatigue_turns += 1
@@ -722,8 +792,12 @@ def turn_end_effects(state: BattleState) -> None:
         for _tick in range(effective_ticks):
             # 中毒: 3% × 层数 (不衰减)
             if p.poison_stacks > 0:
+                hp_before = p.current_hp
                 dmg = int(p.hp * 0.03 * p.poison_stacks)
                 p.current_hp = round(p.current_hp - max(1, dmg), 2)
+                core_log("status", "poison_tick", turn=state.turn, pokemon=p.name,
+                         stacks=p.poison_stacks, damage=max(1, dmg),
+                         hp_before=hp_before, hp_after=p.current_hp)
                 _check_frostbite_lethal(p)
                 if p.is_fainted:
                     break
@@ -740,8 +814,12 @@ def turn_end_effects(state: BattleState) -> None:
             # 燃烧: 2% × 层数, 然后层数减半(最少减1层)
             # 燃薪虫煤渣草: 灼烧不衰减反而增长
             if p.burn_stacks > 0:
+                hp_before = p.current_hp
                 dmg = int(p.hp * 0.02 * p.burn_stacks)
                 p.current_hp = round(p.current_hp - max(1, dmg), 2)
+                core_log("status", "burn_tick", turn=state.turn, pokemon=p.name,
+                         stacks=p.burn_stacks, damage=max(1, dmg),
+                         hp_before=hp_before, hp_after=p.current_hp)
                 _check_frostbite_lethal(p)
                 if p.is_fainted:
                     break
@@ -896,6 +974,27 @@ def turn_end_effects(state: BattleState) -> None:
 
     # ── 印记回合结束效果 ──
     _apply_mark_turn_end(state)
+    core_log("status", "turn_end_done", turn=state.turn,
+             state_a={
+                 "name": state.team_a[state.current_a].name,
+                 "hp": state.team_a[state.current_a].current_hp,
+                 "energy": state.team_a[state.current_a].energy,
+                 "poison": state.team_a[state.current_a].poison_stacks,
+                 "burn": state.team_a[state.current_a].burn_stacks,
+                 "freeze": state.team_a[state.current_a].freeze_stacks,
+                 "leech": state.team_a[state.current_a].leech_stacks,
+             },
+             state_b={
+                 "name": state.team_b[state.current_b].name,
+                 "hp": state.team_b[state.current_b].current_hp,
+                 "energy": state.team_b[state.current_b].energy,
+                 "poison": state.team_b[state.current_b].poison_stacks,
+                 "burn": state.team_b[state.current_b].burn_stacks,
+                 "freeze": state.team_b[state.current_b].freeze_stacks,
+                 "leech": state.team_b[state.current_b].leech_stacks,
+             },
+             marks_a=state.marks_a, marks_b=state.marks_b,
+             weather=state.weather, weather_turns=state.weather_turns)
 
 
 
@@ -908,6 +1007,8 @@ def _check_fainted_and_deduct_mp(state: BattleState) -> None:
         # 诈死特性：力竭时不扣MP
         if not pa.ability_state.get("faint_no_mp_loss"):
             state.mp_a -= 1
+        core_log("turn", "faint", turn=state.turn, team="a", pokemon=pa.name,
+                 mp=state.mp_a, no_mp_loss=bool(pa.ability_state.get("faint_no_mp_loss")))
         # 触发 ON_FAINT 特性（不朽/付给恶魔的赎价等）
         if pa.ability_effects:
             EffectExecutor.execute_ability(
@@ -917,6 +1018,8 @@ def _check_fainted_and_deduct_mp(state: BattleState) -> None:
         pb.ability_state["faint_processed"] = True
         if not pb.ability_state.get("faint_no_mp_loss"):
             state.mp_b -= 1
+        core_log("turn", "faint", turn=state.turn, team="b", pokemon=pb.name,
+                 mp=state.mp_b, no_mp_loss=bool(pb.ability_state.get("faint_no_mp_loss")))
         if pb.ability_effects:
             EffectExecutor.execute_ability(
                 state, pb, pa, Timing.ON_FAINT, pb.ability_effects, "b",
@@ -1154,6 +1257,13 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
       精灵倒下后让玩家/AI选择下一只上场精灵。
     """
     state.turn_report = []
+    p_a_start = state.team_a[state.current_a]
+    p_b_start = state.team_b[state.current_b]
+    core_log("turn", "execute_start", turn=state.turn,
+             action_a=list(action_a), action_b=list(action_b),
+             active_a=p_a_start.name, active_b=p_b_start.name,
+             hp_a=p_a_start.current_hp, hp_b=p_b_start.current_hp,
+             energy_a=p_a_start.energy, energy_b=p_b_start.energy)
     # 湿润印记：回合开始时应用全队能耗减少
     if not getattr(state, "turn_start_prepared", False):
         _trigger_battle_start_effects(state)
@@ -1193,6 +1303,11 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
         else:
             first_team, second_team = "b", "a"
             first_act, second_act = action_b, action_a
+
+    core_log("turn", "action_order", turn=state.turn,
+             first_team=first_team, second_team=second_team,
+             action_first=list(first_act), action_second=list(second_act),
+             a_counter=bool(a_counters_b), b_counter=bool(b_counters_a))
 
     # ── 记录后手方精灵是否在先手行动前存活，用于判断是否被击杀 ──
     second_pokemon_before = _get_current_pokemon(state, second_team)
@@ -1246,6 +1361,15 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
     for _t in ("a", "b"):
         ability_auto_switch(state, _t, "every_turn", switch_cb_b)
     _apply_pending_skill_transforms(state)
+    core_log("turn", "execute_done", turn=state.turn,
+             next_turn=state.turn + 1,
+             active_a=state.team_a[state.current_a].name,
+             active_b=state.team_b[state.current_b].name,
+             hp_a=state.team_a[state.current_a].current_hp,
+             hp_b=state.team_b[state.current_b].current_hp,
+             energy_a=state.team_a[state.current_a].energy,
+             energy_b=state.team_b[state.current_b].energy,
+             report_count=len(state.turn_report))
     state.turn += 1
 
 
@@ -1302,6 +1426,10 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
     # 换人
     if action[0] == -2:
         old_pokemon = current
+        core_log("switch", "manual_start", turn=state.turn, team=team,
+                 from_pokemon=old_pokemon.name, from_index=idx,
+                 to_index=action[1], enemy=enemy.name,
+                 from_hp=old_pokemon.current_hp)
         switch_snapshot = current.copy_state()
         # 先保存属性快照（on_switch_out 会清零 buff）
         _snapshot_mods = {
@@ -1330,6 +1458,9 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
             state.switch_this_turn_b = True
 
         new_pokemon = team_list[action[1]]
+        core_log("switch", "manual_enter", turn=state.turn, team=team,
+                 from_pokemon=old_pokemon.name, to_pokemon=new_pokemon.name,
+                 to_hp=new_pokemon.current_hp, to_energy=new_pokemon.energy)
 
         # 洁癖: 传递属性修正
         if "transfer_mods" in transfer_ctx:
@@ -1425,11 +1556,20 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
                     break
         if not interrupted:
             current.gain_energy(5)
+        core_log("energy", "charge", turn=state.turn, team=team,
+                 pokemon=current.name, interrupted=interrupted,
+                 energy=current.energy)
         # 木桶状态：聚能也算主动行动，清除木桶
         current.ability_state.pop("barrel_active", None)
         return
 
     skill = current.skills[action[0]]
+    core_log("skill", "start", turn=state.turn, team=team,
+             pokemon=current.name, target=enemy.name, skill=skill.name,
+             skill_category=getattr(skill.category, "value", str(skill.category)),
+             power=skill.power, energy_before=current.energy,
+             energy_cost=skill.energy_cost, hit_count=skill.hit_count,
+             use_count=skill.use_count, is_first=is_first)
     transformed_restore = getattr(skill, "transform_restore", None)
 
     # ── 技能槽锁定检查（正位宝剑/宝剑王牌）──
@@ -1473,6 +1613,10 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
         + _temporary_skill_cost_delta(current, skill)
         + momentum_cost,
     )
+    core_log("energy", "cost_calculated", turn=state.turn, team=team,
+             pokemon=current.name, skill=skill.name, base_cost=skill.energy_cost,
+             actual_cost=actual_cost, energy_before=current.energy,
+             momentum_cost=momentum_cost)
     for tag in _iter_flat_tags(getattr(skill, "effects", [])):
         if tag.type == E.ENERGY_COST_DYNAMIC:
             per = tag.params.get("per", "")
@@ -1499,6 +1643,10 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
                     "team": team, "pokemon": current.name,
                     "skill": skill.name, "needed": actual_cost, "had": current.energy - 5,
                 })
+                core_log("energy", "insufficient", turn=state.turn, team=team,
+                         pokemon=current.name, skill=skill.name,
+                         needed=actual_cost, had=current.energy,
+                         fallback="hp_or_recharge")
                 return
         else:
             current.gain_energy(5)
@@ -1507,8 +1655,15 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
                 "team": team, "pokemon": current.name,
                 "skill": skill.name, "needed": actual_cost, "had": current.energy - 5,
             })
+            core_log("energy", "insufficient", turn=state.turn, team=team,
+                     pokemon=current.name, skill=skill.name,
+                     needed=actual_cost, had=current.energy,
+                     fallback="recharge")
             return
     current.energy -= actual_cost
+    core_log("energy", "paid", turn=state.turn, team=team,
+             pokemon=current.name, skill=skill.name, cost=actual_cost,
+             energy_after=current.energy)
     if transformed_restore is None and (
         getattr(skill, "transform_dynamic_scope", "")
         or getattr(skill, "transform_scope", "")
@@ -1710,6 +1865,11 @@ def _execute_new_engine(state: BattleState, team: str, enemy_team: str,
     active_index_after = state.current_a if team == "a" else state.current_b
     enemy_index_after = state.current_b if team == "a" else state.current_a
     damage_details = current.ability_state.get("_last_damage_details", {})
+    core_log("skill", "done", turn=state.turn, team=team,
+             pokemon=current.name, target=enemy.name, skill=skill.name,
+             damage=damage, target_hp=enemy.current_hp,
+             target_fainted=enemy.is_fainted,
+             result=result, damage_details=damage_details)
     state.turn_report.append({
         "type": "skill",
         "team": team,
@@ -1731,8 +1891,17 @@ def _apply_enemy_damage_reduction(enemy_skill, damage: int) -> int:
     if enemy_skill and hasattr(enemy_skill, "effects") and enemy_skill.effects:
         for e2 in _iter_flat_tags(enemy_skill.effects):
             if e2.type == E.DAMAGE_REDUCTION and damage > 0:
+                before = damage
                 pct = e2.params.get("pct", 0)
                 damage = int(damage * (1.0 - pct))
+                core_log("damage", "skill_reduction", skill=enemy_skill.name,
+                         reduction=pct, damage_before=before, damage_after=damage)
+    if enemy_skill and damage > 0 and getattr(enemy_skill, "damage_reduction", 0) > 0:
+        before = damage
+        pct = float(enemy_skill.damage_reduction)
+        damage = int(damage * (1.0 - pct))
+        core_log("damage", "legacy_skill_reduction", skill=enemy_skill.name,
+                 reduction=pct, damage_before=before, damage_after=damage)
     return damage
 
 
@@ -1847,10 +2016,17 @@ def _apply_ability_damage_reduction(state, current, enemy, skill, damage, enemy_
         )
         # 普通减伤（秩序鱿墨等）
         if ability_result.get("damage_reduction", 0) > 0:
+            before = damage
             damage = int(damage * (1.0 - ability_result["damage_reduction"]))
+            core_log("damage", "ability_reduction", turn=state.turn,
+                     attacker=current.name, defender=enemy.name, skill=skill.name,
+                     reduction=ability_result["damage_reduction"],
+                     damage_before=before, damage_after=damage)
         # 化茧免死：handler 已将 enemy.current_hp 设为 1，此处把伤害压到 0
         if ability_result.get("blocked_lethal"):
             damage = 0
+            core_log("ability", "blocked_lethal", turn=state.turn,
+                     pokemon=enemy.name, skill=skill.name)
     return damage
 
 
@@ -1866,24 +2042,38 @@ def _check_frostbite_lethal(pokemon: "Pokemon") -> None:
 
 def _apply_damage_to_enemy(state, enemy, damage: int, attacker=None, skill=None) -> None:
     """对敌方造成最终伤害。"""
+    hp_before = enemy.current_hp
+    requested_damage = damage
     if damage > 0 and not enemy.is_fainted:
         # 惊吓：攻击方能量=0时免疫伤害
         if enemy.ability_state.get("immune_zero_energy_attacker"):
             if attacker is not None and attacker.energy <= 0:
                 damage = 0
+                core_log("damage", "immune_zero_energy", pokemon=enemy.name,
+                         attacker=attacker.name, requested=requested_damage)
         # 逐魂鸟：能耗≤1的技能无法对自己造伤
         if damage > 0 and enemy.ability_state.get("immune_low_cost_attack") is not None:
             threshold = enemy.ability_state["immune_low_cost_attack"]
             if skill is not None and getattr(skill, "_last_actual_cost", skill.energy_cost) <= threshold:
                 damage = 0
+                core_log("damage", "immune_low_cost", pokemon=enemy.name,
+                         attacker=attacker.name if attacker else None,
+                         skill=skill.name if skill else None,
+                         requested=requested_damage, threshold=threshold)
         if damage > 0:
             enemy.current_hp = round(enemy.current_hp - damage, 2)
             if enemy.current_hp <= 0:
                 enemy.current_hp = 0
                 enemy.status = StatusType.FAINTED
+    core_log("damage", "applied", turn=state.turn, attacker=attacker.name if attacker else None,
+             defender=enemy.name, skill=skill.name if skill else None,
+             requested=requested_damage, applied=max(0, hp_before - enemy.current_hp),
+             hp_before=hp_before, hp_after=enemy.current_hp,
+             fainted=enemy.is_fainted)
     # 冻结实时致死：伤害后 HP 可能降到冻结阈值以下
     _check_frostbite_lethal(enemy)
     if enemy.ability_state.pop("guard_transform_pending", None):
+        enemy.ability_state["_catalog"] = state.catalog
         _transform_to_guard_queen(enemy)
 
 
@@ -2066,4 +2256,3 @@ def check_winner(state: BattleState) -> Optional[str]:
     if not alive_a and not alive_b:
         return "b"
     return None
-

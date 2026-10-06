@@ -10,7 +10,7 @@ from typing import Any, Mapping
 
 from .battle_log import BattleLogReport, _recommend
 from .population_prior import PopulationPrior
-from nrc_core.training import load_ability_effects
+from nrc_core.skill_db import load_ability_effects
 from nrc_core.pokemon_db import get_pokemon, get_pokemon_skills, search_pokemon
 
 

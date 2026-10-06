@@ -1,0 +1,13 @@
+.drawer-hp-text{font-variant-numeric:tabular-nums}
+
+@media (max-width:720px){
+  .skill-card{grid-template-columns:58px 1fr}
+  .skill-icon-wrap,.skill-icon{width:56px;height:56px}
+  .skill-cost-badge{top:21px}
+  .skill-type-badge{width:18px;height:18px}
+  .skill-power-badge{font-size:10px}
+  .skill-relation-badge{width:18px;height:18px}
+  .skill-relation-badge img{width:14px;height:14px}
+}
+
+.match-status{margin:10px 0 0;color:var(--muted);font-size:12px}.match-actions{display:flex;align-items:center;gap:16px}.match-code{display:flex;gap:6px;align-items:center}.match-code input{width:250px;padding:9px 10px;background:#0b111a;border:1px solid var(--line);border-radius:8px;color:var(--text);outline:0}.match-code input:focus{border-color:var(--mint)}.match-code .bar-button{margin-left:0}.start-button{white-space:nowrap}@media(max-width:800px){.setup-bottom{display:grid;gap:10px}.match-actions{display:grid;gap:8px}.match-code input{width:100%}.match-code{display:grid;grid-template-columns:1fr auto auto}.start-button{width:100%}}

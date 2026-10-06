@@ -52,24 +52,24 @@ class SkillCategory(Enum):
 
 # 属性克制表（data/属性克制表.md；未列出的组合均为 1 倍）
 TYPE_CHART: Dict[str, Dict[str, float]] = {
-    "normal":   {"fire": 2, "light": 2, "fighting": 2, "fairy": 0.5, "dark": 2},
-    "grass":    {"fire": 0.5, "water": 2, "light": 2, "ground": 2, "ice": 0.5, "electric": 0.5, "poison": 0.5, "bug": 0.5, "fairy": 0.5},
-    "fire":     {"normal": 0.5, "grass": 2, "water": 0.5, "ground": 0.5, "ice": 2, "bug": 2, "dark": 2, "psychic": 2},
-    "water":    {"grass": 0.5, "fire": 2, "ground": 2, "electric": 0.5, "dark": 2},
-    "light":    {"grass": 0.5, "flying": 2, "fairy": 2},
-    "ground":   {"normal": 0.5, "grass": 0.5, "fire": 2, "water": 0.5, "ice": 2, "electric": 2, "poison": 2, "fighting": 0.5, "steel": 0.5},
-    "ice":      {"grass": 2, "fire": 0.5, "light": 2, "dragon": 2, "bug": 0.5, "fighting": 2, "steel": 0.5, "dark": 0.5},
-    "dragon":   {"ice": 0.5, "dragon": 2, "fighting": 0.5},
-    "electric": {"water": 2, "ground": 0.5, "flying": 2, "bug": 2},
-    "poison":   {"grass": 2, "light": 0.5, "bug": 2, "flying": 0.5, "fairy": 0.5},
-    "bug":      {"grass": 2, "fire": 0.5, "bug": 0.5, "flying": 2, "fairy": 2, "dark": 2, "steel": 2},
-    "fighting": {"normal": 2, "light": 2, "ground": 2, "bug": 0.5, "flying": 0.5, "fairy": 2, "steel": 0.5},
-    "flying":   {"grass": 2, "ground": 0.5, "ice": 2, "poison": 0.5, "fighting": 2},
-    "fairy":    {"ice": 2, "electric": 0.5, "bug": 2, "ghost": 2, "dark": 0.5},
-    "ghost":    {"water": 2, "fairy": 2, "dark": 2, "ghost": 0.5},
-    "dark":     {"water": 0.5, "ice": 2, "dragon": 2, "electric": 0.5, "poison": 0.5, "fighting": 2, "flying": 2},
-    "steel":    {"normal": 0.5, "grass": 0.5, "fire": 0.5, "ground": 2, "ice": 2, "electric": 0.5, "fighting": 2},
-    "psychic":  {"ice": 2, "dragon": 0.5, "electric": 2, "bug": 0.5},
+    "normal":   {},
+    "grass":    {"light": 2, "ground": 2, "water": 2, "fire": 0.5, "dragon": 0.5, "poison": 0.5, "bug": 0.5, "flying": 0.5, "steel": 0.5},
+    "fire":     {"grass": 2, "ice": 2, "bug": 2, "steel": 2, "water": 0.5, "ground": 0.5, "dragon": 0.5},
+    "water":    {"fire": 2, "ground": 2, "steel": 2, "grass": 0.5, "ice": 0.5, "dragon": 0.5},
+    "light":    {"ghost": 2, "dark": 2, "grass": 0.5, "ice": 0.5},
+    "ground":   {"fire": 2, "ice": 2, "electric": 2, "poison": 2, "grass": 0.5, "fighting": 0.5},
+    "ice":      {"grass": 2, "ground": 2, "dragon": 2, "flying": 2, "fire": 0.5, "ice": 0.5, "steel": 0.5},
+    "dragon":   {"dragon": 2, "steel": 0.5},
+    "electric": {"water": 2, "flying": 2, "grass": 0.5, "ground": 0.5, "dragon": 0.5, "electric": 0.5},
+    "poison":   {"grass": 2, "fairy": 2, "ground": 0.5, "poison": 0.5, "ghost": 0.5, "steel": 0.5},
+    "bug":      {"grass": 2, "dark": 2, "psychic": 2, "fire": 0.5, "poison": 0.5, "fighting": 0.5, "flying": 0.5, "fairy": 0.5, "ghost": 0.5, "steel": 0.5},
+    "fighting": {"normal": 2, "dark": 2, "ice": 2, "ground": 2, "steel": 2, "poison": 0.5, "bug": 0.5, "flying": 0.5, "fairy": 0.5, "ghost": 0.5, "psychic": 0.5},
+    "flying":   {"bug": 2, "grass": 2, "fighting": 2, "ground": 0.5, "dragon": 0.5, "electric": 0.5, "steel": 0.5},
+    "fairy":    {"dragon": 2, "fighting": 2, "dark": 2, "fire": 0.5, "poison": 0.5, "steel": 0.5},
+    "ghost":    {"light": 2, "ghost": 2, "psychic": 2, "normal": 0.5, "dark": 0.5},
+    "dark":     {"poison": 2, "fairy": 2, "ghost": 2, "light": 0.5, "fighting": 0.5, "dark": 0.5},
+    "steel":    {"ground": 2, "ice": 2, "fairy": 2, "fire": 0.5, "water": 0.5, "electric": 0.5, "steel": 0.5},
+    "psychic":  {"poison": 2, "fighting": 2, "light": 0.5, "steel": 0.5, "psychic": 0.5},
 }
 
 # 属性映射（中文 -> Type enum）
@@ -537,6 +537,8 @@ class BattleState:
     """战斗状态"""
     team_a: List[Pokemon]
     team_b: List[Pokemon]
+    # Resolved catalog supplied by the platform; the core never loads it.
+    catalog: Any = None
     current_a: int = 0
     current_b: int = 0
     turn: int = 1
@@ -580,6 +582,9 @@ class BattleState:
     # 结构: {"a": {"水": 3, "火": 1, "状态": 5, "防御": 2, ...}, "b": {...}}
     skill_use_counts_a: Dict[str, int] = field(default_factory=dict)
     skill_use_counts_b: Dict[str, int] = field(default_factory=dict)
+    # Per-turn skill use counts, reset when the next turn begins.
+    turn_skill_use_counts_a: Dict[str, int] = field(default_factory=dict)
+    turn_skill_use_counts_b: Dict[str, int] = field(default_factory=dict)
 
     # 奉献系统 (全队共享、换人保留、无法被清除、buff不被消耗)
     # 结构: {"假寐": 2, "飞断": 1, ...}  值为层数
@@ -627,6 +632,7 @@ class BattleState:
         bs = BattleState(
             team_a=[p.copy_state() for p in self.team_a],
             team_b=[p.copy_state() for p in self.team_b],
+            catalog=self.catalog,
             current_a=self.current_a, current_b=self.current_b,
             turn=self.turn, weather=self.weather,
             mp_a=self.mp_a, mp_b=self.mp_b,
@@ -644,6 +650,8 @@ class BattleState:
             pending_switch_requests=[],
             skill_use_counts_a=dict(self.skill_use_counts_a),
             skill_use_counts_b=dict(self.skill_use_counts_b),
+            turn_skill_use_counts_a=dict(self.turn_skill_use_counts_a),
+            turn_skill_use_counts_b=dict(self.turn_skill_use_counts_b),
             devotion_a=dict(self.devotion_a),
             devotion_b=dict(self.devotion_b),
             specified_devotion_a=dict(self.specified_devotion_a),

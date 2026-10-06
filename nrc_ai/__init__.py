@@ -14,7 +14,30 @@ from .selfplay import generate_episode, generate_population_search_episode, gene
 from .online import BeliefUpdateResult, OnlineBeliefAgent, OnlineBeliefUpdater, observation_likelihood
 from .population_prior import PopulationBuild, PopulationPrior
 from .battle_log import ActionOption, BattleLogReport, BattleRound, format_review, parse_battle_log
-from .battle_prediction import build_round_setups, format_prediction_review, predict_round_setups
+try:
+    from .battle_prediction import build_round_setups, format_prediction_review, predict_round_setups
+except ImportError as exc:
+    _battle_prediction_import_error = exc
+
+    def _battle_prediction_unavailable(*args, **kwargs):
+        raise ImportError("battle_prediction requires the legacy pokemon catalog helpers") from _battle_prediction_import_error
+
+    build_round_setups = _battle_prediction_unavailable
+    format_prediction_review = _battle_prediction_unavailable
+    predict_round_setups = _battle_prediction_unavailable
+from .interface import (
+    AIInterfaceError,
+    AIPrediction,
+    ModelActionEstimate,
+    NRCAIInterface,
+    AIInterface,
+    NrcAI,
+    ObserverView,
+    create_interface,
+    normalize_observer_owners,
+    observer_mode,
+    predict_operations,
+)
 
 __all__ = [
     "CoreBackend", "CoreManifest", "Decision", "LegalAction", "Observation", "Transition",
@@ -26,4 +49,6 @@ __all__ = [
     "PopulationBuild", "PopulationPrior",
     "ActionOption", "BattleLogReport", "BattleRound", "format_review", "parse_battle_log",
     "build_round_setups", "format_prediction_review", "predict_round_setups",
+    "AIInterfaceError", "AIPrediction", "ModelActionEstimate", "NRCAIInterface", "AIInterface", "NrcAI", "ObserverView",
+    "create_interface", "normalize_observer_owners", "observer_mode", "predict_operations",
 ]

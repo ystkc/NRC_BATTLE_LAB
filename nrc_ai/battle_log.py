@@ -133,6 +133,10 @@ def _name_after_label(text: str, label: str) -> str | None:
 
 def parse_battle_log(path: str | Path) -> BattleLogReport:
     path = Path(path)
+    if not path.exists() and not path.is_absolute():
+        project_root = Path(__file__).resolve().parents[1]
+        candidates = (project_root / "data" / "manual_battles" / path, project_root / path)
+        path = next((candidate for candidate in candidates if candidate.exists()), path)
     lines = path.read_text(encoding="utf-8").splitlines()
     own_label = "\u6211\u65b9"
     enemy_label = "\u654c\u65b9"
