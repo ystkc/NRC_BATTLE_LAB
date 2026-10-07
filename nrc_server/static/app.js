@@ -102,8 +102,22 @@ function hydrateOwnRoster(roster) {
   else if (state.selectedStart >= state.teams.own.length) state.selectedStart = state.teams.own.length - 1;
 }
 
+function parseCreatureQueryLegacy(value) {
+  const tokens = String(value || '').trim().split(/[\s,，]+/).filter(Boolean);
+  let numberStart = tokens.length;
+  while (numberStart && /^\d+$/.test(tokens[numberStart - 1])) numberStart -= 1;
+  const numbers = tokens.slice(numberStart);
+  if (numbers.length && ![1, 6].includes(numbers.length)) return { name: '', stats: null, invalid: true };
+  const fields = ['hp', 'atk', 'def', 'spatk', 'spdef', 'speed'];
+  const stats = {};
+  (numbers.length === 1 ? ['hp'] : fields).forEach((field, index) => { if (numbers[index] != null) stats[field] = Number(numbers[index]); });
+  return { name: tokens.slice(0, numberStart).join(' '), stats, invalid: false };
+}
+
 function searchRows(value, category = 'pokemon') {
-  const query = String(value || '').trim().toLowerCase();
+  const parsed = category === 'pokemon' ? parseCreatureQuery(value) : { name: String(value || '').trim(), invalid: false };
+  if (parsed.invalid) return [];
+  const query = parsed.name.toLowerCase();
   if (!query) return [];
   if (category === 'pokemon') {
     const pokemon = choiceMatches(state.catalog.pokemon, query).map((row) => ({ ...row, kind: 'pokemon' }));
@@ -114,6 +128,18 @@ function searchRows(value, category = 'pokemon') {
     return skills;
   }
   if (category === 'all') return [...searchRows(value, 'pokemon'), ...searchRows(value, 'skill')]
+}
+
+function parseCreatureQuery(value) {
+  const tokens = String(value || '').trim().split(/[\s,\uFF0C]+/).filter(Boolean);
+  let numberStart = tokens.length;
+  while (numberStart && /^\d+$/.test(tokens[numberStart - 1])) numberStart -= 1;
+  const numbers = tokens.slice(numberStart);
+  if (numbers.length && ![1, 6].includes(numbers.length)) return { name: '', stats: null, invalid: true };
+  const fields = ['hp', 'atk', 'def', 'spatk', 'spdef', 'speed'];
+  const stats = {};
+  (numbers.length === 1 ? ['hp'] : fields).forEach((field, index) => { if (numbers[index] != null) stats[field] = Number(numbers[index]); });
+  return { name: tokens.slice(0, numberStart).join(' '), stats, invalid: false };
 }
 
 function renderSuggestions(inputId, boxId) {
@@ -149,8 +175,6 @@ function renderTeam(side) {
 }
 
 function renderSetup() {
-  renderTeam('own');
-  renderTeam('opponent');
   const battle = state.battle;
   const ownerNeedsSubmit = battle && state.side === 'own' && !battle.roster_submitted;
   const needsConfirmation = Boolean(battle && !battle.confirmed && !ownerNeedsSubmit);
@@ -169,13 +193,15 @@ function renderSetup() {
   else status.textContent = '我方首发已确认，等待对方确认';
 }
 
-function addCreature(name) {
+function addCreature(name, stats = {}) {
   const row = pokemonRow(name);
   if (!row || state.teams.own.length >= 6 || state.teams.own.some((item) => item.base_name === row.name)) return false;
   const form = row.forms[0];
-  state.teams.own.push({ name: form.name, base_name: row.name, form, skills: (form.default_skills || form.skills || []).slice(0, 4).map((skill) => ({ name: typeof skill === 'string' ? skill : skill.name })) });
+  const base = Object.keys(stats).length ? { stats: { ...stats } } : {};
+  state.teams.own.push({ name: form.name, base_name: row.name, form, base, skills: (form.default_skills || form.skills || []).slice(0, 4).map((skill) => ({ name: typeof skill === 'string' ? skill : skill.name })) });
   saveSession();
   renderSetup();
+  renderTeam('own');
   return true;
 }
 
@@ -217,6 +243,7 @@ async function joinBattle() {
   state.teams.own = [];
   state.selectedStart = 0;
   renderSetup();
+  renderTeam('opponent');
   await refreshLobby();
 }
 
@@ -263,8 +290,7 @@ async function refreshLobby() {
     else { renderSetup(); startLobbyPolling(); }
   } catch (error) {
     if (error.status === 404) {
-      clearSession();
-      renderSetup();
+      reset();
       toast('对局已失效，请重新创建或加入');
     } else toast(error.message);
   }
@@ -277,6 +303,7 @@ async function refreshOpponentRoster() {
   const old = state.teams.opponent || [];
   state.teams.opponent = (data.roster || []).map((item, index) => hydrateTeamItem(item, old[index]));
   renderSetup();
+  renderTeam('opponent');
 }
 
 function startLobbyPolling() {
@@ -519,11 +546,7 @@ async function refreshBattle({ refreshDisplay = false, animateEvents = false } =
     }
   } catch (error) {
     if (error.status === 404) {
-      clearSession();
-      closeDrawer();
-      $('#battle').classList.add('hidden');
-      $('#setup').classList.remove('hidden');
-      renderSetup();
+      reset();
       toast('对局已失效，请重新创建或加入');
     } else toast(error.message);
   }
@@ -562,6 +585,8 @@ function reset() {
   $('#battle').classList.add('hidden');
   $('#setup').classList.remove('hidden');
   renderSetup();
+  renderTeam('own');
+  renderTeam('opponent');
 }
 
 async function restoreSession() {
@@ -574,6 +599,8 @@ async function restoreSession() {
   hydrateOwnRoster(saved.teams || []);
   state.selectedStart = saved.selectedStart ?? 0;
   renderSetup();
+  renderTeam('own');
+  renderTeam('opponent');
   await refreshLobby();
 }
 
@@ -595,7 +622,7 @@ function editorFieldMarkup(field, value, choices) {
 function choiceMatches(choices, query) {
   const text = String(query || '').trim().toLowerCase();
   if (!text) return choices;
-  let result = choices.filter((choice) => [choice.name, choice.initials].some((value) => value.includes(text)));
+  let result = choices.filter((choice) => [choice.name, choice.initials, choice.pinyin, ...(choice.aliases || [])].some((value) => String(value || '').toLowerCase().includes(text)));
   if (result.length < 5) {
     result = [...result, ...choices.filter((choice) => choice.pinyin.includes(text))];
   }
@@ -819,12 +846,13 @@ function renderCreaturePreview(data) {
   const stats = data.stats || {};
   const stat_icons = data.stat_icons || {};
   const entries = [
-    ['hp', 'HP'], ['atk', 'ATK'], ['def', 'DEF'],
-    ['spatk', 'M.ATK'], ['spdef', 'M.DEF'], ['speed', 'SPD'],
+    ['hp', 'HP'], ['def', 'DEF'],
+    ['atk', 'ATK'], ['spdef', 'M.DEF'], 
+    ['spatk', 'M.ATK'], ['speed', 'SPD'],
   ];
-  const statHtml = entries.map(([key, label]) => `<div class="preview-stat"><img src="${esc(stat_icons[key] || '')}" alt="${label}"><b>${label}</b><span>${esc(stats[key] ?? '-')}</span></div>`).join('');
+  const statHtml = entries.map(([key, label]) => `<div class="preview-stat"><img src="${esc(stat_icons[key] || '')}" alt="${label}"><b>${label}</b><span>${esc(data.stats_known?.[key] === false ? '?' : (stats[key] ?? '-'))}</span></div>`).join('');
   const bloodline = (data.bloodline_attributes || []).join(' / ');
-  $('#preview-card').innerHTML = `<img class="preview-art" src="${esc(data.portrait || '')}" alt=""><div class="preview-title"><b>${esc(data.name || '')}</b><span>${esc(data.nature || '')}</span></div><div class="preview-bloodline">${data.bloodline_icon ? `<img src="${esc(data.bloodline_icon)}" alt="">` : ''}<span>${esc(bloodline || '-')}</span></div><div class="preview-stats">${statHtml}</div>`;
+  $('#preview-card').innerHTML = `<img class="preview-art" src="${esc(data.portrait || '')}" alt=""><div class="preview-title"><b>${esc(data.name || '')}</b><span>${esc(data.nature || '?')}</span></div><div class="preview-bloodline">${data.bloodline_icon ? `<img src="${esc(data.bloodline_icon)}" alt="">` : ''}<span>${esc(bloodline || '-')}</span></div><div class="preview-stats">${statHtml}</div>`;
 }
 
 function previewForms(index) {
@@ -898,7 +926,7 @@ document.addEventListener('keydown', (event) => {
     cyclePreviewForm(event.shiftKey ? -1 : 1);
     return;
   }
-  if (event.key !== 'Tab') return;
+  if (event.key !== 'Tab' && event.key !== 'Enter') return;
   const editorInput = event.target.closest('[data-editor-autocomplete]');
   if (editorInput) {
     const box = editorInput.parentElement.querySelector('[data-editor-suggest]');
@@ -910,13 +938,16 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   const searchInput = event.target.closest('#own-search, #quick-search');
-  if (!searchInput) return;
+  if (searchInput) handleSearchInput(searchInput);
+});
+
+function handleSearchInput(searchInput) {
   const box = $(searchInput.id === 'own-search' ? '#own-suggest' : '#quick-suggest');
   const first = box?.querySelector('[data-suggest-kind]');
   if (first) {
     event.preventDefault();
     if (first.dataset.suggestKind === 'pokemon') {
-      addCreature(first.dataset.suggestName);
+      addCreature(first.dataset.suggestName, parseCreatureQuery(searchInput.value).stats || {});
       searchInput.value = '';
       renderSuggestions(`#${searchInput.id}`, searchInput.id === 'own-search' ? '#own-suggest' : '#quick-suggest');
     } else {
@@ -924,7 +955,7 @@ document.addEventListener('keydown', (event) => {
       box.classList.add('hidden');
     }
   }
-});
+}
 
 document.addEventListener('click', (event) => {
   const removeAptitudeButton = event.target.closest('[data-remove-aptitude]');
@@ -946,8 +977,8 @@ document.addEventListener('click', (event) => {
   }
   const suggestion = event.target.closest('[data-suggest-kind]');
   if (suggestion && suggestion.dataset.suggestKind === 'pokemon') {
-    addCreature(suggestion.dataset.suggestName);
-    renderSetup();
+    const searchInput = suggestion.parentElement?.parentElement?.querySelector('input');
+    addCreature(suggestion.dataset.suggestName, parseCreatureQuery(searchInput?.value || '').stats || {});
     $('#own-search').value = '';
     $('#quick-search').value = '';
     renderSuggestions('#own-search', '#own-suggest');
@@ -955,7 +986,7 @@ document.addEventListener('click', (event) => {
     return;
   }
   const remove = event.target.closest('[data-remove-index]');
-  if (remove) { state.teams.own.splice(Number(remove.dataset.removeIndex), 1); if (state.selectedStart >= state.teams.own.length) state.selectedStart = Math.max(0, state.teams.own.length - 1); closeCreatureEditor(); saveSession(); renderSetup(); return; }
+  if (remove) { state.teams.own.splice(Number(remove.dataset.removeIndex), 1); if (state.selectedStart >= state.teams.own.length) state.selectedStart = Math.max(0, state.teams.own.length - 1); closeCreatureEditor(); saveSession(); renderSetup(); renderTeam('own'); return; }
   const editorForm = event.target.closest('[data-editor-form]');
   if (editorForm) {
     const index = Number($('#hover-card').dataset.floatingEditIndex);
@@ -1039,6 +1070,10 @@ $('#charge').addEventListener('click', () => submitAction('charge'));
     $('#catalog-status').textContent = `${state.catalog.pokemon.length} 精灵 · ${state.catalog.skills.length} 技能`;
     renderSetup();
     await restoreSession();
+    $('#quick-search').disabled = false;
+    $('#quick-search').placeholder = "快速索引：精灵 / 技能 / 拼音";
+    $('#own-search').disabled = false;
+    $('#own-search').placeholder = "精灵名称 / 拼音 / 首字母";
   } catch (error) {
     $('#catalog-status').textContent = 'INDEX ERROR';
     toast(error.message);

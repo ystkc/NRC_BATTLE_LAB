@@ -16,13 +16,13 @@
 .editor-entry button{background:none;color:var(--muted);font-size:16px;line-height:1}
 .editor-entry button:hover{color:var(--red)}
 .editor-autocomplete+.hover-help,.editor-field>.hover-help{margin-top:5px}
-.preview-card{position:fixed;z-index:70;pointer-events:none;width:250px;padding:10px;background:#101a28f5;border:1px solid #586981;border-radius:12px;box-shadow:0 15px 50px #000b}
+.preview-card{position:fixed;z-index:70;pointer-events:none;width:200px;padding:10px;background:#101a28f5;border:1px solid #586981;border-radius:12px;box-shadow:0 15px 50px #000b}
 .preview-card .preview-art{width:100%;height:110px;object-fit:contain;background:#0a111a;border-radius:9px}
 .preview-card .preview-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px}
 .preview-card .preview-title b{font-size:13px}
 .preview-card .preview-bloodline{display:flex;align-items:center;gap:6px;margin-top:7px;color:var(--muted);font-size:10px}
 .preview-card .preview-bloodline img{width:20px;height:20px;object-fit:contain}
-.preview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}
+.preview-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:9px}
 .preview-stat{display:grid;grid-template-columns:20px 1fr;align-items:center;column-gap:4px;padding:4px;background:#172437;border-radius:6px;font-size:10px}
 .preview-stat img{width:18px;height:18px;object-fit:contain}
 .preview-stat b{font-size:9px;color:var(--muted);font-weight:600}

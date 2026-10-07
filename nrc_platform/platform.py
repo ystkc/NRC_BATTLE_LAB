@@ -5,10 +5,14 @@ from __future__ import annotations
 import copy
 import math
 import random
+import re
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Mapping, Sequence
+import logging
+
+from pypinyin import Style, lazy_pinyin
 
 from nrc_ai.contracts import CoreManifest, Decision, LegalAction, Observation, Transition
 from nrc_core.battle import DamageCalculator
@@ -20,6 +24,7 @@ from nrc_core.skill_db import get_skill
 from nrc_core.training import NRCTrainingBackend, TrainingState
 
 from .catalog import load_catalog
+from .input import merge_creature_spec
 from nrc_core.codec import creature_from_dict
 
 
@@ -81,6 +86,38 @@ class _Catalog:
     def __init__(self, catalog):
         self.catalog = catalog
 
+    @staticmethod
+    def _base_name(name: str) -> str:
+        return re.split(r"[\(\uff08]", str(name), maxsplit=1)[0].strip()
+
+    @classmethod
+    def _aliases(cls, name: str) -> set[str]:
+        base = cls._base_name(name)
+        return {
+            str(name).casefold(),
+            base.casefold(),
+            "".join(lazy_pinyin(base)).casefold(),
+            "".join(lazy_pinyin(base, style=Style.FIRST_LETTER)).casefold(),
+        }
+
+    def resolve_pokemon(self, value: Any) -> Mapping[str, Any] | None:
+        text = str(value or "").strip()
+        if not text:
+            return None
+        direct = self.catalog.get_pokemon(text)
+        if direct:
+            return direct
+        query = text.casefold()
+        legacy_number = _LEGACY_POKEMON_ALIASES.get(query)
+        legacy_match = None
+        for name, record in self.catalog.pokemon.items():
+            canonical = str(record.get("name") or name)
+            if query in self._aliases(canonical):
+                return record
+            if legacy_number and str(record.get("catalog_number")) == legacy_number and legacy_match is None:
+                legacy_match = record
+        return legacy_match
+
     def normalize_team(self, raw: Any, *, allow_unknown: bool) -> dict[str, Any]:
         if isinstance(raw, Mapping):
             team = copy.deepcopy(dict(raw))
@@ -100,12 +137,13 @@ class _Catalog:
         return team
 
     def _normalize_creature(self, creature: dict[str, Any], index: int, allow_unknown: bool) -> None:
+        creature.update(merge_creature_spec(creature))
         name = _known_value(creature.get("display_name")) or _known_value(creature.get("name"))
         if not name:
             if not allow_unknown:
                 raise PlatformError("unknown_required_field", "creature name is required", {"index": index})
             return
-        record = get_pokemon(str(name))
+        record = self.resolve_pokemon(name)
         if record is None:
             if not allow_unknown:
                 raise PlatformError("invalid_roster", f"unknown creature {name!r}", {"index": index})
@@ -134,10 +172,15 @@ class BattlePlatform:
         self._backend = NRCTrainingBackend(environment=environment, catalog=catalog)
         self._catalog = _Catalog(catalog)
         self._battles: dict[str, _ManagedBattle] = {}
+        self.logger = logging.getLogger(__name__)
 
     @property
     def manifest(self) -> CoreManifest:
         return self._backend.manifest
+
+    def resolve_pokemon(self, value: Any) -> Mapping[str, Any] | None:
+        """Resolve a canonical creature record or a pinyin alias."""
+        return self._catalog.resolve_pokemon(value)
 
     # Legacy nrc_ai training contract.
     def new_game(self, setup: Mapping[str, Any], seed: int) -> PlatformState:
@@ -393,12 +436,17 @@ class BattlePlatform:
 
     def preview_creature(self, creature: Mapping[str, Any]) -> PlatformResult:
         """Resolve one roster entry with the same combat-attribute path as battles."""
-        raw = copy.deepcopy(dict(creature))
+        self.logger.info("Provided_infos: %s", creature.__str__())
+        raw = merge_creature_spec(copy.deepcopy(dict(creature)))
         name = str(raw.get("name") or raw.get("display_name") or "").strip()
         if not name:
             raise PlatformError("invalid_roster", "creature name is required")
+        record = self._catalog.resolve_pokemon(name)
+        if record is None:
+            raise PlatformError("invalid_roster", f"unknown creature {name!r}")
+        name = str(record.get("name") or name)
+        raw["name"] = name
         if not raw.get("skills"):
-            record = self._catalog.catalog.get_pokemon(name) or {}
             raw["skills"] = [{"name": str(skill)} for skill in list(record.get("skills", ()))[:4]]
         parsed = creature_from_dict(raw)
         warnings: list[str] = []
@@ -408,6 +456,7 @@ class BattlePlatform:
         bloodline = metadata.get("bloodline_attributes") or []
         if isinstance(bloodline, str):
             bloodline = [bloodline]
+        self.logger.info("Pokemon info; %s", pokemon.__str__())
         stats = {
             "hp": int(pokemon.hp),
             "atk": int(pokemon.attack),
@@ -416,11 +465,22 @@ class BattlePlatform:
             "spdef": int(pokemon.sp_defense),
             "speed": int(pokemon.speed),
         }
+        base = raw.get("base") or {}
+        stats_input_values = dict(base.get("stats") or {})
+        stats_input = bool(stats_input_values)
+        single_hp_input = set(stats_input_values) == {"hp"}
+        nature_known = bool(base.get("nature"))
+        individual_values_known = bool(base.get("individual_values"))
         return PlatformResult(
             name=pokemon.name,
             hp=int(pokemon.hp),
             stats=stats,
-            nature=pokemon.nature,
+            stats_known={key: (True if single_hp_input else (key in stats_input_values if stats_input else True)) for key in stats},
+            nature=pokemon.nature if nature_known or not stats_input else None,
+            individual_values=copy.deepcopy(base.get("individual_values")) if individual_values_known else None,
+            nature_known=nature_known or not stats_input,
+            individual_values_known=individual_values_known,
+            stats_input=stats_input,
             bloodline_attributes=list(bloodline),
             warnings=warnings,
             unknowns=unknowns,

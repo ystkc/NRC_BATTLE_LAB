@@ -32,3 +32,14 @@ for durable replay or reconnect support.
 ## 增量战报同步
 
 战斗页面通过 `GET /api/battles/{battle_id}/operation` 轮询双方是否已提交操作；只有回合结算后才请求状态和技能展示数据。战报通过 `GET /api/battles/{battle_id}/events?since={cursor}` 使用游标增量读取：首次进入只建立历史，不播放旧战报，之后只播放游标之后的新事件。
+## Direct stat input
+
+The roster search accepts a creature name followed by either one HP value or
+six values in this order: `hp atk def spatk spdef speed`. Examples:
+
+- `bbh 420` supplies only HP.
+- `hjcts 440 380 250 280 390 100` supplies all six combat stats.
+
+Direct stat input does not invent a nature or individual values. With one HP
+value, the other five stats use the database formula with zero aptitude and a
+neutral nature; with six values, all six values are used exactly as entered.

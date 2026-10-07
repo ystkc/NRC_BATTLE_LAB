@@ -17,6 +17,7 @@ import json
 import random
 from dataclasses import dataclass
 from typing import Any, Optional
+import logging
 
 from nrc_core.battle import (
     _skill_has_counter_for,
@@ -193,6 +194,7 @@ class BattleSimulator:
             except FileNotFoundError:
                 catalog = None
         self.catalog = catalog or EMPTY_CATALOG
+        self.logger = logging.getLogger(__name__)
 
     def resolve_turn(self, request: BattleRequest | dict[str, Any]) -> BattleResult:
         if isinstance(request, dict):
@@ -631,9 +633,24 @@ class BattleSimulator:
         except Exception:
             db_record = None
         provided_stats = item.base.stats.known and item.base.stats.exists and bool(item.base.stats.value)
-        stats = item.base.stats.value if provided_stats else None
+        stats = dict(item.base.stats.value) if provided_stats else None
+        partial_stats = provided_stats and set(stats) == {"hp"}
+        if partial_stats:
+            item.metadata = {**(item.metadata or {}), "attribute_assumption": "neutral"}
         nature_name, iv_config, attribute_assumption = self._resolve_combat_config(item, name, provided_stats)
-        if not stats:
+        if partial_stats:
+            if db_record:
+                self.logger.info("Database record: %s", db_record.__str__())
+                default_stats = calc_combat_stats(
+                    db_record["base_hp"], db_record["base_attack"], db_record["base_magic_attack"],
+                    db_record["base_defense"], db_record["base_magic_defense"], db_record["base_speed"],
+                    iv_config=iv_config,
+                    nature_name=nature_name,
+                )
+            else:
+                default_stats = {"hp": 100, "atk": 100, "def": 100, "spatk": 100, "spdef": 100, "speed": 100}
+            stats = {**default_stats, **stats}
+        elif not stats:
             if db_record:
                 stats = calc_combat_stats(
                     db_record["base_hp"], db_record["base_attack"], db_record["base_magic_attack"],

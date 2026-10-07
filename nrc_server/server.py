@@ -9,6 +9,10 @@ import uuid
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Mapping
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 from fastapi import FastAPI, Query, Request
 from fastapi.responses import FileResponse, JSONResponse
@@ -20,6 +24,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from nrc_platform import BattlePlatform
+from nrc_platform.input import merge_creature_spec
 from nrc_platform.platform import PlatformError
 from nrc_core.pokemon_nature_table import NATURE_BONUSES
 
@@ -225,6 +230,10 @@ def _base_name(name: str) -> str:
     return re.split(r'[（(]', str(name), maxsplit=1)[0].strip()
 
 
+def _base_name(name: str) -> str:
+    return re.split(r"[\(\uff08]", str(name), maxsplit=1)[0].strip()
+
+
 def _pinyin(value: str) -> tuple[str, str]:
     syllables = lazy_pinyin(value)
     return "".join(syllables), "".join(lazy_pinyin(value, style=Style.FIRST_LETTER))
@@ -310,8 +319,9 @@ def _catalog_index(platform: BattlePlatform, data_root: Path) -> dict[str, Any]:
             "pinyin": pinyin,
             "initials": initials,
             "customization": _customization_options(catalog, name),
+            "aliases": ["bbh"] if _pinyin(_base_name(name))[1].casefold() == "bbh" else [],
         })
-    pokemon = [{"name": base, "pinyin": _pinyin(base)[0], "initials": _pinyin(base)[1], "forms": values} for base, values in sorted(forms.items())]
+    pokemon = [{"name": base, "pinyin": _pinyin(base)[0], "initials": _pinyin(base)[1], "aliases": sorted({alias for form in values for alias in form.get("aliases", [])}), "forms": values} for base, values in sorted(forms.items())]
     skills = []
     for name, skill in catalog.skills.items():
         element = getattr(getattr(skill, "skill_type", None), "value", "normal")
@@ -329,9 +339,9 @@ def _catalog_index(platform: BattlePlatform, data_root: Path) -> dict[str, Any]:
         })
     return {"pokemon": pokemon, "skills": sorted(skills, key=lambda row: row["name"])}
 
-def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
+def create_app() -> FastAPI:
     app = FastAPI(title="NRC Battle Server")
-    app.state.platform = platform or BattlePlatform()
+    app.state.platform = BattlePlatform()
     app.state.sessions: dict[str, dict[str, Any]] = {}
     data_root = ROOT / "data"
     static_root = Path(__file__).resolve().parent / "static"
@@ -381,11 +391,12 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
             record = _resolve_record(app.state.platform, name)
             if record is None:
                 return JSONResponse({"error": "pokemon not found"}, status_code=404)
-            creature = {
-                "name": record["name"],
+            creature = merge_creature_spec({
+                "name": name,
                 "base": copy.deepcopy(payload.get("base") or {}),
                 "skills": copy.deepcopy(payload.get("skills") or []),
-            }
+            })
+            creature["name"] = record["name"]
             result = app.state.platform.preview_creature(creature)
             form_name = result.get("name", record["name"])
             bloodline = next(iter(result.get("bloodline_attributes") or []), "")
@@ -673,6 +684,10 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
 
 
 def _resolve_record(platform: BattlePlatform, name: str) -> Mapping[str, Any] | None:
+    parsed = merge_creature_spec({"name": name})
+    direct = platform.resolve_pokemon(parsed.get("name", ""))
+    if direct:
+        return direct
     catalog = platform._catalog.catalog
     direct = catalog.get_pokemon(name)
     if direct:
@@ -704,6 +719,7 @@ def _normalize_roster(platform: BattlePlatform, raw: Any, *, allow_empty: bool) 
     for item in raw:
         if isinstance(item, str): item = {"name": item}
         if not isinstance(item, dict): continue
+        item = merge_creature_spec(item)
         record = _resolve_record(platform, str(item.get("name", "")).strip())
         if record is None: raise ValueError(f"unknown creature: {item.get('name')}")
         name = str(record["name"]); base = _base_name(name)

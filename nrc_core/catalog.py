@@ -9,8 +9,19 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any, Mapping
+import numpy as np
+import logging
+logger = logging.getLogger(__name__)
+
 
 from .models import Skill
+from .pokemon_nature_table import get_nature_bonus
+from .constant import PVP_APTITUDES_MULTIPLIER
+MUL_BASE_HP = np.float16(1.7)
+MUL_IV_HP = np.float16(0.85)
+MUL_BASE_OTHER = np.float16(1.1)
+MUL_IV_OTHER = np.float16(0.55)
+
 
 
 def calc_combat_stats(
@@ -20,54 +31,37 @@ def calc_combat_stats(
     base_def: float,
     base_spdef: float,
     base_speed: float,
-    iv_config: Mapping[str, int] | None = None,
+    iv_config: Mapping[str, int] | None = None, # Individual value，忽略资质等直接输入个体特值
     nature_name: str = "",
 ) -> dict[str, int]:
-    """Calculate stats from already-resolved catalog values."""
-    iv = {key: int(value) for key, value in (iv_config or {}).items()}
-    nature_bonus = {"hp": 0.0, "attack": 0.0, "defense": 0.0,
-                    "sp_attack": 0.0, "sp_defense": 0.0, "speed": 0.0}
+    """Calculate stats from already-resolved catalog values.
+    生命=四舍五入[1.7×种族值+个体资质值×0.85+70]×四舍五入（1+性格修正）+100
+其他=四舍五入[1.1×种族值+个体资质值×0.55+10]×四舍五入（1+性格修正）+50
+为了在极端边界条件下（例如种族值105，个体资质值0，无性格修正）保持和游戏内计算结果一致，需要严格使用float16类型"""
     try:
-        from .pokemon_nature_table import get_nature_bonus
-        raw_bonus = get_nature_bonus(nature_name)
-        nature_bonus.update({
-            "hp": raw_bonus.get("hp", 0.0),
-            "attack": raw_bonus.get("atk", 0.0),
-            "defense": raw_bonus.get("defense", 0.0),
-            "sp_attack": raw_bonus.get("sp_atk", 0.0),
-            "sp_defense": raw_bonus.get("sp_defense", 0.0),
-            "speed": raw_bonus.get("speed", 0.0),
-        })
-    except (ImportError, KeyError):
-        aliases = {
-            "brave": ("attack", 0.2), "attack_up": ("attack", 0.2),
-            "bold": ("defense", 0.2), "defense_up": ("defense", 0.2),
-            "modest": ("sp_attack", 0.2), "sp_attack_up": ("sp_attack", 0.2),
-            "calm": ("sp_defense", 0.2), "sp_defense_up": ("sp_defense", 0.2),
-            "timid": ("speed", 0.2), "speed_up": ("speed", 0.2),
+        iv = {key: int(value) * PVP_APTITUDES_MULTIPLIER for key, value in (iv_config or {}).items()}
+        logger.info("individual value: %s", iv)
+        nature_bonus = get_nature_bonus(nature_name)
+
+        def rounded(value: float) -> int:
+            return int(value + 0.5)
+
+        def other(base: float, key: str) -> int:
+            result = rounded(rounded(MUL_BASE_OTHER * base + MUL_IV_OTHER * iv[key] + 10) * (1 + nature_bonus[key])) + 50
+            return result
+        
+        hp_result = rounded(rounded(MUL_BASE_HP * base_hp + MUL_IV_HP * iv["hp"] + 70) * (1 + nature_bonus["hp"])) + 100
+        return {
+            "hp": hp_result,
+            "atk": other(base_atk, "atk"),
+            "spatk": other(base_spatk, "spatk"),
+            "def": other(base_def, "def"),
+            "spdef": other(base_spdef, "spdef"),
+            "speed": other(base_speed, "speed"),
         }
-        if nature_name in aliases:
-            key, value = aliases[nature_name]
-            nature_bonus[key] = value
-
-    def rounded(value: float) -> int:
-        return int(value + 0.5)
-
-    def other(base: float, key: str, attribute: str) -> int:
-        growth = base * 0.01 + iv.get(key, 0) * 0.005
-        intermediate = rounded(10 + growth * 110)
-        return rounded(intermediate * (1 + nature_bonus[attribute]) + 50)
-
-    hp_growth = base_hp * 0.01 + iv.get("hp", 0) * 0.005
-    hp_intermediate = rounded(70 + hp_growth * 170)
-    return {
-        "hp": rounded(hp_intermediate * (1 + nature_bonus["hp"]) + 100),
-        "atk": other(base_atk, "atk", "attack"),
-        "spatk": other(base_spatk, "spatk", "sp_attack"),
-        "def": other(base_def, "def", "defense"),
-        "spdef": other(base_spdef, "spdef", "sp_defense"),
-        "speed": other(base_speed, "speed", "speed"),
-    }
+    except Exception:
+        import traceback
+        traceback.print_exc()
 
 
 @dataclass(frozen=True)
