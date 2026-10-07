@@ -20,6 +20,7 @@ from nrc_core.skill_db import get_skill
 from nrc_core.training import NRCTrainingBackend, TrainingState
 
 from .catalog import load_catalog
+from nrc_core.codec import creature_from_dict
 
 
 class PlatformError(ValueError):
@@ -388,6 +389,41 @@ class BattlePlatform:
             skills=skills,
             assumptions=[],
             warnings=[],
+        )
+
+    def preview_creature(self, creature: Mapping[str, Any]) -> PlatformResult:
+        """Resolve one roster entry with the same combat-attribute path as battles."""
+        raw = copy.deepcopy(dict(creature))
+        name = str(raw.get("name") or raw.get("display_name") or "").strip()
+        if not name:
+            raise PlatformError("invalid_roster", "creature name is required")
+        if not raw.get("skills"):
+            record = self._catalog.catalog.get_pokemon(name) or {}
+            raw["skills"] = [{"name": str(skill)} for skill in list(record.get("skills", ()))[:4]]
+        parsed = creature_from_dict(raw)
+        warnings: list[str] = []
+        unknowns: list[str] = []
+        pokemon = self._backend._simulator._creature_to_legacy(parsed, name, warnings, unknowns)
+        metadata = pokemon.ability_state.get("lab_metadata", {})
+        bloodline = metadata.get("bloodline_attributes") or []
+        if isinstance(bloodline, str):
+            bloodline = [bloodline]
+        stats = {
+            "hp": int(pokemon.hp),
+            "atk": int(pokemon.attack),
+            "def": int(pokemon.defense),
+            "spatk": int(pokemon.sp_attack),
+            "spdef": int(pokemon.sp_defense),
+            "speed": int(pokemon.speed),
+        }
+        return PlatformResult(
+            name=pokemon.name,
+            hp=int(pokemon.hp),
+            stats=stats,
+            nature=pokemon.nature,
+            bloodline_attributes=list(bloodline),
+            warnings=warnings,
+            unknowns=unknowns,
         )
 
     def get_legal_actions(self, battle_id: str, side: str) -> PlatformResult:

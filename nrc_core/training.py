@@ -155,9 +155,26 @@ def _pokemon_json(pokemon: Pokemon, index: int, active: bool, private: bool) -> 
         "entry_count": pokemon.entry_count,
     }
     if private:
+        boost_fields = {
+            "攻击提升": pokemon.atk_up, "攻击降低": pokemon.atk_down,
+            "物防提升": pokemon.def_up, "物防降低": pokemon.def_down,
+            "魔攻提升": pokemon.spatk_up, "魔攻降低": pokemon.spatk_down,
+            "魔防提升": pokemon.spdef_up, "魔防降低": pokemon.spdef_down,
+            "速度提升": pokemon.speed_up, "速度降低": pokemon.speed_down,
+        }
         result.update({
             "ability": pokemon.ability,
             "skills": [_skill_json(skill, slot) for slot, skill in enumerate(pokemon.skills)],
+            "boosts": {name: value for name, value in boost_fields.items() if value},
+            "conditions": {
+                "poison": pokemon.poison_stacks,
+                "burn": pokemon.burn_stacks,
+                "freeze": pokemon.freeze_stacks,
+                "leech": pokemon.leech_stacks,
+                "electric": pokemon.electric_stacks,
+                "meteor": pokemon.meteor_stacks,
+                "cute": pokemon.cute_stacks,
+            },
             "stats": {
                 "hp": pokemon.hp,
                 "attack": pokemon.attack,

@@ -30,6 +30,8 @@ TYPE_NAMES = {
     "steel": "机械", "fairy": "萌", "light": "光",
 }
 
+HIDDEN_EVENT_TYPES = {"display_power", "ability_candidate", "weather_candidate", "counter_candidate"}
+
 MANUAL_LOADOUTS = {
     "画间沉铁兽": ["连续爪击", "反击拳", "幻象", "鼓劲"],
     "蹦蹦花": ["毒誓", "见招拆招", "反击拳", "蜡质膜"],
@@ -85,7 +87,7 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
     for entry in session.get("history", []):
         turn = entry.get("turn", "")
         for raw in entry.get("events", []):
-            if raw.get("type") in {"display_power", "ability_candidate", "weather_candidate", "counter_candidate"}:
+            if raw.get("type") in HIDDEN_EVENT_TYPES:
                 continue
             event = _swap_team_code(copy.deepcopy(dict(raw)), side)
             event.setdefault("turn", turn)
@@ -115,8 +117,18 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
                         actions = state.get("actions")
                         if isinstance(actions, dict) and "b" in actions:
                             actions["b"] = {"kind": actions["b"].get("kind", "unknown")}
+            event["event_index"] = len(result)
             result.append(event)
     return result
+
+
+def _visible_event_count(session: Mapping[str, Any]) -> int:
+    return sum(
+        1
+        for entry in session.get("history", [])
+        for event in entry.get("events", [])
+        if event.get("type") not in HIDDEN_EVENT_TYPES
+    )
 
 
 def _selection_event(platform: BattlePlatform, battle_id: str, side: str, action_key: str, turn: int) -> dict[str, Any]:
@@ -141,16 +153,27 @@ def _redact_observation(data: Mapping[str, Any]) -> dict[str, Any]:
     """Keep only information a player is allowed to learn about the opponent."""
     result = copy.deepcopy(dict(data))
     opponent = []
-    active_item = next((item for item in result.get("opponent_team", []) if item.get("active")), None)
-    if active_item is not None:
-        max_hp = active_item.get("max_hp")
-        hp = active_item.get("hp")
-        hp_percent = None if not max_hp or hp is None else max(0, min(100, round(float(hp) / float(max_hp) * 100)))
-        opponent.append({
-            "active": True,
-            "hp_percent": hp_percent,
-            "energy": active_item.get("energy"),
-        })
+    for item in result.get("opponent_team", []):
+        visible = {
+            "index": item.get("index"),
+            "name": item.get("name"),
+            "types": item.get("types", []),
+            "active": bool(item.get("active")),
+            "fainted": bool(item.get("fainted")),
+            "status": item.get("status"),
+            "poison_stacks": item.get("poison_stacks", 0),
+            "burn_stacks": item.get("burn_stacks", 0),
+            "freeze_stacks": item.get("freeze_stacks", 0),
+            "frostbite_damage": item.get("frostbite_damage", 0),
+            "electric_stacks": item.get("electric_stacks", 0),
+            "cute_stacks": item.get("cute_stacks", 0),
+        }
+        if visible["active"]:
+            max_hp = item.get("max_hp")
+            hp = item.get("hp")
+            visible["hp_percent"] = None if not max_hp or hp is None else max(0, min(100, round(float(hp) / float(max_hp) * 100)))
+            visible["energy"] = item.get("energy")
+        opponent.append(visible)
     result["opponent_team"] = opponent
     return result
 
@@ -194,7 +217,8 @@ def _public_summary(session: Mapping[str, Any], side: str | None = None) -> dict
         "pending": bool(own_side and own_side in pending),
         "terminal": bool(session.get("terminal")),
         "winner": winner,
-        "events": _visible_events(session, own_side or "own"),
+        "event_count": _visible_event_count(session),
+        "roster": copy.deepcopy(teams.get(own_side) or []) if own_side else [],
     }
 
 def _base_name(name: str) -> str:
@@ -229,6 +253,11 @@ def _asset(root: Path, directory: str, name: str, *, portrait: bool = False) -> 
     return "/assets/" + directory + "/" + candidates[0].name
 
 
+def _asset_exact(root: Path, directory: str, filename: str) -> str | None:
+    path = root / directory / filename
+    return f"/assets/{directory}/{filename}" if path.is_file() else None
+
+
 def _distribution_options(catalog: Any, name: str, kind: str) -> list[dict[str, Any]]:
     rows = catalog.get_distribution(name, kind)
     return [{"name": str(row.get("item", "")), "percentage": float(row.get("percentage", 0))} for row in rows if row.get("item")]
@@ -247,7 +276,21 @@ def _customization_options(catalog: Any, name: str) -> dict[str, Any]:
         nature: {key: float(value) for key, value in values.items() if float(value)}
         for nature, values in NATURE_BONUSES.items()
     }
-    return {"natures": nature_rows, "nature_bonus": bonus, "bloodlines": bloodline_rows, "aptitudes": aptitude_rows}
+    def enrich(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        result = []
+        for row in rows:
+            item = dict(row)
+            pinyin, initials = _pinyin(str(item.get("name", "")))
+            item.update({"pinyin": pinyin, "initials": initials})
+            result.append(item)
+        return result
+
+    return {
+        "natures": enrich(nature_rows),
+        "nature_bonus": bonus,
+        "bloodlines": enrich(bloodline_rows),
+        "aptitudes": enrich(aptitude_rows),
+    }
 
 
 def _catalog_index(platform: BattlePlatform, data_root: Path) -> dict[str, Any]:
@@ -282,6 +325,7 @@ def _catalog_index(platform: BattlePlatform, data_root: Path) -> dict[str, Any]:
             "energy_cost": int(skill.energy_cost),
             "power": int(skill.power),
             "icon": _asset(data_root, "skill_icons", name),
+            "description": str(getattr(skill, "description", "") or catalog.skill_descriptions.get(name, "")),
         })
     return {"pokemon": pokemon, "skills": sorted(skills, key=lambda row: row["name"])}
 
@@ -329,6 +373,40 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
         except Exception as error:
             return _error_response(error)
 
+    @app.post("/api/pokemon/preview")
+    async def pokemon_preview(request: Request) -> Any:
+        try:
+            payload = await request.json()
+            name = str(payload.get("name") or "").strip()
+            record = _resolve_record(app.state.platform, name)
+            if record is None:
+                return JSONResponse({"error": "pokemon not found"}, status_code=404)
+            creature = {
+                "name": record["name"],
+                "base": copy.deepcopy(payload.get("base") or {}),
+                "skills": copy.deepcopy(payload.get("skills") or []),
+            }
+            result = app.state.platform.preview_creature(creature)
+            form_name = result.get("name", record["name"])
+            bloodline = next(iter(result.get("bloodline_attributes") or []), "")
+            stat_files = {
+                "hp": "\u751f\u547d.png",
+                "atk": "\u653b\u51fb.png",
+                "def": "\u7269\u9632.png",
+                "spatk": "\u9b54\u653b.png",
+                "spdef": "\u9b54\u9632.png",
+                "speed": "\u901f\u5ea6.png",
+            }
+            result.update({
+                "portrait": _asset(data_root, "spirit_icons", form_name, portrait=True),
+                "art": _asset(data_root, "spirit_icons", form_name),
+                "bloodline_icon": _asset(data_root, "icon_blood", bloodline) if bloodline else None,
+                "stat_icons": {key: _asset_exact(data_root, "icon_aptitudes", filename) for key, filename in stat_files.items()},
+            })
+            return result
+        except Exception as error:
+            return _error_response(error)
+
     @app.post("/api/battles")
     async def create_battle(request: Request) -> Any:
         try:
@@ -373,6 +451,28 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
             return JSONResponse({"error": "battle not found"}, status_code=404)
         current = _view_side(session, request, allow_legacy=True)
         return _public_summary(session, current[1] if current else None)
+
+    @app.get("/api/battles/{battle_id}/opponent-roster")
+    def opponent_roster(battle_id: str, request: Request) -> Any:
+        try:
+            session = _session(app, battle_id)
+            current = _view_side(session, request, allow_legacy=True)
+            if not current:
+                raise ValueError("player token is required")
+            side = current[1]
+            other_side = "opponent" if side == "own" else "own"
+            teams = session.get("teams") or {}
+            return {
+                "battle_id": battle_id,
+                "side": side,
+                "opponent_side": other_side,
+                "submitted": bool((session.get("roster_submitted") or {}).get(other_side)),
+                "confirmed": bool((session.get("confirmed") or {}).get(other_side)),
+                "active_index": (session.get("active_index") or {}).get(other_side),
+                "roster": copy.deepcopy(teams.get(other_side) or []),
+            }
+        except Exception as error:
+            return _error_response(error)
 
     @app.post("/api/battles/{battle_id}/rosters")
     async def set_rosters(battle_id: str, request: Request) -> Any:
@@ -439,7 +539,21 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
             session = _session(app, battle_id)
             current = _view_side(session, request)
             actual_side = current[1] if current else side
-            return app.state.platform.get_display_info(battle_id, actual_side)
+            result = app.state.platform.get_display_info(battle_id, actual_side)
+            for skill in result.get("skills", []):
+                name = str(skill.get("name") or "")
+                meta = app.state.platform._catalog.catalog.skills.get(name)
+                element = getattr(getattr(meta, "skill_type", None), "value", "normal")
+                multiplier = skill.get("type_effectiveness")
+                relation = "无" if multiplier is None else "双重克制" if float(multiplier) > 2 else "克制" if float(multiplier) > 1 else "双重抵抗" if 0 < float(multiplier) < 0.5 else "抵抗" if 0 < float(multiplier) < 1 else "无"
+                skill.update({
+                    "icon": _asset(data_root, "skill_icons", name),
+                    "description": str(getattr(meta, "description", "") or ""),
+                    "element": TYPE_NAMES.get(element, element),
+                    "type_icon": _asset(data_root, "dept_icons", TYPE_NAMES.get(element, element)),
+                    "effect_icon": _asset(data_root, "icon_dept_relation", relation),
+                })
+            return result
         except Exception as error:
             return _error_response(error)
 
@@ -462,7 +576,54 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
             result = app.state.platform.get_public_observation(battle_id, actual_side)
             if result.get("data"):
                 result["data"] = _redact_observation(result["data"])
+                for item in result["data"].get("opponent_team", []):
+                    item["portrait"] = _asset(data_root, "spirit_icons", str(item.get("name") or ""), portrait=True)
+                    item["art"] = _asset(data_root, "spirit_icons", str(item.get("name") or ""))
             return result
+        except Exception as error:
+            return _error_response(error)
+
+    @app.get("/api/battles/{battle_id}/operation")
+    def operation(battle_id: str, request: Request, since: int = Query(default=-1)) -> Any:
+        try:
+            session = _session(app, battle_id)
+            current = _view_side(session, request, allow_legacy=True)
+            if not current:
+                raise ValueError("player token is required")
+            side = current[1]
+            opponent = "opponent" if side == "own" else "own"
+            pending = set(session.get("pending") or [])
+            decision_index = int(session.get("decision_index", 0))
+            return {
+                "battle_id": battle_id,
+                "side": side,
+                "own_pending": side in pending,
+                "opponent_pending": opponent in pending,
+                "resolved": since >= 0 and decision_index != since,
+                "decision_index": decision_index,
+                "turn": session.get("turn", 1),
+                "phase": session.get("phase", "waiting_for_players"),
+                "terminal": bool(session.get("terminal")),
+            }
+        except Exception as error:
+            return _error_response(error)
+
+    @app.get("/api/battles/{battle_id}/events")
+    def battle_events(battle_id: str, request: Request, since: int = Query(default=0)) -> Any:
+        try:
+            session = _session(app, battle_id)
+            current = _view_side(session, request, allow_legacy=True)
+            if not current:
+                raise ValueError("player token is required")
+            events = _visible_events(session, current[1])
+            cursor = max(0, min(int(since), len(events)))
+            return {
+                "battle_id": battle_id,
+                "side": current[1],
+                "events": events[cursor:],
+                "cursor": len(events),
+                "total": len(events),
+            }
         except Exception as error:
             return _error_response(error)
 
@@ -470,12 +631,17 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
     async def select_action(battle_id: str, request: Request) -> Any:
         try:
             session = _session(app, battle_id)
-            payload = await request.json(); side = str(payload.get("side", "")); key = str(payload.get("action_key", ""))
-            if session["terminal"]: raise ValueError("battle has ended")
+            payload = await request.json()
+            side = str(payload.get("side", ""))
+            key = str(payload.get("action_key", ""))
+            if session["terminal"]:
+                raise ValueError("battle has ended")
             current = _view_side(session, request)
             actual_side = current[1] if current else side
-            if actual_side not in {"own", "opponent"} or not key: raise ValueError("side and action_key are required")
-            if actual_side in session["pending"]: raise ValueError("that side already locked an action")
+            if actual_side not in {"own", "opponent"} or not key:
+                raise ValueError("side and action_key are required")
+            if actual_side in session["pending"]:
+                raise ValueError("that side already locked an action")
             selection_event = _selection_event(app.state.platform, battle_id, actual_side, key, session["turn"])
             result = app.state.platform.submit_selection(battle_id, actual_side, key, request_id=str(uuid.uuid4()))
             session["history"].append({
@@ -485,15 +651,20 @@ def create_app(*, platform: BattlePlatform | None = None) -> FastAPI:
             session["pending"].append(actual_side)
             session["next_required"] = list(result.next_required)
             if result.resolved:
-                events = list((result.result or {}).get("events", [])); session["history"].append({"turn": session["turn"], "events": events})
+                events = list((result.result or {}).get("events", []))
+                session["history"].append({"turn": session["turn"], "events": events})
                 snapshot = app.state.platform.get_public_observation(battle_id, "own")
-                session["turn"] = snapshot.turn; session["phase"] = result.phase; session["decision_index"] = result.decision_index
-                session["pending"] = []; session["terminal"] = bool(result.terminated); session["winner"] = result.winner
+                session["turn"] = snapshot.turn
+                session["phase"] = result.phase
+                session["decision_index"] = result.decision_index
+                session["pending"] = []
+                session["terminal"] = bool(result.terminated)
+                session["winner"] = result.winner
                 if not session["terminal"]:
                     session["history"].append({"turn": session["turn"], "events": [{"type": "round_start", "turn": session["turn"]}]})
             response = result.to_dict()
             response["side"] = actual_side
-            response["events"] = _visible_events(session, actual_side)
+            response["event_count"] = _visible_event_count(session)
             return response
         except Exception as error:
             return _error_response(error)
