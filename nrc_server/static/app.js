@@ -85,14 +85,39 @@ function skillMeta(name) { return state.catalog.skills.find((skill) => skill.nam
 function asset(name, kind) { return formFor(name)?.[kind] || ''; }
 const TYPE_NAMES = { normal: '普通', fire: '火', water: '水', electric: '电', grass: '草', ice: '冰', fighting: '武', poison: '毒', ground: '地', flying: '翼', psychic: '幻', bug: '虫', ghost: '幽', dragon: '龙', dark: '恶', steel: '机械', fairy: '萌', light: '光' };
 const BUFF_ICONS = { atk_up: '物攻.png', def_up: '物防.png', spatk_up: '魔攻.png', spdef_up: '魔防.png', speed_up: '速度.png', atk_down: '物攻.png', def_down: '物防.png', spatk_down: '魔攻.png', spdef_down: '魔防.png', speed_down: '速度.png', poison: '中毒.png', burn: '灼烧.png', freeze: '冻结.png', leech: '寄生.png', electric: '引电.png', meteor: '星陨印记.png', cute: '萌化.png' };
+const RELATION_NAMES = { immune: '无', very_resistant: '双重抵抗', resistant: '抵抗', normal: '平衡', effective: '克制', super_effective: '双重克制', unknown: '无' };
+const EFFECT_NAMES = { poison: '中毒', burn: '灼烧', freeze: '冻结', leech: '寄生', electric: '引电', meteor: '星陨印记', cute: '萌化', hp: '生命', energy: '能量', status: '状态', fainted: '力竭', ability: '特性' };
 function typeKey(value) { const text = String(value || '').toLowerCase(); return TYPE_NAMES[text] || text.replace('系', '') || '普通'; }
 function typeIcon(value) { return `/assets/dept_icons/${encodeURIComponent(typeKey(value))}.png`; }
 function buffIcon(name) { const filename = BUFF_ICONS[name]; return filename ? `/assets/icon_buff/${encodeURIComponent(filename)}` : ''; }
+function relationIcon(value) {
+  if (typeof value === 'string' && value.startsWith('/assets/')) return value;
+  const key = String(value || 'unknown');
+  return `/assets/icon_dept_relation/${encodeURIComponent(RELATION_NAMES[key] || key)}.svg`;
+}
+function relationLabel(value) { return RELATION_NAMES[String(value || 'unknown')] || String(value || '无'); }
+function effectName(value) { return EFFECT_NAMES[String(value)] || String(value || '').replaceAll('_', ' '); }
 
 function hydrateTeamItem(item, previous = {}) {
   const name = item?.name || previous.name || '';
   const form = formFor(name) || previous.form || item?.form || null;
-  return { ...previous, ...item, name, base_name: item?.base_name || previous.base_name || form?.base_name || baseName(name), form };
+  const result = { ...previous, ...item, name, base_name: item?.base_name || previous.base_name || form?.base_name || baseName(name), form };
+  ensureDefaultCustomization(result);
+  return result;
+}
+
+function ensureDefaultCustomization(item) {
+  if (!item || !item.form) return item;
+  const customization = item.form.customization || {};
+  item.base = { ...(item.base || {}) };
+  if (!item.base.bloodline_attributes?.length && customization.bloodlines?.[0]?.name) {
+    item.base.bloodline_attributes = [customization.bloodlines[0].name];
+  }
+  if (!Object.keys(item.base.individual_values || {}).length) {
+    const aptitudes = (customization.aptitudes || []).slice(0, 3);
+    if (aptitudes.length) item.base.individual_values = Object.fromEntries(aptitudes.map((aptitude) => [aptitudeField(aptitude.name), 8]));
+  }
+  return item;
 }
 
 function hydrateOwnRoster(roster) {
@@ -198,7 +223,9 @@ function addCreature(name, stats = {}) {
   if (!row || state.teams.own.length >= 6 || state.teams.own.some((item) => item.base_name === row.name)) return false;
   const form = row.forms[0];
   const base = Object.keys(stats).length ? { stats: { ...stats } } : {};
-  state.teams.own.push({ name: form.name, base_name: row.name, form, base, skills: (form.default_skills || form.skills || []).slice(0, 4).map((skill) => ({ name: typeof skill === 'string' ? skill : skill.name })) });
+  const item = { name: form.name, base_name: row.name, form, base, skills: (form.default_skills || form.skills || []).slice(0, 4).map((skill) => ({ name: typeof skill === 'string' ? skill : skill.name })) };
+  ensureDefaultCustomization(item);
+  state.teams.own.push(item);
   saveSession();
   renderSetup();
   renderTeam('own');
@@ -221,6 +248,69 @@ function rosterPayload() {
   return state.teams.own.map((item) => ({ name: item.name, base: normalizedBase(item), skills: selectedSkills(item) }));
 }
 
+async function exportRoster() {
+  if (!state.teams.own.length) return toast('请先添加至少一只精灵');
+  const payload = {
+    format: 'nrc-roster-v1',
+    selectedStart: state.selectedStart ?? 0,
+    roster: rosterPayload(),
+  };
+  const code = JSON.stringify(payload);
+  const field = $('#roster-code');
+  field.value = code;
+  field.focus();
+  field.select();
+  try {
+    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(code);
+    toast('阵容 Base64 已生成并复制');
+  } catch {
+    toast('阵容 Base64 已生成');
+  }
+}
+
+function importRoster() {
+  if (state.battle && (state.battle.initialized || state.battle.confirmed || state.battle.roster_submitted)) {
+    return toast('当前对局已提交阵容，无法导入');
+  }
+  const code = $('#roster-code').value.trim();
+  if (!code) return toast('请先粘贴阵容 Base64');
+  try {
+    const decoded = JSON.parse(code);
+    const payload = Array.isArray(decoded) ? { roster: decoded, selectedStart: 0 } : decoded;
+    if (payload?.format && payload.format !== 'nrc-roster-v1') {
+      throw new Error('不支持的阵容格式');
+    }
+    if (!payload || !Array.isArray(payload.roster) || payload.roster.length < 1 || payload.roster.length > 6) {
+      throw new Error('阵容数量必须为 1-6 只');
+    }
+    const rosterNames = new Set();
+    const imported = payload.roster.map((entry, index) => {
+      if (!entry || typeof entry !== 'object' || typeof entry.name !== 'string') {
+        throw new Error(`第 ${index + 1} 项精灵数据无效`);
+      }
+      const row = pokemonRow(entry.name);
+      const form = formFor(entry.name) || row?.forms?.[0];
+      if (!row || !form) throw new Error(`找不到精灵：${entry.name}`);
+      if (rosterNames.has(row.name)) throw new Error(`阵容重复选择：${row.name}`);
+      rosterNames.add(row.name);
+      const skills = Array.isArray(entry.skills) ? entry.skills.map((skill) => ({ name: typeof skill === 'string' ? skill : skill?.name })).filter((skill) => skill.name) : [];
+      if (skills.length > 4) throw new Error(`精灵 ${entry.name} 的技能超过 4 个`);
+      const item = { name: form.name, base_name: row.name, form, base: entry.base && typeof entry.base === 'object' ? entry.base : {}, skills };
+      ensureDefaultCustomization(item);
+      return item;
+    });
+    state.teams.own = imported;
+    state.selectedStart = Math.max(0, Math.min(imported.length - 1, Number(payload.selectedStart) || 0));
+    closeCreatureEditor();
+    saveSession();
+    renderSetup();
+    renderTeam('own');
+    toast('阵容导入成功');
+  } catch (error) {
+    toast(`导入失败：${error.message || '无效的 Base64'}`);
+  }
+}
+
 function storeAuth(data) {
   state.playerToken = data.player_token || state.playerToken;
   state.side = data.side || state.side;
@@ -232,7 +322,8 @@ async function createBattle() {
   const created = await api('/api/battles', { method: 'POST', body: JSON.stringify({ mode: 'full', seed: Number($('#seed').value) || 1002 }) });
   storeAuth(created);
   renderSetup();
-  toast(`对局已创建：${created.battle_id}`);
+  copyBattleId();
+  toast(`对局已创建，对战 id 已复制`);
 }
 
 async function joinBattle() {
@@ -336,6 +427,7 @@ function startBattlePolling() {
 }
 
 function mergeObservation(data) {
+  state.shared = data?.shared || {};
   const own = data?.own_team || [];
   const old = state.teams.own || [];
   state.teams.own = own.map((item, index) => ({ ...old[index], ...item, form: old[index]?.form || formFor(item.name) }));
@@ -363,6 +455,7 @@ function renderSide(side) {
   $(`#${prefix}-active-art`).src = item.portrait || asset(item.name, 'portrait') || asset(item.name, 'art');
   $(`#${prefix}-active-types`).innerHTML = (item.types || []).map((type) => `<img class="field-type" src="${esc(typeIcon(type))}" alt="${esc(typeKey(type))}" title="${esc(typeKey(type))}">`).join('');
   const effects = [];
+  const addEffect = (name, value = '', icon = '') => effects.push({ name: effectName(name), value, icon });
   const conditions = item.conditions || {
     poison: item.poison_stacks,
     burn: item.burn_stacks,
@@ -370,14 +463,34 @@ function renderSide(side) {
     electric: item.electric_stacks,
     cute: item.cute_stacks,
   };
-  Object.entries(conditions).forEach(([name, value]) => { if (Number(value) > 0) effects.push({ name, value }); });
+  Object.entries(conditions).forEach(([name, value]) => { if (Number(value) > 0) addEffect(name, value, buffIcon(name)); });
   const boosts = item.boosts || {};
   Object.entries(boosts).forEach(([name, value]) => {
     const iconName = name.includes('攻击') ? (name.includes('魔') ? 'spatk_up' : 'atk_up') : name.includes('物防') ? 'def_up' : name.includes('魔防') ? 'spdef_up' : 'speed_up';
-    effects.push({ name, value, icon: buffIcon(iconName) });
+    addEffect(name, value, buffIcon(iconName));
   });
-  if (item.status && item.status !== 'normal' && item.status !== '正常') effects.push({ name: item.status, value: 1 });
-  $(`#${prefix}-effects`).innerHTML = effects.map(({ name, value, icon }) => `<span class="field-effect"><img src="${esc(icon || buffIcon(name))}" alt="${esc(name)}" title="${esc(name)}"><small>${esc(value)}</small></span>`).join('');
+  (Array.isArray(item.debuffs) ? item.debuffs : Object.entries(item.debuffs || {}).map(([name, stacks]) => ({ name, stacks }))).forEach((entry) => {
+    const name = entry?.name || entry?.stat || 'debuff';
+    const value = entry?.stacks ?? entry?.value ?? 0;
+    if (Number(value) > 0) addEffect(name, value, buffIcon(name));
+  });
+  (item.statuses || []).forEach((entry) => {
+    const name = entry?.name || entry;
+    const value = entry?.stacks ?? entry?.value ?? 1;
+    if (Number(value) > 0) addEffect(name, value, buffIcon(name));
+  });
+  (item.ability_states || []).forEach((entry) => {
+    if (Number(entry?.stacks ?? 1) > 0) addEffect(entry.name, entry.stacks ?? 1, '');
+  });
+  const runtime = item.ability_state || {};
+  (item.skills || []).forEach((skill) => {
+    const base = Number(skillMeta(skill.name).energy_cost);
+    const current = Number(skill.current_energy_cost ?? skill.energy_cost);
+    if (Number.isFinite(base) && Number.isFinite(current) && current !== base) addEffect(`技能能耗 ${skill.name}`, `${current}${current > base ? ` (+${current - base})` : ` (${current - base})`}`, '');
+  });
+  if (side === 'own') Object.entries(state.shared?.marks || {}).forEach(([name, value]) => { if (Number(value) > 0) addEffect(`印记 ${name}`, value, ''); });
+  if (item.status && item.status !== 'normal' && item.status !== '正常') addEffect(item.status, 1, buffIcon(item.status));
+  $(`#${prefix}-effects`).innerHTML = effects.map(({ name, value, icon }) => `<span class="field-effect" title="${esc(name)}"><span class="field-effect-icon">${icon ? `<img src="${esc(icon)}" alt="${esc(name)}">` : esc(name)}</span><small>${esc(value)}</small></span>`).join('');
   const box = $(`#${prefix}-pips`);
   box.innerHTML = Array.from({ length: 6 }, (_, index) => `<i class="pip ${team[index] ? 'owned' : ''} ${team[index]?.fainted ? 'fainted' : ''} ${index === (team.activeIndex || 0) ? 'active-pip' : ''}></i>`).join('');
 }
@@ -386,8 +499,15 @@ function renderSkills() {
   $('#skills').innerHTML = (state.display.skills || []).map((skill, index) => {
     const meta = skillMeta(skill.name);
     const type = skill.element || meta.element || meta.element_key || 'normal';
-    return `<button class="skill-card" data-skill-name="${esc(skill.name)}" data-battle-action="skill:slot=${skill.skill_slot ?? index}" ${state.pending || state.resolving ? 'disabled' : ''}><span class="skill-icon-wrap"><img class="skill-icon" src="${esc(skill.icon || meta.icon || '')}" alt=""><span class="skill-cost-badge">${esc(skill.display_energy_cost ?? meta.energy_cost)}</span><span class="skill-power-badge">${skill.display_power > 0 ? skill.display_power : '-'}</span><img class="skill-type-badge" src="${esc(skill.type_icon || typeIcon(type))}" alt="${esc(typeKey(type))}">${skill.effect_icon ? `<img class="skill-relation-badge" src="${esc(skill.effect_icon)}" alt="效果">` : ''}</span><span class="skill-copy"><b class="skill-name">${esc(skill.name)}</b><small class="skill-kind">${esc(meta.category || '技能')}</small></span></button>`;
+    const relation = skill.effect_indicator || (skill.type_effectiveness == null ? 'unknown' : skill.type_effectiveness > 2 ? 'super_effective' : skill.type_effectiveness > 1 ? 'effective' : skill.type_effectiveness < 0.5 ? 'very_resistant' : skill.type_effectiveness < 1 ? 'resistant' : 'normal');
+    return `<button class="skill-card" data-skill-name="${esc(skill.name)}" data-battle-action="skill:slot=${skill.skill_slot ?? index}" ${state.pending || state.resolving ? 'disabled' : ''}><span class="skill-icon-wrap"><img class="skill-icon" src="${esc(skill.icon || meta.icon || '')}" alt=""><span class="skill-cost-badge">${esc(skill.display_energy_cost ?? meta.energy_cost)}</span><span class="skill-power-badge">${skill.display_power > 0 ? skill.display_power : '-'}</span><img class="skill-type-badge" src="${esc(skill.type_icon || typeIcon(type))}" alt="${esc(typeKey(type))}"><img class="skill-relation-badge" src="${esc(relationIcon(skill.effect_icon || relation))}" alt="${esc(relationLabel(relation))}" title="${esc(relationLabel(relation))}"></span><span class="skill-copy"><b class="skill-name">${esc(skill.name)}</b><small class="skill-kind">${esc(meta.category || '技能')}</small></span></button>`;
   }).join('');
+}
+
+function formatDisplayNumber(value) {
+  if (value == null || value === '') return '-';
+  const number = Number(value);
+  return Number.isFinite(number) ? number.toFixed(1) : String(value);
 }
 
 function updateBattleMeta() {
@@ -432,13 +552,23 @@ function eventText(event) {
   if (event.type === 'skill') {
     const details = [];
     if (event.final_power != null) details.push(`威力 ${event.final_power}`);
-    if (event.final_damage != null) details.push(`造成 ${event.final_damage} 伤害`);
+    if (event.final_damage != null) details.push(`造成 ${event.final_damage} 伤害${event.effect_indicator && event.effect_indicator !== 'normal' ? `（${relationLabel(event.effect_indicator)}）` : ''}`);
+    if (event.damage_per_hit != null && Number(event.hits || 1) > 1) details.push(`${event.damage_per_hit}/段 × ${event.hits}`);
     if (event.remaining_energy != null) details.push(`剩余能量 ${event.remaining_energy}`);
     return `[${actor}使用技能] ${event.team === 'b' ? '完成' : (event.skill || '技能')}${details.length ? `，${details.join('，')}` : ''}`;
   }
   if (event.type === 'switch' || event.switched_to || event.target_switched_to) return `[${actor}切换精灵] ${event.switched_to || event.target_switched_to || '未知精灵'}`;
   if (event.type === 'turn') return `[回合结束] 第${event.after?.turn || event.turn || '?'}回合`;
   if (event.type === 'status') return `[状态结算] ${event.status || event.message || '状态变化'}`;
+  if (event.type === 'state_change') {
+    const changes = (event.changes || []).map((change) => {
+      const before = change.before == null ? '-' : change.before;
+      const after = change.after == null ? '-' : change.after;
+      if (change.name?.startsWith('skill_cost:')) return `技能能耗 ${change.name.slice(11)} ${before}→${after}`;
+      return `${effectName(change.name || change.kind)} ${before}→${after}`;
+    });
+    return `[状态变化] ${event.pokemon || '精灵'}：${changes.join('，') || '其他状态有变化'}`;
+  }
   return event.message || event.text || `[${event.type || '战斗事件'}]`;
 }
 
@@ -475,7 +605,10 @@ async function playResolution(events, data, token) {
   mergeObservation(data);
   renderSide('own');
   renderSide('opponent');
+  state.display = (await api(`/api/battles/${state.battle.battle_id}/display?side=own`));
+  state.actions = (await api(`/api/battles/${state.battle.battle_id}/actions?side=own`)).actions || [];
   updateBattleMeta();
+  renderSkills();
   setResolving(false);
   return true;
 }
@@ -532,7 +665,7 @@ async function refreshBattle({ refreshDisplay = false, animateEvents = false } =
     const nextData = (await api(`/api/battles/${id}/state?side=own`)).data;
     const displayChanged = refreshDisplay || statusChanged || !state.display.skills?.length;
     if (displayChanged) {
-      state.display = await api(`/api/battles/${id}/display?side=own`);
+      state.display = (await api(`/api/battles/${id}/display?side=own`));
       state.actions = (await api(`/api/battles/${id}/actions?side=own`)).actions || [];
     }
     state.pending = Boolean(summary.pending);
@@ -614,8 +747,16 @@ function aptitudeName(field) {
   return aptitudeNamesDict[field] || '未知';
 }
 
+function natureBonusText(index, nature) {
+  const item = state.teams.own[index];
+  const form = item ? formFor(item.name) || item.form || {} : {};
+  const bonus = form.customization?.nature_bonus?.[nature] || {};
+  const labels = { hp: '生命', atk: '物攻', def: '物防', spatk: '魔攻', spdef: '魔防', speed: '速度' };
+  return Object.entries(bonus).filter(([, value]) => Number(value)).map(([key, value]) => `${labels[key] || key} ${Number(value) > 0 ? '+' : ''}${Number(value).toFixed(1)}`).join(' / ');
+}
+
 function editorFieldMarkup(field, value, choices) {
-  const options = choices.map((choice) => `<button type="button" data-editor-option="${esc(choice.name)}" data-editor-option-field="${field}">${esc(choice.name)}${choice.percentage ? ` <small>(${choice.percentage}%)</small>` : ''}</button>`).join('');
+  const options = choices.map((choice) => `<button type="button" data-editor-option="${esc(choice.name)}" data-editor-option-field="${field}">${esc(choice.name)}${choice.percentage ? ` <small>(${Number(choice.percentage).toFixed(1)}%)</small>` : ''}${choice.bonus_text ? ` <small>${esc(choice.bonus_text)}</small>` : ''}</button>`).join('');
   return `<div class="editor-autocomplete"><input type="text" autocomplete="off" data-editor-autocomplete data-editor-field="${field}" value="${esc(value)}"><div class="editor-suggest hidden" data-editor-suggest="${field}">${options}</div></div>`;
 }
 
@@ -654,9 +795,9 @@ function renderEditorSuggestions(input) {
   if (!input || !box) return;
   const query = String(input.value || '').trim().toLowerCase();
   const index = Number($('#hover-card')?.dataset.floatingEditIndex);
-  const choices = editorChoices(index, input.dataset.editorField);
+  const choices = editorChoices(index, input.dataset.editorField).map((choice) => input.dataset.editorField === 'nature' ? { ...choice, bonus_text: natureBonusText(index, choice.name) } : choice);
   const rows = choiceMatches(choices, query);
-  box.innerHTML = rows.map((choice) => `<button type="button" data-editor-option="${esc(choice.name)}" data-editor-option-field="${esc(input.dataset.editorField)}">${esc(choice.name)}${choice.percentage ? ` <small>(${choice.percentage}%)</small>` : ''}</button>`).join('');
+  box.innerHTML = rows.map((choice) => `<button type="button" data-editor-option="${esc(choice.name)}" data-editor-option-field="${esc(input.dataset.editorField)}">${esc(choice.name)}${choice.percentage ? ` <small>(${Number(choice.percentage).toFixed(1)}%)</small>` : ''}${choice.bonus_text ? ` <small>${esc(choice.bonus_text)}</small>` : ''}</button>`).join('');
   box.classList.toggle('hidden', !rows.length);
 }
 
@@ -694,10 +835,9 @@ function renderCreatureEditor(index, anchor=null) {
   const base = item.base || {};
   const nature = base.nature || customization.natures?.[0]?.name || '';
   const bloodline = Array.isArray(base.bloodline_attributes) ? base.bloodline_attributes[0] || '' : base.bloodline_attributes || '';
-  const natureBonus = customization.nature_bonus?.[nature] || {};
-  const bonusText = Object.entries(natureBonus).map(([key, value]) => `${key} ${Number(value) > 0 ? '+' : ''}${value}`).join(' / ');
+  const bonusText = natureBonusText(index, nature);
   const forms = (pokemonRow(item.name)?.forms || []).map((choice) => `<button type="button" class="form-choice ${choice.name === item.name ? 'active' : ''}" data-editor-form="${esc(choice.name)}">${esc(choice.name)}</button>`).join('');
-  const natures = editorFieldMarkup('nature', nature, customization.natures || []);
+  const natures = editorFieldMarkup('nature', nature, (customization.natures || []).map((choice) => ({ ...choice, bonus_text: natureBonusText(index, choice.name) })));
   const bloodlines = editorFieldMarkup('bloodline', bloodline, customization.bloodlines || []);
   const aptitudes = aptitudeEditorMarkup(item, customization);
   const skills = skillEditorMarkup(item);
@@ -938,14 +1078,14 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   const searchInput = event.target.closest('#own-search, #quick-search');
-  if (searchInput) handleSearchInput(searchInput);
+  if (searchInput) handleSearchInput(searchInput, event);
 });
 
-function handleSearchInput(searchInput) {
+function handleSearchInput(searchInput, event = null) {
   const box = $(searchInput.id === 'own-search' ? '#own-suggest' : '#quick-suggest');
   const first = box?.querySelector('[data-suggest-kind]');
   if (first) {
-    event.preventDefault();
+    event?.preventDefault();
     if (first.dataset.suggestKind === 'pokemon') {
       addCreature(first.dataset.suggestName, parseCreatureQuery(searchInput.value).stats || {});
       searchInput.value = '';
@@ -958,6 +1098,12 @@ function handleSearchInput(searchInput) {
 }
 
 document.addEventListener('click', (event) => {
+  const searchConfirm = event.target.closest('[data-search-confirm]');
+  if (searchConfirm) {
+    const input = $(`#${searchConfirm.dataset.searchConfirm}`);
+    if (input) handleSearchInput(input, event);
+    return;
+  }
   const removeAptitudeButton = event.target.closest('[data-remove-aptitude]');
   if (removeAptitudeButton) {
     const index = Number($('#hover-card')?.dataset.floatingEditIndex);
@@ -1057,10 +1203,27 @@ window.addEventListener('resize', () => {
   if (preview && !preview.classList.contains('hidden') && state.previewAnchor) previewPosition(state.previewAnchor);
 });
 
+for (const inputId of ['quick-search', 'own-search']) {
+  const input = $(`#${inputId}`);
+  if (!input || input.parentElement.querySelector('[data-search-confirm]')) continue;
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'search-confirm';
+  button.dataset.searchConfirm = inputId;
+  button.textContent = '确认';
+  button.setAttribute('aria-label', '确认搜索');
+  input.parentElement.classList.add('search-with-confirm');
+  input.parentElement.append(button);
+}
+function copyBattleId() {
+  if (state.battle?.battle_id) { navigator.clipboard?.writeText(state.battle.battle_id); toast('对战 ID 已复制'); }
+}
+
 $('#start').addEventListener('click', startBattle);
+$('#export-roster').addEventListener('click', () => exportRoster());
+$('#import-roster').addEventListener('click', () => importRoster());
 $('#join').addEventListener('click', () => joinBattle().catch((error) => toast(error.message)));
-$('#copy-id').addEventListener('click', async () => { if (state.battle?.battle_id) { await navigator.clipboard?.writeText(state.battle.battle_id); toast('对战 ID 已复制'); } });
-$('#reset').addEventListener('click', reset);
+$('#copy-id').addEventListener('click', async () => copyBattleId());
 $('#drawer-close').addEventListener('click', closeDrawer);
 $('#charge').addEventListener('click', () => submitAction('charge'));
 

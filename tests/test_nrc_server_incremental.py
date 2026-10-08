@@ -32,6 +32,17 @@ def test_battle_events_endpoint_returns_only_events_after_cursor():
     ).json()
     assert ready["initialized"] is True
 
+    display = client.get(
+        f"/api/battles/{battle_id}/display",
+        headers={"X-Player-Token": own_token},
+    ).json()
+    assert all(skill.get("effect_icon", "").startswith("/assets/icon_dept_relation/") for skill in display["skills"])
+    assert any(
+        skill.get("type_effectiveness") == 1.0
+        and skill.get("effect_icon", "").endswith("平衡.svg")
+        for skill in display["skills"]
+    )
+
     initial = client.get(
         f"/api/battles/{battle_id}/events?since=0",
         headers={"X-Player-Token": own_token},
@@ -70,3 +81,16 @@ def test_battle_events_endpoint_returns_only_events_after_cursor():
     assert latest["events"]
     assert latest["events"][0]["event_index"] == cursor
     assert all(event["event_index"] >= cursor for event in latest["events"])
+    damage_events = [event for event in latest["events"] if event.get("type") == "skill" and event.get("final_damage", 0) > 0]
+    assert damage_events and all(event.get("type_effectiveness") is not None for event in damage_events)
+    assert all(event.get("effect_indicator") for event in damage_events)
+    assert any(event.get("type") == "state_change" for event in latest["events"])
+
+    opponent_events = client.get(
+        f"/api/battles/{battle_id}/events?since={cursor}",
+        headers={"X-Player-Token": opponent_token},
+    ).json()["events"]
+    for event in opponent_events:
+        if event.get("type") == "state_change" and event.get("team") == "b":
+            assert event["pokemon"] == "未知精灵"
+            assert all(change.get("kind") not in {"hp", "energy", "ability"} for change in event["changes"])

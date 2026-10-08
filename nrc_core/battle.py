@@ -1865,6 +1865,8 @@ def _execute_new_engine(state: BattleState, team: str, enemy_team: str,
     active_index_after = state.current_a if team == "a" else state.current_b
     enemy_index_after = state.current_b if team == "a" else state.current_a
     damage_details = current.ability_state.get("_last_damage_details", {})
+    is_damage_skill = skill.category in {SkillCategory.PHYSICAL, SkillCategory.MAGICAL} and skill.power > 0
+    effectiveness = damage_details.get("effectiveness") if is_damage_skill else None
     core_log("skill", "done", turn=state.turn, team=team,
              pokemon=current.name, target=enemy.name, skill=skill.name,
              damage=damage, target_hp=enemy.current_hp,
@@ -1878,6 +1880,18 @@ def _execute_new_engine(state: BattleState, team: str, enemy_team: str,
         "final_power": result.get("final_power", damage_details.get("effective_power", skill.power)),
         "energy_cost": getattr(skill, "_last_actual_cost", skill.energy_cost),
         "final_damage": damage,
+        "damage_per_hit": damage_details.get("damage_per_hit"),
+        "hits": damage_details.get("hits", 1),
+        "type_effectiveness": effectiveness,
+        "effect_indicator": (
+            "immune" if effectiveness == 0 else
+            "very_resistant" if effectiveness is not None and effectiveness < 0.5 else
+            "resistant" if effectiveness is not None and effectiveness < 1 else
+            "normal" if effectiveness == 1 else
+            "effective" if effectiveness is not None and effectiveness <= 2 else
+            "super_effective" if effectiveness is not None else
+            "unknown"
+        ),
         "fainted": enemy.is_fainted,
         "switched": active_index_after != active_index_before,
         "switched_to": (state.team_a if team == "a" else state.team_b)[active_index_after].name,

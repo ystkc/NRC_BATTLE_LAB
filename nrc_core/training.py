@@ -166,6 +166,9 @@ def _pokemon_json(pokemon: Pokemon, index: int, active: bool, private: bool) -> 
             "ability": pokemon.ability,
             "skills": [_skill_json(skill, slot) for slot, skill in enumerate(pokemon.skills)],
             "boosts": {name: value for name, value in boost_fields.items() if value},
+            "debuffs": BattleSimulator._snapshot_layers(pokemon, "down"),
+            "statuses": BattleSimulator._snapshot_statuses(pokemon),
+            "ability_states": BattleSimulator._snapshot_ability_states(pokemon),
             "conditions": {
                 "poison": pokemon.poison_stacks,
                 "burn": pokemon.burn_stacks,
@@ -498,6 +501,7 @@ class NRCTrainingBackend:
             self._prepare_decision(next_state, settle_start=True)
         else:
             payloads = {player: side_turn_from_dict(legal_by_player[player][actions[player]].payload) for player in current.players}
+            before_state = self._report_state(next_state.battle)
             cleanups = []
             cleanups.extend(self._simulator._apply_resonance_items(
                 next_state.battle, "a", payloads[0].items, next_state.battle.resonance_magic_a,
@@ -512,6 +516,10 @@ class NRCTrainingBackend:
             finally:
                 self._simulator._restore_resonance_items(cleanups)
             next_state.events.extend(turn_result.report)
+            after_state = self._report_state(next_state.battle)
+            state_changes = self._simulator._state_change_events(before_state["a"], after_state["a"], "a")
+            state_changes.extend(self._simulator._state_change_events(before_state["b"], after_state["b"], "b"))
+            next_state.events.extend(state_changes)
             next_state.events.append({"type": "display_power", "value": turn_result.display_power})
             winner = turn_result.winner or check_winner(next_state.battle)
             if winner:
@@ -527,6 +535,28 @@ class NRCTrainingBackend:
             rewards[1 - next_state.winner] = -1.0
         observations = {player: self.observe(next_state, player) for player in (0, 1)}
         return Transition(next_state, observations, rewards, next_state.terminated, next_state.winner, tuple(next_state.events or ()))
+
+    def _report_state(self, state: BattleState) -> dict[str, dict[str, Any]]:
+        result = {}
+        for team, creatures in (("a", state.team_a), ("b", state.team_b)):
+            result[team] = {"creatures": []}
+            for pokemon in creatures:
+                result[team]["creatures"].append({
+                    "name": pokemon.name,
+                    "hp": pokemon.current_hp,
+                    "energy": pokemon.energy,
+                    "status": _status_name(pokemon.status),
+                    "fainted": pokemon.is_fainted,
+                    "statuses": self._simulator._snapshot_statuses(pokemon),
+                    "buffs": self._simulator._snapshot_layers(pokemon, "up"),
+                    "debuffs": self._simulator._snapshot_layers(pokemon, "down"),
+                    "ability_states": self._simulator._snapshot_ability_states(pokemon),
+                    "skills": [
+                        {"name": skill.name, "current_energy_cost": skill.energy_cost}
+                        for skill in pokemon.skills
+                    ],
+                })
+        return result
 
     def export_state(self, state: object) -> dict[str, Any]:
         current = self._check_state(state)

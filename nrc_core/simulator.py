@@ -243,11 +243,14 @@ class BattleSimulator:
             },
         }
 
+        state_changes = self._state_change_events(before_own, after_own, "a")
+        state_changes.extend(self._state_change_events(before_opponent, after_opponent, "b"))
         events = [
             {"type": "seed", "value": seed},
             {"type": "action", "team": "own", "value": request.own_turn.primary.to_json()},
             {"type": "action", "team": "opponent", "value": request.opponent_turn.primary.to_json()},
             *turn_result.report,
+            *state_changes,
             {"type": "display_power", "value": turn_result.display_power},
             *own_events,
             {"type": "turn_start_skill_display", "value": turn_result.turn_start_skill_display},
@@ -1091,10 +1094,60 @@ class BattleSimulator:
                         }
                         for slot, skill in enumerate(pokemon.skills)
                     ],
+                    "ability_states": self._snapshot_ability_states(pokemon),
                 }
                 for index, pokemon in enumerate(team_list)
             ],
         }
+
+    @staticmethod
+    def _snapshot_ability_states(pokemon: Pokemon) -> list[dict[str, Any]]:
+        runtime = pokemon.ability_state or {}
+        result: list[dict[str, Any]] = []
+        for key, value in runtime.items():
+            if key in {"layered_state", "lab_metadata", "battle_context", "last_skill_cost", "last_skill_turn", "faint_processed"} or str(key).startswith("_"):
+                continue
+            if isinstance(value, bool) and value:
+                result.append({"kind": "ability", "name": str(key), "stacks": 1})
+            elif isinstance(value, (int, float)) and value:
+                result.append({"kind": "ability", "name": str(key), "stacks": value})
+        return result
+
+    @staticmethod
+    def _state_change_events(before: Mapping[str, Any], after: Mapping[str, Any], team: str) -> list[dict[str, Any]]:
+        events: list[dict[str, Any]] = []
+        before_creatures = before.get("creatures") or []
+        after_creatures = after.get("creatures") or []
+        for index, current in enumerate(after_creatures):
+            previous = before_creatures[index] if index < len(before_creatures) else {}
+            changes: list[dict[str, Any]] = []
+            for field, label in (("hp", "hp"), ("energy", "energy"), ("status", "status"), ("fainted", "fainted")):
+                old_value = previous.get(field)
+                new_value = current.get(field)
+                if old_value != new_value:
+                    changes.append({"kind": label, "before": old_value, "after": new_value})
+            for field, kind in (("statuses", "status"), ("buffs", "buff"), ("debuffs", "debuff"), ("ability_states", "ability"), ("skills", "skill")):
+                old_items = previous.get(field) or []
+                new_items = current.get(field) or []
+                if field == "skills":
+                    old_map = {str(item.get("name")): item.get("current_energy_cost") for item in old_items if isinstance(item, dict)}
+                    new_map = {str(item.get("name")): item.get("current_energy_cost") for item in new_items if isinstance(item, dict)}
+                    for name in sorted(set(old_map) | set(new_map)):
+                        if old_map.get(name) != new_map.get(name):
+                            changes.append({"kind": "ability", "name": f"skill_cost:{name}", "before": old_map.get(name), "after": new_map.get(name)})
+                    continue
+                old_map = {str(item.get("name")): item for item in old_items if isinstance(item, dict)}
+                new_map = {str(item.get("name")): item for item in new_items if isinstance(item, dict)}
+                for name in sorted(set(old_map) | set(new_map)):
+                    old_item = old_map.get(name, {})
+                    new_item = new_map.get(name, {})
+                    old_stacks = old_item.get("stacks", 0)
+                    new_stacks = new_item.get("stacks", 0)
+                    if old_stacks != new_stacks:
+                        changes.append({"kind": kind, "name": name, "unit": new_item.get("unit") or old_item.get("unit"), "before": old_stacks, "after": new_stacks})
+            if changes:
+                events.append({"type": "state_change", "team": team, "pokemon": current.get("name"), "changes": changes})
+        return events
 
     def _snapshot_devotion(self, state: BattleState, source: TeamInput, team: str) -> dict[str, Any]:
         specified = {

@@ -109,6 +109,13 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
                     event.pop("action_key", None)
                 else:
                     event["status"] = "locked"
+            if event.get("type") == "state_change" and event.get("team") == "b":
+                event["pokemon"] = "未知精灵"
+                event["changes"] = [
+                    change for change in event.get("changes", [])
+                    if change.get("kind") not in {"hp", "energy", "ability"}
+                    and not str(change.get("name", "")).startswith("skill_cost:")
+                ]
             if event.get("type") == "turn":
                 for phase in ("before", "after"):
                     state = event.get(phase)
@@ -556,7 +563,7 @@ def create_app() -> FastAPI:
                 meta = app.state.platform._catalog.catalog.skills.get(name)
                 element = getattr(getattr(meta, "skill_type", None), "value", "normal")
                 multiplier = skill.get("type_effectiveness")
-                relation = "无" if multiplier is None else "双重克制" if float(multiplier) > 2 else "克制" if float(multiplier) > 1 else "双重抵抗" if 0 < float(multiplier) < 0.5 else "抵抗" if 0 < float(multiplier) < 1 else "无"
+                relation = "无" if multiplier is None else "双重克制" if float(multiplier) > 2 else "克制" if float(multiplier) > 1 else "双重抵抗" if 0 < float(multiplier) < 0.5 else "抵抗" if 0 < float(multiplier) < 1 else "平衡"
                 skill.update({
                     "icon": _asset(data_root, "skill_icons", name),
                     "description": str(getattr(meta, "description", "") or ""),
