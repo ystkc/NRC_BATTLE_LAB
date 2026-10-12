@@ -407,36 +407,30 @@ class NRCTrainingBackend:
         team, active_index, side = self._team(state.battle, player)
         active = team[active_index]
         carried = state.battle.resonance_magic_a if side == "a" else state.battle.resonance_magic_b
-        if not carried:
-            return tuple(base)
+        resonance_options = (carried,) if carried else ("willpower", "boss", "solar_heal")
         result = list(base)
         for action in base:
             primary = action.payload.get("primary", {})
             kind = primary.get("kind")
             if kind not in {"skill", "charge"}:
                 continue
-            if carried == "willpower":
-                uses = state.battle.resonance_uses_a if side == "a" else state.battle.resonance_uses_b
-                cooldown = state.battle.resonance_cooldown_a if side == "a" else state.battle.resonance_cooldown_b
-                if uses >= 2 or cooldown > 0 or active.energy < 2:
-                    continue
-                if kind != "skill" or int(primary.get("skill_slot", -1)) != 0:
-                    continue
-                if self._simulator._bloodline_type(active) is None:
-                    continue
-            elif carried == "boss":
-                used = state.battle.resonance_evolution_used_a if side == "a" else state.battle.resonance_evolution_used_b
-                if used or not self._simulator._is_boss_bloodline(active):
-                    continue
-            elif carried == "solar_heal":
-                used = state.battle.resonance_solar_heal_used_a if side == "a" else state.battle.resonance_solar_heal_used_b
-                if used:
-                    continue
-            else:
-                continue
-            payload = copy.deepcopy(action.payload)
-            payload["items"] = [{"kind": "item", "item_kind": carried, "item_payload": {}}]
-            result.append(LegalAction(f"{action.key}|resonance={carried}", payload))
+            for resonance in resonance_options:
+                if resonance == "willpower":
+                    uses = state.battle.resonance_uses_a if side == "a" else state.battle.resonance_uses_b
+                    cooldown = state.battle.resonance_cooldown_a if side == "a" else state.battle.resonance_cooldown_b
+                    if uses >= 2 or cooldown > 0 or active.energy < 2 or kind != "skill" or int(primary.get("skill_slot", -1)) != 0 or self._simulator._bloodline_type(active) is None:
+                        continue
+                elif resonance == "boss":
+                    used = state.battle.resonance_evolution_used_a if side == "a" else state.battle.resonance_evolution_used_b
+                    if used or not self._simulator._is_boss_bloodline(active):
+                        continue
+                elif resonance == "solar_heal":
+                    used = state.battle.resonance_solar_heal_used_a if side == "a" else state.battle.resonance_solar_heal_used_b
+                    if used:
+                        continue
+                payload = copy.deepcopy(action.payload)
+                payload["items"] = [{"kind": "item", "item_kind": resonance, "item_payload": {}}]
+                result.append(LegalAction(f"{action.key}|resonance={resonance}", payload))
         return tuple(result)
 
     def observe(self, state: object, player: int) -> Observation:
@@ -503,6 +497,15 @@ class NRCTrainingBackend:
             payloads = {player: side_turn_from_dict(legal_by_player[player][actions[player]].payload) for player in current.players}
             before_state = self._report_state(next_state.battle)
             cleanups = []
+            for player, side in ((0, "a"), (1, "b")):
+                if player not in payloads:
+                    continue
+                items = payloads[player].items
+                if not items:
+                    continue
+                field = "resonance_magic_a" if side == "a" else "resonance_magic_b"
+                if getattr(next_state.battle, field) is None:
+                    setattr(next_state.battle, field, items[0].item_kind.value)
             cleanups.extend(self._simulator._apply_resonance_items(
                 next_state.battle, "a", payloads[0].items, next_state.battle.resonance_magic_a,
             ))

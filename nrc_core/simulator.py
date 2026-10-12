@@ -413,6 +413,14 @@ class BattleSimulator:
         stats = calc_combat_stats(
             record["base_hp"], record["base_attack"], record["base_magic_attack"],
             record["base_defense"], record["base_magic_defense"], record["base_speed"],
+            iv_config={
+                "hp": active.iv_hp,
+                "atk": active.iv_atk,
+                "spatk": active.iv_spatk,
+                "def": active.iv_def,
+                "spdef": active.iv_spdef,
+                "speed": active.iv_speed,
+            },
             nature_name=active.nature,
         )
         active.name = record["name"]

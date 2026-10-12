@@ -32,6 +32,12 @@ for durable replay or reconnect support.
 ## 增量战报同步
 
 战斗页面通过 `GET /api/battles/{battle_id}/operation` 轮询双方是否已提交操作；只有回合结算后才请求状态和技能展示数据。战报通过 `GET /api/battles/{battle_id}/events?since={cursor}` 使用游标增量读取：首次进入只建立历史，不播放旧战报，之后只播放游标之后的新事件。
+
+## 合法动作与克制徽章
+
+技能、聚能和精灵切换按钮只在 `GET /api/battles/{battle_id}/actions` 返回的合法动作中可点击，能量不足或冷却中的技能会置灰。力竭进入换人阶段时，技能栏会换成可切换的精灵卡片。
+
+`GET /api/battles/{battle_id}/matchups` 返回己方每只精灵对当前对方上场精灵的最佳克制档位，优先级为双重克制 > 克制 > 双重抵抗 > 抵抗 > 平衡。只统计有伤害的技能（物攻、魔攻且威力大于 0），没有伤害技能的精灵不显示徽章。
 ## Direct stat input
 
 The roster search accepts a creature name followed by either one HP value or

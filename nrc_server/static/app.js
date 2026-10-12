@@ -6,6 +6,7 @@ const state = {
   teams: { own: [], opponent: [] },
   selectedStart: 0,
   actions: [],
+  relations: [],
   display: { skills: [] },
   events: [],
   eventCursor: null,
@@ -96,6 +97,20 @@ function relationIcon(value) {
   return `/assets/icon_dept_relation/${encodeURIComponent(RELATION_NAMES[key] || key)}.svg`;
 }
 function relationLabel(value) { return RELATION_NAMES[String(value || 'unknown')] || String(value || '无'); }
+function isLegalAction(key) {
+  return state.actions.some((action) => action.key === key || action.key.startsWith(`${key}|`) || action.key.startsWith(`${key}:`));
+}
+function actionsOfKind(kind) { return state.actions.filter((action) => action.payload?.primary?.kind === kind); }
+function relationBadge(index) {
+  const indicator = state.relations.find((item) => item.index === index)?.indicator;
+  if (!indicator) return '';
+  return `<img class="relation-badge" src="${esc(relationIcon(indicator))}" alt="${esc(relationLabel(indicator))}" title="${esc(relationLabel(indicator))}">`;
+}
+function freezeState(item) {
+  const freeze = Number(item.frostbite_damage ?? 0);
+  const maxHp = Number(item.max_hp);
+  return { freeze, visible: Number.isFinite(freeze) && freeze > 0, percent: maxHp > 0 ? Math.max(0, Math.min(100, Math.round(freeze / maxHp * 100))) : 0 };
+}
 function effectName(value) { return EFFECT_NAMES[String(value)] || String(value || '').replaceAll('_', ' '); }
 
 function hydrateTeamItem(item, previous = {}) {
@@ -416,7 +431,7 @@ function startBattlePolling() {
       state.pending = Boolean(operation.own_pending);
       state.opponentPending = Boolean(operation.opponent_pending);
       if (pendingChanged) updateBattleLock();
-      if (operation.resolved || operation.terminal) await refreshBattle({ refreshDisplay: true });
+      if (operation.resolved || operation.terminal) await refreshBattle({ refreshDisplay: true, animateEvents: true });
     } catch (error) {
       if (error.status !== 404) toast(error.message);
     } finally {
@@ -440,6 +455,29 @@ function mergeObservation(data) {
   if (state.teams.opponent.activeIndex < 0) state.teams.opponent.activeIndex = 0;
 }
 
+function stateEffects(item, side = 'own') {
+  const effects = [];
+  const add = (name, value, unit = '层') => { if (Number(value) > 0) effects.push({ name: effectName(name), value, unit }); };
+  const conditions = item.conditions || { poison: item.poison_stacks, burn: item.burn_stacks, freeze: item.freeze_stacks, leech: item.leech_stacks, electric: item.electric_stacks, meteor: item.meteor_stacks, cute: item.cute_stacks };
+  Object.entries(conditions).forEach(([name, value]) => add(name, value));
+  Object.entries(item.boosts || {}).forEach(([name, value]) => add(name, value));
+  (Array.isArray(item.debuffs) ? item.debuffs : Object.entries(item.debuffs || {}).map(([name, stacks]) => ({ name, stacks }))).forEach((entry) => add(entry?.name || entry?.stat || 'debuff', entry?.stacks ?? entry?.value ?? 0));
+  (item.statuses || []).forEach((entry) => add(entry?.name || entry, entry?.stacks ?? entry?.value ?? 1));
+  (item.ability_states || []).forEach((entry) => add(entry?.name || '特性状态', entry?.stacks ?? 1));
+  (item.skills || []).forEach((skill) => {
+    const base = Number(skillMeta(skill.name).energy_cost);
+    const current = Number(skill.current_energy_cost ?? skill.energy_cost);
+    if (Number.isFinite(base) && Number.isFinite(current) && current !== base) effects.push({ name: `技能能耗 ${skill.name}`, value: current, unit: '能量' });
+  });
+  if (side === 'own') Object.entries(state.shared?.marks || {}).forEach(([name, value]) => add(`印记 ${name}`, value));
+  if (item.status && !['normal', '正常'].includes(item.status)) add(item.status, 1);
+  return effects;
+}
+
+function effectsMarkup(item, side = 'own') {
+  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect" title="${esc(name)}"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+}
+
 function renderSide(side) {
   const enemy = side === 'opponent';
   const team = state.teams[side] || [];
@@ -447,60 +485,47 @@ function renderSide(side) {
   const activeItem = team[activeIndex] || {};
   const item = enemy && activeItem.fainted ? (team.find((candidate) => !candidate.fainted) || activeItem) : activeItem;
   const prefix = enemy ? 'enemy' : 'own';
-  const percent = item.max_hp ? Math.max(0, Math.round(item.hp / item.max_hp * 100)) : item.hp_percent ?? 0;
+  const percent = item.max_hp ? Math.max(0, Math.min(100, Math.round(item.hp / item.max_hp * 100))) : item.hp_percent ?? 0;
   $(`#${prefix}-active-name`).textContent = item.name || '-';
   $(`#${prefix}-hp-text`).textContent = item.hp == null ? `${percent ?? '?'}%` : `${item.hp} / ${item.max_hp}`;
   $(`#${prefix}-hp-bar`).style.width = `${percent || 0}%`;
   $(`#${prefix}-energy`).textContent = `能量 ${item.energy == null ? '?' : item.energy}`;
   $(`#${prefix}-active-art`).src = item.portrait || asset(item.name, 'portrait') || asset(item.name, 'art');
   $(`#${prefix}-active-types`).innerHTML = (item.types || []).map((type) => `<img class="field-type" src="${esc(typeIcon(type))}" alt="${esc(typeKey(type))}" title="${esc(typeKey(type))}">`).join('');
-  const effects = [];
-  const addEffect = (name, value = '', icon = '') => effects.push({ name: effectName(name), value, icon });
-  const conditions = item.conditions || {
-    poison: item.poison_stacks,
-    burn: item.burn_stacks,
-    freeze: item.freeze_stacks,
-    electric: item.electric_stacks,
-    cute: item.cute_stacks,
-  };
-  Object.entries(conditions).forEach(([name, value]) => { if (Number(value) > 0) addEffect(name, value, buffIcon(name)); });
-  const boosts = item.boosts || {};
-  Object.entries(boosts).forEach(([name, value]) => {
-    const iconName = name.includes('攻击') ? (name.includes('魔') ? 'spatk_up' : 'atk_up') : name.includes('物防') ? 'def_up' : name.includes('魔防') ? 'spdef_up' : 'speed_up';
-    addEffect(name, value, buffIcon(iconName));
-  });
-  (Array.isArray(item.debuffs) ? item.debuffs : Object.entries(item.debuffs || {}).map(([name, stacks]) => ({ name, stacks }))).forEach((entry) => {
-    const name = entry?.name || entry?.stat || 'debuff';
-    const value = entry?.stacks ?? entry?.value ?? 0;
-    if (Number(value) > 0) addEffect(name, value, buffIcon(name));
-  });
-  (item.statuses || []).forEach((entry) => {
-    const name = entry?.name || entry;
-    const value = entry?.stacks ?? entry?.value ?? 1;
-    if (Number(value) > 0) addEffect(name, value, buffIcon(name));
-  });
-  (item.ability_states || []).forEach((entry) => {
-    if (Number(entry?.stacks ?? 1) > 0) addEffect(entry.name, entry.stacks ?? 1, '');
-  });
-  const runtime = item.ability_state || {};
-  (item.skills || []).forEach((skill) => {
-    const base = Number(skillMeta(skill.name).energy_cost);
-    const current = Number(skill.current_energy_cost ?? skill.energy_cost);
-    if (Number.isFinite(base) && Number.isFinite(current) && current !== base) addEffect(`技能能耗 ${skill.name}`, `${current}${current > base ? ` (+${current - base})` : ` (${current - base})`}`, '');
-  });
-  if (side === 'own') Object.entries(state.shared?.marks || {}).forEach(([name, value]) => { if (Number(value) > 0) addEffect(`印记 ${name}`, value, ''); });
-  if (item.status && item.status !== 'normal' && item.status !== '正常') addEffect(item.status, 1, buffIcon(item.status));
-  $(`#${prefix}-effects`).innerHTML = effects.map(({ name, value, icon }) => `<span class="field-effect" title="${esc(name)}"><span class="field-effect-icon">${icon ? `<img src="${esc(icon)}" alt="${esc(name)}">` : esc(name)}</span><small>${esc(value)}</small></span>`).join('');
-  const box = $(`#${prefix}-pips`);
-  box.innerHTML = Array.from({ length: 6 }, (_, index) => `<i class="pip ${team[index] ? 'owned' : ''} ${team[index]?.fainted ? 'fainted' : ''} ${index === (team.activeIndex || 0) ? 'active-pip' : ''}></i>`).join('');
+  $(`#${prefix}-effects`).innerHTML = effectsMarkup(item, side);
+  const frozen = freezeState(item);
+  $(`#${prefix}-freeze-bar`).classList.toggle('hidden', !frozen.visible);
+  $(`#${prefix}-freeze-bar`).style.width = `${frozen.percent}%`;
+  $(`#${prefix}-freeze-text`).classList.toggle('hidden', !frozen.visible);
+  $(`#${prefix}-freeze-text`).textContent = `冻结 ${frozen.freeze || 0} / ${item.max_hp ?? '?'}`;
+  $(`#${prefix}-pips`).innerHTML = Array.from({ length: 6 }, (_, index) => {
+    const member = team[index];
+    const known = Boolean(member) && (!enemy || Boolean(member?.known) || Boolean(member?.name && !['?', '未知精灵'].includes(member.name)));
+    const pipClass = !member ? 'empty-pip' : known ? 'known-pip' : 'unknown-pip';
+    return `<i class="pip ${pipClass} ${known && member?.fainted ? 'fainted' : ''} ${index === activeIndex ? 'active-pip' : ''}"></i>`;
+  }).join('');
+}
+function switchCardMarkup(action) {
+  const index = Number(action.payload?.primary?.switch_index);
+  const item = state.teams.own[index] || {};
+  const hp = item.hp == null ? '' : `${item.hp} / ${item.max_hp}`;
+  return `<button class="skill-card switch-card" data-battle-action="${esc(action.key)}" ${state.pending || state.resolving ? 'disabled' : ''}><span class="skill-icon-wrap"><img class="skill-icon" src="${esc(item.portrait || asset(item.name, 'portrait') || asset(item.name, 'art'))}" alt=""></span><span class="skill-copy"><b class="skill-name">${esc(item.name || `第 ${index + 1} 只`)}</b><small class="skill-kind">第 ${index + 1} 只${hp ? ` · ${esc(hp)}` : ''}</small></span>${relationBadge(index)}</button>`;
 }
 
 function renderSkills() {
-  $('#skills').innerHTML = (state.display.skills || []).map((skill, index) => {
+  const container = $('#skills');
+  if (state.battle?.phase === 'replacement') {
+    const switches = actionsOfKind('switch');
+    container.innerHTML = switches.length ? switches.map(switchCardMarkup).join('') : '<div class="event-empty">等待对方选择替换精灵</div>';
+    return;
+  }
+  container.innerHTML = (state.display.skills || []).map((skill, index) => {
     const meta = skillMeta(skill.name);
+    const key = `skill:slot=${skill.skill_slot ?? index}`;
+    const disabled = state.pending || state.resolving || !isLegalAction(key);
     const type = skill.element || meta.element || meta.element_key || 'normal';
     const relation = skill.effect_indicator || (skill.type_effectiveness == null ? 'unknown' : skill.type_effectiveness > 2 ? 'super_effective' : skill.type_effectiveness > 1 ? 'effective' : skill.type_effectiveness < 0.5 ? 'very_resistant' : skill.type_effectiveness < 1 ? 'resistant' : 'normal');
-    return `<button class="skill-card" data-skill-name="${esc(skill.name)}" data-battle-action="skill:slot=${skill.skill_slot ?? index}" ${state.pending || state.resolving ? 'disabled' : ''}><span class="skill-icon-wrap"><img class="skill-icon" src="${esc(skill.icon || meta.icon || '')}" alt=""><span class="skill-cost-badge">${esc(skill.display_energy_cost ?? meta.energy_cost)}</span><span class="skill-power-badge">${skill.display_power > 0 ? skill.display_power : '-'}</span><img class="skill-type-badge" src="${esc(skill.type_icon || typeIcon(type))}" alt="${esc(typeKey(type))}"><img class="skill-relation-badge" src="${esc(relationIcon(skill.effect_icon || relation))}" alt="${esc(relationLabel(relation))}" title="${esc(relationLabel(relation))}"></span><span class="skill-copy"><b class="skill-name">${esc(skill.name)}</b><small class="skill-kind">${esc(meta.category || '技能')}</small></span></button>`;
+    return `<button class="skill-card" data-skill-name="${esc(skill.name)}" data-battle-action="${esc(key)}" ${disabled ? 'disabled' : ''}><span class="skill-icon-wrap"><img class="skill-icon" src="${esc(skill.icon || meta.icon || '')}" alt=""><span class="skill-cost-badge">${esc(skill.display_energy_cost ?? meta.energy_cost)}</span><span class="skill-power-badge">${skill.display_power > 0 ? skill.display_power : '-'}</span><img class="skill-type-badge" src="${esc(skill.type_icon || typeIcon(type))}" alt="${esc(typeKey(type))}"><img class="skill-relation-badge" src="${esc(relationIcon(skill.effect_icon || relation))}" alt="${esc(relationLabel(relation))}" title="${esc(relationLabel(relation))}"></span><span class="skill-copy"><b class="skill-name">${esc(skill.name)}</b><small class="skill-kind">${esc(meta.category || '技能')}</small></span></button>`;
   }).join('');
 }
 
@@ -526,10 +551,23 @@ function actionLabel(action) {
 
 function renderDrawer(title, html) { $('#drawer-title').textContent = title; $('#drawer-body').innerHTML = html; $('#drawer').classList.remove('hidden'); }
 function closeDrawer() { $('#drawer').classList.add('hidden'); }
+function drawerEffects(item) {
+  return stateEffects(item).map(({ name, value, unit }) => `<span class="field-effect"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+}
+
 function renderSpiritDrawer() {
   const team = state.teams.own || [];
   const active = team.activeIndex || 0;
-  renderDrawer('精灵', team.map((item, index) => `<button class="drawer-spirit" data-drawer-switch="${index}" ${index === active || item.fainted ? 'disabled' : ''}>${esc(item.name)} · HP ${item.hp ?? '?'} · 能量 ${item.energy ?? '?'}</button>`).join(''));
+  const cards = team.map((item, index) => {
+    const maxHp = Number(item.max_hp);
+    const hp = Number(item.hp || 0);
+    const hpPercent = maxHp > 0 ? Math.max(0, Math.min(100, Math.round(hp / maxHp * 100))) : Number(item.hp_percent || 0);
+    const frozen = freezeState(item);
+    const types = (item.types || []).map((type) => `<img class="field-type" src="${esc(typeIcon(type))}" alt="${esc(typeKey(type))}">`).join('');
+    const switchable = index !== active && !item.fainted && !state.pending && !state.resolving && isLegalAction(`switch:index=${index}`);
+    return `<button class="drawer-spirit side-state ${index === active ? 'drawer-state-active' : ''}" data-drawer-switch="${index}" ${switchable ? '' : 'disabled'}>${relationBadge(index)}<div class="spirit-inline"><div class="field-avatar"><img src="${esc(item.portrait || asset(item.name, 'portrait') || asset(item.name, 'art'))}" alt=""><div class="field-types">${types}</div></div><div class="spirit-copy"><div class="side-name"><span>第 ${index + 1} 只</span><b>${esc(item.name || '未知精灵')}</b></div><div class="hp-line"><span>${item.hp == null ? `${hpPercent}%` : `${item.hp} / ${item.max_hp}`}</span><div class="hp-track"><i style="width:${hpPercent}%"></i>${frozen.visible ? `<i class="freeze-overlay" style="width:${frozen.percent}%"></i>` : ''}</div></div>${frozen.visible ? `<div class="freeze-tag">冻结 ${frozen.freeze} / ${item.max_hp ?? '?'}</div>` : ''}<div class="energy-line">能量 ${item.energy ?? '?'}</div><div class="field-effects">${drawerEffects(item)}</div></div></div></button>`;
+  }).join('');
+  renderDrawer('精灵', cards);
 }
 function renderBagDrawer() {
   const actions = state.actions.filter((action) => action.key.includes('resonance'));
@@ -587,8 +625,8 @@ function appendEvent(event) {
 
 function setResolving(value) {
   state.resolving = value;
-  $('.battle-main')?.classList.toggle('resolving', value);
   renderSkills();
+  updateBattleLock();
 }
 
 function sleep(milliseconds) { return new Promise((resolve) => setTimeout(resolve, milliseconds)); }
@@ -607,6 +645,7 @@ async function playResolution(events, data, token) {
   renderSide('opponent');
   state.display = (await api(`/api/battles/${state.battle.battle_id}/display?side=own`));
   state.actions = (await api(`/api/battles/${state.battle.battle_id}/actions?side=own`)).actions || [];
+  await fetchMatchups(state.battle.battle_id);
   updateBattleMeta();
   renderSkills();
   setResolving(false);
@@ -630,6 +669,17 @@ function hideSkillTooltip() { $('#skill-tooltip')?.classList.add('hidden'); }
 function updateBattleLock() {
   const lock = $('#lock-state');
   if (lock) lock.textContent = state.pending ? '已锁定，等待对手' : state.opponentPending ? '对手已锁定，等待我方' : '选择操作';
+  const charge = $('#charge');
+  if (charge) charge.disabled = state.pending || state.resolving || !isLegalAction('charge');
+}
+
+async function fetchMatchups(battleId) {
+  try {
+    const data = await api(`/api/battles/${battleId}/matchups?side=own`);
+    state.relations = data.relations || [];
+  } catch {
+    state.relations = [];
+  }
 }
 
 async function syncEvents({ animate = false, data = null } = {}) {
@@ -667,6 +717,7 @@ async function refreshBattle({ refreshDisplay = false, animateEvents = false } =
     if (displayChanged) {
       state.display = (await api(`/api/battles/${id}/display?side=own`));
       state.actions = (await api(`/api/battles/${id}/actions?side=own`)).actions || [];
+      await fetchMatchups(id);
     }
     state.pending = Boolean(summary.pending);
     updateBattleMeta();
@@ -675,9 +726,10 @@ async function refreshBattle({ refreshDisplay = false, animateEvents = false } =
       mergeObservation(nextData);
       renderSide('own');
       renderSide('opponent');
-      if (displayChanged) renderSkills();
+      setResolving(false);
     }
   } catch (error) {
+    setResolving(false);
     if (error.status === 404) {
       reset();
       toast('对局已失效，请重新创建或加入');
@@ -686,7 +738,7 @@ async function refreshBattle({ refreshDisplay = false, animateEvents = false } =
 }
 
 async function submitAction(key) {
-  if (!key || state.pending || !state.battle) return;
+  if (!key || state.pending || state.resolving || !state.battle) return;
   try {
     const result = await api(`/api/battles/${state.battle.battle_id}/selection`, { method: 'POST', body: JSON.stringify({ action_key: key }) });
     state.pending = !result.resolved;
@@ -1158,6 +1210,7 @@ document.addEventListener('click', (event) => {
   const menu = event.target.closest('[data-action]');
   if (menu?.dataset.action === 'creature') renderSpiritDrawer();
   else if (menu?.dataset.action === 'bag') renderBagDrawer();
+  else if (menu?.dataset.action === 'exit') reset();
 });
 
 function onInputChange(event) {

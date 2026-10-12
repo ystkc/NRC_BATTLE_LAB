@@ -161,18 +161,26 @@ def _selection_event(platform: BattlePlatform, battle_id: str, side: str, action
     return event
 
 
-def _redact_observation(data: Mapping[str, Any]) -> dict[str, Any]:
+def _redact_observation(data: Mapping[str, Any], session: dict[str, Any], side: str) -> dict[str, Any]:
     """Keep only information a player is allowed to learn about the opponent."""
     result = copy.deepcopy(dict(data))
     opponent = []
+    known_by_side = session.setdefault("known_opponents", {})
+    known_indices = {int(value) for value in known_by_side.setdefault(side, [])}
     for item in result.get("opponent_team", []):
+        index = int(item.get("index", len(opponent)))
+        is_active = bool(item.get("active"))
+        if is_active:
+            known_indices.add(index)
+        known = index in known_indices
         visible = {
-            "index": item.get("index"),
-            "name": item.get("name"),
-            "types": item.get("types", []),
-            "active": bool(item.get("active")),
-            "fainted": bool(item.get("fainted")),
-            "status": item.get("status"),
+            "index": index,
+            "name": item.get("name") if known else "未知精灵",
+            "known": known,
+            "types": item.get("types", []) if known else [],
+            "active": is_active,
+            "fainted": bool(item.get("fainted")) if known else False,
+            "status": item.get("status") if known else "normal",
             "poison_stacks": item.get("poison_stacks", 0),
             "burn_stacks": item.get("burn_stacks", 0),
             "freeze_stacks": item.get("freeze_stacks", 0),
@@ -187,6 +195,7 @@ def _redact_observation(data: Mapping[str, Any]) -> dict[str, Any]:
             visible["energy"] = item.get("energy")
         opponent.append(visible)
     result["opponent_team"] = opponent
+    known_by_side[side] = sorted(known_indices)
     return result
 
 
@@ -575,6 +584,16 @@ def create_app() -> FastAPI:
         except Exception as error:
             return _error_response(error)
 
+    @app.get("/api/battles/{battle_id}/matchups")
+    def matchups(battle_id: str, request: Request, side: str = Query(default="own")) -> Any:
+        try:
+            session = _session(app, battle_id)
+            current = _view_side(session, request)
+            actual_side = current[1] if current else side
+            return app.state.platform.get_matchup_relations(battle_id, actual_side)
+        except Exception as error:
+            return _error_response(error)
+
     @app.get("/api/battles/{battle_id}/actions")
     def actions(battle_id: str, request: Request, side: str = Query(default="own")) -> Any:
         try:
@@ -593,7 +612,7 @@ def create_app() -> FastAPI:
             actual_side = current[1] if current else side
             result = app.state.platform.get_public_observation(battle_id, actual_side)
             if result.get("data"):
-                result["data"] = _redact_observation(result["data"])
+                result["data"] = _redact_observation(result["data"], session, actual_side)
                 for item in result["data"].get("opponent_team", []):
                     item["portrait"] = _asset(data_root, "spirit_icons", str(item.get("name") or ""), portrait=True)
                     item["art"] = _asset(data_root, "spirit_icons", str(item.get("name") or ""))

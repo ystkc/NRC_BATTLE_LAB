@@ -17,7 +17,7 @@ from pypinyin import Style, lazy_pinyin
 from nrc_ai.contracts import CoreManifest, Decision, LegalAction, Observation, Transition
 from nrc_core.battle import DamageCalculator
 from nrc_core.core import _turn_start_skill_display
-from nrc_core.models import Type, get_type_effectiveness
+from nrc_core.models import SkillCategory, Type, get_type_effectiveness
 from nrc_core.pokemon_db import configure_catalog as configure_pokemon_catalog, get_pokemon
 from nrc_core.skill_db import configure_catalog as configure_skill_catalog
 from nrc_core.skill_db import get_skill
@@ -26,6 +26,10 @@ from nrc_core.training import NRCTrainingBackend, TrainingState
 from .catalog import load_catalog
 from .input import merge_creature_spec
 from nrc_core.codec import creature_from_dict
+
+
+DAMAGE_CATEGORIES = {SkillCategory.PHYSICAL, SkillCategory.MAGICAL}
+RELATION_RANK = {"super_effective": 5, "effective": 4, "very_resistant": 3, "resistant": 2, "normal": 1}
 
 
 class PlatformError(ValueError):
@@ -107,16 +111,7 @@ class _Catalog:
         direct = self.catalog.get_pokemon(text)
         if direct:
             return direct
-        query = text.casefold()
-        legacy_number = _LEGACY_POKEMON_ALIASES.get(query)
-        legacy_match = None
-        for name, record in self.catalog.pokemon.items():
-            canonical = str(record.get("name") or name)
-            if query in self._aliases(canonical):
-                return record
-            if legacy_number and str(record.get("catalog_number")) == legacy_number and legacy_match is None:
-                legacy_match = record
-        return legacy_match
+        raise PlatformError("invalid_roster", f"unknown creature {text!r}")
 
     def normalize_team(self, raw: Any, *, allow_unknown: bool) -> dict[str, Any]:
         if isinstance(raw, Mapping):
@@ -434,6 +429,33 @@ class BattlePlatform:
             warnings=[],
         )
 
+    def get_matchup_relations(self, battle_id: str, side: str) -> PlatformResult:
+        """Rate every creature on one side by its best damaging skill against the opposing active creature."""
+        battle = self._get_battle(battle_id)
+        if side not in {"own", "opponent"}:
+            raise PlatformError("invalid_side", "side must be 'own' or 'opponent'")
+        if battle.episode is None:
+            return PlatformResult(battle_id=battle_id, side=side, target=None, relations=[], warnings=["core_state_not_initialized"])
+        team, target = _team_and_target(battle.episode, _side_code(side))
+        relations = []
+        for index, creature in enumerate(team):
+            best: dict[str, Any] | None = None
+            for skill in creature.skills:
+                if skill.category not in DAMAGE_CATEGORIES or skill.power <= 0:
+                    continue
+                multiplier = get_type_effectiveness(skill.skill_type, target.pokemon_types)
+                indicator = _indicator_for_multiplier(multiplier)
+                if best is None or RELATION_RANK.get(indicator, 0) > RELATION_RANK.get(best["indicator"], 0):
+                    best = {"skill_name": skill.name, "indicator": indicator, "multiplier": float(multiplier)}
+            relations.append({"index": index, **(best or {"skill_name": None, "indicator": None, "multiplier": None})})
+        return PlatformResult(
+            battle_id=battle_id,
+            side=side,
+            target=target.name,
+            relations=relations,
+            warnings=[],
+        )
+
     def preview_creature(self, creature: Mapping[str, Any]) -> PlatformResult:
         """Resolve one roster entry with the same combat-attribute path as battles."""
         self.logger.info("Provided_infos: %s", creature.__str__())
@@ -723,7 +745,7 @@ class BattlePlatform:
         if isinstance(resonance, Mapping):
             resonance = resonance.get("name") if resonance.get("enabled", True) else None
         if resonance:
-            match = next((key for key in legal if key.startswith(f"{base}|resonance=") and str(resonance) in key), None)
+            match = next((key for key in legal if key.startswith(f"{base}|resonance=") and key.rsplit("|resonance=", 1)[1] == str(resonance)), None)
             if match:
                 return match
         if base not in legal:
@@ -833,6 +855,13 @@ def _find_skill_slot(episode: TrainingState, code: str, reference: Any) -> int |
         if text in {str(skill.name), str(getattr(skill, "skill_id", ""))}:
             return index
     return None
+
+
+def _team_and_target(episode: TrainingState, code: str):
+    battle = episode.battle
+    if code == "a":
+        return battle.team_a, battle.team_b[battle.current_b]
+    return battle.team_b, battle.team_a[battle.current_a]
 
 
 def _resolve_type(value: Any) -> Type:
