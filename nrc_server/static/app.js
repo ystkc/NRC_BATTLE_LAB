@@ -59,7 +59,6 @@ function saveSession() {
 
 function clearSession() {
   sessionStorage.removeItem(SESSION_KEY);
-  localStorage.removeItem(SESSION_KEY);
   state.battle = null;
   state.playerToken = '';
   state.side = '';
@@ -138,8 +137,16 @@ function ensureDefaultCustomization(item) {
 function hydrateOwnRoster(roster) {
   const old = state.teams.own || [];
   state.teams.own = (roster || []).map((item, index) => hydrateTeamItem(item, old[index]));
-  if (!state.teams.own.length) state.selectedStart = 0;
-  else if (state.selectedStart >= state.teams.own.length) state.selectedStart = state.teams.own.length - 1;
+  normalizeSelectedStart();
+}
+
+function normalizeSelectedStart() {
+  if (!state.teams.own.length) {
+    state.selectedStart = 0;
+    return;
+  }
+  const selected = Number(state.selectedStart);
+  state.selectedStart = Number.isInteger(selected) && selected >= 0 && selected < state.teams.own.length ? selected : 0;
 }
 
 function parseCreatureQueryLegacy(value) {
@@ -216,7 +223,8 @@ function renderTeam(side) {
 
 function renderSetup() {
   const battle = state.battle;
-  const ownerNeedsSubmit = battle && state.side === 'own' && !battle.roster_submitted;
+  normalizeSelectedStart();
+  const ownerNeedsSubmit = battle && !battle.roster_submitted;
   const needsConfirmation = Boolean(battle && !battle.confirmed && !ownerNeedsSubmit);
   $('#start').disabled = !state.teams.own.length || (needsConfirmation && state.selectedStart == null) || Boolean(battle?.confirmed);
   $('#start').textContent = !battle ? '创建并提交阵容' : battle.confirmed ? '已确认首发' : needsConfirmation ? '确认首发' : '提交阵容';
@@ -344,12 +352,33 @@ async function createBattle() {
 async function joinBattle() {
   const battleId = $('#battle-code').value.trim();
   if (!battleId) return toast('请输入对战 ID');
+  const localRoster = state.teams.own;
+  const switchingBattle = Boolean(state.battle?.battle_id && state.battle.battle_id !== battleId);
+  clearTimeout(state.pollTimer);
+  state.pollTimer = null;
+  if (switchingBattle) {
+    state.battle = null;
+    state.playerToken = '';
+    state.side = '';
+    state.pending = false;
+    state.opponentPending = false;
+    state.resolving = false;
+    state.events = [];
+    state.eventCursor = null;
+    state.actions = [];
+    state.relations = [];
+    state.display = { skills: [] };
+    state.resolutionToken += 1;
+  }
   const joined = await api(`/api/battles/${encodeURIComponent(battleId)}/join`, { method: 'POST', body: '{}' });
   storeAuth(joined);
-  state.teams.own = [];
-  state.selectedStart = 0;
+  state.teams.own = localRoster;
+  state.teams.opponent = [];
+  normalizeSelectedStart();
   renderSetup();
+  renderTeam('own');
   renderTeam('opponent');
+  if (state.teams.own.length && !joined.initialized && !joined.roster_submitted) await submitRoster(false);
   await refreshLobby();
 }
 
@@ -367,8 +396,7 @@ async function startBattle() {
   try {
     if (!state.teams.own.length) return toast('至少选择一只己方精灵');
     if (!state.battle) { await createBattle(); await submitRoster(false); return; }
-    const initialOwnerSubmit = state.side === 'own' && !state.battle.roster_submitted;
-    await submitRoster(!initialOwnerSubmit);
+    await submitRoster(Boolean(state.battle.roster_submitted));
   } catch (error) { toast(error.message); }
 }
 
@@ -775,7 +803,6 @@ function reset() {
 }
 
 async function restoreSession() {
-  localStorage.removeItem(SESSION_KEY);
   const saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
   if (!saved?.battleId || !saved?.playerToken) return;
   state.playerToken = saved.playerToken;
