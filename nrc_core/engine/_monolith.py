@@ -636,7 +636,7 @@ def _h_freeze(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.models import add_freeze_stacks, has_type, Type
     if has_type(ctx.target, Type.ICE) or ctx.target.ability_state.get("freeze_immune"):
         return
-    add_freeze_stacks(ctx.target, tag.params.get("stacks", 1))
+    add_freeze_stacks(ctx.target, tag.params.get("stacks", 1), ctx.user)
 
 
 def _h_electric_lure(tag: EffectTag, ctx: Ctx) -> None:
@@ -1169,7 +1169,8 @@ def _apply_weather_damage(state) -> None:
         for team, index in ((state.team_a, state.current_a), (state.team_b, state.current_b)):
             p = team[index]
             if not p.is_fainted and not has_type(p, Type.ICE):
-                add_freeze_stacks(p, 2)
+                opponent = state.team_b[state.current_b] if team is state.team_a else state.team_a[state.current_a]
+                add_freeze_stacks(p, 2, opponent)
     if w in {"thunder", "雷鸣"}:
         from nrc_core.models import add_electric_stacks, has_type, Type
         for team, index in ((state.team_a, state.current_a), (state.team_b, state.current_b)):
@@ -2146,7 +2147,8 @@ def _h_freeze_immunity_and_buff(tag: EffectTag, ctx: Ctx) -> None:
 
 def _h_extra_freeze_on_freeze(tag: EffectTag, ctx: Ctx) -> None:
     """EXTRA_FREEZE_ON_FREEZE: 加个雪球 — 敌方获得冻结时额外+N层"""
-    ctx.user.ability_state["extra_freeze"] = tag.params.get("extra", 2)
+    # 固定规则由 add_freeze_stacks 读取特性定义，不能转成可累加运行时状态。
+    pass
 
 
 def _h_faint_no_mp_loss(tag: EffectTag, ctx: Ctx) -> None:
@@ -2286,7 +2288,7 @@ def _h_entry_freeze_extra(tag: EffectTag, ctx: Ctx) -> None:
     freeze = tag.params.get("freeze", 2)
     extra_cost_up = tag.params.get("extra_cost_up", 1)
     from nrc_core.models import add_freeze_stacks
-    add_freeze_stacks(ctx.target, freeze)
+    add_freeze_stacks(ctx.target, freeze, ctx.user)
     if extra_cost_up:
         for s in ctx.target.skills:
             s.energy_cost = max(0, s.energy_cost + _adjust_cost_delta(ctx.target, extra_cost_up))
@@ -2789,7 +2791,7 @@ def _h_refraction(tag: EffectTag, ctx: Ctx) -> None:
     if PokemonType.ICE in carried_types:
         if not ctx.target.ability_state.get("freeze_immune") and not ctx.target.ability_state.get("debuff_immune"):
             from nrc_core.models import add_freeze_stacks
-            add_freeze_stacks(ctx.target, 2)
+            add_freeze_stacks(ctx.target, 2, ctx.user)
     if PokemonType.POISON in carried_types:
         if not ctx.target.ability_state.get("poison_immune") and not ctx.target.ability_state.get("debuff_immune"):
             ctx.target.poison_stacks += 2
@@ -2902,7 +2904,7 @@ def _h_contract_entry(tag: EffectTag, ctx: Ctx) -> None:
         ctx.user.life_drain_mod += 0.30
     elif ball in {"调温球", "freeze"}:
         if not has_type(ctx.target, Type.ICE):
-            add_freeze_stacks(ctx.target, 1)
+            add_freeze_stacks(ctx.target, 1, ctx.user)
         if not has_type(ctx.target, Type.FIRE):
             ctx.target.burn_stacks += 4
     elif ball in {"绝缘球", "speed"}:

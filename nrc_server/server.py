@@ -26,6 +26,7 @@ if str(ROOT) not in sys.path:
 from nrc_platform import BattlePlatform
 from nrc_platform.input import merge_creature_spec
 from nrc_platform.platform import PlatformError
+from nrc_platform.state import _ABILITY_STATUSES
 from nrc_core.pokemon_nature_table import NATURE_BONUSES
 
 TYPE_NAMES = {
@@ -80,6 +81,9 @@ def _swap_team_code(event: dict[str, Any], side: str) -> dict[str, Any]:
         return event
     if event.get("team") in {"a", "b"}:
         event["team"] = "b" if event["team"] == "a" else "a"
+    for change in event.get("resource_changes", []):
+        if change.get("team") in {"a", "b"}:
+            change["team"] = "b" if change["team"] == "a" else "a"
     for key in ("active", "hp", "mp"):
         value = event.get(key)
         if isinstance(value, dict) and "a" in value and "b" in value:
@@ -96,12 +100,6 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
                 continue
             event = _swap_team_code(copy.deepcopy(dict(raw)), side)
             event.setdefault("turn", turn)
-            if event.get("type") == "skill":
-                if event.get("team") == "b":
-                    event["skill"] = "未知技能"
-                    event.pop("switched_to", None)
-                elif event.get("team") == "a":
-                    event.pop("target_switched_to", None)
             if event.get("type") == "selection":
                 if event.get("team") == "b":
                     event["status"] = "locked"
@@ -109,13 +107,16 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
                     event.pop("action_key", None)
                 else:
                     event["status"] = "locked"
-            if event.get("type") == "state_change" and event.get("team") == "b":
-                event["pokemon"] = "未知精灵"
+            if event.get("type") == "state_change":
                 event["changes"] = [
                     change for change in event.get("changes", [])
-                    if change.get("kind") not in {"hp", "energy", "ability"}
-                    and not str(change.get("name", "")).startswith("skill_cost:")
+                    if change.get("kind") not in {"hp", "energy"}
+                    and (event.get("team") != "b" or change.get("kind") != "ability"
+                         or str(change.get("name", "")).removesuffix("_negative") in _ABILITY_STATUSES
+                         or str(change.get("name", "")).startswith("skill_cost:"))
                 ]
+                if not event["changes"]:
+                    continue
             if event.get("type") == "turn":
                 for phase in ("before", "after"):
                     state = event.get(phase)
@@ -134,13 +135,8 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
     return result
 
 
-def _visible_event_count(session: Mapping[str, Any]) -> int:
-    return sum(
-        1
-        for entry in session.get("history", [])
-        for event in entry.get("events", [])
-        if event.get("type") not in HIDDEN_EVENT_TYPES
-    )
+def _visible_event_count(session: Mapping[str, Any], side: str = "own") -> int:
+    return len(_visible_events(session, side))
 
 
 def _selection_event(platform: BattlePlatform, battle_id: str, side: str, action_key: str, turn: int) -> dict[str, Any]:
@@ -180,13 +176,8 @@ def _redact_observation(data: Mapping[str, Any], session: dict[str, Any], side: 
             "types": item.get("types", []) if known else [],
             "active": is_active,
             "fainted": bool(item.get("fainted")) if known else False,
-            "status": item.get("status") if known else "normal",
-            "poison_stacks": item.get("poison_stacks", 0),
-            "burn_stacks": item.get("burn_stacks", 0),
-            "freeze_stacks": item.get("freeze_stacks", 0),
-            "frostbite_damage": item.get("frostbite_damage", 0),
-            "electric_stacks": item.get("electric_stacks", 0),
-            "cute_stacks": item.get("cute_stacks", 0),
+            "modifiers": copy.deepcopy(item.get("modifiers", [])) if known else [],
+            "statuses": copy.deepcopy(item.get("statuses", [])) if known else [],
         }
         if visible["active"]:
             max_hp = item.get("max_hp")
@@ -204,13 +195,8 @@ def _redact_observation(data: Mapping[str, Any], session: dict[str, Any], side: 
             "types": [],
             "active": False,
             "fainted": False,
-            "status": "normal",
-            "poison_stacks": 0,
-            "burn_stacks": 0,
-            "freeze_stacks": 0,
-            "frostbite_damage": 0,
-            "electric_stacks": 0,
-            "cute_stacks": 0,
+            "modifiers": [],
+            "statuses": [],
         })
     result["opponent_team"] = [by_index[index] for index in sorted(by_index)]
     known_by_side[side] = sorted(known_indices)
@@ -256,7 +242,7 @@ def _public_summary(session: Mapping[str, Any], side: str | None = None) -> dict
         "pending": bool(own_side and own_side in pending),
         "terminal": bool(session.get("terminal")),
         "winner": winner,
-        "event_count": _visible_event_count(session),
+        "event_count": _visible_event_count(session, own_side or "own"),
         "roster": copy.deepcopy(teams.get(own_side) or []) if own_side else [],
     }
 
@@ -719,7 +705,7 @@ def create_app() -> FastAPI:
                     session["history"].append({"turn": session["turn"], "events": [{"type": "round_start", "turn": session["turn"]}]})
             response = result.to_dict()
             response["side"] = actual_side
-            response["event_count"] = _visible_event_count(session)
+            response["event_count"] = _visible_event_count(session, actual_side)
             return response
         except Exception as error:
             return _error_response(error)

@@ -29,6 +29,7 @@
 - 未实现机制抛 `UnsupportedMechanicError`，不静默降级。
 - 规则依据顺序：`data/*.md` → `data/部分规则详解/` → `data/wiki/game_descriptions.csv` → 请用户解释。未注明随机的机制不得使用随机数，禁止凭空推测规则。
 - 建议对于verbose命令，使用subagent执行，例如git挖掘，日志分析，批量测试等。如果要调用subagent，请务必使用6.1-Sol模型的Low Effort
+- 减少tests脚本，只有你觉得非常不确定非常没有信心极有可能出现问题的代码才需要测试
 
 ## 命令
 
@@ -54,4 +55,5 @@ python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 | 属性克制 | `nrc_core/models.py:get_type_effectiveness` |
 | 六维和资质公式 | `nrc_core/catalog.py:calc_combat_stats` |
 | 对战状态显示 | `nrc_server/server.py`、`static/app.js` |
+| 平台状态分类与可见性适配 | `nrc_platform/state.py:normalize_observation`、`nrc_platform/platform.py:get_public_observation` |
 | 强化学习和MCTS | `nrc_ai/cli.py` |

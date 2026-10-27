@@ -124,7 +124,7 @@ _STAT_LAYER_ALIASES = {
 
 _STATUS_LAYER_FIELDS = {
     "poison": "poison_stacks", "burn": "burn_stacks",
-    "freeze": "freeze_stacks", "frostbite_damage": "frostbite_damage",
+    "freeze": "freeze_stacks",
     "leech": "leech_stacks", "electric": "electric_stacks",
     "meteor": "meteor_stacks", "cute": "cute_stacks",
     "combo": "hit_count_mod",
@@ -772,7 +772,7 @@ class BattleSimulator:
                     setattr(pokemon, f"{stat}_{direction}", max(0.0, value))
         status_fields = {
             "poison": "poison_stacks", "burn": "burn_stacks", "freeze": "freeze_stacks",
-            "frostbite_damage": "frostbite_damage", "leech": "leech_stacks",
+            "leech": "leech_stacks",
             "electric": "electric_stacks",
             "meteor": "meteor_stacks", "cute": "cute_stacks", "combo": "hit_count_mod",
         }
@@ -788,10 +788,8 @@ class BattleSimulator:
                 current = getattr(pokemon, status_fields[key])
                 setattr(pokemon, status_fields[key], max(0, int(current) + _layer_stacks(entry)))
         pokemon.ability_state["layered_state"] = layered_state
-        if pokemon.freeze_stacks and not pokemon.frostbite_damage:
-            pokemon.frostbite_damage = max(1, round(pokemon.hp * 0.05 * pokemon.freeze_stacks))
-            if pokemon.current_hp <= pokemon.frostbite_damage:
-                pokemon.current_hp = 0
+        if pokemon.freeze_stacks and pokemon.current_hp <= pokemon.freeze_threshold:
+            pokemon.current_hp = 0
         pokemon.ability_effects = [
             effect
             for name in dict.fromkeys(ability_names)
@@ -1054,7 +1052,7 @@ class BattleSimulator:
                 stacks = max(0, int(getattr(pokemon, field, 0))) if field else max(0, int(item.get("stacks", 0)))
                 result.append({"name": name, "unit": str(item.get("unit")), "stacks": stacks})
             return result
-        fields = (("poison", "poison_stacks"), ("burn", "burn_stacks"), ("freeze", "freeze_stacks"), ("frostbite_damage", "frostbite_damage"), ("leech", "leech_stacks"), ("electric", "electric_stacks"), ("meteor", "meteor_stacks"), ("cute", "cute_stacks"), ("combo", "hit_count_mod"))
+        fields = (("poison", "poison_stacks"), ("burn", "burn_stacks"), ("freeze", "freeze_stacks"), ("leech", "leech_stacks"), ("electric", "electric_stacks"), ("meteor", "meteor_stacks"), ("cute", "cute_stacks"), ("combo", "hit_count_mod"))
         return [{"name": name, "unit": name, "stacks": max(0, int(getattr(pokemon, field, 0)))} for name, field in fields if int(getattr(pokemon, field, 0)) > 0]
 
     @staticmethod

@@ -25,6 +25,7 @@ from nrc_core.training import NRCTrainingBackend, TrainingState
 
 from .catalog import load_catalog
 from .input import merge_creature_spec
+from .state import normalize_observation
 from nrc_core.codec import creature_from_dict
 
 
@@ -188,14 +189,16 @@ class BattlePlatform:
         return self._backend.decision(state.episode)
 
     def observe(self, state: PlatformState, player: int) -> Observation:
-        return self._backend.observe(state.episode, player)
+        return normalize_observation(self._backend.observe(state.episode, player), state.episode.battle, self._catalog.catalog)
 
     def legal_actions(self, state: PlatformState, player: int) -> tuple[LegalAction, ...]:
         return self._backend.legal_actions(state.episode, player)
 
     def advance(self, state: PlatformState, actions: Mapping[int, str], seed: int) -> Transition:
         transition = self._backend.advance(state.episode, actions, seed)
-        return Transition(PlatformState(transition.state), transition.observations, transition.rewards, transition.terminated, transition.winner, transition.events)
+        observations = {player: normalize_observation(value, transition.state.battle, self._catalog.catalog)
+                        for player, value in transition.observations.items()}
+        return Transition(PlatformState(transition.state), observations, transition.rewards, transition.terminated, transition.winner, transition.events)
 
     def export_state(self, state: PlatformState) -> Mapping[str, Any]:
         return self._backend.export_state(state.episode)
@@ -533,7 +536,7 @@ class BattlePlatform:
         if battle.episode is None:
             return PlatformResult(battle_id=battle_id, side=side, data={}, warnings=["core_state_not_initialized"])
         player = 0 if side == "own" else 1
-        observation = self._backend.observe(battle.episode, player)
+        observation = normalize_observation(self._backend.observe(battle.episode, player), battle.episode.battle, self._catalog.catalog)
         return PlatformResult(
             battle_id=battle_id,
             side=side,

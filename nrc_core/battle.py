@@ -152,7 +152,6 @@ def _transfer_pokemon_state(source: Pokemon, target: Pokemon) -> None:
     target.freeze_stacks = source.freeze_stacks
     target.leech_stacks = source.leech_stacks
     target.electric_stacks = source.electric_stacks
-    target.frostbite_damage = source.frostbite_damage
     if "cute_mark" in source.ability_state:
         target.ability_state["cute_mark"] = source.ability_state["cute_mark"]
     if "temporary_skill_cost_mods" in source.ability_state:
@@ -224,7 +223,6 @@ def _transform_to_guard_queen(pokemon: Pokemon) -> None:
     pokemon.burn_stacks = 0
     pokemon.freeze_stacks = 0
     pokemon.leech_stacks = 0
-    pokemon.frostbite_damage = 0
     pokemon.reset_mods()
 
 
@@ -265,7 +263,6 @@ def _process_revive_timers(state: BattleState) -> None:
         pokemon.burn_stacks = 0
         pokemon.freeze_stacks = 0
         pokemon.leech_stacks = 0
-        pokemon.frostbite_damage = 0
 
 
 # ============================================================
@@ -1564,6 +1561,9 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
         return
 
     skill = current.skills[action[0]]
+    resource_before = [(p, side, p.current_hp, p.energy)
+                       for p, side in ((current, team), (enemy, enemy_team))]
+    report_start = len(state.turn_report)
     core_log("skill", "start", turn=state.turn, team=team,
              pokemon=current.name, target=enemy.name, skill=skill.name,
              skill_category=getattr(skill.category, "value", str(skill.category)),
@@ -1747,6 +1747,17 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
     # 所有技能走新引擎（效果由 EffectTag 驱动）
     _execute_new_engine(state, team, enemy_team, current, enemy, skill,
                         action, enemy_action, team_list, idx, is_first)
+    for report in state.turn_report[report_start:]:
+        if report.get("type") == "skill" and report.get("team") == team:
+            report["remaining_energy"] = current.energy
+            report["energy_cost"] = actual_cost
+            report["resource_changes"] = [
+                {"team": side, "pokemon": p.name, "kind": kind,
+                 "before": before, "after": after}
+                for p, side, hp, energy in resource_before
+                for kind, before, after in (("hp", hp, p.current_hp), ("energy", energy, p.energy))
+                if before != after
+            ]
 
     # ── 先手特性清理 ──
     fs_power_applied = current.ability_state.pop("_fs_power_applied", 0)
@@ -2045,11 +2056,10 @@ def _apply_ability_damage_reduction(state, current, enemy, skill, damage, enemy_
 
 
 def _check_frostbite_lethal(pokemon: "Pokemon") -> None:
-    """冻结实时致死检查：任何时刻 current_hp <= frostbite_damage 时精灵直接死亡。
-    frostbite_damage 只在新增冻结层数或暴风雪天气时增加。"""
+    """冻结实时致死检查：当前生命不高于最大生命×5%×冻结层数时死亡。"""
     if pokemon.is_fainted:
         return
-    if pokemon.frostbite_damage > 0 and pokemon.current_hp <= pokemon.frostbite_damage:
+    if pokemon.freeze_stacks > 0 and pokemon.current_hp <= pokemon.freeze_threshold:
         pokemon.current_hp = 0
         pokemon.status = StatusType.FAINTED
 

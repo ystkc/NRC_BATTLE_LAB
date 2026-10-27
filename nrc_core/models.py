@@ -312,7 +312,6 @@ class Pokemon:
     # 状态层数
     poison_stacks: int = 0          # 中毒层数 (每层3%/回合, 换人不清除)
     burn_stacks: int = 0            # 燃烧层数 (每层4%/回合, 每回合减半min1, 换人不清除)
-    frostbite_damage: int = 0       # 冻结侵蚀的生命值 (每层5%最大生命，换人不清除)
     leech_stacks: int = 0           # 寄生层数 (每层2%/回合，换人清除)
     electric_stacks: int = 0        # 引电层数 (达到2层立即受到25%生命电伤)
     meteor_stacks: int = 0          # 星陨层数 (延迟爆炸)
@@ -325,7 +324,7 @@ class Pokemon:
     # 技能冷却 (index -> cooldown turns remaining)
     cooldowns: Dict[int, int] = field(default_factory=dict)
 
-    # 旧字段保留兼容
+    # 冻结层数（每层侵蚀5%最大生命，换人保留）
     freeze_stacks: int = 0
 
     # ── 个体值和性格配置（用户可配置） ──
@@ -362,9 +361,14 @@ class Pokemon:
         return self.current_hp <= 0 or self.status == StatusType.FAINTED
 
     @property
+    def freeze_threshold(self) -> float:
+        """冻结致死阈值只由当前层数计算，不独立存储或传输。"""
+        return self.hp * self.freeze_stacks * 0.05
+
+    @property
     def effective_max_hp(self) -> int:
         """冻伤后的有效最大HP (从左侧侵蚀)"""
-        return max(0, self.hp - self.frostbite_damage)
+        return max(0, round(self.hp - self.freeze_threshold))
 
     def gain_energy(self, amount: int) -> None:
         """增加能量，不超过上限10（除非有 energy_no_cap 特性）"""
@@ -437,7 +441,7 @@ class Pokemon:
         self.leech_stacks = 0
         self.electric_stacks = 0
         self.ability_state.pop("sleep_entry_applied", None)
-        # 注: freeze_stacks/frostbite_damage 冻结换人保留
+        # 注: freeze_stacks 冻结换人保留
         # 注: meteor_stacks/meteor_countdown 星陨换人保留
         # 注: cute_stacks 萌化换人保留
         self.charging_skill_idx = -1
@@ -485,7 +489,6 @@ class Pokemon:
         p.next_attack_power_pct = self.next_attack_power_pct
         p.poison_stacks = self.poison_stacks
         p.burn_stacks = self.burn_stacks
-        p.frostbite_damage = self.frostbite_damage
         p.leech_stacks = self.leech_stacks
         p.electric_stacks = self.electric_stacks
         p.meteor_stacks = self.meteor_stacks
@@ -507,14 +510,20 @@ class Pokemon:
         return p
 
 
-def add_freeze_stacks(pokemon: Pokemon, stacks: int) -> None:
+def add_freeze_stacks(pokemon: Pokemon, stacks: int, source: Optional[Pokemon] = None) -> None:
     """Apply freeze as an irreversible 5% maximum-HP layer and check fainting."""
     stacks = int(stacks)
     if stacks <= 0 or pokemon.is_fainted:
         return
+    if source is not None and source is not pokemon:
+        from nrc_core.effect_models import E, Timing
+        stacks += sum(
+            int(tag.params.get("extra", 2))
+            for effect in source.ability_effects if effect.timing == Timing.PASSIVE
+            for tag in effect.effects if tag.type == E.EXTRA_FREEZE_ON_FREEZE
+        )
     pokemon.freeze_stacks += stacks
-    pokemon.frostbite_damage += max(1, round(pokemon.hp * 0.05 * stacks))
-    if pokemon.current_hp <= pokemon.frostbite_damage:
+    if pokemon.current_hp <= pokemon.freeze_threshold:
         pokemon.current_hp = 0
         pokemon.status = StatusType.FAINTED
 

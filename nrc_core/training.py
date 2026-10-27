@@ -149,7 +149,6 @@ def _pokemon_json(pokemon: Pokemon, index: int, active: bool, private: bool) -> 
         "fainted": pokemon.is_fainted,
         "fatigue_turns": pokemon.fatigue_turns,
         "freeze_stacks": pokemon.freeze_stacks,
-        "frostbite_damage": pokemon.frostbite_damage,
         "electric_stacks": pokemon.electric_stacks,
         "cute_stacks": pokemon.cute_stacks,
         "entry_count": pokemon.entry_count,

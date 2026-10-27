@@ -86,7 +86,7 @@ function asset(name, kind) { return formFor(name)?.[kind] || ''; }
 const TYPE_NAMES = { normal: '普通', fire: '火', water: '水', electric: '电', grass: '草', ice: '冰', fighting: '武', poison: '毒', ground: '地', flying: '翼', psychic: '幻', bug: '虫', ghost: '幽', dragon: '龙', dark: '恶', steel: '机械', fairy: '萌', light: '光' };
 const BUFF_ICONS = { atk_up: '物攻.png', def_up: '物防.png', spatk_up: '魔攻.png', spdef_up: '魔防.png', speed_up: '速度.png', atk_down: '物攻.png', def_down: '物防.png', spatk_down: '魔攻.png', spdef_down: '魔防.png', speed_down: '速度.png', poison: '中毒.png', burn: '灼烧.png', freeze: '冻结.png', leech: '寄生.png', electric: '引电.png', meteor: '星陨印记.png', cute: '萌化.png' };
 const RELATION_NAMES = { immune: '无', very_resistant: '双重抵抗', resistant: '抵抗', normal: '平衡', effective: '克制', super_effective: '双重克制', unknown: '无' };
-const EFFECT_NAMES = { poison: '中毒', burn: '灼烧', freeze: '冻结', leech: '寄生', electric: '引电', meteor: '星陨印记', cute: '萌化', hp: '生命', energy: '能量', status: '状态', fainted: '力竭', ability: '特性' };
+const EFFECT_NAMES = { poison: '中毒', burn: '灼烧', freeze: '冻结', leech: '寄生', electric: '引电', meteor: '星陨', cute: '萌化', hp: '生命', energy: '能量', status: '状态', fainted: '力竭', ability: '特性', atk: '攻击', def: '物防', spatk: '魔攻', spdef: '魔防', speed: '速度', combo: '连击', priority: '先手', action_speed: '行动速度', skill_power: '全技能威力', skill_power_pct: '全技能威力', skill_cost: '全技能能耗', power_multiplier: '威力倍率加成', life_drain: '吸血', next_attack_power: '下次攻击威力', next_attack_power_pct: '下次攻击威力比例' };
 function typeKey(value) { const text = String(value || '').toLowerCase(); return TYPE_NAMES[text] || text.replace('系', '') || '普通'; }
 function typeIcon(value) { return `/assets/dept_icons/${encodeURIComponent(typeKey(value))}.png`; }
 function buffIcon(name) { const filename = BUFF_ICONS[name]; return filename ? `/assets/icon_buff/${encodeURIComponent(filename)}` : ''; }
@@ -106,9 +106,8 @@ function relationBadge(index) {
   return `<img class="relation-badge" src="${esc(relationIcon(indicator))}" alt="${esc(relationLabel(indicator))}" title="${esc(relationLabel(indicator))}">`;
 }
 function freezeState(item) {
-  const freeze = Number(item.frostbite_damage ?? 0);
-  const maxHp = Number(item.max_hp);
-  return { freeze, visible: Number.isFinite(freeze) && freeze > 0, percent: maxHp > 0 ? Math.max(0, Math.min(100, Math.round(freeze / maxHp * 100))) : 0 };
+  const freeze = Number((item.statuses || []).find((entry) => entry.name === 'freeze')?.stacks ?? 0);
+  return { freeze, visible: Number.isFinite(freeze) && freeze > 0, percent: Math.max(0, Math.min(100, freeze * 5)) };
 }
 function effectName(value) { return EFFECT_NAMES[String(value)] || String(value || '').replaceAll('_', ' '); }
 
@@ -485,20 +484,17 @@ function mergeObservation(data) {
 
 function stateEffects(item, side = 'own') {
   const effects = [];
-  const add = (name, value, unit = '层') => { if (Number(value) > 0) effects.push({ name: effectName(name), value, unit }); };
-  const conditions = item.conditions || { poison: item.poison_stacks, burn: item.burn_stacks, freeze: item.freeze_stacks, leech: item.leech_stacks, electric: item.electric_stacks, meteor: item.meteor_stacks, cute: item.cute_stacks };
-  Object.entries(conditions).forEach(([name, value]) => add(name, value));
-  Object.entries(item.boosts || {}).forEach(([name, value]) => add(name, value));
-  (Array.isArray(item.debuffs) ? item.debuffs : Object.entries(item.debuffs || {}).map(([name, stacks]) => ({ name, stacks }))).forEach((entry) => add(entry?.name || entry?.stat || 'debuff', entry?.stacks ?? entry?.value ?? 0));
-  (item.statuses || []).forEach((entry) => add(entry?.name || entry, entry?.stacks ?? entry?.value ?? 1));
-  (item.ability_states || []).forEach((entry) => add(entry?.name || '特性状态', entry?.stacks ?? 1));
+  const add = (name, value, unit = '层') => { if (Number.isFinite(Number(value)) && Number(value) !== 0) effects.push({ name: effectName(name), value, unit }); };
+  (item.modifiers || []).forEach((entry) => add(entry.name, entry.stacks, entry.unit));
+  (item.statuses || []).forEach((entry) => add(entry.name, entry.stacks, entry.unit));
   (item.skills || []).forEach((skill) => {
-    const base = Number(skillMeta(skill.name).energy_cost);
-    const current = Number(skill.current_energy_cost ?? skill.energy_cost);
-    if (Number.isFinite(base) && Number.isFinite(current) && current !== base) effects.push({ name: `技能能耗 ${skill.name}`, value: current, unit: '能量' });
+    const labels = { cooldown: '冷却', power_delta: '威力增减', energy_cost_delta: '能耗增减', hit_count_delta: '连击增减' };
+    Object.entries(skill.skill_states || {}).forEach(([key, value]) => add(`${skill.name} ${labels[key] || key}`, value, key === 'cooldown' ? '回合' : ''));
   });
-  if (side === 'own') Object.entries(state.shared?.marks || {}).forEach(([name, value]) => add(`印记 ${name}`, value));
-  if (item.status && !['normal', '正常'].includes(item.status)) add(item.status, 1);
+  Object.entries(state.shared?.marks?.[side] || {}).forEach(([name, value]) => add(`印记 ${name}`, value));
+  const devotion = state.shared?.devotion?.[side];
+  add('奉献', devotion?.total);
+  Object.entries(devotion?.distribution || {}).forEach(([name, value]) => add(`奉献 ${name}`, value));
   return effects;
 }
 
@@ -525,7 +521,7 @@ function renderSide(side) {
   $(`#${prefix}-freeze-bar`).classList.toggle('hidden', !frozen.visible);
   $(`#${prefix}-freeze-bar`).style.width = `${frozen.percent}%`;
   $(`#${prefix}-freeze-text`).classList.toggle('hidden', !frozen.visible);
-  $(`#${prefix}-freeze-text`).textContent = `冻结 ${frozen.freeze || 0} / ${item.max_hp ?? '?'}`;
+  $(`#${prefix}-freeze-text`).textContent = `冻结 ${frozen.freeze || 0} 层（${frozen.freeze * 5}%）`;
   $(`#${prefix}-pips`).innerHTML = Array.from({ length: 6 }, (_, index) => {
     const member = team[index];
     const known = Boolean(member) && (!enemy || Boolean(member?.known) || Boolean(member?.name && !['?', '未知精灵'].includes(member.name)));
@@ -580,7 +576,8 @@ function actionLabel(action) {
 function renderDrawer(title, html) { $('#drawer-title').textContent = title; $('#drawer-body').innerHTML = html; $('#drawer').classList.remove('hidden'); }
 function closeDrawer() { $('#drawer').classList.add('hidden'); }
 function drawerEffects(item) {
-  return stateEffects(item).map(({ name, value, unit }) => `<span class="field-effect"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+  const side = (state.teams.opponent || []).includes(item) ? 'opponent' : 'own';
+  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
 }
 
 function renderSpiritDrawer() {
@@ -593,7 +590,7 @@ function renderSpiritDrawer() {
     const frozen = freezeState(item);
     const types = (item.types || []).map((type) => `<img class="field-type" src="${esc(typeIcon(type))}" alt="${esc(typeKey(type))}">`).join('');
     const switchable = index !== active && !item.fainted && !state.pending && !state.resolving && isLegalAction(`switch:index=${index}`);
-    return `<button class="drawer-spirit side-state ${index === active ? 'drawer-state-active' : ''}" data-drawer-switch="${index}" ${switchable ? '' : 'disabled'}>${relationBadge(index)}<div class="spirit-inline"><div class="field-avatar"><img src="${esc(item.portrait || asset(item.name, 'portrait') || asset(item.name, 'art'))}" alt=""><div class="field-types">${types}</div></div><div class="spirit-copy"><div class="side-name"><span>第 ${index + 1} 只</span><b>${esc(item.name || '未知精灵')}</b></div><div class="hp-line"><span>${item.hp == null ? `${hpPercent}%` : `${item.hp} / ${item.max_hp}`}</span><div class="hp-track"><i style="width:${hpPercent}%"></i>${frozen.visible ? `<i class="freeze-overlay" style="width:${frozen.percent}%"></i>` : ''}</div></div>${frozen.visible ? `<div class="freeze-tag">冻结 ${frozen.freeze} / ${item.max_hp ?? '?'}</div>` : ''}<div class="energy-line">能量 ${item.energy ?? '?'}</div><div class="field-effects">${drawerEffects(item)}</div></div></div></button>`;
+    return `<button class="drawer-spirit side-state ${index === active ? 'drawer-state-active' : ''}" data-drawer-switch="${index}" ${switchable ? '' : 'disabled'}>${relationBadge(index)}<div class="spirit-inline"><div class="field-avatar"><img src="${esc(item.portrait || asset(item.name, 'portrait') || asset(item.name, 'art'))}" alt=""><div class="field-types">${types}</div></div><div class="spirit-copy"><div class="side-name"><span>第 ${index + 1} 只</span><b>${esc(item.name || '未知精灵')}</b></div><div class="hp-line"><span>${item.hp == null ? `${hpPercent}%` : `${item.hp} / ${item.max_hp}`}</span><div class="hp-track"><i style="width:${hpPercent}%"></i>${frozen.visible ? `<i class="freeze-overlay" style="width:${frozen.percent}%"></i>` : ''}</div></div>${frozen.visible ? `<div class="freeze-tag">冻结 ${frozen.freeze} 层（${frozen.freeze * 5}%）</div>` : ''}<div class="energy-line">能量 ${item.energy ?? '?'}</div><div class="field-effects">${drawerEffects(item)}</div></div></div></button>`;
   }).join('');
   renderDrawer('精灵', cards);
 }
@@ -617,11 +614,16 @@ function eventText(event) {
   }
   if (event.type === 'skill') {
     const details = [];
-    if (event.final_power != null) details.push(`威力 ${event.final_power}`);
-    if (event.final_damage != null) details.push(`造成 ${event.final_damage} 伤害${event.effect_indicator && event.effect_indicator !== 'normal' ? `（${relationLabel(event.effect_indicator)}）` : ''}`);
-    if (event.damage_per_hit != null && Number(event.hits || 1) > 1) details.push(`${event.damage_per_hit}/段 × ${event.hits}`);
+    if (event.final_power != null && Number(event.final_power) >= 0) details.push(`威力 ${event.final_power}`);
+    if (Number(event.final_damage) > 0) details.push(`造成 ${event.final_damage} 伤害${event.effect_indicator && event.effect_indicator !== 'normal' ? `（${relationLabel(event.effect_indicator)}）` : ''}`);
+    if (Number(event.damage_per_hit) > 0 && Number(event.hits || 1) > 1) details.push(`${event.damage_per_hit}/段 × ${event.hits}`);
+    if (event.energy_cost != null) details.push(`能耗 ${event.energy_cost}`);
     if (event.remaining_energy != null) details.push(`剩余能量 ${event.remaining_energy}`);
-    return `[${actor}使用技能] ${event.team === 'b' ? '完成' : (event.skill || '技能')}${details.length ? `，${details.join('，')}` : ''}`;
+    for (const change of event.resource_changes || []) {
+      const side = change.team === 'a' ? '我方' : '敌方';
+      details.push(`${side}${change.pokemon || '精灵'}${effectName(change.kind)} ${change.before}→${change.after}`);
+    }
+    return `[${actor}使用技能] ${event.skill || '技能'}${details.length ? `，${details.join('，')}` : ''}`;
   }
   if (event.type === 'switch' || event.switched_to || event.target_switched_to) return `[${actor}切换精灵] ${event.switched_to || event.target_switched_to || '未知精灵'}`;
   if (event.type === 'turn') return `[回合结束] 第${event.after?.turn || event.turn || '?'}回合`;
