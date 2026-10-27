@@ -1,13 +1,10 @@
 ﻿# NRC Battle Lab
 
-- `nrc_core/`：战斗规则、状态模型、效果引擎与训练适配器。
+- `nrc_core/`：核心战斗单回合模拟器。
 - `nrc_ai/`：搜索、自博弈、回放与训练。
-- `nrc_platform/`：多回合对战平台。
-- `manual_input/`：手动对战记录器。
-- `ocr_service/`：Windows OCR 服务。
-- `ocr_benchmark/`：OCR 实验工具。
-- `data/`：规则与实验数据。
-- `scripts/`：维护和实验入口。
-- `tests/`：自动化测试。
+- `nrc_platform/`：多回合对战状态记录平台。
+- `ocr_service/`：OCR 服务（暂时废弃）。
+- `data/`：规则、素材与数据。
+- `wiki_crawler/`：Wiki 数据采集器。
 
 详细说明见各目录内的 `README.md`。安装：`pip install -e .`；运行 Wiki 同步需额外安装 `pip install -e ".[wiki]"`。
