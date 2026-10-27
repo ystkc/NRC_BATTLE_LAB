@@ -1345,13 +1345,13 @@ ABILITY_EFFECTS = {
     ],
     
     "天通地明": [
-        AE(Timing.PASSIVE, [
+        AE(Timing.BEFORE_ATTACK, [
             T(E.DAMAGE_MOD_POLLUTANT_BLOOD, bonus_pct=1.0)
         ]),
     ],
     
     "月光审判": [
-        AE(Timing.PASSIVE, [
+        AE(Timing.BEFORE_ATTACK, [
             T(E.DAMAGE_MOD_LEADER_BLOOD, bonus_pct=1.0)
         ]),
     ],
@@ -1553,9 +1553,9 @@ ABILITY_EFFECTS = {
         AE(Timing.ON_USE_SKILL, [T(E.BURN, stacks=6)]),
     ],
 
-    # 捉迷藏 (3只): 冻结敌方时额外+2层冻结（复用加个雪球原语）
+    # 捉迷藏 (3只): 每次成功使敌方获得冻结，全技能能耗+1
     "捉迷藏": [
-        AE(Timing.PASSIVE, [T(E.EXTRA_FREEZE_ON_FREEZE, extra=2)]),
+        AE(Timing.ON_INFLICT_FREEZE, [T(E.EXTRA_CONSUMPTION_ON_FREEZE, extra=1)]),
     ],
 
     # 保守派 (3只): 总技能能耗<4时双防+80%

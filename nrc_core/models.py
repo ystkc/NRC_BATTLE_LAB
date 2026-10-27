@@ -510,10 +510,12 @@ class Pokemon:
         return p
 
 
-def add_freeze_stacks(pokemon: Pokemon, stacks: int, source: Optional[Pokemon] = None) -> None:
+def add_freeze_stacks(pokemon: Pokemon, stacks: int, source: Optional[Pokemon] = None,
+                      *, state: Optional["BattleState"] = None, team: str = "a") -> None:
     """Apply freeze as an irreversible 5% maximum-HP layer and check fainting."""
     stacks = int(stacks)
-    if stacks <= 0 or pokemon.is_fainted:
+    if (stacks <= 0 or pokemon.is_fainted or has_type(pokemon, Type.ICE)
+            or pokemon.ability_state.get("freeze_immune")):
         return
     if source is not None and source is not pokemon:
         from nrc_core.effect_models import E, Timing
@@ -523,6 +525,12 @@ def add_freeze_stacks(pokemon: Pokemon, stacks: int, source: Optional[Pokemon] =
             for tag in effect.effects if tag.type == E.EXTRA_FREEZE_ON_FREEZE
         )
     pokemon.freeze_stacks += stacks
+    if source is not None and source is not pokemon:
+        from nrc_core.engine import EffectExecutor
+        EffectExecutor.execute_ability(
+            state, source, pokemon, Timing.ON_INFLICT_FREEZE,
+            source.ability_effects, team, {"freeze_stacks_added": stacks},
+        )
     if pokemon.current_hp <= pokemon.freeze_threshold:
         pokemon.current_hp = 0
         pokemon.status = StatusType.FAINTED

@@ -83,6 +83,111 @@ def _find_skill_index(pokemon: "Pokemon", skill: "Skill") -> int:
     return -1
 
 
+_ABILITY_REPORT_FIELDS = {
+    "current_hp": ("生命", False), "energy": ("能量", False),
+    "atk_up": ("物攻提升", True), "atk_down": ("物攻降低", True),
+    "def_up": ("物防提升", True), "def_down": ("物防降低", True),
+    "spatk_up": ("魔攻提升", True), "spatk_down": ("魔攻降低", True),
+    "spdef_up": ("魔防提升", True), "spdef_down": ("魔防降低", True),
+    "speed_up": ("速度提升", True), "speed_down": ("速度降低", True),
+    "poison_stacks": ("中毒", False), "burn_stacks": ("燃烧", False),
+    "freeze_stacks": ("冻结", False), "leech_stacks": ("寄生", False),
+    "electric_stacks": ("引电", False), "meteor_stacks": ("星陨", False),
+    "cute_stacks": ("萌化", False), "skill_cost_mod": ("全部技能能耗", False),
+    "skill_power_bonus": ("全部技能威力", False),
+    "skill_power_pct_mod": ("全部技能威力", True),
+    "hit_count_mod": ("连击", False), "priority_stage": ("先手等级", False),
+}
+
+
+def _ability_report_snapshot(state: "BattleState") -> list:
+    """仅记录可解释的数值，不复制特性运行时对象或隐藏技能定义。"""
+    return [
+        (side, index, pokemon,
+         {field: getattr(pokemon, field) for field in _ABILITY_REPORT_FIELDS},
+         [(skill.name, skill.energy_cost, skill.power, skill.hit_count, skill.priority_mod) for skill in pokemon.skills],
+         dict(pokemon.ability_state.get("public_skill_modifiers", {})),
+         [dict(item) for item in pokemon.ability_state.get("_public_skill_modifier_deltas", [])],
+         _ability_runtime_snapshot(pokemon))
+        for side, members in (("a", state.team_a), ("b", state.team_b))
+        for index, pokemon in enumerate(members)
+    ]
+
+
+def _ability_runtime_snapshot(pokemon: "Pokemon") -> dict:
+    def value_snapshot(value, depth=0):
+        if isinstance(value, (str, int, float, bool, type(None))):
+            return value
+        if depth < 4 and isinstance(value, dict):
+            return {key: value_snapshot(item, depth + 1) for key, item in value.items()
+                    if isinstance(key, (str, int)) and not str(key).startswith("_")}
+        if depth < 4 and isinstance(value, (list, tuple)):
+            return tuple(value_snapshot(item, depth + 1) for item in value)
+        return None
+
+    return {key: value_snapshot(value) for key, value in pokemon.ability_state.items()
+            if not key.startswith("_") and key not in {"lab_metadata", "layered_state", "battle_context"}
+            and isinstance(value, (str, int, float, bool, dict, list, tuple, type(None)))}
+
+
+def _report_ability_changes(state: "BattleState", before: list, source: "Pokemon", team: str, timing: Timing) -> None:
+    """按实际差值报告，能量达到上限、条件未满足等情况不生成虚假增益。"""
+    ability = _get_ability_name(source)
+    for side, index, pokemon, old, old_skills, old_public, old_public_deltas, old_runtime in before:
+        changes = []
+        descriptions = []
+        for field, (label, percent) in _ABILITY_REPORT_FIELDS.items():
+            value = getattr(pokemon, field)
+            delta = value - old[field]
+            if abs(delta) < 1e-9:
+                continue
+            changes.append({"kind": field, "before": old[field], "after": value})
+            amount = delta * 100 if percent else delta
+            descriptions.append(f"{label}{amount:+g}{'%' if percent else ''}")
+        public = pokemon.ability_state.get("public_skill_modifiers", {})
+        for field, label in (("energy_cost", "全部技能能耗"), ("power", "全部技能威力"),
+                             ("power_pct", "全部技能威力百分比"),
+                             ("hit_count", "全部技能连击"), ("priority_mod", "全部技能先手等级")):
+            delta = public.get(field, 0) - old_public.get(field, 0)
+            if delta:
+                changes.append({"kind": "modifier", "name": field,
+                                "before": old_public.get(field, 0), "after": public.get(field, 0)})
+                descriptions.append(f"{label}{delta:+g}")
+        base = {"type": "ability", "team": team, "pokemon": source.name,
+                "ability": ability, "timing": timing.name,
+                "target_team": side, "target_index": index, "target": pokemon.name}
+        runtime = _ability_runtime_snapshot(pokemon)
+        if runtime != old_runtime and not changes:
+            # 运行时标记的键是内部实现细节，不在战报中暴露英文键或隐私值。
+            changes.append({"kind": "ability_runtime", "changed": True})
+            descriptions.append("特性效果生效")
+        if changes:
+            state.turn_report.append({**base, "changes": changes,
+                                      "description": f"[{ability}] {pokemon.name}：" + "，".join(descriptions)})
+        # 指定技能的变化只发给所属队伍，避免通过特性战报泄露技能配置。
+        skill_changes = []
+        skill_descriptions = []
+        public_deltas = pokemon.ability_state.get("_public_skill_modifier_deltas", [])
+        for slot, skill in enumerate(pokemon.skills):
+            if slot >= len(old_skills):
+                continue
+            _, cost, power, hits, priority = old_skills[slot]
+            for field, label, previous in (("energy_cost", "能耗", cost), ("power", "威力", power),
+                                           ("hit_count", "连击", hits), ("priority_mod", "先手等级", priority)):
+                value = getattr(skill, field)
+                old_global = old_public_deltas[slot].get(field, 0) if slot < len(old_public_deltas) else 0
+                new_global = public_deltas[slot].get(field, 0) if slot < len(public_deltas) else 0
+                delta = value - previous - (new_global - old_global)
+                if delta:
+                    skill_changes.append({"kind": "skill", "slot": slot, "name": skill.name,
+                                          "field": field, "before": previous, "after": previous + delta})
+                    skill_descriptions.append(f"{skill.name}{label}{delta:+g}")
+        if skill_changes:
+            state.turn_report.append({**base, "private": True, "visibility": "owner", "owner_team": side,
+                                      "changes": skill_changes,
+                                      "description": f"[{ability}] {pokemon.name}：" + "，".join(skill_descriptions)})
+
+
 def _share_heal_to_bench(ctx: "Ctx", heal: int) -> None:
     """系统发育：将回复的HP等量随机分配给场下存活精灵"""
     team_list = ctx.state.team_a if ctx.team == "a" else ctx.state.team_b
@@ -414,12 +519,19 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
 
     # ── 印记伤害修正 ──
     mark_mods = get_mark_damage_modifiers(ctx.state, ctx.team, ctx.is_first, skill)
+    # 使用独立上下文，避免多段 DAMAGE 重复累积临时威力修正。
+    attack_context = {"skill": skill, "is_first": ctx.is_first}
+    EffectExecutor.execute_ability(
+        ctx.state, ctx.user, ctx.target, Timing.BEFORE_ATTACK,
+        ctx.user.ability_effects, ctx.team, attack_context,
+    )
 
     power = (
         skill.power
         + ctx.user.skill_power_bonus
         + ctx.user.next_attack_power_bonus
         + ctx.result.get("_power_bonus", 0)
+        + attack_context.get("_power_bonus", 0)
         + mark_mods["power_bonus"]
     )
     power_mult = (
@@ -427,6 +539,7 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
         + ctx.user.skill_power_pct_mod
         + ctx.user.next_attack_power_pct
         + (ctx.result.get("_power_mult", 1.0) - 1.0)
+        + (attack_context.get("_power_mult", 1.0) - 1.0)
         + (mark_mods["power_mult"] - 1.0)
     )
     if power_mult != 1.0:
@@ -572,6 +685,10 @@ def _h_energy_all_in(tag: EffectTag, ctx: Ctx) -> None:
 
 def _h_reset_skill_cost(tag: EffectTag, ctx: Ctx) -> None:
     ctx.skill.energy_cost = getattr(ctx.skill, "_base_energy_cost", ctx.skill.energy_cost)
+    slot = _find_skill_index(ctx.user, ctx.skill)
+    private = ctx.user.ability_state.get("_public_skill_modifier_deltas", [])
+    if 0 <= slot < len(private):
+        private[slot].pop("energy_cost", None)
 
 
 def _h_steal_energy(tag: EffectTag, ctx: Ctx) -> None:
@@ -636,7 +753,8 @@ def _h_freeze(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.models import add_freeze_stacks, has_type, Type
     if has_type(ctx.target, Type.ICE) or ctx.target.ability_state.get("freeze_immune"):
         return
-    add_freeze_stacks(ctx.target, tag.params.get("stacks", 1), ctx.user)
+    add_freeze_stacks(ctx.target, tag.params.get("stacks", 1), ctx.user,
+                      state=ctx.state, team=ctx.team)
 
 
 def _h_electric_lure(tag: EffectTag, ctx: Ctx) -> None:
@@ -674,11 +792,13 @@ def _h_moisture_mark(tag: EffectTag, ctx: Ctx) -> None:
     team_id = ctx.team if tgt == "self" else ("b" if ctx.team == "a" else "a")
     team_list = ctx.state.team_a if team_id == "a" else ctx.state.team_b
     for p in team_list:
+        previous_costs = [s.energy_cost for s in p.skills]
         for s in p.skills:
             delta = -stacks
             if p.ability_state.get("cost_invert"):
                 delta = -delta
             s.energy_cost = max(0, s.energy_cost + delta)
+        _record_public_skill_modifier(p, "energy_cost", stacks if p.ability_state.get("cost_invert") else -stacks, previous_costs)
     marks["moisture_mark"] = 0  # 已消耗
 
 
@@ -1170,7 +1290,8 @@ def _apply_weather_damage(state) -> None:
             p = team[index]
             if not p.is_fainted and not has_type(p, Type.ICE):
                 opponent = state.team_b[state.current_b] if team is state.team_a else state.team_a[state.current_a]
-                add_freeze_stacks(p, 2, opponent)
+                add_freeze_stacks(p, 2, opponent, state=state,
+                                  team="b" if team is state.team_a else "a")
     if w in {"thunder", "雷鸣"}:
         from nrc_core.models import add_electric_stacks, has_type, Type
         for team, index in ((state.team_a, state.current_a), (state.team_b, state.current_b)):
@@ -1253,6 +1374,7 @@ def _h_permanent_mod_ability(tag: EffectTag, ctx: Ctx) -> None:
         bonus_pct = per_counter * counter_count
         skill_filter = tag.params.get("skill_filter", {})
         elements = skill_filter.get("element", [])
+        before_power = [s.power for s in ctx.user.skills]
         from nrc_core.models import TYPE_NAME_MAP as _TYPE_MAP
         for s in ctx.user.skills:
             if positions and _find_skill_index(ctx.user, s) not in positions:
@@ -1264,6 +1386,10 @@ def _h_permanent_mod_ability(tag: EffectTag, ctx: Ctx) -> None:
             base_power = getattr(s, "_ability_base_power", s.power)
             setattr(s, "_ability_base_power", base_power)
             s.power = int(base_power * (1.0 + bonus_pct))
+        if not positions and not elements:
+            previous = ctx.user.ability_state.get("_global_per_counter_power_pct", 0)
+            _record_public_skill_modifier(ctx.user, "power", bonus_pct * 100 - previous, before_power, "power_pct")
+            ctx.user.ability_state["_global_per_counter_power_pct"] = bonus_pct * 100
     else:
         if ctx.skill is not None:
             _apply_permanent_mod(ctx.user, ctx.skill, tag.params)
@@ -1626,6 +1752,11 @@ def _apply_matching_skill_mods(pokemon: "Pokemon", enemy: "Pokemon", params: Dic
     power_bonus = int(params.get("power_bonus", 0)) * count
     hit_count_bonus = int(params.get("hit_count_bonus", 0)) * count
     grant_agility = bool(params.get("grant_agility", False))
+    filter_keys = {"element", "category", "attack_only", "pure_attack", "energy_cost_gt",
+                   "energy_cost_ge", "energy_cost_lt", "energy_cost_le", "energy_cost_eq"}
+    global_scope = not any(params.get(key) for key in filter_keys if not key.startswith("energy_cost_")) and not any(key in params for key in filter_keys if key.startswith("energy_cost_"))
+    before_power = [s.power for s in pokemon.skills]
+    before_hits = [s.hit_count for s in pokemon.skills]
 
     for s in pokemon.skills:
         if not _skill_matches_ability_filter(s, params):
@@ -1641,6 +1772,15 @@ def _apply_matching_skill_mods(pokemon: "Pokemon", enemy: "Pokemon", params: Dic
 
         if grant_agility:
             s.agility = True
+    if global_scope:
+        previous = pokemon.ability_state.get("_global_matching_power", {})
+        if power_pct or power_bonus:
+            _record_public_skill_modifier(pokemon, "power", power_pct * 100 - previous.get("pct", 0), before_power, "power_pct")
+            public = pokemon.ability_state.setdefault("public_skill_modifiers", {})
+            public["power"] = public.get("power", 0) + power_bonus - previous.get("bonus", 0)
+            pokemon.ability_state["_global_matching_power"] = {"pct": power_pct * 100, "bonus": power_bonus}
+        if hit_count_bonus:
+            _record_public_skill_modifier(pokemon, "hit_count", hit_count_bonus, before_hits)
 
 
 def _h_transfer_mods(tag: EffectTag, ctx: Ctx) -> None:
@@ -2033,21 +2173,21 @@ def _h_damage_mod_non_weakness(tag: EffectTag, ctx: Ctx) -> None:
 def _h_damage_mod_pollutant_blood(tag: EffectTag, ctx: Ctx) -> None:
     """DAMAGE_MOD_POLLUTANT_BLOOD: 天通地明 - +100% vs pollutant blood (特定敌方血脉)"""
     if ctx.target and ctx.target.ability_state is not None:
-        if ctx.target.ability_state.get("blood_type") == "pollutant":
+        bloodlines = ctx.target.ability_state.get("lab_metadata", {}).get("bloodline_attributes") or []
+        if (ctx.target.ability_state.get("blood_type") == "pollutant"
+                or "污染血脉" in bloodlines):
             bonus_pct = tag.params.get("bonus_pct", 1.0)
-            if "power_multiplier" not in ctx.result:
-                ctx.result["power_multiplier"] = 1.0
-            ctx.result["power_multiplier"] *= (1.0 + bonus_pct)
+            ctx.result["_power_mult"] = ctx.result.get("_power_mult", 1.0) + bonus_pct
 
 
 def _h_damage_mod_leader_blood(tag: EffectTag, ctx: Ctx) -> None:
     """DAMAGE_MOD_LEADER_BLOOD: 月光审判 - +100% vs leader blood (特定敌方血脉)"""
     if ctx.target and ctx.target.ability_state is not None:
-        if ctx.target.ability_state.get("blood_type") == "leader":
+        bloodlines = ctx.target.ability_state.get("lab_metadata", {}).get("bloodline_attributes") or []
+        if (ctx.target.ability_state.get("blood_type") == "leader"
+                or "首领血脉" in bloodlines):
             bonus_pct = tag.params.get("bonus_pct", 1.0)
-            if "power_multiplier" not in ctx.result:
-                ctx.result["power_multiplier"] = 1.0
-            ctx.result["power_multiplier"] *= (1.0 + bonus_pct)
+            ctx.result["_power_mult"] = ctx.result.get("_power_mult", 1.0) + bonus_pct
 
 
 def _h_damage_resist_same_type(tag: EffectTag, ctx: Ctx) -> None:
@@ -2149,6 +2289,16 @@ def _h_extra_freeze_on_freeze(tag: EffectTag, ctx: Ctx) -> None:
     """EXTRA_FREEZE_ON_FREEZE: 加个雪球 — 敌方获得冻结时额外+N层"""
     # 固定规则由 add_freeze_stacks 读取特性定义，不能转成可累加运行时状态。
     pass
+
+def _h_extra_consumption_on_freeze(tag: EffectTag, ctx: Ctx) -> None:
+    """EXTRA_CONSUMPTION_ON_FREEZE: 冻结敌方时额外+1层能耗增加"""
+    if ctx.result.get("_ability_timing") != Timing.ON_INFLICT_FREEZE.name:
+        return
+    if ctx.result.get("freeze_stacks_added", 0) <= 0:
+        return
+    delta = _adjust_cost_delta(ctx.target, int(tag.params.get("extra", 1)))
+    for skill in ctx.target.skills:
+        skill.energy_cost = max(0, skill.energy_cost + delta)
 
 
 def _h_faint_no_mp_loss(tag: EffectTag, ctx: Ctx) -> None:
@@ -2288,7 +2438,7 @@ def _h_entry_freeze_extra(tag: EffectTag, ctx: Ctx) -> None:
     freeze = tag.params.get("freeze", 2)
     extra_cost_up = tag.params.get("extra_cost_up", 1)
     from nrc_core.models import add_freeze_stacks
-    add_freeze_stacks(ctx.target, freeze, ctx.user)
+    add_freeze_stacks(ctx.target, freeze, ctx.user, state=ctx.state, team=ctx.team)
     if extra_cost_up:
         for s in ctx.target.skills:
             s.energy_cost = max(0, s.energy_cost + _adjust_cost_delta(ctx.target, extra_cost_up))
@@ -2431,6 +2581,7 @@ def _h_entry_buff_per_skill_count(tag: EffectTag, ctx: Ctx) -> None:
     # power_pct: 威力+N%×count
     power_pct = per.get("power_pct", 0.0)
     power_bonus = per.get("power_bonus", 0)
+    before_power = [s.power for s in ctx.user.skills]
     if power_pct or power_bonus:
         for s in ctx.user.skills:
             if filter_types and s.skill_type not in filter_types:
@@ -2441,6 +2592,12 @@ def _h_entry_buff_per_skill_count(tag: EffectTag, ctx: Ctx) -> None:
                 total_pct = power_pct * count if power_pct else 0.0
                 total_bonus = power_bonus * count if power_bonus else 0
                 s.power = max(0, int(base * (1.0 + total_pct)) + total_bonus)
+        if not filter_types:
+            previous = ctx.user.ability_state.get("_global_entry_count_power", {})
+            _record_public_skill_modifier(ctx.user, "power", power_pct * count * 100 - previous.get("pct", 0), before_power, "power_pct")
+            public = ctx.user.ability_state.setdefault("public_skill_modifiers", {})
+            public["power"] = public.get("power", 0) + power_bonus * count - previous.get("bonus", 0)
+            ctx.user.ability_state["_global_entry_count_power"] = {"pct": power_pct * count * 100, "bonus": power_bonus * count}
 
     # buff: 属性加成×count
     buff = per.get("buff", {})
@@ -2791,7 +2948,7 @@ def _h_refraction(tag: EffectTag, ctx: Ctx) -> None:
     if PokemonType.ICE in carried_types:
         if not ctx.target.ability_state.get("freeze_immune") and not ctx.target.ability_state.get("debuff_immune"):
             from nrc_core.models import add_freeze_stacks
-            add_freeze_stacks(ctx.target, 2, ctx.user)
+            add_freeze_stacks(ctx.target, 2, ctx.user, state=ctx.state, team=ctx.team)
     if PokemonType.POISON in carried_types:
         if not ctx.target.ability_state.get("poison_immune") and not ctx.target.ability_state.get("debuff_immune"):
             ctx.target.poison_stacks += 2
@@ -2904,7 +3061,7 @@ def _h_contract_entry(tag: EffectTag, ctx: Ctx) -> None:
         ctx.user.life_drain_mod += 0.30
     elif ball in {"调温球", "freeze"}:
         if not has_type(ctx.target, Type.ICE):
-            add_freeze_stacks(ctx.target, 1, ctx.user)
+            add_freeze_stacks(ctx.target, 1, ctx.user, state=ctx.state, team=ctx.team)
         if not has_type(ctx.target, Type.FIRE):
             ctx.target.burn_stacks += 4
     elif ball in {"绝缘球", "speed"}:
@@ -3219,6 +3376,7 @@ _HANDLERS: Dict[E, Callable] = {
     E.FREEZE_IMMUNITY_AND_BUFF:      _h_freeze_immunity_and_buff,
     # ── 通用特性原语 (批量新增) ──
     E.EXTRA_FREEZE_ON_FREEZE:        _h_extra_freeze_on_freeze,
+    E.EXTRA_CONSUMPTION_ON_FREEZE:   _h_extra_consumption_on_freeze,
     E.FAINT_NO_MP_LOSS:              _h_faint_no_mp_loss,
     E.ON_SKILL_ELEMENT_BUFF:         _h_on_skill_element_buff,
     E.ON_SKILL_ELEMENT_POISON:       _h_on_skill_element_poison,
@@ -3365,6 +3523,7 @@ _ABILITY_HANDLER_OVERRIDES: Dict[E, Callable] = {
     E.FREEZE_IMMUNITY_AND_BUFF:      _h_freeze_immunity_and_buff,
     # ── 通用特性原语 (批量新增) ──
     E.EXTRA_FREEZE_ON_FREEZE:        _h_extra_freeze_on_freeze,
+    E.EXTRA_CONSUMPTION_ON_FREEZE:   _h_extra_consumption_on_freeze,
     E.FAINT_NO_MP_LOSS:              _h_faint_no_mp_loss,
     E.ON_SKILL_ELEMENT_BUFF:         _h_on_skill_element_buff,
     E.ON_SKILL_ELEMENT_POISON:       _h_on_skill_element_poison,
@@ -3456,6 +3615,80 @@ _ABILITY_HANDLER_OVERRIDES: Dict[E, Callable] = {
 }
 
 
+def _record_public_skill_modifier(pokemon: "Pokemon", field: str, delta: float,
+                                  before: list, public_field: str | None = None) -> None:
+    """记录已知全技能来源；逐槽实际变化仅供可见性层扣除，禁止公开。"""
+    public = pokemon.ability_state.setdefault("public_skill_modifiers", {})
+    public_field = public_field or field
+    public[public_field] = public.get(public_field, 0) + delta
+    private = pokemon.ability_state.setdefault("_public_skill_modifier_deltas", [])
+    while len(private) < len(pokemon.skills):
+        private.append({})
+    for index, skill in enumerate(pokemon.skills):
+        actual = getattr(skill, field, 0) - before[index]
+        private[index][field] = private[index].get(field, 0) + actual
+
+
+def _global_skill_cost_sources(tag: EffectTag, ctx: Ctx, handler: Callable) -> list:
+    """由规则入口明确作用域，不能用四个技能变化相同推断全局。"""
+    name = handler.__name__
+    user = ctx.user
+    target = ctx.target
+    params = tag.params
+    reduce_handlers = {
+        "_h_on_skill_element_cost_reduce", "_h_enemy_switch_self_cost_reduce",
+        "_h_cute_on_gain_cost_reduce", "_h_passive_energy_reduce_water_ring",
+    }
+    if name in reduce_handlers:
+        if name == "_h_passive_energy_reduce_water_ring" and params.get("range", "all") != "all":
+            return []
+        defaults = {"_h_on_skill_element_cost_reduce": 1, "_h_enemy_switch_self_cost_reduce": 3,
+                    "_h_cute_on_gain_cost_reduce": 4, "_h_passive_energy_reduce_water_ring": 0}
+        return [(user, "energy_cost", _adjust_cost_delta(user, -params.get("reduce", defaults[name])))]
+    if name == "_h_counter_success_cost_reduce":
+        return [(user, "energy_cost", -params.get("delta", 5))]
+    if name in {"_h_enemy_all_cost_up", "_h_enemy_energy_cost_up"}:
+        if params.get("duration") or params.get("filter", "all") != "all":
+            return []
+        return [(target, "energy_cost", _adjust_cost_delta(target, params.get("amount", 0 if name == "_h_enemy_energy_cost_up" else 1)))]
+    if name == "_h_contract_entry":
+        ball = params.get("ball") or user.ability_state.get("gulu_ball")
+        if ball in {"skill_cost", "网兜球", "combo"}:
+            return [(user, "energy_cost", -1)]
+    if name == "_h_extra_consumption_on_freeze":
+        if ctx.result.get("_ability_timing") != Timing.ON_INFLICT_FREEZE.name or ctx.result.get("freeze_stacks_added", 0) <= 0:
+            return []
+        return [(target, "energy_cost", _adjust_cost_delta(target, params.get("extra", 1)))]
+    if name == "_h_entry_freeze_extra":
+        return [(target, "energy_cost", _adjust_cost_delta(target, params.get("extra_cost_up", 1)))]
+    if name == "_h_carry_skill_cost_reduce" and not params.get("category"):
+        return [(user, "energy_cost", _adjust_cost_delta(user, -params.get("reduce", 2)))]
+    if name == "_h_cute_bench_cost_reduce":
+        bench = ctx.state.team_a if ctx.team == "a" else ctx.state.team_b
+        total = sum(p.cute_stacks for p in bench if p is not user and not p.is_fainted)
+        return [(user, "energy_cost", -total)]
+    if name == "_h_refraction":
+        from nrc_core.models import Type
+        if any(s is not ctx.skill and s.skill_type == Type.WATER for s in user.skills):
+            return [(user, "energy_cost", -1)]
+    if name == "_h_entry_buff_per_skill_count" and not params.get("element_filter"):
+        counts = ctx.state.skill_use_counts_a if ctx.team == "a" else ctx.state.skill_use_counts_b
+        keys = params.get("count_keys") or [params.get("count_key", "")]
+        count = sum(counts.get(key, 0) for key in keys)
+        delta = -params.get("per_count", {}).get("cost_reduce", 0) * count
+        return [(user, "energy_cost", _adjust_cost_delta(user, delta))]
+    if name == "_h_permanent_mod_ability" and ctx.skill is None:
+        if params.get("trigger") in {"per_position_change", "per_counter", "per_use"}:
+            return []
+        filters = ctx.result.get("_ability_filter", {})
+        if not filters.get("positions") and not params.get("skill_filter") and not params.get("per_counter"):
+            field = {"cost": "energy_cost", "power": "power", "hit_count": "hit_count"}.get(params.get("target"))
+            if field:
+                delta = params.get("delta", 0)
+                return [(user, field, _adjust_cost_delta(user, delta) if field == "energy_cost" else delta)]
+    return []
+
+
 def _apply_tag(tag: EffectTag, ctx: Ctx, ability_mode: bool = False) -> None:
     """统一效果分发入口。ability_mode=True 时优先用特性专属 handler。"""
     promise_before = [(pokemon, _promise_modifiers(pokemon)) for pokemon in (ctx.user, ctx.target)]
@@ -3472,9 +3705,29 @@ def _apply_tag(tag: EffectTag, ctx: Ctx, ability_mode: bool = False) -> None:
     else:
         handler = _HANDLERS.get(tag.type)
     if handler:
+        modifier_slots = []
+        for pokemon in (ctx.user, ctx.target):
+            private = pokemon.ability_state.get("_public_skill_modifier_deltas")
+            if private is not None:
+                modifier_slots.append((pokemon, {id(skill): dict(private[index]) if index < len(private) else {}
+                                                   for index, skill in enumerate(pokemon.skills)},
+                                       [id(skill) for skill in pokemon.skills]))
+        sources = [(pokemon, field, delta, [getattr(s, field, 0) for s in pokemon.skills],
+                    [entry.get(field, 0) for entry in pokemon.ability_state.get("_public_skill_modifier_deltas", [])])
+                   for pokemon, field, delta in _global_skill_cost_sources(tag, ctx, handler)]
         handler(tag, ctx)
+        for pokemon, slots, previous_ids in modifier_slots:
+            if previous_ids != [id(skill) for skill in pokemon.skills]:
+                pokemon.ability_state["_public_skill_modifier_deltas"] = [slots.get(id(skill), {}) for skill in pokemon.skills]
+        for pokemon, field, delta, values, previous_global in sources:
+            current_global = pokemon.ability_state.get("_public_skill_modifier_deltas", [])
+            values = [value + (current_global[index].get(field, 0) if index < len(current_global) else 0)
+                      - (previous_global[index] if index < len(previous_global) else 0)
+                      for index, value in enumerate(values)]
+            if delta and (handler.__name__ != "_h_cute_on_gain_cost_reduce" or any(getattr(s, field, 0) != value for s, value in zip(pokemon.skills, values))):
+                _record_public_skill_modifier(pokemon, field, delta, values)
     for pokemon, modifiers in promise_before:
-        _apply_prince_promise(pokemon, modifiers, ctx.state.turn)
+        _apply_prince_promise(pokemon, modifiers, getattr(ctx.state, "turn", 0))
     core_log("ability" if ability_mode else "skill", "effect_tag",
              turn=getattr(ctx.state, "turn", None),
              user=ctx.user.name, target=ctx.target.name,
@@ -3518,8 +3771,10 @@ def _apply_prince_promise(pokemon: "Pokemon", before: tuple, turn: int) -> None:
         if pokemon.ability_state.get(key) == turn:
             continue
         pokemon.ability_state[key] = turn
+        previous_costs = [skill.energy_cost for skill in pokemon.skills]
         for skill in pokemon.skills:
             skill.energy_cost = max(0, skill.energy_cost + _adjust_cost_delta(pokemon, delta))
+        _record_public_skill_modifier(pokemon, "energy_cost", _adjust_cost_delta(pokemon, delta), previous_costs)
 
 
 class EffectExecutor:
@@ -3946,6 +4201,7 @@ class EffectExecutor:
     ) -> Dict:
         """在指定时机触发特性效果。"""
         result = {"triggered": False, "damage_reduction": 0}
+        report_start = len(state.turn_report)
         if context is None:
             context = {}
 
@@ -3962,17 +4218,57 @@ class EffectExecutor:
             # 通用效果：走同一套 _apply_tag（ability_mode=True）
             # 用 context 充当 result，以便 ability 内部传递信息
             ctx = Ctx(
-                state=state, user=pokemon, target=enemy, skill=None,
-                result=context, team=team,
+                state=state, user=pokemon, target=enemy, skill=context.get("skill"),
+                result=context, team=team, is_first=context.get("is_first", False),
             )
             # 标记为 ability 上下文
             context["_is_ability_ctx"] = True
             context["_ability_timing"] = timing.name
 
+            report_before = _ability_report_snapshot(state)
+            report_context_before = {key: value for key, value in context.items()
+                                     if isinstance(value, (str, int, float, bool, type(None)))}
+            report_field_before = (state.weather, state.weather_turns, dict(state.marks_a), dict(state.marks_b), state.mp_a, state.mp_b)
             for tag in ae.effects:
                 _apply_tag(tag, ctx, ability_mode=True)
                 if tag.type == E.DAMAGE_REDUCTION:
                     result["damage_reduction"] = tag.params.get("pct", 0)
+
+            _report_ability_changes(state, report_before, pokemon, team, timing)
+            descriptions = []
+            for key, label, percent in (
+                ("_power_bonus", "本次技能威力", False), ("_power_pct", "本次技能威力", True),
+                ("_power_mult", "本次技能威力倍率", False), ("_hit_count_bonus", "本次技能连击", False),
+                ("power_multiplier", "本次技能威力倍率", False), ("cost_reduction", "本次技能能耗减少", False),
+                ("_hit_count_mult", "本次技能连击倍率", False),
+                ("ability_damage_reduction", "伤害减免", True), ("damage_reduction", "伤害减免", True),
+            ):
+                value, old_value = context.get(key), report_context_before.get(key)
+                if isinstance(value, (int, float)) and value != old_value:
+                    descriptions.append(f"{label}{value * 100 if percent else value:g}{'%' if percent else ''}")
+            known_context_keys = {"_power_bonus", "_power_pct", "_power_mult", "_hit_count_bonus", "_hit_count_mult",
+                                  "power_multiplier", "cost_reduction", "ability_damage_reduction", "damage_reduction", "_damage_reduction",
+                                  "_ability_timing", "_is_ability_ctx"}
+            if not descriptions and any(
+                key not in known_context_keys and report_context_before.get(key) != value
+                for key, value in context.items() if isinstance(value, (str, int, float, bool, type(None)))
+            ):
+                descriptions.append("本次特性效果生效")
+            weather, weather_turns, marks_a, marks_b, mp_a, mp_b = report_field_before
+            if (weather, weather_turns) != (state.weather, state.weather_turns):
+                weather_name = {"sunny": "晴天", "rain": "雨天", "sandstorm": "沙暴", "hail": "冰雹", "snow": "雪天"}.get(state.weather, state.weather or "无天气")
+                descriptions.append(f"天气变为{weather_name}（{state.weather_turns}回合）")
+            for side, old_marks, marks in (("a", marks_a, state.marks_a), ("b", marks_b, state.marks_b)):
+                if old_marks != marks:
+                    descriptions.append(f"{'己方' if side == team else '敌方'}场地印记变化")
+            for side, old_mp, mp in (("a", mp_a, state.mp_a), ("b", mp_b, state.mp_b)):
+                if mp != old_mp:
+                    descriptions.append(f"{'己方' if side == team else '敌方'}魔法值{mp - old_mp:+g}")
+            if descriptions:
+                ability = _get_ability_name(pokemon)
+                state.turn_report.append({"type": "ability", "team": team, "pokemon": pokemon.name,
+                                          "ability": ability, "timing": timing.name,
+                                          "description": f"[{ability}] " + "，".join(descriptions)})
 
             core_log("ability", "triggered", turn=getattr(state, "turn", None),
                      team=team, pokemon=pokemon.name, enemy=enemy.name,
@@ -3980,6 +4276,9 @@ class EffectExecutor:
                      tags=[getattr(tag.type, "value", str(tag.type)) for tag in ae.effects],
                      result=context)
 
+        reports = state.turn_report[report_start:]
+        result["description"] = "；".join(event["description"] for event in reports if not event.get("private"))
+        result["reports"] = reports
         return result
 
     # ────────────────────────────────────────

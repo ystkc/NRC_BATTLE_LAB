@@ -17,6 +17,7 @@ from nrc_core.models import (
 )
 from nrc_core.effect_models import E, Timing
 from nrc_core.effect_engine import EffectExecutor, _apply_permanent_mod, _adjust_cost_delta
+from nrc_core.engine._monolith import _record_public_skill_modifier
 from nrc_core.rng import choice as rng_choice
 from nrc_core.debug import core_log
 
@@ -104,8 +105,10 @@ def _apply_context_abilities(state: BattleState, current: Pokemon, enemy: Pokemo
         time_value = str(context.get("system_time", "")).lower()
         is_night = time_value in {"night", "晚上", "夜晚"}
         if is_night and not current.ability_state.get("sleep_entry_applied"):
+            previous_costs = [skill.energy_cost for skill in current.skills]
             for skill in current.skills:
                 skill.energy_cost += 2
+            _record_public_skill_modifier(current, "energy_cost", 2, previous_costs)
             current.ability_state["sleep_entry_applied"] = True
 
     active_pokemon = [state.team_a[state.current_a], state.team_b[state.current_b]]
@@ -1034,11 +1037,13 @@ def _apply_moisture_mark(state: BattleState) -> None:
             continue
         team_list = state.team_a if team == "a" else state.team_b
         for p in team_list:
+            previous_costs = [s.energy_cost for s in p.skills]
             for s in p.skills:
                 delta = -stacks
                 if p.ability_state.get("cost_invert"):
                     delta = -delta
                 s.energy_cost = max(0, s.energy_cost + delta)
+            _record_public_skill_modifier(p, "energy_cost", stacks if p.ability_state.get("cost_invert") else -stacks, previous_costs)
         marks["moisture_mark"] = 0   # 消耗印记，效果已永久写入技能
 
 
@@ -1241,7 +1246,7 @@ def _skill_has_counter_for(skill_a, skill_b) -> bool:
 
 
 def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
-                      switch_cb_a=None, switch_cb_b=None) -> None:
+                      switch_cb_a=None, switch_cb_b=None, *, preserve_report=False) -> None:
     """
     执行完整回合。
 
@@ -1253,7 +1258,8 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
     switch_cb_a/b: 被动换人回调 (state, team_list, alive_indices) -> int
       精灵倒下后让玩家/AI选择下一只上场精灵。
     """
-    state.turn_report = []
+    if not preserve_report:
+        state.turn_report = []
     p_a_start = state.team_a[state.current_a]
     p_b_start = state.team_b[state.current_b]
     core_log("turn", "execute_start", turn=state.turn,
@@ -1591,8 +1597,10 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
                 # 洄游特性：进入蓄力时全技能能耗永久-1
                 charge_reduce = current.ability_state.get("charge_cost_reduce", 0)
                 if charge_reduce > 0:
+                    previous_costs = [s.energy_cost for s in current.skills]
                     for s in current.skills:
                         s.energy_cost = max(0, s.energy_cost - charge_reduce)
+                    _record_public_skill_modifier(current, "energy_cost", -charge_reduce, previous_costs)
                 return
         else:
             current.charging_skill_idx = -1
@@ -1691,8 +1699,10 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
         # 迸发敌方能耗+N（超负荷）
         burst_cost_up = current.ability_state.get("burst_enemy_cost_up", 0)
         if burst_cost_up > 0:
+            previous_costs = [s.energy_cost for s in enemy.skills]
             for s in enemy.skills:
                 s.energy_cost += burst_cost_up
+            _record_public_skill_modifier(enemy, "energy_cost", burst_cost_up, previous_costs)
         # 迸发元素能耗减免（生物电）
         burst_elem = current.ability_state.get("burst_element_cost_reduce")
         if burst_elem:
@@ -1819,6 +1829,8 @@ def _execute_new_engine(state: BattleState, team: str, enemy_team: str,
     enemy_list = state.team_b if team == "a" else state.team_a
     if enemy_action[0] >= 0 and not enemy.is_fainted:
         enemy_skill = enemy.skills[enemy_action[0]]
+    # 技能描述必须插入在特性的最前面，留一个位置
+    turn_report_len = len(state.turn_report)
 
     # ── 前置打断检查 ──
     # 如果对方技能有针对本技能类型的应对打断（INTERRUPT），本技能主效果不执行
@@ -1883,7 +1895,7 @@ def _execute_new_engine(state: BattleState, team: str, enemy_team: str,
              damage=damage, target_hp=enemy.current_hp,
              target_fainted=enemy.is_fainted,
              result=result, damage_details=damage_details)
-    state.turn_report.append({
+    state.turn_report.insert(turn_report_len, {
         "type": "skill",
         "team": team,
         "skill": skill.name,

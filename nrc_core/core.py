@@ -71,6 +71,7 @@ def _display_power(state: BattleState, team: str, action: tuple[int, ...]) -> di
 
 
 def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
+    from nrc_core.battle import _temporary_skill_cost_delta
     team_list = state.team_a if team == "a" else state.team_b
     active_index = state.current_a if team == "a" else state.current_b
     current = team_list[active_index]
@@ -79,14 +80,19 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
     enemy = enemy_list[enemy_index]
     displayed_skills = []
     for index, skill in enumerate(current.skills):
-        display_power = int(skill.power)
+        display_energy_cost = max(0, int(skill.energy_cost + current.skill_cost_mod
+                                         + _temporary_skill_cost_delta(current, skill)))
+        power = int((skill.power + current.skill_power_bonus + current.next_attack_power_bonus)
+                    * (1 + current.skill_power_pct_mod + current.next_attack_power_pct))
+        display_power = power
         display_damage_per_hit = None
-        display_hits = max(1, int(skill.hit_count))
+        display_hits = max(1, int(skill.hit_count + current.hit_count_mod))
         type_effectiveness = None
         if skill.category in {SkillCategory.PHYSICAL, SkillCategory.MAGICAL} and skill.power > 0:
             previous_details = current.ability_state.get("_last_damage_details")
             previous_effectiveness = current.ability_state.get("_last_effectiveness")
-            DamageCalculator.calculate(current, enemy, skill, weather=state.weather)
+            DamageCalculator.calculate(current, enemy, skill, power_override=power,
+                                       hit_count_override=display_hits, weather=state.weather)
             details = current.ability_state.get("_last_damage_details", {})
             display_power = int(details.get("effective_power", skill.power))
             display_damage_per_hit = details.get("damage_per_hit")
@@ -104,10 +110,11 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
             "skill_slot": index,
             "skill_id": getattr(skill, "skill_id", skill.name),
             "name": skill.name,
-            "display_energy_cost": int(skill.energy_cost),
+            "display_energy_cost": display_energy_cost,
             "display_power": display_power,
             "display_damage_per_hit": display_damage_per_hit,
             "display_hits": int(display_hits),
+            "display_priority": int(skill.priority_mod + current.priority_stage),
             "type_effectiveness": type_effectiveness,
         })
         core_log(
@@ -117,7 +124,7 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
             slot=index,
             skill=skill.name,
             display_power=display_power,
-            display_energy_cost=skill.energy_cost,
+            display_energy_cost=display_energy_cost,
             display_hits=display_hits,
             type_effectiveness=type_effectiveness,
         )
@@ -160,7 +167,7 @@ def simulate_turn(state: BattleState, action_a: tuple[int, ...], action_b: tuple
         "hp": {"a": next_state.team_a[next_state.current_a].current_hp, "b": next_state.team_b[next_state.current_b].current_hp},
     }
     with rng_scope(random.Random(int(seed))):
-        execute_full_turn(next_state, action_a, action_b, lambda *_: None, lambda *_: None)
+        execute_full_turn(next_state, action_a, action_b, lambda *_: None, lambda *_: None, preserve_report=True)
     after = {
         "turn": next_state.turn,
         "active": {"a": next_state.team_a[next_state.current_a].name, "b": next_state.team_b[next_state.current_b].name},
@@ -168,6 +175,7 @@ def simulate_turn(state: BattleState, action_a: tuple[int, ...], action_b: tuple
         "mp": {"a": next_state.mp_a, "b": next_state.mp_b},
     }
     report = tuple(next_state.turn_report) + ({"type": "turn", "before": before, "after": after},)
+    next_state.turn_report = []
     core_log(
         "turn",
         "end",
@@ -179,7 +187,7 @@ def simulate_turn(state: BattleState, action_a: tuple[int, ...], action_b: tuple
         hp_b=after["hp"]["b"],
         mp_a=after["mp"]["a"],
         mp_b=after["mp"]["b"],
-        report_events=len(next_state.turn_report),
+        report_events=len(report) - 1,
     )
     return TurnResult(next_state, check_winner(next_state), report, display_power, turn_start_skill_display)
 

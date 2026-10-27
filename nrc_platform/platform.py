@@ -242,6 +242,7 @@ class BattlePlatform:
             battle_id=battle_id,
             accepted=True,
             initialized=battle.episode is not None,
+            events=copy.deepcopy(battle.episode.events) if battle.episode is not None else [],
             decision_index=battle.decision_index,
             phase=battle.phase,
             warnings=[] if battle.episode is not None else ["waiting_for_complete_rosters"],

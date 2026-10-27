@@ -81,6 +81,9 @@ def _swap_team_code(event: dict[str, Any], side: str) -> dict[str, Any]:
         return event
     if event.get("team") in {"a", "b"}:
         event["team"] = "b" if event["team"] == "a" else "a"
+    for key in ("owner_team", "target_team"):
+        if event.get(key) in {"a", "b"}:
+            event[key] = "b" if event[key] == "a" else "a"
     for change in event.get("resource_changes", []):
         if change.get("team") in {"a", "b"}:
             change["team"] = "b" if change["team"] == "a" else "a"
@@ -100,6 +103,8 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
                 continue
             event = _swap_team_code(copy.deepcopy(dict(raw)), side)
             event.setdefault("turn", turn)
+            if event.get("private") and event.get("owner_team", event.get("team")) != "a":
+                continue
             if event.get("type") == "selection":
                 if event.get("team") == "b":
                     event["status"] = "locked"
@@ -111,9 +116,12 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
                 event["changes"] = [
                     change for change in event.get("changes", [])
                     if change.get("kind") not in {"hp", "energy"}
+                    and not (event.get("team") == "b" and (
+                        change.get("private") or change.get("kind") == "skill"
+                        or str(change.get("name", "")).startswith(("skill_cost:", "skill_power:", "skill_hits:", "skill_priority:"))
+                    ))
                     and (event.get("team") != "b" or change.get("kind") != "ability"
-                         or str(change.get("name", "")).removesuffix("_negative") in _ABILITY_STATUSES
-                         or str(change.get("name", "")).startswith("skill_cost:"))
+                         or str(change.get("name", "")).removesuffix("_negative") in _ABILITY_STATUSES)
                 ]
                 if not event["changes"]:
                     continue
@@ -542,6 +550,7 @@ def create_app() -> FastAPI:
                         session["phase"] = result.phase
                         session.setdefault("history", []).append({"turn": 1, "events": [{"type": "round_start", "turn": 1}]})
                         session["history"].append({"turn": 1, "events": [{"type": "battle_start", "message": "对战开始，双方选择行动"}]})
+                        session["history"].append({"turn": 1, "events": list(result.events or own_result.events or [])})
                 return {
                     "accepted": True,
                     "initialized": initialized,
@@ -559,6 +568,12 @@ def create_app() -> FastAPI:
             session["teams"] = {"own": own, "opponent": opponent}
             session["phase"] = result.phase
             session["initialized"] = bool(result.initialized)
+            if result.initialized:
+                session.setdefault("history", []).append({"turn": 1, "events": [
+                    {"type": "round_start", "turn": 1},
+                    {"type": "battle_start", "message": "对战开始，双方选择行动"},
+                    *list(result.events or []),
+                ]})
             session["players"] = session.get("players") or {_new_player_token(): "own"}
             return {"accepted": result.accepted, "initialized": result.initialized, "phase": result.phase, "teams": session["teams"]}
         except Exception as error:

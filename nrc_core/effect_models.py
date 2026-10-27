@@ -192,6 +192,7 @@ class E(Enum):
 
     # ── 通用特性原语 ──
     EXTRA_FREEZE_ON_FREEZE = auto()     # 加个雪球: 使敌方获得冻结时额外+N层  params: {"extra": 2}
+    EXTRA_CONSUMPTION_ON_FREEZE = auto()  # 捉迷藏: 冻结成功后全技能能耗+N
     FAINT_NO_MP_LOSS = auto()           # 诈死: 力竭时不扣MP  params: {}
     ON_SKILL_ELEMENT_BUFF = auto()      # 使用某系技能后获得buff  params: {"element":"火","buff":{"atk":0.2,"spatk":0.2}}
     ON_SKILL_ELEMENT_POISON = auto()    # 使用某系技能后敌方中毒  params: {"element":"草","stacks":2}
@@ -319,6 +320,8 @@ class Timing(Enum):
     PASSIVE = auto()             # 常驻被动 (在场时持续生效)
     ON_TAKE_HIT = auto()         # 受到攻击时 (秩序鱿墨)
     ON_BATTLE_START = auto()     # 战斗开始/首次入场时 (千棘盔溶解扩散)
+    BEFORE_ATTACK = auto()       # 每次攻击伤害计算前，修正仅作用于本次计算
+    ON_INFLICT_FREEZE = auto()   # 成功使敌方获得冻结后，每次施加触发一次
 
 
 # ============================================================

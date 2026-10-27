@@ -1089,12 +1089,16 @@ class BattleSimulator:
                     "buffs": self._snapshot_layers(pokemon, "up"),
                     "debuffs": self._snapshot_layers(pokemon, "down"),
                     "statuses": self._snapshot_statuses(pokemon),
+                    "modifiers": dict(pokemon.ability_state.get("public_skill_modifiers", {})),
+                    "_public_skill_modifier_deltas": [dict(item) for item in pokemon.ability_state.get("_public_skill_modifier_deltas", [])],
                     "skills": [
                         {
                             "skill_id": getattr(skill, "skill_id", skill.name),
                             "name": skill.name,
                             "current_energy_cost": skill.energy_cost,
                             "current_power": skill.power,
+                            "current_hit_count": skill.hit_count,
+                            "current_priority_mod": skill.priority_mod,
                             "use_count": int((state.turn_skill_use_counts_a if team == "a" else state.turn_skill_use_counts_b).get(str(index) + ":" + str(slot), 0)),
                             "planned_use_count": max(1, int(getattr(skill, "use_count", 1) or 1)),
                         }
@@ -1127,6 +1131,13 @@ class BattleSimulator:
         for index, current in enumerate(after_creatures):
             previous = before_creatures[index] if index < len(before_creatures) else {}
             changes: list[dict[str, Any]] = []
+            private_changes: list[dict[str, Any]] = []
+            old_modifiers = previous.get("modifiers") or {}
+            new_modifiers = current.get("modifiers") or {}
+            for name in sorted(set(old_modifiers) | set(new_modifiers)):
+                if old_modifiers.get(name, 0) != new_modifiers.get(name, 0):
+                    changes.append({"kind": "modifier", "name": name,
+                                    "before": old_modifiers.get(name, 0), "after": new_modifiers.get(name, 0)})
             for field, label in (("hp", "hp"), ("energy", "energy"), ("status", "status"), ("fainted", "fainted")):
                 old_value = previous.get(field)
                 new_value = current.get(field)
@@ -1136,11 +1147,23 @@ class BattleSimulator:
                 old_items = previous.get(field) or []
                 new_items = current.get(field) or []
                 if field == "skills":
-                    old_map = {str(item.get("name")): item.get("current_energy_cost") for item in old_items if isinstance(item, dict)}
-                    new_map = {str(item.get("name")): item.get("current_energy_cost") for item in new_items if isinstance(item, dict)}
-                    for name in sorted(set(old_map) | set(new_map)):
-                        if old_map.get(name) != new_map.get(name):
-                            changes.append({"kind": "ability", "name": f"skill_cost:{name}", "before": old_map.get(name), "after": new_map.get(name)})
+                    old_public = previous.get("_public_skill_modifier_deltas") or []
+                    new_public = current.get("_public_skill_modifier_deltas") or []
+                    for slot, item in enumerate(new_items):
+                        if slot >= len(old_items):
+                            continue
+                        old_item = old_items[slot]
+                        for key in ("energy_cost", "power", "hit_count", "priority_mod"):
+                            snapshot_key = "current_" + key
+                            old_value, new_value = old_item.get(snapshot_key), item.get(snapshot_key)
+                            if old_value is None or new_value is None:
+                                continue
+                            old_global = old_public[slot].get(key, 0) if slot < len(old_public) else 0
+                            new_global = new_public[slot].get(key, 0) if slot < len(new_public) else 0
+                            delta = new_value - old_value - (new_global - old_global)
+                            if delta:
+                                private_changes.append({"kind": "skill", "name": str(item.get("name")), "field": key,
+                                                        "before": old_value, "after": old_value + delta})
                     continue
                 old_map = {str(item.get("name")): item for item in old_items if isinstance(item, dict)}
                 new_map = {str(item.get("name")): item for item in new_items if isinstance(item, dict)}
@@ -1153,6 +1176,9 @@ class BattleSimulator:
                         changes.append({"kind": kind, "name": name, "unit": new_item.get("unit") or old_item.get("unit"), "before": old_stacks, "after": new_stacks})
             if changes:
                 events.append({"type": "state_change", "team": team, "pokemon": current.get("name"), "changes": changes})
+            if private_changes:
+                events.append({"type": "state_change", "team": team, "pokemon": current.get("name"),
+                               "private": True, "visibility": "owner", "owner_team": team, "changes": private_changes})
         return events
 
     def _snapshot_devotion(self, state: BattleState, source: TeamInput, team: str) -> dict[str, Any]:

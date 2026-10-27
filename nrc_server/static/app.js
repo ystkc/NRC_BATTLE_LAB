@@ -109,7 +109,12 @@ function freezeState(item) {
   const freeze = Number((item.statuses || []).find((entry) => entry.name === 'freeze')?.stacks ?? 0);
   return { freeze, visible: Number.isFinite(freeze) && freeze > 0, percent: Math.max(0, Math.min(100, freeze * 5)) };
 }
-function effectName(value) { return EFFECT_NAMES[String(value)] || String(value || '').replaceAll('_', ' '); }
+function effectName(value) {
+  const name = String(value || '');
+  const stat = name.match(/^(atk|def|spatk|spdef|speed)_(up|down)$/);
+  if (stat) return `${EFFECT_NAMES[stat[1]]}${stat[2] === 'up' ? '提升' : '降低'}`;
+  return EFFECT_NAMES[name] || name.replaceAll('_', ' ');
+}
 
 function hydrateTeamItem(item, previous = {}) {
   const name = item?.name || previous.name || '';
@@ -488,8 +493,7 @@ function stateEffects(item, side = 'own') {
   (item.modifiers || []).forEach((entry) => add(entry.name, entry.stacks, entry.unit));
   (item.statuses || []).forEach((entry) => add(entry.name, entry.stacks, entry.unit));
   (item.skills || []).forEach((skill) => {
-    const labels = { cooldown: '冷却', power_delta: '威力增减', energy_cost_delta: '能耗增减', hit_count_delta: '连击增减' };
-    Object.entries(skill.skill_states || {}).forEach(([key, value]) => add(`${skill.name} ${labels[key] || key}`, value, key === 'cooldown' ? '回合' : ''));
+    add(`${skill.name} 冷却`, skill.skill_states?.cooldown, '回合');
   });
   Object.entries(state.shared?.marks?.[side] || {}).forEach(([name, value]) => add(`印记 ${name}`, value));
   const devotion = state.shared?.devotion?.[side];
@@ -549,7 +553,13 @@ function renderSkills() {
     const disabled = state.pending || state.resolving || !isLegalAction(key);
     const type = skill.element || meta.element || meta.element_key || 'normal';
     const relation = skill.effect_indicator || (skill.type_effectiveness == null ? 'unknown' : skill.type_effectiveness > 2 ? 'super_effective' : skill.type_effectiveness > 1 ? 'effective' : skill.type_effectiveness < 0.5 ? 'very_resistant' : skill.type_effectiveness < 1 ? 'resistant' : 'normal');
-    return `<button class="skill-card" data-skill-name="${esc(skill.name)}" data-battle-action="${esc(key)}" ${disabled ? 'disabled' : ''}><span class="skill-icon-wrap"><img class="skill-icon" src="${esc(skill.icon || meta.icon || '')}" alt=""><span class="skill-cost-badge">${esc(skill.display_energy_cost ?? meta.energy_cost)}</span><span class="skill-power-badge">${skill.display_power > 0 ? skill.display_power : '-'}</span><img class="skill-type-badge" src="${esc(skill.type_icon || typeIcon(type))}" alt="${esc(typeKey(type))}"><img class="skill-relation-badge" src="${esc(relationIcon(skill.effect_icon || relation))}" alt="${esc(relationLabel(relation))}" title="${esc(relationLabel(relation))}"></span><span class="skill-copy"><b class="skill-name">${esc(skill.name)}</b><small class="skill-kind">${esc(meta.category || '技能')}</small></span></button>`;
+    const own = state.teams.own || [];
+    const active = own[own.activeIndex || 0];
+    const local = active?.skills?.find((entry) => entry.index === (skill.skill_slot ?? index));
+    const labels = { power_delta: '威力', energy_cost_delta: '能耗', hit_count_delta: '连击', priority_mod_delta: '先手' };
+    const changes = Object.entries(local?.skill_states || {}).filter(([field]) => labels[field]).map(([field, value]) => `${labels[field]}${Number(value) > 0 ? '+' : ''}${value}`);
+    const detail = [`连击 ${skill.display_hits ?? meta.hit_count ?? 1}`, `先手 ${skill.display_priority ?? meta.priority_mod ?? 0}`];
+    return `<button class="skill-card" title="${esc(changes.join('，'))}" data-skill-name="${esc(skill.name)}" data-battle-action="${esc(key)}" ${disabled ? 'disabled' : ''}><span class="skill-icon-wrap"><img class="skill-icon" src="${esc(skill.icon || meta.icon || '')}" alt=""><span class="skill-cost-badge">${esc(skill.display_energy_cost ?? meta.energy_cost)}</span><span class="skill-power-badge">${skill.display_power > 0 ? skill.display_power : '-'}</span><img class="skill-type-badge" src="${esc(skill.type_icon || typeIcon(type))}" alt="${esc(typeKey(type))}"><img class="skill-relation-badge" src="${esc(relationIcon(skill.effect_icon || relation))}" alt="${esc(relationLabel(relation))}" title="${esc(relationLabel(relation))}"></span><span class="skill-copy"><b class="skill-name">${esc(skill.name)}</b><small class="skill-kind">${esc(meta.category || '技能')} · ${esc(detail.join(' · '))}</small></span></button>`;
   }).join('');
 }
 
@@ -632,12 +642,21 @@ function eventText(event) {
     const changes = (event.changes || []).map((change) => {
       const before = change.before == null ? '-' : change.before;
       const after = change.after == null ? '-' : change.after;
-      if (change.name?.startsWith('skill_cost:')) return `技能能耗 ${change.name.slice(11)} ${before}→${after}`;
+      if (change.kind === 'skill') {
+        const field = { energy_cost: '能耗', power: '威力', hit_count: '连击', priority_mod: '先手' }[change.field] || change.field;
+        return `${change.name} ${field} ${before}→${after}`;
+      }
+      if (change.kind === 'modifier') {
+        const field = { energy_cost: '全技能能耗', power: '全技能威力', power_pct: '全技能威力比例', hit_count: '全技能连击', priority_mod: '全技能先手' }[change.name] || effectName(change.name);
+        return `${field} ${before}→${after}${change.name === 'power_pct' ? '%' : ''}`;
+      }
+      const skillChange = change.name?.match(/^skill_(cost|power|hits|priority):(.+)$/);
+      if (skillChange) return `${skillChange[2]} ${({ cost: '能耗', power: '威力', hits: '连击', priority: '先手' })[skillChange[1]]} ${before}→${after}`;
       return `${effectName(change.name || change.kind)} ${before}→${after}`;
     });
     return `[状态变化] ${event.pokemon || '精灵'}：${changes.join('，') || '其他状态有变化'}`;
   }
-  return event.message || event.text || `[${event.type || '战斗事件'}]`;
+  return event.description || event.message || event.text || `[${event.type || '战斗事件'}]`;
 }
 
 function renderEvents() {
@@ -1319,6 +1338,8 @@ $('#charge').addEventListener('click', () => submitAction('charge'));
     $('#quick-search').placeholder = "快速索引：精灵 / 技能 / 拼音";
     $('#own-search').disabled = false;
     $('#own-search').placeholder = "精灵名称 / 拼音 / 首字母";
+    $('#roster-code').disabled = false;
+    $('#roster-code').placeholder = "粘贴阵容代码一键导入";
   } catch (error) {
     $('#catalog-status').textContent = 'INDEX ERROR';
     toast(error.message);

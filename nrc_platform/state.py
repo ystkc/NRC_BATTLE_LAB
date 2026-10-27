@@ -29,6 +29,14 @@ _ABILITY_STATUSES = {
     "cute_no_cap", "energy_no_cap", "extra_poison_tick", "half_meteor_full_damage",
 }
 
+_SKILL_MODIFIERS = {
+    "energy_cost": ("skill_cost", "能量"),
+    "power": ("skill_power", "威力"),
+    "hit_count": ("combo", "层"),
+    "priority_mod": ("priority", "层"),
+}
+_PUBLIC_SKILL_MODIFIERS = {**_SKILL_MODIFIERS, "power_pct": ("skill_power_pct", "%")}
+
 
 def creature_effects(pokemon: Pokemon) -> tuple[list[dict], list[dict]]:
     # Up and down layers coexist in the rules: do not cancel them into a net value.
@@ -56,6 +64,18 @@ def creature_effects(pokemon: Pokemon) -> tuple[list[dict], list[dict]]:
         {"name": name, "stacks": getattr(pokemon, field), "unit": unit}
         for name, field, unit in _STATUSES if getattr(pokemon, field) > 0
     ]
+    for field, value in pokemon.ability_state.get("public_skill_modifiers", {}).items():
+        if field in _PUBLIC_SKILL_MODIFIERS and value:
+            name, unit = _PUBLIC_SKILL_MODIFIERS[field]
+            modifiers.append({"name": name, "stacks": value, "unit": unit})
+    for mod in pokemon.ability_state.get("temporary_skill_cost_mods", []):
+        if mod.get("filter", "all") == "all" and mod.get("amount"):
+            amount = mod["amount"]
+            if pokemon.ability_state.get("cost_invert"):
+                amount = -amount
+            if pokemon.ability_state.get("cost_change_double"):
+                amount *= 2
+            modifiers.append({"name": "skill_cost", "stacks": amount, "unit": "能量"})
     status = str(getattr(pokemon.status, "value", pokemon.status))
     if status not in {"normal", "正常", "fainted", "力竭"} and not any(s["name"] == status for s in statuses):
         statuses.append({"name": status, "stacks": 1, "unit": "层"})
@@ -76,12 +96,15 @@ def normalize_observation(observation: Observation, battle: BattleState, catalog
              ("opponent", battle.team_b if own_a else battle.team_a))
     for side, team in sides:
         for item, pokemon in zip(data.get(f"{side}_team", []), team):
-            private = "skills" in item
+            private = side == "own" and "skills" in item
             for key in _LEGACY:
                 item.pop(key, None)
             modifiers, statuses = creature_effects(pokemon)
             item["modifiers"] = modifiers
             item["statuses"] = statuses
+            if not private:
+                for skill_data in item.get("skills", []):
+                    skill_data.pop("skill_states", None)
             if private:
                 for skill_data in item["skills"]:
                     slot = skill_data["index"]
@@ -89,9 +112,12 @@ def normalize_observation(observation: Observation, battle: BattleState, catalog
                     base = catalog.get_skill(skill.name)
                     states = {"cooldown": pokemon.cooldowns.get(slot, 0)}
                     if base is not None:
-                        states.update(power_delta=skill.power - base.power,
-                                      energy_cost_delta=skill.energy_cost - base.energy_cost,
-                                      hit_count_delta=skill.hit_count - base.hit_count)
+                        public_deltas = pokemon.ability_state.get("_public_skill_modifier_deltas", [])
+                        public = public_deltas[slot] if slot < len(public_deltas) else {}
+                        for field in _SKILL_MODIFIERS:
+                            states[f"{field}_delta"] = (
+                                getattr(skill, field) - getattr(base, field) - public.get(field, 0)
+                            )
                     skill_data["skill_states"] = {k: v for k, v in states.items() if v}
     data["shared"]["marks"] = {
         "own": copy.deepcopy(battle.marks_a if own_a else battle.marks_b),

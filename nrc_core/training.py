@@ -325,6 +325,9 @@ class NRCTrainingBackend:
 
     def _prepare_decision(self, state: TrainingState, *, settle_start: bool = False) -> None:
         battle = state.battle
+        if battle.turn_report:
+            state.events.extend(battle.turn_report)
+            battle.turn_report = []
         winner = check_winner(battle)
         if winner:
             state.terminated = True
@@ -352,6 +355,9 @@ class NRCTrainingBackend:
             _apply_turn_start_ability_logic(battle)
             _apply_moisture_mark(battle)
             battle.turn_start_prepared = True
+        if battle.turn_report:
+            state.events.extend(battle.turn_report)
+            battle.turn_report = []
 
     def decision(self, state: object) -> Decision:
         current = self._check_state(state)
@@ -553,8 +559,12 @@ class NRCTrainingBackend:
                     "buffs": self._simulator._snapshot_layers(pokemon, "up"),
                     "debuffs": self._simulator._snapshot_layers(pokemon, "down"),
                     "ability_states": self._simulator._snapshot_ability_states(pokemon),
+                    "modifiers": dict(pokemon.ability_state.get("public_skill_modifiers", {})),
+                    "_public_skill_modifier_deltas": [dict(item) for item in pokemon.ability_state.get("_public_skill_modifier_deltas", [])],
                     "skills": [
-                        {"name": skill.name, "current_energy_cost": skill.energy_cost}
+                        {"name": skill.name, "current_energy_cost": skill.energy_cost,
+                         "current_power": skill.power, "current_hit_count": skill.hit_count,
+                         "current_priority_mod": skill.priority_mod}
                         for skill in pokemon.skills
                     ],
                 })
