@@ -24,7 +24,7 @@ python -m scripts.wiki_crawler --kind all --crawl-skill-relations --verbose
 
 ## 使用与边界
 
-- 依赖 `beautifulsoup4` 和 `PyYAML`，已包含在项目的 `collector` 可选依赖组中。
+- 依赖 `beautifulsoup4` 和 `PyYAML`，可通过项目的 `wiki` 可选依赖组安装。
 - 默认仅访问技能列表、精灵列表、精灵图鉴和游戏描述图鉴；直接读取服务器渲染的 HTML，不需要浏览器，也不跟随条目详情链接。
 - `--crawl-skill-relations` 默认为关闭，只适用于 `--kind skills/all`；显式启用后访问技能详情，采集 `default/blood/stone` 来源的精灵技能关联。
 - 资源正常下载到 `data/spirit_icons/`、`data/skill_icons/`、`data/ability_icons/`、`data/icon_rules/`，缓存命中立即返回，默认网络请求间隔为 0。
@@ -43,7 +43,7 @@ python -m scripts.wiki_crawler --kind all --crawl-skill-relations --verbose
 固定文件为 `scripts/wiki_crawler/manual_data.yaml`，默认每次运行都会读取，不受启动目录影响。文件已经提供技能、精灵、游戏描述、进化、精灵技能关系五类注释示例；示例都是虚构数据，默认五个列表为空，不会污染数据库。先安装依赖：
 
 ```powershell
-pip install -e ".[collector]"
+pip install -e ".[wiki]"
 python -m scripts.wiki_crawler --kind all --stage-only
 python -m scripts.wiki_crawler --kind all --yes --keep-missing
 python -m scripts.wiki_crawler --manual-data data/my_manual_data.yaml --stage-only

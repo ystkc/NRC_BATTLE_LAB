@@ -10,14 +10,7 @@ requires-python = ">=3.10"
 dependencies = ["pypinyin>=0.50", "fastapi>=0.115", "uvicorn>=0.30"]
 
 [project.optional-dependencies]
-collector = [
-    "mitmproxy>=10.0",
-    "pandas>=2.0",
-    "openpyxl>=3.1",
-    "requests>=2.31",
-    "beautifulsoup4>=4.12",
-    "PyYAML>=6.0",
-]
+wiki = ["beautifulsoup4>=4.12", "PyYAML>=6.0"]
 screen = [
     "opencv-python>=4.8",
     "numpy>=1.24",

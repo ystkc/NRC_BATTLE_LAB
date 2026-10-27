@@ -36,7 +36,7 @@ from scripts.wiki_crawler.database import evolution_key, normalize_record, read_
 try:
     from bs4 import BeautifulSoup, Tag
 except ImportError as error:  # pragma: no cover - depends on environment
-    raise SystemExit("wiki_crawler requires beautifulsoup4; install with: pip install -e '.[collector]'") from error
+    raise SystemExit("wiki_crawler requires beautifulsoup4; install with: pip install -e '.[wiki]'") from error
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -816,7 +816,7 @@ def load_manual_data(path: Path) -> dict[str, list[dict]]:
     try:
         import yaml
     except ImportError as error:
-        raise ValueError("人工 YAML 需要 PyYAML；请安装 pip install -e '.[collector]'") from error
+        raise ValueError("人工 YAML 需要 PyYAML；请安装 pip install -e '.[wiki]'") from error
 
     class UniqueKeyLoader(yaml.SafeLoader):
         pass

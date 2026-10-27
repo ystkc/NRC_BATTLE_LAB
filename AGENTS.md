@@ -1,14 +1,13 @@
 # NRC Battle Lab
 
-洛克王国 NRC 对战：纯 Python 规则模拟器 + 多回合平台 + Web 对战台 + AI 搜索训练 + 屏幕 OCR 采集。Python ≥3.10。数据与注释以中文为主。
+洛克王国 NRC 对战：Python 规则模拟器核心 + 多回合战斗状态记录平台 + Web 用户界面，AI 搜索训练待开发，屏幕 OCR 采集暂时废弃。Python ≥3.10。数据与注释以中文为主。
 
-## Windows patching protocol (mandatory)
+## Windows 补丁协议（强制要求）
 
-- Windows edits must use the native patch tool through `functions.exec`, calling `tools.apply_patch(patch)` directly in the JavaScript body.
-- Do not invoke `apply_patch`, `apply_patch.bat`, or `codex.exe --codex-run-as-apply-patch` through PowerShell when the native tool is available.
-- After a UTF-8 PATCH argument error, do not repeat the same command or reprint the same patch. Switch immediately to the native tool.
-- If the native tool is unavailable, write one UTF-8 patch file under `%TEMP%`, verify the `*** Begin Patch` and `*** End Patch` markers, then invoke the Codex executable from a Node child process. Never use `.codex` as the temporary directory.
-- Inspect the resulting file or diff after every write.
+- Windows 的修改必须使用原生补丁工具，通过 `functions.exec` 在 JavaScript 代码中直接调用 `tools.apply_patch(patch)`。
+- 当原生工具可用时，切勿通过 PowerShell 调用 `apply_patch`、`apply_patch.bat` 或 `codex.exe --codex-run-as-apply-patch`。
+- 如果出现 UTF-8 补丁参数错误，切勿重复执行相同命令或重新打印相同补丁。应立即切换到原生工具。
+- 如果原生工具不可用，请在 `%TEMP%` 目录下创建一个 UTF-8 补丁文件，验证 `*** Begin Patch` 和 `*** End Patch` 标记，然后从 Node 子进程中调用 Codex 可执行文件。切勿使用 `.codex` 作为临时目录。
 
 ## 架构（依赖只向下，nrc_core 不依赖上层）
 
@@ -17,7 +16,6 @@
 - `nrc_server/` 双人 Web 对战台（:8767，`server.py` + `static/app.js`，会话内存态）。
 - `manual_input/` 手动录入与预测对比（:8766）。
 - `nrc_ai/` 信念粒子、搜索、自博弈、训练（`cli.py`；协议见 `contracts.py`；`interface.py` 读平台观察者视角）。
-- `collector/` 屏幕采集、区域 OCR、战报解析（`parsing/skill_description.py`）、审计构建。
 - `ocr_service/` PixPin OCR 命名管道（预编译 exe）；`ocr_benchmark/` OCR 选型实验。
 - `scripts/` 维护入口（`wiki_crawler/`：Wiki → CSV → `data/nrc_wiki.db`）。
 - `data/` 规则文档（`*.md`，优先级最高）、`wiki/*.csv`、`nrc_wiki.db`（v2）、`audit/`。
@@ -47,7 +45,7 @@
 
 ```bash
 pip install -e ".[dev]"
-python -m pytest -q --ignore=tests/test_entrance_regions.py   # 该文件缺 data/screen/ 数据
+python -m pytest -q
 python -m nrc_server.server --host 127.0.0.1 --port 8767
 python -m manual_input.server --host 127.0.0.1 --port 8766
 python -m nrc_ai check --backend nrc_core.training:create_backend --setup setup.json
@@ -74,6 +72,4 @@ python -m scripts.wiki_crawler --kind all --stage-only     # 确认写库加 --y
 | Web 对战台 | `nrc_server/server.py`、`static/app.js`、`README.md` |
 | 手动录入 | `manual_input/server.py`、`catalog.py`、`README.md` |
 | AI 搜索训练 | `nrc_ai/contracts.py`、`interface.py`、`cli.py`、`README.md` |
-| 技能描述解析 | `collector/parsing/skill_description.py` |
-| 屏幕识别 | `collector/screen/realtime.py`、`pipeline.py` |
 | Wiki 同步、库结构 | `scripts/wiki_crawler/sync.py`、`database.py`、`README.md` |
