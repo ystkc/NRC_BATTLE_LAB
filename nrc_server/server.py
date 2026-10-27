@@ -162,7 +162,7 @@ def _selection_event(platform: BattlePlatform, battle_id: str, side: str, action
 
 
 def _redact_observation(data: Mapping[str, Any], session: dict[str, Any], side: str) -> dict[str, Any]:
-    """Keep only information a player is allowed to learn about the opponent."""
+    """对双方分别隐藏对方的信息"""
     result = copy.deepcopy(dict(data))
     opponent = []
     known_by_side = session.setdefault("known_opponents", {})
@@ -194,7 +194,25 @@ def _redact_observation(data: Mapping[str, Any], session: dict[str, Any], side: 
             visible["hp_percent"] = None if not max_hp or hp is None else max(0, min(100, round(float(hp) / float(max_hp) * 100)))
             visible["energy"] = item.get("energy")
         opponent.append(visible)
-    result["opponent_team"] = opponent
+    # 当对手携带精灵不足6只时，用未知精灵填充缺失位置
+    by_index = {int(item["index"]): item for item in opponent}
+    for index in range(6):
+        by_index.setdefault(index, {
+            "index": index,
+            "name": "未知精灵",
+            "known": False,
+            "types": [],
+            "active": False,
+            "fainted": False,
+            "status": "normal",
+            "poison_stacks": 0,
+            "burn_stacks": 0,
+            "freeze_stacks": 0,
+            "frostbite_damage": 0,
+            "electric_stacks": 0,
+            "cute_stacks": 0,
+        })
+    result["opponent_team"] = [by_index[index] for index in sorted(by_index)]
     known_by_side[side] = sorted(known_indices)
     return result
 
