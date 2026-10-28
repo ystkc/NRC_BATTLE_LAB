@@ -287,21 +287,7 @@ class PopulationPrior:
                 raw_stats = base.get("stats")
                 has_explicit_stats = bool(raw_stats) and not (isinstance(raw_stats, Mapping) and "known" in raw_stats and (not raw_stats.get("known") or not raw_stats.get("exists", True)))
                 if build.aptitudes and not has_explicit_stats:
-                    from nrc_core.pokemon_db import calc_combat_stats, get_pokemon
-                    species = get_pokemon(spirit)
-                    if species:
-                        iv_config = {"hp": 0, "atk": 0, "spatk": 0, "def": 0, "spdef": 0, "speed": 0}
-                        for aptitude in build.aptitudes:
-                            stat_key = {"生命": "hp", "物攻": "atk", "魔攻": "spatk", "物防": "def", "魔防": "spdef", "速度": "speed"}.get(aptitude)
-                            stat_key = {"\u751f\u547d": "hp", "\u7269\u653b": "atk", "\u9b54\u653b": "spatk", "\u7269\u9632": "def", "\u9b54\u9632": "spdef", "\u901f\u5ea6": "speed"}.get(aptitude, stat_key)
-                            if stat_key:
-                                iv_config[stat_key] = aptitude_iv
-                        computed = calc_combat_stats(
-                            species["base_hp"], species["base_attack"], species["base_magic_attack"],
-                            species["base_defense"], species["base_magic_defense"], species["base_speed"],
-                            iv_config=iv_config, nature_name=build.personality or "坦率",
-                        )
-                        base["stats"] = {"known": True, "exists": True, "value": computed}
+                    raise NotImplementedError("AI 资质候选目录注入尚未实现。")
                 metadata = dict(creature.get("metadata") or {})
                 metadata["population_prior"] = {"source": self.source, "source_digest": self.source_digest, "selection_mode": "deterministic-top-k", "skill_count": len(build.skills), "aptitude_count": len(build.aptitudes), "aptitude_grade": 10, "aptitude_selection": list(build.aptitudes), "aptitude_iv_assumption": aptitude_iv, "aptitude_values": dict(build.aptitude_values), "log_score": build.log_score}
                 creature["metadata"] = metadata

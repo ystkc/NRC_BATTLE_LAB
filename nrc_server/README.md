@@ -11,13 +11,20 @@ Start it from the repository root:
 python -m nrc_server.server --host 127.0.0.1 --port 8767
 ```
 
-Open `http://127.0.0.1:8767/`. The current console follows the manual battle
-rhythm: build both teams, lock the two sides' actions, resolve one turn, append
-the public event stream, and expose the next legal action set. It intentionally
-does not invent hidden opponent data or auto-pick a replacement creature.
+Open `http://127.0.0.1:8767/` in two separate browser sessions. Each player builds
+their own team and submits their own action. The platform resolves a decision
+after every required player has submitted.
 
-The HTTP layer is session-scoped and in-memory. Use the platform snapshot APIs
-for durable replay or reconnect support.
+The HTTP session table stores only token-to-player identity bindings. Room setup,
+seat ownership, battle history, and visibility live in `nrc_platform.rooms`.
+Battle state and pending actions remain in `BattlePlatform`; the server does not
+keep a second mutable battle state. All state is currently in memory.
+
+`server.py` handles HTTP and authentication; `presentation.py` adds static asset
+URLs after platform projection. The browser uses native ES modules: `api.js`
+handles requests, `session.js` restores the current tab, `state.js` stores UI
+state, `roster.js` edits teams and previews, `battle.js` synchronizes decisions,
+`presentation.js` formats events, and `app.js` binds the page interactions.
 
 ## 双用户对战
 
@@ -27,7 +34,7 @@ for durable replay or reconnect support.
 2. 第二位用户在同一页面输入对战 ID，点击“加入对局”，选择并提交自己的阵容。
 3. 两位用户分别提交自己的行动；服务端只在双方都提交后推进回合。
 
-浏览器通过 `X-Player-Token` 将请求绑定到加入者。观察接口会按加入者交换“我方/对方”视角，对手已公开的精灵名称、头像和系别会显示在界面中；对手技能、私有属性和精确战斗数据仍会隐藏。战报只保留可读的技能、伤害和回合结束文本，并同步隐藏对手未公开的技能名。
+浏览器通过 `X-Player-Token` 将请求绑定到稳定身份，身份在房间内绑定固定席位。观察接口按席位交换“我方/对方”视角；对手未上场精灵保持未知，已上场精灵的公开面板由平台提供。客户端不能通过 `side` 参数冒充另一方，也不能一次提交双方阵容。阵容仅接受本人 `roster`；行动提交携带 `request_id` 与 `decision_index`，重复请求不会重复推进，过期决策返回冲突。
 
 ## 增量战报同步
 

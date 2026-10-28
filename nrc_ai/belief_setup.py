@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .belief import Particle, ParticleBelief
-from .contracts import CoreBackend
+from nrc_core.contracts import CoreBackend
 
 
 def belief_from_setups(backend: CoreBackend, root_setup: Mapping[str, Any], candidate_path: str | Path | None, *, seed: int = 0) -> tuple[ParticleBelief, str]:

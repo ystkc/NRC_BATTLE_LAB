@@ -7,7 +7,7 @@ import random
 from typing import Any
 
 from .belief import ParticleBelief
-from .contracts import CoreBackend
+from nrc_core.contracts import CoreBackend
 from .opponent import OpponentPolicy
 
 

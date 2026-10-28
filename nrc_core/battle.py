@@ -17,7 +17,7 @@ from nrc_core.models import (
 )
 from nrc_core.effect_models import E, Timing
 from nrc_core.effect_engine import EffectExecutor, _apply_permanent_mod, _adjust_cost_delta
-from nrc_core.engine._monolith import _record_public_skill_modifier
+from nrc_core.engine.helpers import _record_public_skill_modifier
 from nrc_core.rng import choice as rng_choice
 from nrc_core.debug import core_log
 

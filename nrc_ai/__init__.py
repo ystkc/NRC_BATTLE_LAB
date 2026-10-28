@@ -4,7 +4,7 @@ This package does not import the in-progress nrc_core. A versioned backend
 adapter can be connected after the core contract is agreed.
 """
 
-from .contracts import CoreBackend, CoreManifest, Decision, LegalAction, Observation, Transition
+from nrc_core.contracts import CoreBackend, CoreManifest, Decision, LegalAction, Observation, Transition
 from .belief import Particle, ParticleBelief, ParticleFilter
 from .opponent import EmpiricalOpponentPolicy, UniformOpponentPolicy
 from .replay import Episode, ReplayBuffer, StepRecord
@@ -14,17 +14,7 @@ from .selfplay import generate_episode, generate_population_search_episode, gene
 from .online import BeliefUpdateResult, OnlineBeliefAgent, OnlineBeliefUpdater, observation_likelihood
 from .population_prior import PopulationBuild, PopulationPrior
 from .battle_log import ActionOption, BattleLogReport, BattleRound, format_review, parse_battle_log
-try:
-    from .battle_prediction import build_round_setups, format_prediction_review, predict_round_setups
-except ImportError as exc:
-    _battle_prediction_import_error = exc
-
-    def _battle_prediction_unavailable(*args, **kwargs):
-        raise ImportError("battle_prediction requires the legacy pokemon catalog helpers") from _battle_prediction_import_error
-
-    build_round_setups = _battle_prediction_unavailable
-    format_prediction_review = _battle_prediction_unavailable
-    predict_round_setups = _battle_prediction_unavailable
+from .battle_prediction import build_round_setups, format_prediction_review, predict_round_setups
 from .interface import (
     AIInterfaceError,
     AIPrediction,

@@ -6,7 +6,7 @@ from collections import defaultdict
 import random
 from typing import Mapping, Protocol
 
-from .contracts import LegalAction, Observation
+from nrc_core.contracts import LegalAction, Observation
 
 
 class OpponentPolicy(Protocol):

@@ -15,7 +15,7 @@ import random
 from typing import Any, Callable, Mapping
 
 from .belief import ParticleBelief
-from .contracts import CoreBackend, LegalAction
+from nrc_core.contracts import CoreBackend, LegalAction
 from .opponent import OpponentPolicy
 
 

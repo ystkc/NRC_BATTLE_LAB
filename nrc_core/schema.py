@@ -7,7 +7,6 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 from .actions import SideTurnInput
-from .branching import AuditStatus, BranchOption
 from .devotion import DevotionInput
 from .unknown import Maybe
 
@@ -191,68 +190,4 @@ class BattleRequest:
             "seed": self.seed,
             "battle_id": self.battle_id,
             "source": self.source,
-        }
-
-
-@dataclass
-class SideResult:
-    before: dict[str, Any]
-    after: dict[str, Any]
-    triggered_abilities: list[str] = field(default_factory=list)
-    triggered_weather: list[str] = field(default_factory=list)
-    triggered_counters: list[str] = field(default_factory=list)
-    type_effectiveness: list[dict[str, Any]] = field(default_factory=list)
-    unsupported_actions: list[str] = field(default_factory=list)
-
-    def to_json(self) -> dict:
-        return self.__dict__.copy()
-
-
-@dataclass
-class ResolutionBranch:
-    branch_id: str
-    probability: Optional[float]
-    options: list[BranchOption] = field(default_factory=list)
-    status: AuditStatus = AuditStatus.PARSED
-    note: str = ""
-
-    def to_json(self) -> dict:
-        return {
-            "branch_id": self.branch_id,
-            "probability": self.probability,
-            "options": [option.to_json() for option in self.options],
-            "status": self.status.value,
-            "note": self.note,
-        }
-
-
-@dataclass
-class BattleResult:
-    own: SideResult
-    opponent: SideResult
-    shared_before: dict[str, Any]
-    shared_after: dict[str, Any]
-    turn_start_skill_display: dict[str, Any] = field(default_factory=dict)
-    possible_branches: list[ResolutionBranch] = field(default_factory=list)
-    observed_branch_id: Optional[str] = None
-    events: list[dict[str, Any]] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)
-    input_unknowns: list[str] = field(default_factory=list)
-    latent_uncertainties: list[dict[str, Any]] = field(default_factory=list)
-    debug: dict[str, Any] = field(default_factory=dict)
-
-    def to_json(self) -> dict:
-        return {
-            "own": self.own.to_json(),
-            "opponent": self.opponent.to_json(),
-            "shared_before": self.shared_before,
-            "shared_after": self.shared_after,
-            "turn_start_skill_display": self.turn_start_skill_display,
-            "possible_branches": [branch.to_json() for branch in self.possible_branches],
-            "observed_branch_id": self.observed_branch_id,
-            "events": self.events,
-            "warnings": self.warnings,
-            "input_unknowns": self.input_unknowns,
-            "latent_uncertainties": self.latent_uncertainties,
-            "debug": self.debug,
         }

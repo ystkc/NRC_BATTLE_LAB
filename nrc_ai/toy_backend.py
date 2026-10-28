@@ -11,7 +11,7 @@ import copy
 import random
 from typing import Any, Mapping
 
-from .contracts import CoreManifest, Decision, LegalAction, Observation, Transition
+from nrc_core.contracts import CoreManifest, Decision, LegalAction, Observation, Transition
 
 
 @dataclass

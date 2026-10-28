@@ -42,7 +42,7 @@
 ```bash
 pip install -e ".[dev]"
 python -m nrc_server.server --host 127.0.0.1 --port 8767
-python -m nrc_ai check --backend nrc_core.training:create_backend --setup setup.json
+python -m pytest tests/test_platform_boundaries.py -q
 python scripts/generate_skill_effects.py
 python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 ```
@@ -54,15 +54,18 @@ python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 | 任务 | 文件 |
 |---|---|
 | 伤害和回合结算 | `nrc_core/core.py:simulate_turn`、`nrc_core/battle.py` |
-| 效果原语 | `nrc_core/engine/_monolith.py:_HANDLERS` |
+| 效果原语与注册 | `nrc_core/engine/registry.py:_HANDLERS`、`handlers_skill.py`、`handlers_ability.py`、`handlers_field.py` |
 | 技能效果生成 | `scripts/generate_skill_effects.py`、`nrc_core/skill_effects_generated.py` **生成文件勿手改** |
 | 特性原语 | `nrc_core/effect_models.py` |
-| 特性阶段分发与攻击前修正 | `nrc_core/effect_models.py:Timing`、`nrc_core/engine/_monolith.py:EffectExecutor.execute_ability`、`_h_damage` |
+| 特性阶段分发与攻击前修正 | `nrc_core/effect_models.py:Timing`、`nrc_core/engine/executor.py:EffectExecutor.execute_ability`、`handlers_skill.py:_h_damage` |
 | 冻结施加与冻结成功特性事件 | `nrc_core/models.py:add_freeze_stacks` |
 | 技能数据 | `nrc_core/effect_data.py` |
 | 属性克制 | `nrc_core/models.py:get_type_effectiveness` |
 | 六维和资质公式 | `nrc_core/catalog.py:calc_combat_stats` |
-| 对战状态显示与战报可见性 | `nrc_server/server.py:_visible_events`、`nrc_server/static/app.js:stateEffects`、`eventText` |
-| 全技能修正归属与特性触发战报 | `nrc_core/engine/_monolith.py:_apply_tag`、`_record_public_skill_modifier`、`EffectExecutor.execute_ability` |
+| 对战状态显示与战报可见性 | `nrc_platform/rooms.py:_visible_events`、`nrc_platform/state.py:normalize_observation`、`nrc_server/static/app.js` |
+| 全技能修正归属与特性触发战报 | `nrc_core/engine/dispatch.py:_apply_tag`、`helpers.py:_record_public_skill_modifier`、`executor.py:EffectExecutor.execute_ability` |
 | 平台状态分类与可见性适配 | `nrc_platform/state.py:normalize_observation`、`nrc_platform/platform.py:get_public_observation` |
-| 强化学习和MCTS | `nrc_ai/cli.py` |
+| 核心初始化、决策、合法动作和只读预览 | `nrc_core/runtime.py:BattleRuntime` |
+| 双人房间准备、确认与身份 | `nrc_platform/rooms.py:RoomService` |
+| 提交事务与新快照 | `nrc_platform/platform.py:_serialized`、`submit_selection`、`export_battle` |
+| 强化学习和MCTS | `nrc_ai/` 暂存，旧 CLI 停用 |

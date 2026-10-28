@@ -7,6 +7,8 @@ import math
 import random
 import re
 import uuid
+import threading
+from functools import wraps
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -14,16 +16,13 @@ import logging
 
 from pypinyin import Style, lazy_pinyin
 
-from nrc_ai.contracts import CoreManifest, Decision, LegalAction, Observation, Transition
+from nrc_core.contracts import CoreManifest, Decision, LegalAction, Observation, Transition
 from nrc_core.battle import DamageCalculator
-from nrc_core.core import _turn_start_skill_display
 from nrc_core.models import SkillCategory, Type, get_type_effectiveness
-from nrc_core.pokemon_db import configure_catalog as configure_pokemon_catalog, get_pokemon
-from nrc_core.skill_db import configure_catalog as configure_skill_catalog
-from nrc_core.skill_db import get_skill
-from nrc_core.training import NRCTrainingBackend, TrainingState
+from nrc_core.runtime import BattleRuntime, BattleSession
 
 from .catalog import load_catalog
+from .builder import BattleBuilder
 from .input import merge_creature_spec
 from .state import normalize_observation
 from nrc_core.codec import creature_from_dict
@@ -60,13 +59,6 @@ class PlatformResult(dict[str, Any]):
 
 
 @dataclass
-class PlatformState:
-    """Compatibility wrapper for the training backend state."""
-
-    episode: TrainingState
-
-
-@dataclass
 class _ManagedBattle:
     battle_id: str
     mode: str
@@ -74,15 +66,32 @@ class _ManagedBattle:
     manifest: CoreManifest
     own_roster: dict[str, Any] | None = None
     opponent_roster: dict[str, Any] | None = None
-    episode: TrainingState | None = None
+    episode: BattleSession | None = None
     pending: dict[str, dict[str, Any]] = field(default_factory=dict)
     history: list[dict[str, Any]] = field(default_factory=list)
-    observations: list[dict[str, Any]] = field(default_factory=list)
     requests: dict[str, PlatformResult] = field(default_factory=dict)
-    phase: str = "setup"
-    decision_index: int = 0
-    terminal: bool = False
-    winner: int | None = None
+    lock: Any = field(default_factory=threading.RLock, repr=False)
+    revealed: dict[int, set[int]] = field(default_factory=lambda: {0: set(), 1: set()})
+
+    @property
+    def phase(self) -> str:
+        """阶段从唯一核心状态读取。"""
+        return self.episode.phase if self.episode else "setup"
+
+    @property
+    def decision_index(self) -> int:
+        """当前决策序号。"""
+        return self.episode.decision_index if self.episode else 0
+
+    @property
+    def terminal(self) -> bool:
+        """终局由核心判定。"""
+        return bool(self.episode and self.episode.terminated)
+
+    @property
+    def winner(self) -> int | None:
+        """胜方由核心判定。"""
+        return self.episode.winner if self.episode else None
 
 
 class _Catalog:
@@ -158,15 +167,32 @@ class _Catalog:
             ]
 
 
+
+def _serialized(method):
+    """同局请求串行化，异常时恢复暂存与历史。"""
+    @wraps(method)
+    def call(self, battle_id, *args, **kwargs):
+        battle = self._get_battle(battle_id)
+        with battle.lock:
+            before = {key: copy.deepcopy(value) for key, value in vars(battle).items() if key not in {"lock", "episode"}}
+            before["episode"] = self._backend.clone(battle.episode) if battle.episode else None
+            try:
+                return method(self, battle_id, *args, **kwargs)
+            except Exception:
+                for key, value in before.items():
+                    setattr(battle, key, value)
+                raise
+    return call
+
+
 class BattlePlatform:
-    """Own multi-turn sessions and preserve the legacy training contract."""
+    """持有双人对局，统一提交、历史和玩家视角。"""
 
     def __init__(self, *, environment: str = "nrc", data_dir: str | Path | None = None):
         catalog = load_catalog(data_dir)
-        configure_pokemon_catalog(catalog)
-        configure_skill_catalog(catalog)
-        self._backend = NRCTrainingBackend(environment=environment, catalog=catalog)
+        self._backend = BattleRuntime(environment=environment, catalog=catalog)
         self._catalog = _Catalog(catalog)
+        self._builder = BattleBuilder(catalog=catalog)
         self._battles: dict[str, _ManagedBattle] = {}
         self.logger = logging.getLogger(__name__)
 
@@ -174,41 +200,22 @@ class BattlePlatform:
     def manifest(self) -> CoreManifest:
         return self._backend.manifest
 
+    @_serialized
+    def get_battle_status(self, battle_id: str) -> PlatformResult:
+        """供房间编排读取唯一核心状态与提交进度。"""
+        battle = self._get_battle(battle_id)
+        return PlatformResult(battle_id=battle_id, turn=self._current_turn(battle),
+                              phase=battle.phase, decision_index=battle.decision_index,
+                              pending=list(battle.pending), terminal=battle.terminal,
+                              winner=battle.winner, initialized=battle.episode is not None)
+
     def resolve_pokemon(self, value: Any) -> Mapping[str, Any] | None:
         """Resolve a canonical creature record or a pinyin alias."""
         return self._catalog.resolve_pokemon(value)
 
-    # Legacy nrc_ai training contract.
-    def new_game(self, setup: Mapping[str, Any], seed: int) -> PlatformState:
-        return PlatformState(self._backend.new_game(setup, seed))
-
-    def clone(self, state: PlatformState) -> PlatformState:
-        return PlatformState(self._backend.clone(state.episode))
-
-    def decision(self, state: PlatformState) -> Decision:
-        return self._backend.decision(state.episode)
-
-    def observe(self, state: PlatformState, player: int) -> Observation:
-        return normalize_observation(self._backend.observe(state.episode, player), state.episode.battle, self._catalog.catalog)
-
-    def legal_actions(self, state: PlatformState, player: int) -> tuple[LegalAction, ...]:
-        return self._backend.legal_actions(state.episode, player)
-
-    def advance(self, state: PlatformState, actions: Mapping[int, str], seed: int) -> Transition:
-        transition = self._backend.advance(state.episode, actions, seed)
-        observations = {player: normalize_observation(value, transition.state.battle, self._catalog.catalog)
-                        for player, value in transition.observations.items()}
-        return Transition(PlatformState(transition.state), observations, transition.rewards, transition.terminated, transition.winner, transition.events)
-
-    def export_state(self, state: PlatformState) -> Mapping[str, Any]:
-        return self._backend.export_state(state.episode)
-
-    def import_state(self, snapshot: Mapping[str, Any]) -> PlatformState:
-        return PlatformState(self._backend.import_state(snapshot))
-
     def create_battle(self, *, mode: str, seed: int | None = None, rules_version: str | None = None) -> PlatformResult:
-        if mode not in {"full", "partial"}:
-            raise PlatformError("invalid_mode", "mode must be 'full' or 'partial'")
+        if mode != "full":
+            raise PlatformError("invalid_mode", "only two-player full mode is supported")
         if rules_version is not None and rules_version != self.manifest.rules_version:
             raise PlatformError("version_mismatch", "requested rules version does not match active backend")
         chosen_seed = int(seed if seed is not None else random.SystemRandom().randrange(2**32))
@@ -224,14 +231,19 @@ class BattlePlatform:
             manifest=_manifest_dict(self.manifest),
         )
 
+    @_serialized
     def set_roster(self, battle_id: str, side: str, roster: Any, *, request_id: str | None = None) -> PlatformResult:
         battle = self._get_battle(battle_id)
         self._ensure_mutable(battle)
         if side not in {"own", "opponent"}:
             raise PlatformError("invalid_side", "side must be 'own' or 'opponent'")
+        if request_id:
+            request_id = f"roster:{side}:{request_id}"
         if request_id and request_id in battle.requests:
             return battle.requests[request_id]
-        normalized = self._catalog.normalize_team(roster, allow_unknown=battle.mode == "partial" and side == "opponent")
+        if battle.episode is not None:
+            raise PlatformError("invalid_phase", "rosters are fixed after battle initialization")
+        normalized = self._catalog.normalize_team(roster, allow_unknown=False)
         if side == "own":
             battle.own_roster = normalized
         else:
@@ -251,45 +263,25 @@ class BattlePlatform:
             battle.requests[request_id] = result
         return result
 
-    def submit_selection(self, battle_id: str, side: str, selection: Mapping[str, Any] | str, *, request_id: str) -> PlatformResult:
+    @_serialized
+    def submit_selection(self, battle_id: str, side: str, selection: Mapping[str, Any] | str, *, request_id: str, decision_index: int | None = None) -> PlatformResult:
         battle = self._get_battle(battle_id)
+        request_id = f"{side}:{request_id}"
         if request_id in battle.requests:
             return battle.requests[request_id]
         self._ensure_mutable(battle)
+        if decision_index is not None and decision_index != battle.decision_index:
+            raise PlatformError("stale_decision", "decision index is no longer current")
+        if side in battle.pending:
+            raise PlatformError("already_submitted", "player already submitted this decision")
         if side not in {"own", "opponent"}:
             raise PlatformError("invalid_side", "side must be 'own' or 'opponent'")
         if battle.episode is None:
-            if battle.mode == "partial":
-                raw_selection = {"action_key": selection} if isinstance(selection, str) else copy.deepcopy(dict(selection))
-                battle.pending[side] = {"selection": raw_selection, "action_key": None, "request_id": request_id}
-                result = PlatformResult(
-                    battle_id=battle_id,
-                    accepted=True,
-                    decision_index=battle.decision_index,
-                    phase=battle.phase,
-                    resolved=False,
-                    next_required=["opponent" if side == "own" else "own"],
-                    result=None,
-                    warnings=["waiting_for_opponent_candidate_state"],
-                )
-                battle.requests[request_id] = result
-                return result
             raise PlatformError("invalid_phase", "both sides need enough roster information before selecting")
         player = 0 if side == "own" else 1
         raw_selection = {"action_key": selection} if isinstance(selection, str) else copy.deepcopy(dict(selection))
         action_key = self._resolve_action_key(battle.episode, player, raw_selection)
         battle.pending[side] = {"selection": raw_selection, "action_key": action_key, "request_id": request_id}
-
-        if battle.mode == "partial" and side == "own":
-            observed = raw_selection.get("observed_opponent_action")
-            if observed is not None:
-                observed_selection = observed if isinstance(observed, Mapping) else {"action_key": observed}
-                battle.pending["opponent"] = {
-                    "selection": copy.deepcopy(observed_selection),
-                    "action_key": self._resolve_action_key(battle.episode, 1, observed_selection),
-                    "request_id": request_id,
-                    "source": "observed",
-                }
 
         decision = self._backend.decision(battle.episode)
         required_sides = {"own" if item == 0 else "opponent" for item in decision.players}
@@ -302,7 +294,7 @@ class BattlePlatform:
                 resolved=False,
                 next_required=sorted(required_sides - battle.pending.keys()),
                 result=None,
-                warnings=["opponent_action_unknown"] if battle.mode == "partial" else [],
+                warnings=[],
             )
             battle.requests[request_id] = result
             return result
@@ -313,12 +305,9 @@ class BattlePlatform:
         }
         transition = self._backend.advance(battle.episode, actions, battle.seed + battle.decision_index)
         battle.episode = transition.state
+        self._record_revealed(battle)
         battle.pending.clear()
         decision_after = self._backend.decision(battle.episode)
-        battle.decision_index = decision_after.index
-        battle.phase = decision_after.phase
-        battle.terminal = transition.terminated
-        battle.winner = transition.winner
         events = [dict(event) for event in transition.events]
         battle.history.append({
             "decision_index": battle.decision_index,
@@ -347,57 +336,7 @@ class BattlePlatform:
         battle.requests[request_id] = result
         return result
 
-    def calibrate_hp(
-        self,
-        battle_id: str,
-        *,
-        own_hp: int,
-        opponent_hp_ratio: float,
-        opponent_max_hp: float | None = None,
-        observed_turn: int | None = None,
-        request_id: str,
-    ) -> PlatformResult:
-        battle = self._get_battle(battle_id)
-        if request_id in battle.requests:
-            return battle.requests[request_id]
-        self._ensure_mutable(battle)
-        if battle.mode != "partial":
-            raise PlatformError("invalid_mode", "HP calibration is only available in partial mode")
-        if not isinstance(own_hp, int) or own_hp < 0:
-            raise PlatformError("invalid_calibration", "own_hp must be a non-negative integer")
-        if not math.isfinite(float(opponent_hp_ratio)) or not 0 <= opponent_hp_ratio <= 1:
-            raise PlatformError("invalid_calibration", "opponent_hp_ratio must be in [0, 1]")
-        turn = int(observed_turn if observed_turn is not None else self._current_turn(battle))
-        observation = {
-            "type": "hp_calibration",
-            "turn": turn,
-            "own_hp": own_hp,
-            "opponent_hp_ratio": float(opponent_hp_ratio),
-            "opponent_max_hp": opponent_max_hp,
-        }
-        if battle.episode is not None:
-            own = battle.episode.battle.team_a[battle.episode.battle.current_a]
-            opponent = battle.episode.battle.team_b[battle.episode.battle.current_b]
-            if own_hp > own.hp:
-                raise PlatformError("calibration_conflict", "own_hp exceeds known maximum HP", {"max_hp": own.hp})
-            own.current_hp = own_hp
-            max_hp = float(opponent_max_hp if opponent_max_hp is not None else opponent.hp)
-            if max_hp <= 0:
-                raise PlatformError("calibration_conflict", "opponent maximum HP must be positive")
-            opponent.current_hp = max(0, min(opponent.hp, round(max_hp * opponent_hp_ratio)))
-        battle.observations.append(observation)
-        result = PlatformResult(
-            battle_id=battle_id,
-            accepted=True,
-            decision_index=battle.decision_index,
-            turn=turn,
-            observation=observation,
-            candidate_filter={"status": "recorded", "removed": 0},
-            warnings=[] if battle.episode is not None else ["waiting_for_candidate_completion"],
-        )
-        battle.requests[request_id] = result
-        return result
-
+    @_serialized
     def get_display_info(self, battle_id: str, side: str, *, include_damage_preview: bool = True) -> PlatformResult:
         battle = self._get_battle(battle_id)
         if side not in {"own", "opponent"}:
@@ -414,7 +353,7 @@ class BattlePlatform:
                 assumptions=[],
                 warnings=["core_state_not_initialized"],
             )
-        display = _turn_start_skill_display(battle.episode.battle, "a" if side == "own" else "b")
+        display = self._backend.display(battle.episode, 0 if side == "own" else 1)
         skills = []
         for item in display.get("skills", []):
             row = dict(item)
@@ -433,6 +372,7 @@ class BattlePlatform:
             warnings=[],
         )
 
+    @_serialized
     def get_matchup_relations(self, battle_id: str, side: str) -> PlatformResult:
         """Rate every creature on one side by its best damaging skill against the opposing active creature."""
         battle = self._get_battle(battle_id)
@@ -477,7 +417,7 @@ class BattlePlatform:
         parsed = creature_from_dict(raw)
         warnings: list[str] = []
         unknowns: list[str] = []
-        pokemon = self._backend._simulator._creature_to_legacy(parsed, name, warnings, unknowns)
+        pokemon = self._builder._creature_to_legacy(parsed, name, warnings, unknowns)
         metadata = pokemon.ability_state.get("lab_metadata", {})
         bloodline = metadata.get("bloodline_attributes") or []
         if isinstance(bloodline, str):
@@ -512,6 +452,7 @@ class BattlePlatform:
             unknowns=unknowns,
         )
 
+    @_serialized
     def get_legal_actions(self, battle_id: str, side: str) -> PlatformResult:
         """Return the exact action keys currently accepted by the core."""
         battle = self._get_battle(battle_id)
@@ -529,6 +470,7 @@ class BattlePlatform:
             warnings=[],
         )
 
+    @_serialized
     def get_public_observation(self, battle_id: str, side: str = "own") -> PlatformResult:
         """Return the observer-scoped snapshot used by upper-layer clients."""
         battle = self._get_battle(battle_id)
@@ -537,7 +479,7 @@ class BattlePlatform:
         if battle.episode is None:
             return PlatformResult(battle_id=battle_id, side=side, data={}, warnings=["core_state_not_initialized"])
         player = 0 if side == "own" else 1
-        observation = normalize_observation(self._backend.observe(battle.episode, player), battle.episode.battle, self._catalog.catalog)
+        observation = normalize_observation(self._backend.observe(battle.episode, player), battle.episode.battle, self._catalog.catalog, revealed=battle.revealed)
         return PlatformResult(
             battle_id=battle_id,
             side=side,
@@ -548,10 +490,11 @@ class BattlePlatform:
             warnings=[],
         )
 
+    @_serialized
     def export_battle(self, battle_id: str) -> Mapping[str, Any]:
         battle = self._get_battle(battle_id)
         snapshot: dict[str, Any] = {
-            "format": "nrc_platform.session.v1",
+            "format": "nrc_platform.session.v2",
             "battle_id": battle.battle_id,
             "mode": battle.mode,
             "seed": battle.seed,
@@ -560,7 +503,8 @@ class BattlePlatform:
             "opponent_roster": copy.deepcopy(battle.opponent_roster),
             "pending": copy.deepcopy(battle.pending),
             "history": copy.deepcopy(battle.history),
-            "observations": copy.deepcopy(battle.observations),
+            "revealed": {str(k): sorted(v) for k, v in battle.revealed.items()},
+            "requests": copy.deepcopy(battle.requests),
             "phase": battle.phase,
             "decision_index": battle.decision_index,
             "terminal": battle.terminal,
@@ -571,7 +515,7 @@ class BattlePlatform:
         return snapshot
 
     def import_battle(self, snapshot: Mapping[str, Any]) -> PlatformResult:
-        if snapshot.get("format") != "nrc_platform.session.v1":
+        if snapshot.get("format") != "nrc_platform.session.v2":
             raise PlatformError("version_mismatch", "unsupported platform snapshot format")
         if dict(snapshot.get("manifest") or {}) != _manifest_dict(self.manifest):
             raise PlatformError("version_mismatch", "snapshot manifest does not match active backend")
@@ -587,11 +531,8 @@ class BattlePlatform:
             opponent_roster=copy.deepcopy(snapshot.get("opponent_roster")),
             pending=copy.deepcopy(snapshot.get("pending") or {}),
             history=copy.deepcopy(snapshot.get("history") or []),
-            observations=copy.deepcopy(snapshot.get("observations") or []),
-            phase=str(snapshot.get("phase", "setup")),
-            decision_index=int(snapshot.get("decision_index", 0)),
-            terminal=bool(snapshot.get("terminal", False)),
-            winner=snapshot.get("winner"),
+            revealed={p: set(snapshot.get("revealed", {}).get(str(p), [])) for p in (0, 1)},
+            requests={k: PlatformResult(v) for k, v in snapshot.get("requests", {}).items()},
         )
         if snapshot.get("episode") is not None:
             battle.episode = self._backend.import_state(snapshot["episode"])
@@ -608,7 +549,7 @@ class BattlePlatform:
     def query_display_power(self, state: Any, side: str, skill: Any, *, context: Mapping[str, Any] | None = None) -> PlatformResult:
         episode = self._coerce_episode(state)
         code = _side_code(side)
-        view = _turn_start_skill_display(episode.battle, code)
+        view = self._backend.display(episode, 0 if code == "a" else 1)
         slot = _find_skill_slot(episode, code, skill)
         if slot is None or slot >= len(view.get("skills", [])):
             raise PlatformError("invalid_action", "skill does not exist on the active creature")
@@ -676,6 +617,14 @@ class BattlePlatform:
             certainty="exact",
         )
 
+    @staticmethod
+    def _record_revealed(battle: _ManagedBattle) -> None:
+        """只在实际初始化或推进成功后登记上场，不由查询写入。"""
+        state = battle.episode.battle
+        for player, team, active in ((0, state.team_a, state.current_a), (1, state.team_b, state.current_b)):
+            battle.revealed[player].add(active)
+            battle.revealed[player].update(i for i, pokemon in enumerate(team) if pokemon.entry_count > 0)
+
     def _get_battle(self, battle_id: str) -> _ManagedBattle:
         try:
             return self._battles[battle_id]
@@ -698,15 +647,10 @@ class BattlePlatform:
             "shared": {"turn": 1, "mp": {"own": 4, "opponent": 4}},
         }
         try:
-            battle.episode = self._backend.new_game(setup, battle.seed)
+            battle.episode = self._backend.new_game(self._builder.build(setup, battle.seed), battle.seed)
         except (ValueError, FileNotFoundError) as exc:
-            if battle.mode == "partial" and _has_unknown_creature(battle.opponent_roster):
-                battle.history.append({"type": "initialization_deferred", "reason": str(exc)})
-                return
             raise PlatformError("invalid_roster", str(exc)) from exc
-        decision = self._backend.decision(battle.episode)
-        battle.phase = decision.phase
-        battle.decision_index = decision.index
+        self._record_revealed(battle)
 
     def _resolve_pending_actions(self, battle: _ManagedBattle) -> None:
         if battle.episode is None:
@@ -719,7 +663,7 @@ class BattlePlatform:
                 continue
             pending["action_key"] = self._resolve_action_key(battle.episode, player, pending["selection"])
 
-    def _resolve_action_key(self, episode: TrainingState, player: int, selection: Mapping[str, Any]) -> str:
+    def _resolve_action_key(self, episode: BattleSession, player: int, selection: Mapping[str, Any]) -> str:
         legal = {item.key: item for item in self._backend.legal_actions(episode, player)}
         direct = selection.get("action_key")
         if direct:
@@ -756,17 +700,15 @@ class BattlePlatform:
             raise PlatformError("invalid_action", f"illegal action {base!r}", {"player": player})
         return base
 
-    def _coerce_episode(self, state: Any) -> TrainingState:
-        if isinstance(state, TrainingState):
+    def _coerce_episode(self, state: Any) -> BattleSession:
+        if isinstance(state, BattleSession):
             return state
-        if isinstance(state, PlatformState):
-            return state.episode
         if isinstance(state, str):
             battle = self._get_battle(state)
             if battle.episode is None:
                 raise PlatformError("invalid_phase", f"battle {state!r} has no complete core state")
             return battle.episode
-        raise PlatformError("invalid_state", "state must be a battle id, PlatformState or TrainingState")
+        raise PlatformError("invalid_state", "state must be a battle id or BattleSession")
 
     @staticmethod
     def _current_turn(battle: _ManagedBattle) -> int:
@@ -784,8 +726,7 @@ class BattlePlatform:
                 return copy.deepcopy(event.get("value") or {})
         return {}
 
-    @staticmethod
-    def _static_display_info(team: Mapping[str, Any] | None) -> list[dict[str, Any]]:
+    def _static_display_info(self, team: Mapping[str, Any] | None) -> list[dict[str, Any]]:
         if not team:
             return []
         creatures = team.get("creatures") or []
@@ -798,7 +739,7 @@ class BattlePlatform:
             if not name:
                 result.append({"skill_slot": slot, "display_power": None, "display_energy_cost": None, "certainty": "unknown"})
                 continue
-            skill = get_skill(str(name))
+            skill = self._catalog.catalog.get_skill(str(name))
             result.append({
                 "skill_slot": slot,
                 "skill_id": getattr(skill, "skill_id", skill.name),
@@ -838,13 +779,13 @@ def _side_code(side: str) -> str:
     raise PlatformError("invalid_side", "side must be own/opponent")
 
 
-def _active_pair(episode: TrainingState, code: str):
+def _active_pair(episode: BattleSession, code: str):
     if code == "a":
         return episode.battle.team_a[episode.battle.current_a], episode.battle.team_b[episode.battle.current_b]
     return episode.battle.team_b[episode.battle.current_b], episode.battle.team_a[episode.battle.current_a]
 
 
-def _find_skill_slot(episode: TrainingState, code: str, reference: Any) -> int | None:
+def _find_skill_slot(episode: BattleSession, code: str, reference: Any) -> int | None:
     active, _ = _active_pair(episode, code)
     if isinstance(reference, Mapping):
         if reference.get("skill_slot") is not None:
@@ -861,7 +802,7 @@ def _find_skill_slot(episode: TrainingState, code: str, reference: Any) -> int |
     return None
 
 
-def _team_and_target(episode: TrainingState, code: str):
+def _team_and_target(episode: BattleSession, code: str):
     battle = episode.battle
     if code == "a":
         return battle.team_a, battle.team_b[battle.current_b]
@@ -900,15 +841,8 @@ def _indicator_for_multiplier(multiplier: Any) -> str:
     return "super_effective"
 
 
-def _has_unknown_creature(team: Mapping[str, Any] | None) -> bool:
-    return any(
-        not _known_value(item.get("name")) and not _known_value(item.get("display_name"))
-        for item in (team or {}).get("creatures", [])
-    )
-
-
 def create_platform(*, environment: str = "nrc", data_dir: str | Path | None = None) -> BattlePlatform:
     return BattlePlatform(environment=environment, data_dir=data_dir)
 
 
-__all__ = ["BattlePlatform", "PlatformError", "PlatformResult", "PlatformState", "create_platform"]
+__all__ = ["BattlePlatform", "PlatformError", "PlatformResult", "create_platform"]

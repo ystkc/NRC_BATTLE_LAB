@@ -5,7 +5,7 @@ from __future__ import annotations
 import random
 import uuid
 
-from .contracts import CoreBackend
+from nrc_core.contracts import CoreBackend
 from .belief import Particle, ParticleBelief
 from .opponent import OpponentPolicy, UniformOpponentPolicy
 from .replay import Episode, StepRecord

@@ -15,7 +15,7 @@ import json
 from typing import Any, Mapping, Sequence
 
 from .belief import Particle, ParticleBelief
-from .contracts import CoreBackend, LegalAction, Observation
+from nrc_core.contracts import CoreBackend, LegalAction, Observation
 from .opponent import OpponentPolicy, UniformOpponentPolicy
 from .search import BeliefTreeSearch, SearchResult
 

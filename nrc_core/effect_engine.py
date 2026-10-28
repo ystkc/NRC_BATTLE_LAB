@@ -1,14 +1,6 @@
-"""
-效果执行引擎 — 兼容层
+"""效果引擎旧导入路径的兼容入口。"""
 
-原 3092 行单体文件已移至 src/engine/_monolith.py，
-本文件 re-export 所有公共符号，保证外部代码零修改可用。
-
-后续按模块拆分 _monolith.py 时，只需更改 __init__.py 的 import 来源。
-"""
-
-# Re-export everything that external code imports
-from nrc_core.engine._monolith import (
+from nrc_core.engine import (
     # Classes
     Ctx,
     EffectExecutor,

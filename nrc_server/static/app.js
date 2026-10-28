@@ -1,47 +1,16 @@
-const state = {
-  catalog: { pokemon: [], skills: [] },
-  battle: null,
-  playerToken: '',
-  side: '',
-  teams: { own: [], opponent: [] },
-  selectedStart: 0,
-  actions: [],
-  relations: [],
-  display: { skills: [] },
-  events: [],
-  eventCursor: null,
-  pending: false,
-  opponentPending: false,
-  resolving: false,
-  resolutionToken: 0,
-  pollTimer: null,
-  pollInFlight: false,
-  previewAnchor: null,
-  previewRequest: 0,
-  previewFormIndex: 0,
-};
-
-const SESSION_KEY = 'nrc-battle-session';
+import { createRosterEditor } from './roster.js';
+import { createBattleSync } from './battle.js';
+/** 对局界面的交互与渲染编排。 */
+import { state } from './state.js';
+import { api } from './api.js';
+import { SESSION_KEY, saveSession, clearSession } from './session.js';
+import { RELATION_NAMES, relationLabel, effectName, eventText } from './presentation.js';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 
-function headers() {
-  const result = { 'Content-Type': 'application/json' };
-  if (state.playerToken) result['X-Player-Token'] = state.playerToken;
-  return result;
-}
-
-async function api(url, options = {}) {
-  const response = await fetch(url, { ...options, headers: { ...headers(), ...(options.headers || {}) } });
-  const data = await response.json();
-  if (!response.ok) {
-    const error = new Error(data.message || data.error || '请求失败');
-    error.status = response.status;
-    throw error;
-  }
-  return data;
-}
+const { aptitudeField, aptitudeName, natureBonusText, editorFieldMarkup, choiceMatches, editorChoices, renderEditorSuggestions, applyEditorOption, editorPosition, renderCreatureEditor, closeCreatureEditor, updateCreatureBase, setForm, selectedAptitudes, aptitudeEditorMarkup, selectedSkills, normalizedBase, skillEditorMarkup, addAptitude, removeAptitude, addSkill, removeSkill, previewPosition, previewPayload, renderCreaturePreview, previewForms, loadCreaturePreview, showCreaturePreview, cyclePreviewForm, hideCreaturePreview } = createRosterEditor({ $, esc, formFor, pokemonRow, baseName, renderTeamCard, toast });
+const { fetchMatchups, syncEvents, refreshBattle, submitAction } = createBattleSync({ renderEvents, setResolving, playResolution, renderSetup, updateBattleMeta, mergeObservation, renderSide, reset, toast, updateBattleLock, closeDrawer });
 
 function toast(message) {
   const element = $('#toast');
@@ -50,27 +19,6 @@ function toast(message) {
   element.classList.add('show');
   clearTimeout(state.toastTimer);
   state.toastTimer = setTimeout(() => element.classList.remove('show'), 2600);
-}
-
-function saveSession() {
-  if (!state.battle?.battle_id || !state.playerToken) return;
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify({ battleId: state.battle.battle_id, playerToken: state.playerToken, side: state.side, selectedStart: state.selectedStart, teams: state.teams.own }));
-}
-
-function clearSession() {
-  sessionStorage.removeItem(SESSION_KEY);
-  state.battle = null;
-  state.playerToken = '';
-  state.side = '';
-  state.teams = { own: [], opponent: [] };
-  state.selectedStart = 0;
-  state.events = [];
-  state.eventCursor = null;
-  state.resolutionToken += 1;
-  state.pending = false;
-  state.opponentPending = false;
-  clearTimeout(state.pollTimer);
-  state.pollTimer = null;
 }
 
 function baseName(name) { return String(name || '').split('（', 1)[0]; }
@@ -85,8 +33,6 @@ function skillMeta(name) { return state.catalog.skills.find((skill) => skill.nam
 function asset(name, kind) { return formFor(name)?.[kind] || ''; }
 const TYPE_NAMES = { normal: '普通', fire: '火', water: '水', electric: '电', grass: '草', ice: '冰', fighting: '武', poison: '毒', ground: '地', flying: '翼', psychic: '幻', bug: '虫', ghost: '幽', dragon: '龙', dark: '恶', steel: '机械', fairy: '萌', light: '光' };
 const BUFF_ICONS = { atk_up: '物攻.png', def_up: '物防.png', spatk_up: '魔攻.png', spdef_up: '魔防.png', speed_up: '速度.png', atk_down: '物攻.png', def_down: '物防.png', spatk_down: '魔攻.png', spdef_down: '魔防.png', speed_down: '速度.png', poison: '中毒.png', burn: '灼烧.png', freeze: '冻结.png', leech: '寄生.png', electric: '引电.png', meteor: '星陨印记.png', cute: '萌化.png' };
-const RELATION_NAMES = { immune: '无', very_resistant: '双重抵抗', resistant: '抵抗', normal: '平衡', effective: '克制', super_effective: '双重克制', unknown: '无' };
-const EFFECT_NAMES = { poison: '中毒', burn: '灼烧', freeze: '冻结', leech: '寄生', electric: '引电', meteor: '星陨', cute: '萌化', hp: '生命', energy: '能量', status: '状态', fainted: '力竭', ability: '特性', atk: '攻击', def: '物防', spatk: '魔攻', spdef: '魔防', speed: '速度', combo: '连击', priority: '先手', action_speed: '行动速度', skill_power: '全技能威力', skill_power_pct: '全技能威力', skill_cost: '全技能能耗', power_multiplier: '威力倍率加成', life_drain: '吸血', next_attack_power: '下次攻击威力', next_attack_power_pct: '下次攻击威力比例' };
 function typeKey(value) { const text = String(value || '').toLowerCase(); return TYPE_NAMES[text] || text.replace('系', '') || '普通'; }
 function typeIcon(value) { return `/assets/dept_icons/${encodeURIComponent(typeKey(value))}.png`; }
 function buffIcon(name) { const filename = BUFF_ICONS[name]; return filename ? `/assets/icon_buff/${encodeURIComponent(filename)}` : ''; }
@@ -95,7 +41,6 @@ function relationIcon(value) {
   const key = String(value || 'unknown');
   return `/assets/icon_dept_relation/${encodeURIComponent(RELATION_NAMES[key] || key)}.svg`;
 }
-function relationLabel(value) { return RELATION_NAMES[String(value || 'unknown')] || String(value || '无'); }
 function isLegalAction(key) {
   return state.actions.some((action) => action.key === key || action.key.startsWith(`${key}|`) || action.key.startsWith(`${key}:`));
 }
@@ -109,13 +54,6 @@ function freezeState(item) {
   const freeze = Number((item.statuses || []).find((entry) => entry.name === 'freeze')?.stacks ?? 0);
   return { freeze, visible: Number.isFinite(freeze) && freeze > 0, percent: Math.max(0, Math.min(100, freeze * 5)) };
 }
-function effectName(value) {
-  const name = String(value || '');
-  const stat = name.match(/^(atk|def|spatk|spdef|speed)_(up|down)$/);
-  if (stat) return `${EFFECT_NAMES[stat[1]]}${stat[2] === 'up' ? '提升' : '降低'}`;
-  return EFFECT_NAMES[name] || name.replaceAll('_', ' ');
-}
-
 function hydrateTeamItem(item, previous = {}) {
   const name = item?.name || previous.name || '';
   const form = formFor(name) || previous.form || item?.form || null;
@@ -151,18 +89,6 @@ function normalizeSelectedStart() {
   }
   const selected = Number(state.selectedStart);
   state.selectedStart = Number.isInteger(selected) && selected >= 0 && selected < state.teams.own.length ? selected : 0;
-}
-
-function parseCreatureQueryLegacy(value) {
-  const tokens = String(value || '').trim().split(/[\s,，]+/).filter(Boolean);
-  let numberStart = tokens.length;
-  while (numberStart && /^\d+$/.test(tokens[numberStart - 1])) numberStart -= 1;
-  const numbers = tokens.slice(numberStart);
-  if (numbers.length && ![1, 6].includes(numbers.length)) return { name: '', stats: null, invalid: true };
-  const fields = ['hp', 'atk', 'def', 'spatk', 'spdef', 'speed'];
-  const stats = {};
-  (numbers.length === 1 ? ['hp'] : fields).forEach((field, index) => { if (numbers[index] != null) stats[field] = Number(numbers[index]); });
-  return { name: tokens.slice(0, numberStart).join(' '), stats, invalid: false };
 }
 
 function searchRows(value, category = 'pokemon') {
@@ -609,56 +535,6 @@ function renderBagDrawer() {
   renderDrawer('共鸣魔法', actions.map((action) => `<button class="drawer-action" data-battle-action="${esc(action.key)}">${esc(actionLabel(action))}</button>`).join('') || '<div class="event-empty">暂无可用共鸣魔法</div>');
 }
 
-function eventText(event) {
-  const actor = event.team === 'a' ? '我方' : event.team === 'b' ? '敌方' : '';
-  if (event.type === 'round_start') return `## 第${event.turn || '?'}回合`;
-  if (event.type === 'battle_start') return '[对战开始] 双方选择行动';
-  if (event.type === 'selection') {
-    if (event.resonance) {
-      const names = { boss: '进化之力', willpower: '愿力强化', solar_heal: '光合治疗' };
-      return `[${actor}使用共鸣魔法] ${names[event.resonance] || event.resonance}`;
-    }
-    if (event.status === 'locked') return event.skill ? `[${actor}选择技能] ${event.skill}，选择了技能` : `[${actor}选择技能] 完成`;
-    if (event.kind === 'switch') return `[${actor}选择切换精灵] 完成`;
-    return `[${actor}选择技能] ${event.skill || event.action_key || '完成'}`;
-  }
-  if (event.type === 'skill') {
-    const details = [];
-    if (event.final_power != null && Number(event.final_power) >= 0) details.push(`威力 ${event.final_power}`);
-    if (Number(event.final_damage) > 0) details.push(`造成 ${event.final_damage} 伤害${event.effect_indicator && event.effect_indicator !== 'normal' ? `（${relationLabel(event.effect_indicator)}）` : ''}`);
-    if (Number(event.damage_per_hit) > 0 && Number(event.hits || 1) > 1) details.push(`${event.damage_per_hit}/段 × ${event.hits}`);
-    if (event.energy_cost != null) details.push(`能耗 ${event.energy_cost}`);
-    if (event.remaining_energy != null) details.push(`剩余能量 ${event.remaining_energy}`);
-    for (const change of event.resource_changes || []) {
-      const side = change.team === 'a' ? '我方' : '敌方';
-      details.push(`${side}${change.pokemon || '精灵'}${effectName(change.kind)} ${change.before}→${change.after}`);
-    }
-    return `[${actor}使用技能] ${event.skill || '技能'}${details.length ? `，${details.join('，')}` : ''}`;
-  }
-  if (event.type === 'switch' || event.switched_to || event.target_switched_to) return `[${actor}切换精灵] ${event.switched_to || event.target_switched_to || '未知精灵'}`;
-  if (event.type === 'turn') return `[回合结束] 第${event.after?.turn || event.turn || '?'}回合`;
-  if (event.type === 'status') return `[状态结算] ${event.status || event.message || '状态变化'}`;
-  if (event.type === 'state_change') {
-    const changes = (event.changes || []).map((change) => {
-      const before = change.before == null ? '-' : change.before;
-      const after = change.after == null ? '-' : change.after;
-      if (change.kind === 'skill') {
-        const field = { energy_cost: '能耗', power: '威力', hit_count: '连击', priority_mod: '先手' }[change.field] || change.field;
-        return `${change.name} ${field} ${before}→${after}`;
-      }
-      if (change.kind === 'modifier') {
-        const field = { energy_cost: '全技能能耗', power: '全技能威力', power_pct: '全技能威力比例', hit_count: '全技能连击', priority_mod: '全技能先手' }[change.name] || effectName(change.name);
-        return `${field} ${before}→${after}${change.name === 'power_pct' ? '%' : ''}`;
-      }
-      const skillChange = change.name?.match(/^skill_(cost|power|hits|priority):(.+)$/);
-      if (skillChange) return `${skillChange[2]} ${({ cost: '能耗', power: '威力', hits: '连击', priority: '先手' })[skillChange[1]]} ${before}→${after}`;
-      return `${effectName(change.name || change.kind)} ${before}→${after}`;
-    });
-    return `[状态变化] ${event.pokemon || '精灵'}：${changes.join('，') || '其他状态有变化'}`;
-  }
-  return event.description || event.message || event.text || `[${event.type || '战斗事件'}]`;
-}
-
 function renderEvents() {
   const events = $('#events');
   events.innerHTML = state.events.length ? state.events.map((event) => `<div class="event-row"><b>R${event.turn || ''}</b><span>${esc(eventText(event))}</span></div>`).join('') : '<div class="event-empty">等待双方选择行动</div>';
@@ -722,87 +598,6 @@ function updateBattleLock() {
   if (charge) charge.disabled = state.pending || state.resolving || !isLegalAction('charge');
 }
 
-async function fetchMatchups(battleId) {
-  try {
-    const data = await api(`/api/battles/${battleId}/matchups?side=own`);
-    state.relations = data.relations || [];
-  } catch {
-    state.relations = [];
-  }
-}
-
-async function syncEvents({ animate = false, data = null } = {}) {
-  const since = state.eventCursor ?? 0;
-  const payload = await api(`/api/battles/${state.battle.battle_id}/events?since=${since}`);
-  const incoming = payload.events || [];
-  state.eventCursor = payload.cursor ?? since + incoming.length;
-  if (!incoming.length) return false;
-  if (animate) {
-    setResolving(true);
-    const token = ++state.resolutionToken;
-    return playResolution(incoming, data, token);
-  }
-  state.events.push(...incoming);
-  renderEvents();
-  return false;
-}
-
-async function refreshBattle({ refreshDisplay = false, animateEvents = false } = {}) {
-  if (!state.battle) return;
-  try {
-    const id = state.battle.battle_id;
-    const previous = state.battle;
-    const previousPending = state.pending;
-    const summary = await api(`/api/battles/${id}`);
-    const statusChanged = summary.turn !== previous.turn
-      || summary.phase !== previous.phase
-      || summary.decision_index !== previous.decision_index
-      || Boolean(summary.pending) !== Boolean(previousPending);
-    state.battle = { ...state.battle, ...summary };
-    if (!summary.initialized) return renderSetup();
-    const firstLoad = state.eventCursor === null;
-    const nextData = (await api(`/api/battles/${id}/state?side=own`)).data;
-    const displayChanged = refreshDisplay || statusChanged || !state.display.skills?.length;
-    if (displayChanged) {
-      state.display = (await api(`/api/battles/${id}/display?side=own`));
-      state.actions = (await api(`/api/battles/${id}/actions?side=own`)).actions || [];
-      await fetchMatchups(id);
-    }
-    state.pending = Boolean(summary.pending);
-    updateBattleMeta();
-    const animated = await syncEvents({ animate: animateEvents && !firstLoad && statusChanged, data: nextData });
-    if (!animated) {
-      mergeObservation(nextData);
-      renderSide('own');
-      renderSide('opponent');
-      setResolving(false);
-    }
-  } catch (error) {
-    setResolving(false);
-    if (error.status === 404) {
-      reset();
-      toast('对局已失效，请重新创建或加入');
-    } else toast(error.message);
-  }
-}
-
-async function submitAction(key) {
-  if (!key || state.pending || state.resolving || !state.battle) return;
-  try {
-    const result = await api(`/api/battles/${state.battle.battle_id}/selection`, { method: 'POST', body: JSON.stringify({ action_key: key }) });
-    state.pending = !result.resolved;
-    state.opponentPending = false;
-    updateBattleLock();
-    if (!result.resolved) {
-      setResolving(true);
-      document.querySelectorAll('#skills .skill-card').forEach((card) => card.classList.add('skill-picked'));
-    }
-    if (result.resolved) await refreshBattle({ refreshDisplay: true, animateEvents: true });
-    closeDrawer();
-    if (result.terminated) toast(result.winner === 0 ? '我方获胜' : result.winner === 1 ? '敌方获胜' : '对局结束');
-  } catch (error) { toast(error.message); }
-}
-
 document.addEventListener('mouseover', (event) => {
   const card = event.target.closest('#skills .skill-card');
   if (card) showSkillTooltip(card);
@@ -835,315 +630,6 @@ async function restoreSession() {
   renderTeam('own');
   renderTeam('opponent');
   await refreshLobby();
-}
-
-const aptitudeFieldDict = {'生命': 'hp', '物攻': 'atk', '魔攻': 'spatk', '物防': 'def', '魔防': 'spdef', '速度': 'speed'}
-const aptitudeNamesDict = {'hp': '生命', 'atk': '物攻', 'spatk': '魔攻', 'def': '物防', 'spdef': '魔防', 'speed': '速度'}
-function aptitudeField(name) {
-  return aptitudeFieldDict[name] || 'unknown';
-}
-
-function aptitudeName(field) {
-  return aptitudeNamesDict[field] || '未知';
-}
-
-function natureBonusText(index, nature) {
-  const item = state.teams.own[index];
-  const form = item ? formFor(item.name) || item.form || {} : {};
-  const bonus = form.customization?.nature_bonus?.[nature] || {};
-  const labels = { hp: '生命', atk: '物攻', def: '物防', spatk: '魔攻', spdef: '魔防', speed: '速度' };
-  return Object.entries(bonus).filter(([, value]) => Number(value)).map(([key, value]) => `${labels[key] || key} ${Number(value) > 0 ? '+' : ''}${Number(value).toFixed(1)}`).join(' / ');
-}
-
-function editorFieldMarkup(field, value, choices) {
-  const options = choices.map((choice) => `<button type="button" data-editor-option="${esc(choice.name)}" data-editor-option-field="${field}">${esc(choice.name)}${choice.percentage ? ` <small>(${Number(choice.percentage).toFixed(1)}%)</small>` : ''}${choice.bonus_text ? ` <small>${esc(choice.bonus_text)}</small>` : ''}</button>`).join('');
-  return `<div class="editor-autocomplete"><input type="text" autocomplete="off" data-editor-autocomplete data-editor-field="${field}" value="${esc(value)}"><div class="editor-suggest hidden" data-editor-suggest="${field}">${options}</div></div>`;
-}
-
-function choiceMatches(choices, query) {
-  const text = String(query || '').trim().toLowerCase();
-  if (!text) return choices;
-  let result = choices.filter((choice) => [choice.name, choice.initials, choice.pinyin, ...(choice.aliases || [])].some((value) => String(value || '').toLowerCase().includes(text)));
-  if (result.length < 5) {
-    result = [...result, ...choices.filter((choice) => choice.pinyin.includes(text))];
-  }
-  return result.sort((a, b) => a.name.length - b.name.length).slice(0, 5);
-}
-
-function editorChoices(index, field) {
-  const item = state.teams.own[index];
-  const form = item ? formFor(item.name) || item.form || {} : {};
-  const customization = form.customization || {};
-  if (field === 'nature') return customization.natures || [];
-  if (field === 'bloodline') return customization.bloodlines || [];
-  if (field === 'aptitude')
-  {
-      const aptitudes = customization.aptitudes || [];
-      const values = selectedAptitudes(item, customization).map((aptitude) => aptitude.name);
-      return aptitudes.filter((aptitude) => !values.includes(aptitude.name));
-  }
-  if (field === 'skill') {
-    const skills = state.catalog.skills || [];
-    const values = selectedSkills(item);
-    return skills.filter((skill) => !values.includes(skill.name) || skill.name === '借用');
-  }
-  return [];
-}
-
-function renderEditorSuggestions(input) {
-  const box = input?.parentElement?.querySelector('[data-editor-suggest]');
-  if (!input || !box) return;
-  const query = String(input.value || '').trim().toLowerCase();
-  const index = Number($('#hover-card')?.dataset.floatingEditIndex);
-  const choices = editorChoices(index, input.dataset.editorField).map((choice) => input.dataset.editorField === 'nature' ? { ...choice, bonus_text: natureBonusText(index, choice.name) } : choice);
-  const rows = choiceMatches(choices, query);
-  box.innerHTML = rows.map((choice) => `<button type="button" data-editor-option="${esc(choice.name)}" data-editor-option-field="${esc(input.dataset.editorField)}">${esc(choice.name)}${choice.percentage ? ` <small>(${Number(choice.percentage).toFixed(1)}%)</small>` : ''}${choice.bonus_text ? ` <small>${esc(choice.bonus_text)}</small>` : ''}</button>`).join('');
-  box.classList.toggle('hidden', !rows.length);
-}
-
-function applyEditorOption(button) {
-  const field = button.dataset.editorOptionField;
-  const value = button.dataset.editorOption;
-  const index = Number($('#hover-card')?.dataset.floatingEditIndex);
-  if (!field || !Number.isInteger(index) || index < 0) return false;
-  if (field === 'aptitude') return addAptitude(index, value);
-  if (field === 'skill') return addSkill(index, value);
-  updateCreatureBase(index, field, value);
-  const anchor = document.querySelector(`#own-team [data-edit-index="${index}"]`);
-  renderCreatureEditor(index, anchor);
-  return true;
-}
-
-function editorPosition(anchor) {
-  const card = $('#hover-card');
-  if (!card || !anchor) return;
-  const rect = anchor.getBoundingClientRect();
-  const gap = 10;
-  const left = Math.min(window.innerWidth - card.offsetWidth - 12, Math.max(12, rect.right + gap));
-  const top = Math.min(window.innerHeight - card.offsetHeight - 12, Math.max(12, rect.top));
-  card.style.left = `${left}px`;
-  card.style.top = `${top}px`;
-}
-
-function renderCreatureEditor(index, anchor=null) {
-  if (!anchor) anchor = document.querySelector(`#own-team [data-edit-index="${index}"]`);
-  const item = state.teams.own[index];
-  if (!item) return;
-  const form = formFor(item.name) || item.form || {};
-  console.log(item.name, item.form, formFor(item.name));
-  const customization = form.customization || {};
-  const base = item.base || {};
-  const nature = base.nature || customization.natures?.[0]?.name || '';
-  const bloodline = Array.isArray(base.bloodline_attributes) ? base.bloodline_attributes[0] || '' : base.bloodline_attributes || '';
-  const bonusText = natureBonusText(index, nature);
-  const forms = (pokemonRow(item.name)?.forms || []).map((choice) => `<button type="button" class="form-choice ${choice.name === item.name ? 'active' : ''}" data-editor-form="${esc(choice.name)}">${esc(choice.name)}</button>`).join('');
-  const natures = editorFieldMarkup('nature', nature, (customization.natures || []).map((choice) => ({ ...choice, bonus_text: natureBonusText(index, choice.name) })));
-  const bloodlines = editorFieldMarkup('bloodline', bloodline, customization.bloodlines || []);
-  const aptitudes = aptitudeEditorMarkup(item, customization);
-  const skills = skillEditorMarkup(item);
-  const card = $('#hover-card');
-  card.innerHTML = `<div class="hover-title"><b>${esc(item.name)}</b><button type="button" data-editor-close>×</button></div><img class="art" src="${esc(form.portrait || form.art || '')}" alt=""><label class="editor-label">Form</label><div class="form-list">${forms}</div><label class="editor-label">Nature</label><div class="editor-field">${natures}<span class="nature-bonus">${esc(bonusText)}</span></div><label class="editor-label">Bloodline</label><div class="editor-field">${bloodlines}</div><label class="editor-label">Aptitudes</label><div class="editor-field">${aptitudes}</div><label class="editor-label">Skills</label><div class="editor-field">${skills}</div><small class="hover-help">Changes are saved to this roster.</small>`;
-  card.dataset.floatingEditIndex = String(index);
-  card.classList.remove('hidden');
-  editorPosition(anchor);
-}
-
-function closeCreatureEditor() {
-  const card = $('#hover-card');
-  card.classList.add('hidden');
-  card.removeAttribute('data-floating-edit-index');
-}
-
-function updateCreatureBase(index, field, value) {
-  const item = state.teams.own[index];
-  if (!item) return;
-  item.base = { ...(item.base || {}) };
-  if (field === 'bloodline') item.base.bloodline_attributes = value ? [value] : [];
-  else item.base[field] = value;
-  saveSession();
-}
-
-function setForm(index, formName) {
-  const item = state.teams.own[index];
-  if (!item) return;
-  item.name = formName;
-  item.base_name = baseName(item.name);
-  item.form = formFor(item.name) || item.form;
-  saveSession();
-  renderTeamCard('own', index, item);
-}
-
-function selectedAptitudes(item, customization) {
-  const values = item.base?.individual_values || {};
-  const result = Object.entries(values).map(([field, value]) => {
-    return { field, name: aptitudeName(field) || field, value: Math.min(10, Math.max(1, Number(value) || 8)) };
-  }).slice(0, 3);
-  return result;
-}
-
-function aptitudeEditorMarkup(item, customization) {
-  const selected = selectedAptitudes(item, customization);
-  const rows = selected.map((entry) => `<div class="editor-entry aptitude-entry"><span>${esc(entry.name)}</span><input type="number" min="1" max="10" step="1" value="${entry.value}" data-aptitude-value="${esc(entry.field)}"><button type="button" data-remove-aptitude="${esc(entry.field)}">×</button></div>`).join('');
-  const input = `<div class="editor-autocomplete"><input type="text" autocomplete="off" placeholder="输入资质名称 / 拼音 / 首字母" data-editor-autocomplete data-editor-field="aptitude"><div class="editor-suggest hidden" data-editor-suggest="aptitude"></div></div>`;
-  return `${rows}${input}<small class="hover-help">最多选择 3 项，新增资质默认 8</small>`;
-}
-
-function selectedSkills(item) {
-  return (item.skills || []).map((skill) => skill.name);
-}
-
-function normalizedBase(item) {
-  const base = { ...(item.base || {}) };
-  const values = Object.entries(base.individual_values || {})
-    .filter(([, value]) => Number(value) > 0)
-    .slice(0, 3)
-    .reduce((result, [field, value]) => {
-      result[field] = Math.min(10, Math.max(1, Number(value) || 8));
-      return result;
-    }, {});
-  base.individual_values = values;
-  return base;
-}
-
-function skillEditorMarkup(item) {
-  const selected = selectedSkills(item);
-  const rows = selected.map((name, index) => `<div class="editor-entry skill-entry"><span>${index + 1}. ${esc(name)}</span><button type="button" data-remove-skill="${index}">×</button></div>`).join('');
-  const input = `<div class="editor-autocomplete"><input type="text" autocomplete="off" placeholder="输入技能名称 / 拼音 / 首字母" data-editor-autocomplete data-editor-field="skill"><div class="editor-suggest hidden" data-editor-suggest="skill"></div></div>`;
-  return `${rows}${input}<small class="hover-help">最多选择 4 个技能</small>`;
-}
-
-function addAptitude(index, name) {
-  const item = state.teams.own[index];
-  if (!item) return false;
-  const field = aptitudeField(name);
-  item.base = { ...(item.base || {}), individual_values: { ...(item.base?.individual_values || {}) } };
-  const values = item.base.individual_values;
-  if (values[field] != null) return false;
-  if (Object.keys(values).length >= 3) {
-    toast('最多添加 3 项资质');
-    renderCreatureEditor(index);
-    return false;
-  }
-  values[field] = 8;
-  saveSession();
-  renderCreatureEditor(index);
-  return true;
-}
-
-function removeAptitude(index, field) {
-  const item = state.teams.own[index];
-  if (!item) return;
-  item.base = { ...(item.base || {}), individual_values: { ...(item.base?.individual_values || {}) } };
-  delete item.base.individual_values[field];
-  saveSession();
-  renderCreatureEditor(index);
-}
-
-function addSkill(index, name) {
-  const item = state.teams.own[index];
-  if (!item) return false;
-  const skills = selectedSkills(item);
-  if (skills.includes(name) && name !== '借用') return false;
-  if (skills.length >= 4) {
-    toast('最多添加 4 个技能');
-    renderCreatureEditor(index);
-    return false;
-  }
-  item.skills = [...skills, name].map((skill) => ({ name: skill }));
-  saveSession();
-  renderCreatureEditor(index);
-  return true;
-}
-
-function removeSkill(index, skillIndex) {
-  const item = state.teams.own[index];
-  if (!item) return;
-  item.skills = selectedSkills(item).filter((_, currentIndex) => currentIndex !== Number(skillIndex)).map((name) => ({ name }));
-  saveSession();
-  renderCreatureEditor(index);
-}
-
-function previewPosition(anchor) {
-  const card = $('#preview-card');
-  if (!card || !anchor) return;
-  const rect = anchor.getBoundingClientRect();
-  const gap = 10;
-  const left = Math.min(window.innerWidth - card.offsetWidth - 12, Math.max(12, rect.right + gap));
-  const top = Math.min(window.innerHeight - card.offsetHeight - 12, Math.max(12, rect.top));
-  card.style.left = `${left}px`;
-  card.style.top = `${top}px`;
-}
-
-function previewPayload(item) {
-  return {
-    name: item.name,
-    base: normalizedBase(item),
-    skills: selectedSkills(item),
-  };
-}
-
-function renderCreaturePreview(data) {
-  const stats = data.stats || {};
-  const stat_icons = data.stat_icons || {};
-  const entries = [
-    ['hp', 'HP'], ['def', 'DEF'],
-    ['atk', 'ATK'], ['spdef', 'M.DEF'], 
-    ['spatk', 'M.ATK'], ['speed', 'SPD'],
-  ];
-  const statHtml = entries.map(([key, label]) => `<div class="preview-stat"><img src="${esc(stat_icons[key] || '')}" alt="${label}"><b>${label}</b><span>${esc(data.stats_known?.[key] === false ? '?' : (stats[key] ?? '-'))}</span></div>`).join('');
-  const bloodline = (data.bloodline_attributes || []).join(' / ');
-  $('#preview-card').innerHTML = `<img class="preview-art" src="${esc(data.portrait || '')}" alt=""><div class="preview-title"><b>${esc(data.name || '')}</b><span>${esc(data.nature || '?')}</span></div><div class="preview-bloodline">${data.bloodline_icon ? `<img src="${esc(data.bloodline_icon)}" alt="">` : ''}<span>${esc(bloodline || '-')}</span></div><div class="preview-stats">${statHtml}</div>`;
-}
-
-function previewForms(index) {
-  const item = state.teams.own[index];
-  return item ? (pokemonRow(item.name)?.forms || []) : [];
-}
-
-async function loadCreaturePreview(index, anchor, name) {
-  const item = state.teams.own[index];
-  const card = $('#preview-card');
-  if (!item || !card) return;
-  const requestId = ++state.previewRequest;
-  state.previewAnchor = anchor;
-  card.dataset.previewIndex = String(index);
-  card.innerHTML = '<div class="preview-loading">Loading…</div>';
-  card.classList.remove('hidden');
-  previewPosition(anchor);
-  try {
-    const data = await api('/api/pokemon/preview', { method: 'POST', body: JSON.stringify({ ...previewPayload(item), name }) });
-    if (requestId !== state.previewRequest || state.previewAnchor !== anchor) return;
-    renderCreaturePreview(data);
-    previewPosition(anchor);
-  } catch (error) {
-    if (requestId === state.previewRequest) card.innerHTML = `<div class="preview-loading">${esc(error.message)}</div>`;
-  }
-}
-
-async function showCreaturePreview(index, anchor) {
-  const item = state.teams.own[index];
-  if (!item) return;
-  const forms = previewForms(index);
-  state.previewFormIndex = Math.max(0, forms.findIndex((form) => form.name === item.name));
-  await loadCreaturePreview(index, anchor, forms[state.previewFormIndex]?.name || item.name);
-}
-
-function cyclePreviewForm(delta) {
-  const card = $('#preview-card');
-  const index = Number(card?.dataset.previewIndex);
-  if (!card || card.classList.contains('hidden') || !Number.isInteger(index) || !state.previewAnchor) return;
-  const forms = previewForms(index);
-  if (forms.length < 2) return;
-  state.previewFormIndex = (state.previewFormIndex + delta + forms.length) % forms.length;
-  loadCreaturePreview(index, state.previewAnchor, forms[state.previewFormIndex].name);
-  setForm(index, forms[state.previewFormIndex].name);
-}
-
-function hideCreaturePreview() {
-  state.previewRequest += 1;
-  state.previewAnchor = null;
-  state.previewFormIndex = 0;
-  $('#preview-card')?.classList.add('hidden');
 }
 
 document.addEventListener('input', (event) => {

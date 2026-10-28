@@ -1,9 +1,4 @@
-﻿"""Training-facing stateful adapter for the NRC battle core.
-
-The adapter deliberately exposes only exact action keys.  It does not provide
-name matching, placeholder creatures, automatic replacement choices, or a toy
-fallback when the requested rule is not implemented.
-"""
+"""多回合战斗运行接口，负责状态推进、决策与快照。"""
 
 from __future__ import annotations
 
@@ -14,9 +9,10 @@ import random
 import threading
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Any, Mapping, Protocol
+from typing import Any, Mapping
 
-from nrc_ai.contracts import (
+from .contracts import (
+    CoreBackend,
     CoreManifest,
     Decision,
     LegalAction,
@@ -32,15 +28,14 @@ from nrc_core.battle import (
     check_winner,
 )
 from nrc_core.effect_models import Timing
-from nrc_core.engine._monolith import EffectExecutor
-from nrc_core.catalog import CoreCatalog, EMPTY_CATALOG
+from nrc_core.engine import EffectExecutor
+from nrc_core.catalog import CoreCatalog
 from nrc_core.models import BattleState, Pokemon
 from nrc_core.rng import rng_scope
 
-from .codec import battle_request_from_dict, side_turn_from_dict
-from .core import simulate_turn
-from .schema import BattleRequest
-from .simulator import BattleSimulator
+from .codec import side_turn_from_dict
+from .core import simulate_turn, skill_energy_cost, _turn_start_skill_display
+from .rules_support import BattleRulesSupport
 
 
 class UnsupportedMechanicError(ValueError):
@@ -51,22 +46,10 @@ class VersionMismatchError(ValueError):
     """Raised when a snapshot belongs to a different core contract."""
 
 
-class CoreBackend(Protocol):
-    @property
-    def manifest(self) -> CoreManifest: ...
-
-    def new_game(self, setup: Mapping[str, Any], seed: int) -> object: ...
-    def clone(self, state: object) -> object: ...
-    def decision(self, state: object) -> Decision: ...
-    def observe(self, state: object, player: int) -> Observation: ...
-    def legal_actions(self, state: object, player: int) -> tuple[LegalAction, ...]: ...
-    def advance(self, state: object, actions: Mapping[int, str], seed: int) -> Transition: ...
-    def export_state(self, state: object) -> dict[str, Any]: ...
-    def import_state(self, snapshot: Mapping[str, Any]) -> object: ...
-
-
 @dataclass
-class TrainingState:
+class BattleSession:
+    """保存一次对战的完整状态与当前决策阶段。"""
+
     battle: BattleState
     manifest: CoreManifest
     decision_index: int = 0
@@ -165,9 +148,9 @@ def _pokemon_json(pokemon: Pokemon, index: int, active: bool, private: bool) -> 
             "ability": pokemon.ability,
             "skills": [_skill_json(skill, slot) for slot, skill in enumerate(pokemon.skills)],
             "boosts": {name: value for name, value in boost_fields.items() if value},
-            "debuffs": BattleSimulator._snapshot_layers(pokemon, "down"),
-            "statuses": BattleSimulator._snapshot_statuses(pokemon),
-            "ability_states": BattleSimulator._snapshot_ability_states(pokemon),
+            "debuffs": BattleRulesSupport._snapshot_layers(pokemon, "down"),
+            "statuses": BattleRulesSupport._snapshot_statuses(pokemon),
+            "ability_states": BattleRulesSupport._snapshot_ability_states(pokemon),
             "conditions": {
                 "poison": pokemon.poison_stacks,
                 "burn": pokemon.burn_stacks,
@@ -210,107 +193,50 @@ def _restore_weather_backups(state: BattleState, values: list[tuple[str, int, in
             state.sandstorm_original_costs[id(team[index].skills[slot])] = value
 
 
-class NRCTrainingBackend:
-    """Stateful adapter implementing the v1 training contract."""
+class BattleRuntime:
+    """使用上层注入的规则目录推进完整对战。"""
 
-    def __init__(self, *, environment: str = "nrc", catalog: CoreCatalog | None = None, data_dir: str | None = None):
+    def __init__(self, *, catalog: CoreCatalog, environment: str = "nrc"):
+        """绑定已经解析的规则目录，不读取数据库。"""
         if environment not in {"nrc", "test"}:
             raise ValueError("environment must be 'nrc' or 'test'")
-        if catalog is None and data_dir is not None:
-            from nrc_platform.catalog import load_catalog
-            catalog = load_catalog(data_dir)
-        self.catalog = catalog or EMPTY_CATALOG
+        self.catalog = catalog
         self._manifest = _manifest(environment)
-        self._simulator = BattleSimulator(catalog=self.catalog)
+        self._simulator = BattleRulesSupport(catalog=self.catalog)
 
     @property
     def manifest(self) -> CoreManifest:
         return self._manifest
 
-    def _known_skill_names(self) -> set[str]:
-        return set(self.catalog.skills)
-
-    def _validate_setup(self, request: BattleRequest) -> None:
-        if not request.own_team.creatures or not request.opponent_team.creatures:
+    def new_game(self, battle: BattleState, seed: int) -> BattleSession:
+        """接收平台已解析的全知状态，创建独立对战会话。"""
+        if not isinstance(battle, BattleState):
+            raise TypeError("new_game requires a resolved BattleState")
+        if not battle.team_a or not battle.team_b:
             raise ValueError("both teams must contain at least one creature")
-        unsupported: list[str] = []
-        for side, team in (("0", request.own_team), ("1", request.opponent_team)):
-            resonance = self._simulator._canonical_resonance(team.resonance_magic.or_default(None))
-            if resonance in {"flame_burst", "throttle"}:
-                unsupported.append(f"player {side}: resonance {resonance}")
-            elif resonance not in {None, "willpower", "boss", "solar_heal"}:
-                unsupported.append(f"player {side}: unknown resonance {resonance}")
-            active_index = int(team.active_index.or_default(0))
-            if active_index < 0 or active_index >= len(team.creatures):
-                raise ValueError(f"player {side} active_index is out of range")
-            for index, creature in enumerate(team.creatures):
-                name = creature.resolved_name(f"{side}_{index}")
-                db_record = self.catalog.get_pokemon(name)
-                if not db_record:
-                    raise ValueError(f"unknown creature {name!r}")
-                if creature.bossified.known and creature.bossified.or_default(False):
-                    unsupported.append(f"{name}: boss mechanics")
-                ability_names = []
-                if creature.ability.name.known and creature.ability.name.exists:
-                    ability_names.append(str(creature.ability.name.value))
-                elif db_record.get("ability"):
-                    ability_names.append(str(db_record["ability"]))
-                ability_names.extend(
-                    str(item.name.value)
-                    for item in creature.abilities
-                    if item.name.known and item.name.exists
-                )
-                for ability in ability_names:
-                    if not ability:
-                        continue
-                    if ability.split(":", 1)[0].split("：", 1)[0].strip() == "契约的形状":
-                        ball = (creature.metadata or {}).get("gulu_ball")
-                        if ball not in {"普通咕噜球", "高级咕噜球", "国王球", "美妙球", "好战球", "光合球", "网兜球", "暗星球", "调温球", "绝缘球", "淘沙球", "变幻球", "柔软咕噜球"}:
-                            unsupported.append(f"{name}: contract mechanic requires valid gulu_ball")
-                    if not self.catalog.get_ability_effects(ability):
-                        unsupported.append(f"{name}: ability {ability}")
-                if not creature.skills:
-                    raise ValueError(f"{name} must provide all skill slots")
-                for slot, skill in enumerate(creature.skills):
-                    skill_name = skill.name.or_default(skill.skill_id.or_default(""))
-                    if not skill_name or skill_name not in self._known_skill_names():
-                        raise ValueError(f"unknown skill {skill_name!r} at {name}[{slot}]")
-                    if skill_name == "愿力冲击":
-                        unsupported.append(f"{name}[{slot}] 愿力冲击: resonance-only skill")
-                    parsed_skill = self.catalog.get_skill(skill_name)
-                    if parsed_skill is None:
-                        raise ValueError(f"unknown skill {skill_name!r} at {name}[{slot}]")
-                    if parsed_skill.choice_options and len(parsed_skill.choice_options) != 2:
-                        unsupported.append(f"{name}[{slot}] {skill_name}: choice skill must expose exactly two options")
-                    if parsed_skill.random_source:
-                        unsupported.append(f"{name}[{slot}] {skill_name}: random target/choice skill")
-                for key in ("items", "contract", "random_skill"):
-                    if (creature.metadata or {}).get(key):
-                        unsupported.append(f"{name}: {key}")
-        if unsupported:
-            raise UnsupportedMechanicError("unsupported mechanics: " + "; ".join(unsupported))
-
-    def new_game(self, setup: Mapping[str, Any], seed: int) -> TrainingState:
-        raw = dict(setup)
-        if "setup" in raw and isinstance(raw["setup"], Mapping):
-            raw = dict(raw["setup"])
-        request = battle_request_from_dict(raw)
-        self._validate_setup(request)
-        built = self._simulator._build_legacy(request)
-        state = TrainingState(built.state, self.manifest, seed=int(seed), events=[])
+        for team, active in ((battle.team_a, battle.current_a), (battle.team_b, battle.current_b)):
+            if not 0 <= active < len(team):
+                raise ValueError("active index is out of range")
+            if any(not pokemon.skills for pokemon in team):
+                raise ValueError("every creature must contain resolved skills")
+        backups = _weather_backups(battle)
+        resolved = copy.deepcopy(battle)
+        _restore_weather_backups(resolved, backups)
+        resolved.catalog = self.catalog
+        state = BattleSession(resolved, self.manifest, seed=int(seed), events=[])
         self._prepare_decision(state, settle_start=True)
         return state
 
-    def clone(self, state: object) -> TrainingState:
+    def clone(self, state: object) -> BattleSession:
         current = self._check_state(state)
         backups = _weather_backups(current.battle)
         cloned = copy.deepcopy(current)
         _restore_weather_backups(cloned.battle, backups)
         return cloned
 
-    def _check_state(self, state: object) -> TrainingState:
-        if not isinstance(state, TrainingState):
-            raise TypeError("state is not an NRC TrainingState")
+    def _check_state(self, state: object) -> BattleSession:
+        if not isinstance(state, BattleSession):
+            raise TypeError("state is not an NRC BattleSession")
         if state.manifest != self.manifest:
             raise VersionMismatchError("state manifest does not match backend manifest")
         return state
@@ -323,7 +249,7 @@ class NRCTrainingBackend:
             pending.add(1)
         return tuple(sorted(pending))
 
-    def _prepare_decision(self, state: TrainingState, *, settle_start: bool = False) -> None:
+    def _prepare_decision(self, state: BattleSession, *, settle_start: bool = False) -> None:
         battle = state.battle
         if battle.turn_report:
             state.events.extend(battle.turn_report)
@@ -390,7 +316,7 @@ class NRCTrainingBackend:
             repetitions = max(1, int(getattr(skill, "use_count", 1) or 1))
             if active.ability_state.get("first_action_bonus"):
                 repetitions += 1
-            if active.energy < skill.energy_cost * repetitions or active.cooldowns.get(index, 0) > 0:
+            if active.energy < skill_energy_cost(active, skill) * repetitions or active.cooldowns.get(index, 0) > 0:
                 continue
             options = tuple(getattr(skill, "choice_options", ()))
             if len(options) == 2:
@@ -408,7 +334,7 @@ class NRCTrainingBackend:
             result.append(LegalAction(key, {"primary": {"kind": "switch", "switch_index": index}, "items": []}))
         return self._with_resonance_actions(current, player, result)
 
-    def _with_resonance_actions(self, state: TrainingState, player: int, base: list[LegalAction]) -> tuple[LegalAction, ...]:
+    def _with_resonance_actions(self, state: BattleSession, player: int, base: list[LegalAction]) -> tuple[LegalAction, ...]:
         team, active_index, side = self._team(state.battle, player)
         active = team[active_index]
         carried = state.battle.resonance_magic_a if side == "a" else state.battle.resonance_magic_b
@@ -438,6 +364,19 @@ class NRCTrainingBackend:
                 result.append(LegalAction(f"{action.key}|resonance={resonance}", payload))
         return tuple(result)
 
+    def display(self, state: object, player: int) -> dict[str, Any]:
+        """在副本上计算当前玩家技能面板，避免预览污染真实状态。"""
+        snapshot = self.clone(state)
+        _, _, side = self._team(snapshot.battle, player)
+        return _turn_start_skill_display(snapshot.battle, side)
+
+    def preview_damage(self, state: object, player: int, skill_slot: int) -> dict[str, Any]:
+        """返回指定技能的当前伤害预览；不推进对战或推测隐藏状态。"""
+        skills = self.display(state, player)["skills"]
+        if not 0 <= skill_slot < len(skills):
+            raise ValueError("skill_slot is out of range")
+        return dict(skills[skill_slot])
+
     def observe(self, state: object, player: int) -> Observation:
         current = self._check_state(state)
         if player not in (0, 1):
@@ -460,7 +399,7 @@ class NRCTrainingBackend:
         }
         return Observation(player, current.decision_index, current.battle.turn, current.phase, data)
 
-    def _replacement(self, state: TrainingState, actions: Mapping[int, str]) -> None:
+    def _replacement(self, state: BattleSession, actions: Mapping[int, str]) -> None:
         for player in state.players:
             legal = {item.key: item for item in self.legal_actions(state, player)}
             payload = legal[actions[player]].payload["primary"]
@@ -576,10 +515,10 @@ class NRCTrainingBackend:
         backups = _weather_backups(snapshot.battle)
         snapshot.battle.sandstorm_original_costs.clear()
         payload = base64.b64encode(pickle.dumps(snapshot, protocol=5)).decode("ascii")
-        return {"format": "nrc_core.training.pickle.v1", "manifest": _manifest_json(self.manifest), "weather_backups": backups, "payload": payload}
+        return {"format": "nrc_core.runtime.pickle.v1", "manifest": _manifest_json(self.manifest), "weather_backups": backups, "payload": payload}
 
-    def import_state(self, snapshot: Mapping[str, Any]) -> TrainingState:
-        if snapshot.get("format") != "nrc_core.training.pickle.v1":
+    def import_state(self, snapshot: Mapping[str, Any]) -> BattleSession:
+        if snapshot.get("format") != "nrc_core.runtime.pickle.v1":
             raise ValueError("unsupported state snapshot format")
         if dict(snapshot.get("manifest") or {}) != _manifest_json(self.manifest):
             raise VersionMismatchError("snapshot manifest does not match backend manifest")
@@ -592,17 +531,10 @@ class NRCTrainingBackend:
         return current
 
 
-def create_backend(*, environment: str = "nrc", catalog: CoreCatalog | None = None, data_dir: str | None = None) -> NRCTrainingBackend:
-    """Factory used by the nrc_ai backend probe and legacy callers.
-
-    The core still receives a resolved catalog.  When a caller omits one, the
-    compatibility factory obtains it from the platform catalog loader so old
-    probes continue to exercise the real rules database.
-    """
-    if catalog is None:
-        from nrc_platform.catalog import load_catalog
-        catalog = load_catalog(data_dir)
-    return NRCTrainingBackend(environment=environment, catalog=catalog)
+def create_runtime(*, catalog: CoreCatalog, environment: str = "nrc") -> BattleRuntime:
+    """通过明确注入的规则目录创建战斗运行器。"""
+    return BattleRuntime(environment=environment, catalog=catalog)
 
 
-__all__ = ["CoreBackend", "CoreManifest", "Decision", "LegalAction", "Observation", "Transition", "NRCTrainingBackend", "TrainingState", "UnsupportedMechanicError", "VersionMismatchError", "create_backend"]
+__all__ = ["CoreBackend", "CoreManifest", "Decision", "LegalAction", "Observation", "Transition", "BattleRuntime", "BattleSession", "UnsupportedMechanicError", "VersionMismatchError", "create_runtime"]
+

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 
-from nrc_ai.contracts import Observation
+from nrc_core.contracts import Observation
 from nrc_core.catalog import CoreCatalog
 from nrc_core.models import BattleState, Pokemon
 
@@ -88,7 +88,7 @@ def creature_effects(pokemon: Pokemon) -> tuple[list[dict], list[dict]]:
     return modifiers, statuses
 
 
-def normalize_observation(observation: Observation, battle: BattleState, catalog: CoreCatalog) -> Observation:
+def normalize_observation(observation: Observation, battle: BattleState, catalog: CoreCatalog, *, revealed: dict[int, set[int]]) -> Observation:
     """Expose public effects while preserving private loadout information."""
     data = copy.deepcopy(dict(observation.data))
     own_a = observation.player == 0
@@ -96,6 +96,20 @@ def normalize_observation(observation: Observation, battle: BattleState, catalog
              ("opponent", battle.team_b if own_a else battle.team_a))
     for side, team in sides:
         for item, pokemon in zip(data.get(f"{side}_team", []), team):
+            known = side == "own" or item["index"] in revealed[1 - observation.player]
+            if not known:
+                index = item["index"]
+                item.clear()
+                item.update(index=index, name="未知精灵", known=False, active=False,
+                            fainted=False, types=[], modifiers=[], statuses=[])
+                continue
+            item["known"] = True
+            metadata = pokemon.ability_state.get("lab_metadata", {})
+            for field in ("bloodline_attributes", "form", "bossified", "drive_form"):
+                if field in metadata:
+                    item[field] = copy.deepcopy(metadata[field])
+            item["ability"] = pokemon.ability
+            item["hp_percent"] = max(0, min(100, round(pokemon.current_hp / pokemon.hp * 100))) if pokemon.hp else 0
             private = side == "own" and "skills" in item
             for key in _LEGACY:
                 item.pop(key, None)
@@ -127,7 +141,6 @@ def normalize_observation(observation: Observation, battle: BattleState, catalog
     opponent_devotion = battle.devotion_b if own_a else battle.devotion_a
     data["shared"]["devotion"] = {
         "own": {"total": sum(own_devotion.values()), "distribution": copy.deepcopy(own_devotion)},
-        "opponent": {"total": sum(opponent_devotion.values())},
     }
     return Observation(observation.player, observation.decision_index, observation.turn,
                        observation.phase, data)

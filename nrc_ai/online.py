@@ -9,7 +9,7 @@ import random
 from typing import Any, Mapping
 
 from .belief import Particle, ParticleBelief
-from .contracts import CoreBackend, Observation
+from nrc_core.contracts import CoreBackend, Observation
 from .opponent import OpponentPolicy
 from .search import BeliefTreeSearch, SearchResult
 

@@ -2,7 +2,7 @@
 效果数据 — 技能 + 特性的结构化 EffectTag 配置
 
 用工厂函数组合常见模式，新增技能通常只需 1-2 行。
-所有技能都在此配置，由 skill_db.load_skills 加载时注入 skill.effects。
+所有技能都在此配置，由平台目录适配器加载后注入 skill.effects。
 """
 
 from nrc_core.effect_models import E, EffectTag, Timing, AbilityEffect, SkillTiming, SkillEffect

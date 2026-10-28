@@ -14,7 +14,7 @@ from nrc_core.battle import (
     check_winner,
     execute_full_turn,
 )
-from nrc_core.models import BattleState, SkillCategory
+from nrc_core.models import BattleState, Pokemon, Skill, SkillCategory
 from nrc_core.rng import rng_scope
 from nrc_core.debug import core_log
 
@@ -70,8 +70,15 @@ def _display_power(state: BattleState, team: str, action: tuple[int, ...]) -> di
     return result
 
 
-def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
+def skill_energy_cost(current: Pokemon, skill: Skill) -> int:
+    """返回技能面板与合法动作共用的当前单次能耗。"""
     from nrc_core.battle import _temporary_skill_cost_delta
+    return max(0, int(skill.energy_cost + current.skill_cost_mod
+                      + _temporary_skill_cost_delta(current, skill)))
+
+
+def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
+    """计算当前技能面板；只读调用方应传入状态副本。"""
     team_list = state.team_a if team == "a" else state.team_b
     active_index = state.current_a if team == "a" else state.current_b
     current = team_list[active_index]
@@ -80,8 +87,7 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
     enemy = enemy_list[enemy_index]
     displayed_skills = []
     for index, skill in enumerate(current.skills):
-        display_energy_cost = max(0, int(skill.energy_cost + current.skill_cost_mod
-                                         + _temporary_skill_cost_delta(current, skill)))
+        display_energy_cost = skill_energy_cost(current, skill)
         power = int((skill.power + current.skill_power_bonus + current.next_attack_power_bonus)
                     * (1 + current.skill_power_pct_mod + current.next_attack_power_pct))
         display_power = power
