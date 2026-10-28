@@ -174,13 +174,18 @@ def _serialized(method):
     def call(self, battle_id, *args, **kwargs):
         battle = self._get_battle(battle_id)
         with battle.lock:
-            before = {key: copy.deepcopy(value) for key, value in vars(battle).items() if key not in {"lock", "episode"}}
-            before["episode"] = self._backend.clone(battle.episode) if battle.episode else None
+            # 展示查询只读；避免每个 API 都克隆整场核心状态，导致串行轮询秒级延迟。
+            mutable = method.__name__ in {"set_roster", "submit_selection", "select_action", "reset_battle"}
+            before = None
+            if mutable:
+                before = {key: copy.deepcopy(value) for key, value in vars(battle).items() if key not in {"lock", "episode"}}
+                before["episode"] = self._backend.clone(battle.episode) if battle.episode else None
             try:
                 return method(self, battle_id, *args, **kwargs)
             except Exception:
-                for key, value in before.items():
-                    setattr(battle, key, value)
+                if before is not None:
+                    for key, value in before.items():
+                        setattr(battle, key, value)
                 raise
     return call
 

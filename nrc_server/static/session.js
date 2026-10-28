@@ -19,9 +19,13 @@ export function clearSession() {
   state.eventCursor = null;
   state.resolutionToken += 1;
   state.pending = false;
+  state.submitting = false;
+  state.syncing = false;
+  state.resolving = false;
   state.opponentPending = false;
   clearTimeout(state.pollTimer);
   state.pollTimer = null;
+  state.locked = false;
 }
 
 

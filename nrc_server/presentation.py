@@ -53,8 +53,11 @@ def decorate_response(value: Any, data_root: Path) -> Any:
         elif isinstance(item, dict):
             for child in list(item.values()):
                 decorate(child)
-            name = str(item.get("name") or "")
-            creature = any(key in item for key in ("types", "max_hp", "known", "skills"))
+            # 观测层可能用 species/display_name 表示精灵名称。
+            name = str(item.get("name") or item.get("species") or item.get("display_name") or "")
+            if name and "name" not in item:
+                item["name"] = name
+            creature = any(key in item for key in ("types", "max_hp", "known", "skills", "bloodline_attributes"))
             skill = any(key in item for key in ("energy_cost", "power", "skill_slot"))
             if name and creature:
                 item.setdefault("portrait", _asset(data_root, "spirit_icons", name, portrait=True))

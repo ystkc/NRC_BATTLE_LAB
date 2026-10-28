@@ -31,6 +31,9 @@ export function createBattleSync({ renderEvents, setResolving, playResolution, r
   
   async function refreshBattle({ refreshDisplay = false, animateEvents = false } = {}) {
     if (!state.battle) return;
+    if (state.syncing || state.resolving) return;
+    state.syncing = true;
+    updateBattleLock();
     try {
       const id = state.battle.battle_id;
       const previous = state.battle;
@@ -57,32 +60,37 @@ export function createBattleSync({ renderEvents, setResolving, playResolution, r
         mergeObservation(nextData);
         renderSide('own');
         renderSide('opponent');
-        setResolving(false);
       }
     } catch (error) {
-      setResolving(false);
       if (error.status === 404) {
         reset();
         toast('对局已失效，请重新创建或加入');
       } else toast(error.message);
+    } finally {
+      state.syncing = false;
+      setResolving(false);
     }
   }
   
   async function submitAction(key) {
-    if (!key || state.pending || state.resolving || !state.battle) return;
+    if (!key || state.pending || state.submitting || state.syncing || state.resolving || !state.battle || state.battle.terminal) return;
+    state.submitting = true;
+    updateBattleLock();
     try {
       const result = await api(`/api/battles/${state.battle.battle_id}/selection`, { method: 'POST', body: JSON.stringify({ action_key: key, request_id: crypto.randomUUID(), decision_index: state.battle.decision_index }) });
       state.pending = !result.resolved;
       state.opponentPending = false;
-      updateBattleLock();
-      if (!result.resolved) {
-        setResolving(true);
-        document.querySelectorAll('#skills .skill-card').forEach((card) => card.classList.add('skill-picked'));
-      }
+      // 提交锁持续覆盖结算拉取与播放；等待对手时只保留 pending。
       if (result.resolved) await refreshBattle({ refreshDisplay: true, animateEvents: true });
       closeDrawer();
       if (result.terminated) toast(result.winner === 0 ? '我方获胜' : result.winner === 1 ? '敌方获胜' : '对局结束');
-    } catch (error) { toast(error.message); }
+    } catch (error) {
+      toast(error.message);
+      await refreshBattle({ refreshDisplay: true, animateEvents: true });
+    } finally {
+      state.submitting = false;
+      updateBattleLock();
+    }
   }
   
 

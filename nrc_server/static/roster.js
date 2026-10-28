@@ -250,6 +250,7 @@ export function createRosterEditor({ $, esc, formFor, pokemonRow, baseName, rend
   }
   
   function renderCreaturePreview(data) {
+    console.log(data);
     const stats = data.stats || {};
     const stat_icons = data.stat_icons || {};
     const entries = [

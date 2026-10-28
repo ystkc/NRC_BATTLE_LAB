@@ -41,7 +41,12 @@ function relationIcon(value) {
   const key = String(value || 'unknown');
   return `/assets/icon_dept_relation/${encodeURIComponent(RELATION_NAMES[key] || key)}.svg`;
 }
+function battleLocked() {
+  state.locked = state.pending || state.submitting || state.syncing || state.resolving || Boolean(state.battle?.terminal);
+  return state.locked;
+}
 function isLegalAction(key) {
+  if (battleLocked()) return false;
   return state.actions.some((action) => action.key === key || action.key.startsWith(`${key}|`) || action.key.startsWith(`${key}:`));
 }
 function actionsOfKind(kind) { return state.actions.filter((action) => action.payload?.primary?.kind === kind); }
@@ -293,6 +298,8 @@ async function joinBattle() {
     state.pending = false;
     state.opponentPending = false;
     state.resolving = false;
+    state.submitting = false;
+    state.syncing = false;
     state.events = [];
     state.eventCursor = null;
     state.actions = [];
@@ -353,7 +360,7 @@ async function refreshLobby() {
     if (summary.initialized) await enterBattle();
     else { renderSetup(); startLobbyPolling(); }
   } catch (error) {
-    if (error.status === 404) {
+    if (error.status === 404 || error.status === 401) {
       reset();
       toast('对局已失效，请重新创建或加入');
     } else toast(error.message);
@@ -383,15 +390,24 @@ function startBattlePolling() {
     if (state.pollInFlight) return startBattlePolling();
     state.pollInFlight = true;
     try {
-      const operation = await api(`/api/battles/${state.battle.battle_id}/operation?since=${state.battle.decision_index ?? -1}`);
+      if (state.submitting || state.syncing || state.resolving) return;
+      const battleId = state.battle.battle_id;
+      const decision = state.battle.decision_index ?? -1;
+      const operation = await api(`/api/battles/${battleId}/operation?since=${decision}`);
+      // 请求途中可能已完成提交或换回合，旧响应不得覆盖新锁定状态。
+      if (state.submitting || state.syncing || state.resolving || state.battle?.battle_id !== battleId || (state.battle.decision_index ?? -1) !== decision) return;
+      if (operation.resolved || operation.terminal) {
+        await refreshBattle({ refreshDisplay: true, animateEvents: true });
+        return;
+      }
       const pendingChanged = state.pending !== Boolean(operation.own_pending)
         || state.opponentPending !== Boolean(operation.opponent_pending);
       state.pending = Boolean(operation.own_pending);
       state.opponentPending = Boolean(operation.opponent_pending);
       if (pendingChanged) updateBattleLock();
-      if (operation.resolved || operation.terminal) await refreshBattle({ refreshDisplay: true, animateEvents: true });
     } catch (error) {
-      if (error.status !== 404) toast(error.message);
+      if (error.status === 401 || error.status === 404) {toast('对局已失效，请重新创建或加入'); reset();}
+      else toast(error.message);
     } finally {
       state.pollInFlight = false;
       startBattlePolling();
@@ -467,10 +483,12 @@ function switchCardMarkup(action) {
 }
 
 function renderSkills() {
+  if (state.locked == battleLocked()) return; // 锁定状态相同时，反复渲染技能导致频闪
   const container = $('#skills');
   if (state.battle?.phase === 'replacement') {
     const switches = actionsOfKind('switch');
     container.innerHTML = switches.length ? switches.map(switchCardMarkup).join('') : '<div class="event-empty">等待对方选择替换精灵</div>';
+    if (battleLocked()) container.querySelectorAll('button').forEach((button) => { button.disabled = true; });
     return;
   }
   container.innerHTML = (state.display.skills || []).map((skill, index) => {
@@ -568,12 +586,7 @@ async function playResolution(events, data, token) {
   mergeObservation(data);
   renderSide('own');
   renderSide('opponent');
-  state.display = (await api(`/api/battles/${state.battle.battle_id}/display?side=own`));
-  state.actions = (await api(`/api/battles/${state.battle.battle_id}/actions?side=own`)).actions || [];
-  await fetchMatchups(state.battle.battle_id);
   updateBattleMeta();
-  renderSkills();
-  setResolving(false);
   return true;
 }
 
@@ -592,8 +605,9 @@ function showSkillTooltip(card) {
 function hideSkillTooltip() { $('#skill-tooltip')?.classList.add('hidden'); }
 
 function updateBattleLock() {
+  renderSkills();
   const lock = $('#lock-state');
-  if (lock) lock.textContent = state.pending ? '已锁定，等待对手' : state.opponentPending ? '对手已锁定，等待我方' : '选择操作';
+  if (lock) lock.textContent = state.resolving || state.syncing ? '正在结算' : state.submitting ? '正在提交' : state.pending ? '已锁定，等待对手' : state.battle?.terminal ? '对局结束' : state.opponentPending ? '对手已锁定，等待我方' : '选择操作';
   const charge = $('#charge');
   if (charge) charge.disabled = state.pending || state.resolving || !isLegalAction('charge');
 }
@@ -608,8 +622,11 @@ document.addEventListener('mouseout', (event) => {
 });
 window.addEventListener('scroll', hideSkillTooltip, true);
 
-function reset() {
+function reset(reserve_team = true) {
+  let team = null;
+  if (reserve_team) team = state.teams, team.opponent = [];
   clearSession();
+  if (reserve_team) state.teams = team;
   closeDrawer();
   $('#battle').classList.add('hidden');
   $('#setup').classList.remove('hidden');
@@ -744,7 +761,8 @@ document.addEventListener('click', (event) => {
   const menu = event.target.closest('[data-action]');
   if (menu?.dataset.action === 'creature') renderSpiritDrawer();
   else if (menu?.dataset.action === 'bag') renderBagDrawer();
-  else if (menu?.dataset.action === 'exit') reset();
+  else if (menu?.dataset.action === 'exit') reset(true);
+  else if (menu?.dataset.action === 'reset') reset(false);
 });
 
 function onInputChange(event) {

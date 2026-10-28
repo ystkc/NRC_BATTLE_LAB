@@ -331,7 +331,11 @@ class RoomService:
         side = current[1]
         other_side = 'opponent' if side == 'own' else 'own'
         observation = self.platform.get_public_observation(battle_id, side)
-        return {'battle_id': battle_id, 'side': side, 'opponent_side': other_side, 'submitted': bool(session['roster_submitted'].get(other_side)), 'confirmed': bool(session['confirmed'].get(other_side)), 'roster': observation.get('data', {}).get('opponent_team', [])}
+        roster = observation.get('data', {}).get('opponent_team', [])
+        if not session.get('initialized'):
+            # 准备阶段还没有核心观测，只公开阵容名称，不公开配置。
+            roster = [_creature_preview(self.platform, item['name']) for item in (session.get('teams', {}).get(other_side) or [])]
+        return {'battle_id': battle_id, 'side': side, 'opponent_side': other_side, 'submitted': bool(session['roster_submitted'].get(other_side)), 'confirmed': bool(session['confirmed'].get(other_side)), 'roster': roster}
 
     @_room_operation
     def set_rosters(self, battle_id: str, identity: str, payload: Mapping[str, Any]) -> Any:

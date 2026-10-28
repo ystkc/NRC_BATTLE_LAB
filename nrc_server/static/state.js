@@ -12,6 +12,8 @@ export const state = {
   events: [],
   eventCursor: null,
   pending: false,
+  submitting: false,
+  syncing: false,
   opponentPending: false,
   resolving: false,
   resolutionToken: 0,
@@ -20,6 +22,7 @@ export const state = {
   previewAnchor: null,
   previewRequest: 0,
   previewFormIndex: 0,
+  locked: false,
 };
 
 

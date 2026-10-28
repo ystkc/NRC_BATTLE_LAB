@@ -5,6 +5,8 @@ import secrets
 import uuid
 from pathlib import Path
 from typing import Any, Mapping
+import mimetypes
+mimetypes.add_type("application/javascript", ".js")
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
