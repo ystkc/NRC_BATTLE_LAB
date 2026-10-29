@@ -23,4 +23,3 @@ state.normalize_observation 按实际上场事实投影。未上场身份未知�
 
 平台快照格式 nrc_platform.session.v2；保留待提交动作、请求缓存、公开身份与历史。旧格式拒绝，无迁移器。核心载荷为本地可信 pickle，不能作为公开上传协议。
 
-验证：`python -m pytest tests/test_platform_boundaries.py -q`。

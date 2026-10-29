@@ -1,5 +1,6 @@
 /** 浏览器界面状态。 */
 export const state = {
+  effectDescriptions: {},
   catalog: { pokemon: [], skills: [] },
   battle: null,
   playerToken: '',

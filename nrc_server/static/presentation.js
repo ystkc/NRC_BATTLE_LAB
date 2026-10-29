@@ -1,7 +1,7 @@
 /** 战报与状态名称的纯展示格式。 */
 export const RELATION_NAMES = { immune: '无', very_resistant: '双重抵抗', resistant: '抵抗', normal: '平衡', effective: '克制', super_effective: '双重克制', unknown: '无' };
 
-const EFFECT_NAMES = { poison: '中毒', burn: '灼烧', freeze: '冻结', leech: '寄生', electric: '引电', meteor: '星陨', cute: '萌化', hp: '生命', energy: '能量', status: '状态', fainted: '力竭', ability: '特性', atk: '攻击', def: '物防', spatk: '魔攻', spdef: '魔防', speed: '速度', combo: '连击', priority: '先手', action_speed: '行动速度', skill_power: '全技能威力', skill_power_pct: '全技能威力', skill_cost: '全技能能耗', power_multiplier: '威力倍率加成', life_drain: '吸血', next_attack_power: '下次攻击威力', next_attack_power_pct: '下次攻击威力比例' };
+const EFFECT_NAMES = { poison: '中毒', burn: '灼烧', freeze: '冻结', leech: '寄生', electric: '引电', meteor: '星陨', cute: '萌化', best_partner: '最好的伙伴', hp: '生命', energy: '能量', status: '状态', fainted: '力竭', ability: '特性', atk: '攻击', def: '物防', spatk: '魔攻', spdef: '魔防', speed: '速度', combo: '连击', priority: '先手', action_speed: '行动速度', skill_power: '全技能威力', skill_power_pct: '全技能威力', skill_cost: '全技能能耗', power_multiplier: '威力倍率加成', life_drain: '吸血', next_attack_power: '下次攻击威力', next_attack_power_pct: '下次攻击威力比例' };
 
 export function relationLabel(value) { return RELATION_NAMES[String(value || 'unknown')] || String(value || '无'); }
 

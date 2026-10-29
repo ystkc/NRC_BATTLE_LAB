@@ -1332,6 +1332,11 @@ def _h_on_super_effective_buff(tag: EffectTag, ctx: Ctx) -> None:
         energy = tag.params.get("energy", 0)
         if buff:
             _apply_buff(ctx.user, buff)
+        # 保留完整特性状态，供平台和回放统一展示，而不是拆成多个状态。
+        if ctx.user.ability_state.get("best_partner"):
+            ctx.user.ability_state["best_partner"] += 1
+        else:
+            ctx.user.ability_state["best_partner"] = 1
         if energy:
             ctx.user.gain_energy(energy)
 

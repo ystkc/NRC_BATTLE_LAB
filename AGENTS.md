@@ -43,7 +43,6 @@
 ```bash
 pip install -e ".[dev]"
 python -m nrc_server.server --host 127.0.0.1 --port 8767
-python -m pytest tests/test_platform_boundaries.py -q
 python scripts/generate_skill_effects.py
 python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 ```

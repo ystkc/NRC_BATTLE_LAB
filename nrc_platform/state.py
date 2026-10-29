@@ -27,6 +27,7 @@ _ABILITY_STATUSES = {
     "turn_end_repeat", "turn_end_skip", "freeze_immune", "burn_immune",
     "poison_immune", "meteor_immune", "debuff_immune", "energy_immune",
     "cute_no_cap", "energy_no_cap", "extra_poison_tick", "half_meteor_full_damage",
+    "best_partner",
 }
 
 _SKILL_MODIFIERS = {
@@ -41,10 +42,12 @@ _PUBLIC_SKILL_MODIFIERS = {**_SKILL_MODIFIERS, "power_pct": ("skill_power_pct", 
 def creature_effects(pokemon: Pokemon) -> tuple[list[dict], list[dict]]:
     # Up and down layers coexist in the rules: do not cancel them into a net value.
     modifiers = []
+    partner_active = bool(pokemon.ability_state.get("best_partner"))
     for stat in ("atk", "def", "spatk", "spdef", "speed"):
         for direction, sign in (("up", 1), ("down", -1)):
             value = getattr(pokemon, f"{stat}_{direction}")
-            if value:
+            # 最好的伙伴的三项加成由组合状态统一展示，避免 UI 拆成多个标签。
+            if value and not (partner_active and direction == "up" and stat in {"atk", "def", "spdef", "speed"}):
                 modifiers.append({"name": stat, "stacks": round(sign * value * 10, 10), "unit": "10%"})
     for name, value, unit in (
         ("combo", pokemon.hit_count_mod, "层"),
@@ -85,6 +88,9 @@ def creature_effects(pokemon: Pokemon) -> tuple[list[dict], list[dict]]:
             # Signed trait counters are two distinct nonnegative statuses.
             statuses.append({"name": key if value > 0 else f"{key}_negative",
                              "stacks": abs(value), "unit": "层"})
+    for status in statuses:
+        if status["name"] == "best_partner":
+            status["description"] = "造成克制伤害后：攻击、双防、速度提升20%，并恢复2点能量。"
     return modifiers, statuses
 
 

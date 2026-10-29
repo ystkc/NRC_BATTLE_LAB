@@ -433,7 +433,10 @@ function stateEffects(item, side = 'own') {
   const effects = [];
   const add = (name, value, unit = '层') => { if (Number.isFinite(Number(value)) && Number(value) !== 0) effects.push({ name: effectName(name), value, unit }); };
   (item.modifiers || []).forEach((entry) => add(entry.name, entry.stacks, entry.unit));
-  (item.statuses || []).forEach((entry) => add(entry.name, entry.stacks, entry.unit));
+  (item.statuses || []).forEach((entry) => {
+    add(entry.name, entry.stacks, entry.unit);
+    if (entry.description) state.effectDescriptions[entry.name] = entry.description;
+  });
   (item.skills || []).forEach((skill) => {
     add(`${skill.name} 冷却`, skill.skill_states?.cooldown, '回合');
   });
@@ -445,7 +448,7 @@ function stateEffects(item, side = 'own') {
 }
 
 function effectsMarkup(item, side = 'own') {
-  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect" title="${esc(name)}"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect" data-effect-tip="${esc(name)}"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
 }
 
 function renderSide(side) {
@@ -531,7 +534,17 @@ function renderDrawer(title, html) { $('#drawer-title').textContent = title; $('
 function closeDrawer() { $('#drawer').classList.add('hidden'); }
 function drawerEffects(item) {
   const side = (state.teams.opponent || []).includes(item) ? 'opponent' : 'own';
-  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect" data-effect-tip="${esc(name)}"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+}
+
+function showEffectTip(target, event) {
+  const tip = $('#skill-tooltip');
+  const description = state.effectDescriptions[target.dataset.effectTip] || target.dataset.effectTip;
+  if (!tip || !description) return;
+  tip.innerHTML = `<b>${esc(target.dataset.effectTip)}</b><p>${esc(description)}</p>`;
+  tip.classList.remove('hidden');
+  tip.style.left = `${Math.min(event.clientX + 24, window.innerWidth - tip.offsetWidth - 12)}px`;
+  tip.style.top = `${Math.min(event.clientY + 24, window.innerHeight - tip.offsetHeight - 12)}px`;
 }
 
 function renderSpiritDrawer() {
@@ -612,15 +625,19 @@ function updateBattleLock() {
   if (charge) charge.disabled = state.pending || state.resolving || !isLegalAction('charge');
 }
 
-document.addEventListener('mouseover', (event) => {
+document.addEventListener('pointerover', (event) => {
   const card = event.target.closest('#skills .skill-card');
   if (card) showSkillTooltip(card);
+  
+  const effect = event.target.closest('[data-effect-tip]');
+  if (effect) showEffectTip(effect, event);
 });
-document.addEventListener('mouseout', (event) => {
+document.addEventListener('pointerout', (event) => {
   const card = event.target.closest('#skills .skill-card');
   if (card && !card.contains(event.relatedTarget)) hideSkillTooltip();
+
+  if (event.target.closest('[data-effect-tip]')) $('#skill-tooltip')?.classList.add('hidden');
 });
-window.addEventListener('scroll', hideSkillTooltip, true);
 
 function reset(reserve_team = true) {
   let team = null;
