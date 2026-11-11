@@ -6,7 +6,7 @@
 </head>
 <body>
   <div id="setup" class="screen setup-screen">
-    <header class="bar"><div class="logo">NRC<span>/SERVER</span></div><button data-action="reset" class="bar-button">重置</button></header>
+    <header class="bar"><div class="logo">NRC<span>/SERVER</span></div><button data-action="reset" id="rstBtn" class="bar-button">重置</button></header>
     <main class="setup-main">
       <div class="setup-title"><div><span id="catalog-status" class="sync">INDEXING…</span><p id="match-status" class="match-status">创建对局后复制 ID，另一位用户在此输入 ID 加入</p></div><div class="quick-search"><input id="quick-search" disabled data-suggest-category="all" autocomplete="off" placeholder="加载中，请稍后..."><div id="quick-suggest" class="suggest"></div></div></div>
       <div class="team-columns"><section class="team-box"><div class="team-label"><b>我方</b><span id="own-count">0/6</span></div><div class="search-wrap"><input id="own-search" disabled data-suggest-category="pokemon" autocomplete="off" placeholder="加载中，请稍后..."><div id="own-suggest" class="suggest"></div></div><div id="own-team" class="team-list"></div></section><section class="team-box enemy-team"><div class="team-label"><b>对方</b><span id="opponent-count">0/6</span></div><div class="search-wrap"><input id="opponent-search" autocomplete="off" placeholder="对手加入后自动匹配" disabled><div id="opponent-suggest" class="suggest"></div></div><div id="opponent-team" class="team-list"></div></section></div>

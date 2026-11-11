@@ -16,3 +16,10 @@ data/mitm/
 *.pt
 /data/ai_runs
 /node_modules
+/.cdp-profile-360
+/.cdp-profile-chrome
+/.cdp-profile-playwright
+/.probe-profile
+/.probe-profile2
+/.cdp-profile-360-a
+/.cdp-profile-360-b
