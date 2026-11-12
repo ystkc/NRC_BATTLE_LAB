@@ -1,5 +1,6 @@
 import { createRosterEditor } from './roster.js';
 import { createBattleSync } from './battle.js';
+import { createOpponentRoster } from './opponent-roster.js';
 /** 对局界面的交互与渲染编排。 */
 import { state } from './state.js';
 import { api } from './api.js';
@@ -11,6 +12,7 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 
 const { aptitudeField, aptitudeName, natureBonusText, editorFieldMarkup, choiceMatches, editorChoices, renderEditorSuggestions, applyEditorOption, editorPosition, renderCreatureEditor, closeCreatureEditor, updateCreatureBase, setForm, selectedAptitudes, aptitudeEditorMarkup, selectedSkills, normalizedBase, skillEditorMarkup, addAptitude, removeAptitude, addSkill, removeSkill, previewPosition, previewPayload, renderCreaturePreview, previewForms, loadCreaturePreview, showCreaturePreview, cyclePreviewForm, hideCreaturePreview } = createRosterEditor({ $, esc, formFor, pokemonRow, baseName, renderTeamCard, toast });
 const { fetchMatchups, syncEvents, refreshBattle, submitAction } = createBattleSync({ renderEvents, setResolving, playResolution, renderSetup, updateBattleMeta, mergeObservation, renderSide, reset, toast, updateBattleLock, closeDrawer });
+const opponentRoster = createOpponentRoster({ esc, typeIcon, typeKey, freezeState, drawerEffects });
 
 function toast(message) {
   const element = $('#toast');
@@ -477,6 +479,7 @@ function renderSide(side) {
     const pipClass = !member ? 'empty-pip' : known ? 'known-pip' : 'unknown-pip';
     return `<i class="pip ${pipClass} ${known && member?.fainted ? 'fainted' : ''} ${index === activeIndex ? 'active-pip' : ''}"></i>`;
   }).join('');
+  if (enemy) opponentRoster.refresh();
 }
 function switchCardMarkup(action) {
   const index = Number(action.payload?.primary?.switch_index);
@@ -568,14 +571,14 @@ function renderBagDrawer() {
 
 function renderEvents() {
   const events = $('#events');
-  events.innerHTML = state.events.length ? state.events.map((event) => `<div class="event-row"><b>R${event.turn || ''}</b><span>${esc(eventText(event))}</span></div>`).join('') : '<div class="event-empty">等待双方选择行动</div>';
+  events.innerHTML = state.events.length ? state.events.map((event) => `<div class="event-row" id="${event.type}-${event.turn}-${event.team}"><b>R${event.turn || ''}</b><span>${esc(eventText(event))}</span></div>`).join('') : '<div class="event-empty">等待双方选择行动</div>';
   events.scrollTop = events.scrollHeight;
 }
 
 function appendEvent(event) {
   const container = $('#events');
   container.querySelector('.event-empty')?.remove();
-  container.insertAdjacentHTML('beforeend', `<div class="event-row" data-event-index="${event.event_index ?? ''}"><b>R${event.turn || ''}</b><span>${esc(eventText(event))}</span></div>`);
+  container.insertAdjacentHTML('beforeend', `<div class="event-row" id="${event.type}-${event.turn}-${event.team}" data-event-index="${event.event_index ?? ''}"><b>R${event.turn || ''}</b><span>${esc(eventText(event))}</span></div>`);
   container.scrollTop = container.scrollHeight;
 }
 
@@ -640,6 +643,7 @@ document.addEventListener('pointerout', (event) => {
 });
 
 function reset(reserve_team = true) {
+  opponentRoster.hide();
   let team = null;
   if (reserve_team) team = state.teams, team.opponent = [];
   clearSession();

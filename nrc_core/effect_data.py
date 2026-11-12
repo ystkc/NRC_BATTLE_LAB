@@ -1604,9 +1604,9 @@ ABILITY_EFFECTS = {
         AE(Timing.ON_ENTER, [T(E.FAINTED_ALLIES_BUFF, _params={"buff_per": {"atk": 0.3, "spatk": 0.3}, "scope": "all"})]),
     ],
 
-    # 最好的伙伴 (1只): 造成克制伤害后，攻击、双防、速度+20%，并回2能量
+    # 最好的伙伴 (1只): 造成克制伤害后，双攻、双防、速度+20%，并回2能量
     "最好的伙伴": [
-        AE(Timing.ON_USE_SKILL, [T(E.ON_SUPER_EFFECTIVE_BUFF, energy=2, _params={"buff": {"atk": 0.2, "all_def": 0.2, "speed": 0.2}})]),
+        AE(Timing.ON_USE_SKILL, [T(E.ON_SUPER_EFFECTIVE_BUFF, energy=2, _params={"buff": {"all_atk": 0.2, "all_def": 0.2, "speed": 0.2}})]),
     ],
 
     # 侵蚀 (2只): 敌方每有1层中毒，自己连击数+1（仅攻击技能）

@@ -526,7 +526,7 @@ class EffectExecutor:
                 ability = _get_ability_name(pokemon)
                 state.turn_report.append({"type": "ability", "team": team, "pokemon": pokemon.name,
                                           "ability": ability, "timing": timing.name,
-                                          "description": f"[{ability}] " + "，".join(descriptions)})
+                                          "description": f"[特性：{ability}] " + "，".join(descriptions)})
 
             core_log("ability", "triggered", turn=getattr(state, "turn", None),
                      team=team, pokemon=pokemon.name, enemy=enemy.name,
@@ -639,7 +639,8 @@ class EffectExecutor:
             elements = f["element"]
             if not isinstance(elements, (list, tuple, set)):
                 elements = [elements]
-            expected_types = {_TYPE_MAP.get(el) for el in elements}
+            # 规则配置同时使用“火”和“火系”等中文系别名称。
+            expected_types = {_TYPE_MAP.get(el) or _TYPE_MAP.get(f"{el}系") for el in elements}
             if skill.skill_type not in expected_types:
                 return False
 

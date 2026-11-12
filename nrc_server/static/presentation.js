@@ -17,13 +17,17 @@ export function eventText(event) {
   const actor = event.team === 'a' ? '我方' : event.team === 'b' ? '敌方' : '';
   if (event.type === 'round_start') return `## 第${event.turn || '?'}回合`;
   if (event.type === 'battle_start') return '[对战开始] 双方选择行动';
+  if (event.type === 'ability') {
+    const detail = (event.description || event.message || '').replace(/^\[[^\]]*\]\s*/, '');
+    return `[特性：${event.ability || '未知特性'}] ${detail}`.trim();
+  }
   if (event.type === 'selection') {
     if (event.resonance) {
       const names = { boss: '进化之力', willpower: '愿力强化', solar_heal: '光合治疗' };
       return `[${actor}使用共鸣魔法] ${names[event.resonance] || event.resonance}`;
     }
+    if (event.kind === 'switch') return `[${actor}选择切换精灵] ${event.switch_name || '完成'}`;
     if (event.status === 'locked') return event.skill ? `[${actor}选择技能] ${event.skill}，选择了技能` : `[${actor}选择技能] 完成`;
-    if (event.kind === 'switch') return `[${actor}选择切换精灵] 完成`;
     return `[${actor}选择技能] ${event.skill || event.action_key || '完成'}`;
   }
   if (event.type === 'skill') {

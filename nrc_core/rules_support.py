@@ -255,7 +255,8 @@ class BattleRulesSupport:
     @staticmethod
     def _snapshot_ability_states(pokemon: Pokemon) -> list[dict[str, Any]]:
         runtime = pokemon.ability_state or {}
-        result: list[dict[str, Any]] = []
+        result = [{"kind": "ability", "name": key, "stacks": status.stacks}
+                  for key, status in pokemon.compound_statuses.items() if status.stacks > 0]
         for key, value in runtime.items():
             if key in {"layered_state", "lab_metadata", "battle_context", "last_skill_cost", "last_skill_turn", "faint_processed"} or str(key).startswith("_"):
                 continue

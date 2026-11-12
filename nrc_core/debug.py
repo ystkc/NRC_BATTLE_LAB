@@ -7,6 +7,7 @@ import os
 import sys
 from typing import Any, TextIO
 
+NRC_CORE_LOG = 'damage'
 
 _ALL = "all"
 _DEFAULT_CATEGORIES = {
@@ -31,7 +32,7 @@ def configure_core_logging(spec: str | None = None, *, stream: TextIO | None = N
     environment variable ``NRC_CORE_LOG`` is used when ``spec`` is omitted.
     """
     global _categories, _stream
-    raw = os.environ.get("NRC_CORE_LOG", "") if spec is None else str(spec)
+    raw = NRC_CORE_LOG if spec is None else str(spec)
     raw = raw.strip().lower()
     _categories = set(_DEFAULT_CATEGORIES) if raw in {"1", "true", "yes", _ALL} else {
         item.strip() for item in raw.split(",") if item.strip()

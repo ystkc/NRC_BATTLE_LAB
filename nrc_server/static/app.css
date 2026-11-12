@@ -68,3 +68,8 @@
 .drawer-spirit.side-state{position:relative}.drawer-spirit.side-state .side-name{padding-right:34px}
 .drawer-spirit.side-state .field-effects{max-height:none;overflow:visible}
 .drawer-spirit:disabled:not(.drawer-state-active){filter:grayscale(1);opacity:.5}
+
+/* 对方阵容弹窗支持滚动，避免覆盖到视口外。 */
+.opponent-roster-popup{position:fixed;z-index:75;width:min(380px,calc(100vw - 16px));max-height:min(65vh,560px);overflow-y:auto;padding:12px;border:1px solid var(--line);border-radius:10px;background:#101a28;box-shadow:var(--shadow)}
+.opponent-roster-member{margin-top:8px;padding:8px;font-size:11px}
+#enemy-pips{cursor:help}

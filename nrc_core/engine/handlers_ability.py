@@ -1328,15 +1328,11 @@ def _h_on_super_effective_buff(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.models import get_type_effectiveness
     effectiveness = get_type_effectiveness(ctx.skill.skill_type, ctx.target.pokemon_types)
     if effectiveness > 1.0:
+        from nrc_core.compound_status import buff_modifiers
         buff = tag.params.get("buff", {})
         energy = tag.params.get("energy", 0)
-        if buff:
-            _apply_buff(ctx.user, buff)
-        # 保留完整特性状态，供平台和回放统一展示，而不是拆成多个状态。
-        if ctx.user.ability_state.get("best_partner"):
-            ctx.user.ability_state["best_partner"] += 1
-        else:
-            ctx.user.ability_state["best_partner"] = 1
+        ctx.user.add_compound_status("best_partner", "最好的伙伴", buff_modifiers(buff),
+                                     "每层物攻、魔攻、物防、魔防、速度提升20%；造成克制伤害后增加1层并恢复2点能量。")
         if energy:
             ctx.user.gain_energy(energy)
 

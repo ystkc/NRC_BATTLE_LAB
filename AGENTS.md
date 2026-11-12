@@ -58,12 +58,14 @@ python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 | 效果原语与注册 | `nrc_core/engine/registry.py:_HANDLERS`、`handlers_skill.py`、`handlers_ability.py`、`handlers_field.py` |
 | 技能效果生成 | `scripts/generate_skill_effects.py`、`nrc_core/skill_effects_generated.py` **生成文件勿手改** |
 | 特性原语 | `nrc_core/effect_models.py` |
+| 组合状态与计算时属性展开 | `nrc_core/compound_status.py:CompoundStatus`、`nrc_core/models.py:Pokemon.calculation_modifier` |
 | 特性阶段分发与攻击前修正 | `nrc_core/effect_models.py:Timing`、`nrc_core/engine/executor.py:EffectExecutor.execute_ability`、`handlers_skill.py:_h_damage` |
 | 冻结施加与冻结成功特性事件 | `nrc_core/models.py:add_freeze_stacks` |
 | 技能数据 | `nrc_core/effect_data.py` |
 | 属性克制 | `nrc_core/models.py:get_type_effectiveness` |
 | 六维和资质公式 | `nrc_core/catalog.py:calc_combat_stats` |
 | 对战状态显示与战报可见性 | `nrc_platform/rooms.py:_visible_events`、`nrc_platform/state.py:normalize_observation`、`nrc_server/static/app.js` |
+| 对方已知阵容悬浮窗 | `nrc_server/static/opponent-roster.js:createOpponentRoster` |
 | 全技能修正归属与特性触发战报 | `nrc_core/engine/dispatch.py:_apply_tag`、`helpers.py:_record_public_skill_modifier`、`executor.py:EffectExecutor.execute_ability` |
 | 平台状态分类与可见性适配 | `nrc_platform/state.py:normalize_observation`、`nrc_platform/platform.py:get_public_observation` |
 | 核心初始化、决策、合法动作和只读预览 | `nrc_core/runtime.py:BattleRuntime` |

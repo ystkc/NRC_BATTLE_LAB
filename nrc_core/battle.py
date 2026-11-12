@@ -8,6 +8,7 @@
 import sys
 import os
 import math
+import copy
 from typing import Optional, List, Tuple, Dict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -131,6 +132,7 @@ def _clear_turn_temporary_ability_logic(state: BattleState) -> None:
 
 
 def _transfer_pokemon_state(source: Pokemon, target: Pokemon) -> None:
+    target.compound_statuses = copy.deepcopy(source.compound_statuses)
     target.atk_up = source.atk_up
     target.atk_down = source.atk_down
     target.def_up = source.def_up
@@ -320,17 +322,17 @@ class DamageCalculator:
             if category == SkillCategory.MAGICAL:
                 base_atk = attacker.sp_attack
                 base_def = defender.sp_defense
-                atk_up = attacker.spatk_up
-                atk_down = attacker.spatk_down
-                def_up = defender.spdef_up
-                def_down = defender.spdef_down
+                atk_up = attacker.calculation_modifier("spatk_up")
+                atk_down = attacker.calculation_modifier("spatk_down")
+                def_up = defender.calculation_modifier("spdef_up")
+                def_down = defender.calculation_modifier("spdef_down")
             else:
                 base_atk = attacker.attack
                 base_def = defender.defense
-                atk_up = attacker.atk_up
-                atk_down = attacker.atk_down
-                def_up = defender.def_up
-                def_down = defender.def_down
+                atk_up = attacker.calculation_modifier("atk_up")
+                atk_down = attacker.calculation_modifier("atk_down")
+                def_up = defender.calculation_modifier("def_up")
+                def_down = defender.calculation_modifier("def_down")
             ability_level = (1.0 + atk_up + def_down) / max(0.1, 1.0 + atk_down + def_up)
             atk = base_atk * ability_level
             dfn = max(1.0, float(base_def))

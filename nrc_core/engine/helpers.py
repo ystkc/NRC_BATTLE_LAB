@@ -105,9 +105,12 @@ def _ability_runtime_snapshot(pokemon: "Pokemon") -> dict:
             return tuple(value_snapshot(item, depth + 1) for item in value)
         return None
 
-    return {key: value_snapshot(value) for key, value in pokemon.ability_state.items()
+    result = {key: value_snapshot(value) for key, value in pokemon.ability_state.items()
             if not key.startswith("_") and key not in {"lab_metadata", "layered_state", "battle_context"}
             and isinstance(value, (str, int, float, bool, dict, list, tuple, type(None)))}
+    result["compound_statuses"] = {key: {"name": status.name, "stacks": status.stacks}
+                                   for key, status in pokemon.compound_statuses.items()}
+    return result
 
 
 
@@ -138,13 +141,22 @@ def _report_ability_changes(state: "BattleState", before: list, source: "Pokemon
                 "ability": ability, "timing": timing.name,
                 "target_team": side, "target_index": index, "target": pokemon.name}
         runtime = _ability_runtime_snapshot(pokemon)
+        old_statuses = old_runtime.get("compound_statuses", {})
+        statuses = runtime["compound_statuses"]
+        for key in sorted(old_statuses.keys() | statuses.keys()):
+            old_status = old_statuses.get(key, {})
+            status = statuses.get(key, {})
+            before_stacks, after_stacks = old_status.get("stacks", 0), status.get("stacks", 0)
+            if before_stacks != after_stacks:
+                changes.append({"kind": "status", "name": key, "before": before_stacks, "after": after_stacks})
+                descriptions.append(f"{status.get('name', old_status.get('name', key))}{after_stacks - before_stacks:+g}层")
         if runtime != old_runtime and not changes:
             # 运行时标记的键是内部实现细节，不在战报中暴露英文键或隐私值。
             changes.append({"kind": "ability_runtime", "changed": True})
             descriptions.append("特性效果生效")
         if changes:
             state.turn_report.append({**base, "changes": changes,
-                                      "description": f"[{ability}] {pokemon.name}：" + "，".join(descriptions)})
+                                      "description": f"[特性：{ability}] {pokemon.name}：" + "，".join(descriptions)})
         # 指定技能的变化只发给所属队伍，避免通过特性战报泄露技能配置。
         skill_changes = []
         skill_descriptions = []
@@ -166,7 +178,7 @@ def _report_ability_changes(state: "BattleState", before: list, source: "Pokemon
         if skill_changes:
             state.turn_report.append({**base, "private": True, "visibility": "owner", "owner_team": side,
                                       "changes": skill_changes,
-                                      "description": f"[{ability}] {pokemon.name}：" + "，".join(skill_descriptions)})
+                                      "description": f"[特性：{ability}] {pokemon.name}：" + "，".join(skill_descriptions)})
 
 
 

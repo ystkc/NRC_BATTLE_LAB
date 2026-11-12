@@ -6,6 +6,7 @@ import copy
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 from enum import Enum
+from nrc_core.compound_status import CompoundStatus
 
 
 class StatusType(Enum):
@@ -344,6 +345,7 @@ class Pokemon:
     # ── 新引擎字段 ──
     ability_effects: List[Any] = field(default_factory=list)  # List[AbilityEffect]
     ability_state: Dict[str, Any] = field(default_factory=dict)  # 特性运行时状态
+    compound_statuses: Dict[str, CompoundStatus] = field(default_factory=dict)
 
     def __post_init__(self):
         if not self.pokemon_types:
@@ -388,19 +390,40 @@ class Pokemon:
         return max(0.0, min(0.9, val))
 
     def effective_atk(self) -> float:
-        return self.attack * (1.0 + self._clamp_up(self.atk_up)) / max(0.1, 1.0 + self._clamp_down(self.atk_down))
+        """计算包含组合状态的当前物攻，不保存展开值。"""
+        return self._effective_attribute(self.attack, "atk")
 
     def effective_def(self) -> float:
-        return self.defense * (1.0 + self._clamp_up(self.def_up)) / max(0.1, 1.0 + self._clamp_down(self.def_down))
+        """计算包含组合状态的当前物防。"""
+        return self._effective_attribute(self.defense, "def")
 
     def effective_spatk(self) -> float:
-        return self.sp_attack * (1.0 + self._clamp_up(self.spatk_up)) / max(0.1, 1.0 + self._clamp_down(self.spatk_down))
+        """计算包含组合状态的当前魔攻。"""
+        return self._effective_attribute(self.sp_attack, "spatk")
 
     def effective_spdef(self) -> float:
-        return self.sp_defense * (1.0 + self._clamp_up(self.spdef_up)) / max(0.1, 1.0 + self._clamp_down(self.spdef_down))
+        """计算包含组合状态的当前魔防。"""
+        return self._effective_attribute(self.sp_defense, "spdef")
 
     def effective_speed(self) -> float:
-        return self.speed * (1.0 + self._clamp_up(self.speed_up)) / max(0.1, 1.0 + self._clamp_down(self.speed_down))
+        """计算包含组合状态的当前速度。"""
+        return self._effective_attribute(self.speed, "speed")
+
+    def _effective_attribute(self, base: float, stat: str) -> float:
+        """统一应用本次计算的提升与降低修正。"""
+        up = self._clamp_up(self.calculation_modifier(f"{stat}_up"))
+        down = self._clamp_down(self.calculation_modifier(f"{stat}_down"))
+        return base * (1.0 + up) / max(0.1, 1.0 + down)
+
+    def calculation_modifier(self, attribute: str) -> float:
+        """计算时临时合并独立增减益与组合状态，原始字段保持不变。"""
+        return getattr(self, attribute) + sum(status.modifier(attribute) for status in self.compound_statuses.values())
+
+    def add_compound_status(self, key: str, name: str, modifiers: Dict[str, float], description: str = "") -> None:
+        """增加一个完整状态的层数，其他状态可复用此入口。"""
+        if key not in self.compound_statuses:
+            self.compound_statuses[key] = CompoundStatus(name, modifiers=dict(modifiers), description=description)
+        self.compound_statuses[key].stacks += 1
 
     def apply_self_buff(self, skill: Skill) -> None:
         """应用技能的自身增益（写入 *_up 字段）"""
@@ -427,6 +450,7 @@ class Pokemon:
         self.spdef_up = self.spdef_down = 0.0
         self.speed_up = self.speed_down = 0.0
         self.power_multiplier = 1.0
+        self.compound_statuses.clear()
         self.life_drain_mod = 0.0
         self.skill_power_bonus = 0
         self.skill_cost_mod = 0
@@ -448,6 +472,7 @@ class Pokemon:
 
     def reset_mods(self) -> None:
         """重置所有方向修正（用于变身等特殊场景）"""
+        self.compound_statuses.clear()
         self.atk_up = self.atk_down = 0.0
         self.def_up = self.def_down = 0.0
         self.spatk_up = self.spatk_down = 0.0
@@ -507,6 +532,7 @@ class Pokemon:
         # 新引擎字段
         p.ability_effects = [ae.copy() for ae in self.ability_effects] if self.ability_effects else []
         p.ability_state = copy.deepcopy(self.ability_state)
+        p.compound_statuses = copy.deepcopy(self.compound_statuses)
         return p
 
 

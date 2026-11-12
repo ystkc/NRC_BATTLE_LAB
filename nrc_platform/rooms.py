@@ -51,7 +51,7 @@ def _visible_events(session: Mapping[str, Any], side: str) -> list[dict[str, Any
             if event.get('type') == 'selection':
                 if event.get('team') == 'b':
                     event['status'] = 'locked'
-                    for field in ('skill', 'action_key', 'kind', 'switch_index', 'resonance'):
+                    for field in ('skill', 'action_key', 'kind', 'switch_index', 'switch_name', 'resonance'):
                         event.pop(field, None)
                 else:
                     event['status'] = 'locked'
@@ -84,6 +84,8 @@ def _selection_event(platform: BattlePlatform, battle_id: str, side: str, action
             event['skill'] = primary['skill_name']
         if primary.get('switch_index') is not None:
             event['switch_index'] = primary['switch_index']
+            own_team = platform.get_public_observation(battle_id, side)['data']['own_team']
+            event['switch_name'] = own_team[int(primary['switch_index'])]['name']
         if '|resonance=' in action_key:
             event['resonance'] = action_key.rsplit('|resonance=', 1)[1]
     except Exception:
