@@ -808,12 +808,10 @@ SKILL_EFFECTS = {
     # 减伤90%，应对攻击：敌方获得1层萌化
     # 注: 减伤部分保留 generated 里的 counter_attack 子效果结构
 
-    # 撒娇: 造成魔伤3连击，获得萌化：威力永久+20
+    # 撒娇: 造成魔伤3连击，获得萌化：全技能威力永久+10
     "撒娇": [
-        SE(SkillTiming.ON_USE, [
-            T(E.DAMAGE),
-            T(E.CUTE_ON_GAIN_POWER_PERM, stacks=1, delta=20),
-        ]),
+        SE(SkillTiming.ON_USE, [T(E.DAMAGE)]),
+        SE(SkillTiming.POST_USE, [T(E.CUTE_ON_GAIN_POWER_PERM, stacks=1, delta=10)]),
     ],
 
     # 幼态延续: 造成魔伤，自身拥有萌化时威力+60
@@ -1071,12 +1069,12 @@ ABILITY_EFFECTS = {
         AE(Timing.ON_BATTLE_START, [
             T(E.ABILITY_COMPUTE, action="modify_matching_skills",
               count_source="self_element", count_element=["冰"],
-              element=["地"], power_pct=0.1, attack_only=True)
+              element=["地"], power_pct=0.1, attack_only=True, status_key="冻土")
         ]),
         AE(Timing.ON_ENTER, [
             T(E.ABILITY_COMPUTE, action="modify_matching_skills",
               count_source="self_element", count_element=["冰"],
-              element=["地"], power_pct=0.1, attack_only=True)
+              element=["地"], power_pct=0.1, attack_only=True, status_key="冻土")
         ]),
     ],
 
@@ -1427,7 +1425,7 @@ ABILITY_EFFECTS = {
 
     # 恶魔的晚宴 (6只): 击败敌方获得双攻+50%
     "恶魔的晚宴": [
-        AE(Timing.ON_KILL, [T(E.ON_KILL_BUFF, _params={"buff": {"atk": 0.5, "spatk": 0.5}})]),
+        AE(Timing.ON_KILL, [T(E.ON_KILL_BUFF, stacks=5, _params={"buff": {"atk": 0.5, "spatk": 0.5}})]),
     ],
 
     # 消波块 (6只): 每携带1个水系技能,地系技能能耗-1
@@ -1651,7 +1649,7 @@ ABILITY_EFFECTS = {
     # 拨浪鼓 (4只): 己方每用1次状态技能，入场时毒/萌系技能威力+10
     "拨浪鼓": [
         AE(Timing.ON_ENTER, [T(E.ENTRY_BUFF_PER_SKILL_COUNT,
-            count_key="状态",
+            count_key="状态", status_key="拨浪鼓",
             _params={"per_count": {"power_pct": 0.0, "power_bonus": 10},
                      "element_filter": ["毒", "萌"]})]),
     ],

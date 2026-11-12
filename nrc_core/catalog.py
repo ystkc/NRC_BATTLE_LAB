@@ -73,6 +73,7 @@ class CoreCatalog:
     ability_effects: Mapping[str, tuple[Any, ...]] = field(default_factory=dict)
     boss_forms: Mapping[str, tuple[Mapping[str, Any], ...]] = field(default_factory=dict)
     skill_descriptions: Mapping[str, str] = field(default_factory=dict)
+    ability_descriptions: Mapping[str, str] = field(default_factory=dict)
     distributions: Mapping[tuple[str, str], tuple[Mapping[str, Any], ...]] = field(default_factory=dict)
 
     def get_skill(self, identifier: str | None) -> Skill | None:

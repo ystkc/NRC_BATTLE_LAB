@@ -165,6 +165,11 @@ def _transfer_pokemon_state(source: Pokemon, target: Pokemon) -> None:
         ]
 
 
+def _is_burst_action(user: Pokemon, skill: Skill) -> bool:
+    """入场后的首次主动行动可触发技能迸发，换入本身不消耗机会。"""
+    return bool(getattr(skill, "burst", False) and user.ability_state.get("_burst_pending", True))
+
+
 def _temporary_skill_cost_delta(user: Pokemon, skill: Skill) -> int:
     delta = 0
     for mod in user.ability_state.get("temporary_skill_cost_mods", []):
@@ -181,6 +186,19 @@ def _temporary_skill_cost_delta(user: Pokemon, skill: Skill) -> int:
         if matched:
             delta += _adjust_cost_delta(user, int(mod.get("amount", 0)))
     return delta
+
+
+def skill_energy_cost(current: Pokemon, skill: Skill, enemy: Optional[Pokemon] = None) -> int:
+    """技能面板、合法动作与实际扣能共用动态能耗计算。"""
+    cost = skill.energy_cost + current.skill_cost_mod + _temporary_skill_cost_delta(current, skill)
+    for tag in _iter_flat_tags(skill.effects):
+        if tag.type != E.ENERGY_COST_DYNAMIC:
+            continue
+        if tag.params.get("condition") == "burst" and _is_burst_action(current, skill):
+            cost += _adjust_cost_delta(current, -tag.params.get("reduce", 0))
+        elif tag.params.get("per") == "enemy_poison" and enemy is not None:
+            cost += _adjust_cost_delta(current, -enemy.poison_stacks * tag.params.get("reduce", 0))
+    return max(0, int(cost))
 
 
 def _transform_to_guard_queen(pokemon: Pokemon) -> None:
@@ -636,6 +654,7 @@ def _random_disengage(state: BattleState, team: str) -> bool:
         EffectExecutor.execute_ability(state, new_pokemon, enemy, Timing.ON_ENTER, new_pokemon.ability_effects, team)
     burst_map = state.burst_entry_turn_a if team == "a" else state.burst_entry_turn_b
     burst_map[new_pokemon.name] = state.turn
+    new_pokemon.ability_state["_burst_pending"] = True
     new_pokemon.entry_count += 1
     barrel_pending = state._barrel_pending_a if team == "a" else state._barrel_pending_b
     if barrel_pending:
@@ -797,6 +816,10 @@ def turn_end_effects(state: BattleState) -> None:
                 hp_before = p.current_hp
                 dmg = int(p.hp * 0.03 * p.poison_stacks)
                 p.current_hp = round(p.current_hp - max(1, dmg), 2)
+                state.turn_report.append({"type": "status", "team": team_id, "status": "中毒",
+                                          "pokemon": p.name, "stacks": p.poison_stacks,
+                                          "damage": max(1, dmg), "before": hp_before,
+                                          "after": max(0, p.current_hp)})
                 core_log("status", "poison_tick", turn=state.turn, pokemon=p.name,
                          stacks=p.poison_stacks, damage=max(1, dmg),
                          hp_before=hp_before, hp_after=p.current_hp)
@@ -807,8 +830,13 @@ def turn_end_effects(state: BattleState) -> None:
             # 复方汤剂：对手有此特性时，己方中毒额外触发1次
             enemy_p = enemy_team_list[enemy_idx]
             if p.poison_stacks > 0 and enemy_p.ability_state.get("extra_poison_tick"):
+                hp_before = p.current_hp
                 dmg2 = int(p.hp * 0.03 * p.poison_stacks)
                 p.current_hp = round(p.current_hp - max(1, dmg2), 2)
+                state.turn_report.append({"type": "status", "team": team_id, "status": "中毒",
+                                          "pokemon": p.name, "stacks": p.poison_stacks,
+                                          "damage": max(1, dmg2), "before": hp_before,
+                                          "after": max(0, p.current_hp)})
                 _check_frostbite_lethal(p)
                 if p.is_fainted:
                     break
@@ -1291,7 +1319,16 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
     a_counters_b = _skill_has_counter_for(skill_a, skill_b)
     b_counters_a = _skill_has_counter_for(skill_b, skill_a)
 
-    if a_counters_b and not b_counters_a:
+    a_attack_counter = a_counters_b and _has_tag_type(skill_a.effects, E.DAMAGE)
+    b_attack_counter = b_counters_a and _has_tag_type(skill_b.effects, E.DAMAGE)
+    if a_attack_counter and not b_counters_a:
+        # 攻击应对先完整结算；被击倒的一方不能释放技能主效果。
+        first_team, second_team = "a", "b"
+        first_act, second_act = action_a, action_b
+    elif b_attack_counter and not a_counters_b:
+        first_team, second_team = "b", "a"
+        first_act, second_act = action_b, action_a
+    elif a_counters_b and not b_counters_a:
         # A 应对 B → B 先动（被应对方先释放），A 后动
         # 但 A 的应对效果会在 B 释放过程中先结算
         first_team, second_team = "b", "a"
@@ -1502,6 +1539,7 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
         # 迸发系统：记录入场回合号
         burst_map = state.burst_entry_turn_a if team == "a" else state.burst_entry_turn_b
         burst_map[new_pokemon.name] = state.turn
+        new_pokemon.ability_state["_burst_pending"] = True
         new_pokemon.entry_count += 1
 
         # 木桶状态：如果有木桶待生效标记，给新入场精灵设置木桶
@@ -1544,6 +1582,7 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
 
     # 汇合聚能
     if action[0] == -1:
+        energy_before = current.energy
         # 检查对方技能是否有打断效果（打断可阻止聚能回能）
         enemy_skill_obj = None
         if enemy_action[0] >= 0 and not enemy.is_fainted:
@@ -1561,6 +1600,12 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
                     break
         if not interrupted:
             current.gain_energy(5)
+            counts = state.skill_use_counts_a if team == "a" else state.skill_use_counts_b
+            counts["状态"] = counts.get("状态", 0) + 1
+        current.ability_state["_burst_pending"] = False
+        state.turn_report.append({"type": "charge", "team": team, "pokemon": current.name,
+                                  "before": energy_before, "after": current.energy,
+                                  "interrupted": interrupted})
         core_log("energy", "charge", turn=state.turn, team=team,
                  pokemon=current.name, interrupted=interrupted,
                  energy=current.energy)
@@ -1616,28 +1661,12 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
     momentum_stacks = get_mark_stacks(my_marks, "momentum_mark")
     if momentum_stacks > 0 and skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL):
         momentum_cost = momentum_stacks  # 每层+1能耗
-    actual_cost = max(
-        0,
-        skill.energy_cost
-        + getattr(current, "skill_cost_mod", 0)
-        + _temporary_skill_cost_delta(current, skill)
-        + momentum_cost,
-    )
+    is_burst = _is_burst_action(current, skill)
+    actual_cost = skill_energy_cost(current, skill, enemy) + momentum_cost
     core_log("energy", "cost_calculated", turn=state.turn, team=team,
              pokemon=current.name, skill=skill.name, base_cost=skill.energy_cost,
              actual_cost=actual_cost, energy_before=current.energy,
              momentum_cost=momentum_cost)
-    for tag in _iter_flat_tags(getattr(skill, "effects", [])):
-        if tag.type == E.ENERGY_COST_DYNAMIC:
-            per = tag.params.get("per", "")
-            reduce = tag.params.get("reduce", 0)
-            if per == "enemy_poison":
-                refund = enemy.poison_stacks * reduce
-                dynamic_delta = -refund
-                if current.ability_state.get("cost_invert"):
-                    dynamic_delta = -dynamic_delta
-                actual_cost = max(0, actual_cost + dynamic_delta)
-
     if current.energy < actual_cost:
         # 石头大餐: 能量不足时每缺1点消耗5%HP代替
         if current.ability_state.get("hp_for_energy"):
@@ -1686,7 +1715,7 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
     # ── 迸发系统：入场第一回合使用带迸发标记的技能 ──
     burst_map = state.burst_entry_turn_a if team == "a" else state.burst_entry_turn_b
     entry_turn = burst_map.get(current.name, -1)
-    is_burst = (state.turn == entry_turn) and getattr(skill, "burst", False)
+    current.ability_state["_burst_pending"] = False
     burst_extend = current.ability_state.get("burst_extend", 0)
     if not is_burst and burst_extend > 0 and getattr(skill, "burst", False):
         # 连续负荷：迸发效果延长 N 回合
@@ -1996,6 +2025,9 @@ def _resolve_enemy_counters(state, current, enemy, skill, enemy_skill,
     """处理对方技能的应对效果（防御/状态技能应对我方攻击）。"""
     if not (enemy_skill and hasattr(enemy_skill, "effects") and enemy_skill.effects):
         return
+    if _has_tag_type(enemy_skill.effects, E.DAMAGE):
+        # 攻击型应对在它自身行动中结算，避免被应对方行动时重复触发。
+        return
 
     _counter_items = []
     for item in enemy_skill.effects:
@@ -2172,6 +2204,8 @@ def _handle_post_skill_switches(state, current, enemy, result, team, team_list, 
 
 def _post_skill_effects(state, current, enemy, skill, enemy_skill, result, team) -> None:
     """技能后处理：印记驱散、传动、特性触发、条件增益、能耗调整等。"""
+    if result.get("interrupted"):
+        return
     # 驱散印记 (倾泻: 未被防御时)
     if result.get("_dispel_if_not_blocked"):
         was_blocked = False

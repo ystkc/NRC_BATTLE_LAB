@@ -519,7 +519,10 @@ SKILL_EFFECTS_GENERATED = {
     "贪婪": [SE(SkillTiming.ON_USE, [T(E.GRANT_LIFE_DRAIN, pct=1.0)])],
     "贮藏": [SE(SkillTiming.PRE_USE, [T(E.SELF_BUFF, atk=0.5, spatk=0.5)])],
     "贯手": [SE(SkillTiming.ON_USE, [T(E.DAMAGE)])],
-    "超导": [SE(SkillTiming.ON_USE, [T(E.DAMAGE)])],
+    "超导": [
+        SE(SkillTiming.PRE_USE, [T(E.ENERGY_COST_DYNAMIC, condition='burst', reduce=2)]),
+        SE(SkillTiming.ON_USE, [T(E.DAMAGE)]),
+    ],
     "超导加速": [
         SE(SkillTiming.PRE_USE, [T(E.SELF_BUFF, speed=0.3)]),
         SE(SkillTiming.ON_USE, [T(E.DAMAGE)]),
@@ -559,7 +562,10 @@ SKILL_EFFECTS_GENERATED = {
         SE(SkillTiming.POST_USE, [T(E.PERMANENT_MOD, target='cost', delta=1, trigger='per_use')]),
     ],
     "金属噪音": [SE(SkillTiming.ON_USE, [T(E.DAMAGE)])],
-    "针刺射击": [SE(SkillTiming.ON_USE, [T(E.DAMAGE)])],
+    "针刺射击": [
+        SE(SkillTiming.ON_USE, [T(E.DAMAGE)]),
+        SE(SkillTiming.IF, [T(E.HEAL_ENERGY, amount=7, condition='enemy_switch')], enemy_switch=True),
+    ],
     "针状物": [SE(SkillTiming.ON_USE, [T(E.DAMAGE)])],
     "钧势": [SE(SkillTiming.PRE_USE, [T(E.SELF_BUFF, {"def": 1.4})])],
     "错乱": [

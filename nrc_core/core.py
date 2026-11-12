@@ -13,6 +13,7 @@ from nrc_core.battle import (
     _trigger_battle_start_effects,
     check_winner,
     execute_full_turn,
+    skill_energy_cost,
 )
 from nrc_core.models import BattleState, Pokemon, Skill, SkillCategory
 from nrc_core.rng import rng_scope
@@ -54,7 +55,9 @@ def _display_power(state: BattleState, team: str, action: tuple[int, ...]) -> di
         result = {"kind": "skill", "skill": skill.name, "value": 0}
         core_log("display", "action", team=team, skill=skill.name, result=result)
         return result
-    value = DamageCalculator.calculate(current, enemy, skill, weather=state.weather)
+    power = int((skill.power + current.skill_modifier(skill, "power"))
+                * (1 + current.skill_modifier(skill, "power_pct")))
+    value = DamageCalculator.calculate(current, enemy, skill, power_override=power, weather=state.weather)
     details = dict(current.ability_state.get("_last_damage_details", {}))
     result = {
         "kind": "skill",
@@ -70,13 +73,6 @@ def _display_power(state: BattleState, team: str, action: tuple[int, ...]) -> di
     return result
 
 
-def skill_energy_cost(current: Pokemon, skill: Skill) -> int:
-    """返回技能面板与合法动作共用的当前单次能耗。"""
-    from nrc_core.battle import _temporary_skill_cost_delta
-    return max(0, int(skill.energy_cost + current.skill_cost_mod
-                      + _temporary_skill_cost_delta(current, skill)))
-
-
 def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
     """计算当前技能面板；只读调用方应传入状态副本。"""
     team_list = state.team_a if team == "a" else state.team_b
@@ -87,9 +83,11 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
     enemy = enemy_list[enemy_index]
     displayed_skills = []
     for index, skill in enumerate(current.skills):
-        display_energy_cost = skill_energy_cost(current, skill)
-        power = int((skill.power + current.skill_power_bonus + current.next_attack_power_bonus)
-                    * (1 + current.skill_power_pct_mod + current.next_attack_power_pct))
+        display_energy_cost = skill_energy_cost(current, skill, enemy)
+        power = int((skill.power + current.skill_modifier(skill, "power") + current.skill_power_bonus + current.next_attack_power_bonus)
+                    * (1 + current.skill_modifier(skill, "power_pct") + current.skill_power_pct_mod + current.next_attack_power_pct))
+        if skill.power < 0:
+            power = skill.power
         display_power = power
         display_damage_per_hit = None
         display_hits = max(1, int(skill.hit_count + current.hit_count_mod))
@@ -141,7 +139,7 @@ def _turn_start_skill_display(state: BattleState, team: str) -> dict[str, Any]:
 
 def simulate_turn(state: BattleState, action_a: tuple[int, ...], action_b: tuple[int, ...], *, seed: int, clone: bool = True) -> TurnResult:
     """Execute exactly one supplied turn; episode history belongs to platform."""
-    next_state = state.copy_state() if clone else state
+    next_state = state.deep_copy() if clone else state
     core_log(
         "turn",
         "start",

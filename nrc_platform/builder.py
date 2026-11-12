@@ -486,6 +486,23 @@ class BattleBuilder(BattleRulesSupport):
             iv_spdef=iv_config["spdef"],
             iv_speed=iv_config["speed"],
         )
+        # 将唯一的上一阶链预先解析，核心结算不再搜索名称或访问目录。
+        previous_record = db_record
+        seen = {name}
+        while previous_record and previous_record.get("previous_forms"):
+            candidates = previous_record["previous_forms"]
+            if len(candidates) != 1 or candidates[0] in seen:
+                raise UnsupportedMechanicError(f"{name} 的退化路径不唯一或存在循环")
+            previous_name = candidates[0]
+            seen.add(previous_name)
+            previous_record = self.catalog.pokemon[previous_name]
+            previous_stats = calc_combat_stats(
+                previous_record["base_hp"], previous_record["base_attack"],
+                previous_record["base_magic_attack"], previous_record["base_defense"],
+                previous_record["base_magic_defense"], previous_record["base_speed"],
+                iv_config=iv_config, nature_name=nature_name,
+            )
+            pokemon.devolution_forms.append({"name": previous_name, "stats": previous_stats})
         core_log("attributes", "resolved", pokemon=name,
                  source="input" if provided_stats else "catalog_or_fallback",
                  base_stats={

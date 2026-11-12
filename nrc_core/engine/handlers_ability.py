@@ -18,7 +18,7 @@ from nrc_core.engine.handlers_skill import (
 )
 from nrc_core.engine.helpers import (
     _adjust_cost_delta,
-    _apply_buff,
+    _apply_ability_buff,
     _apply_matching_skill_mods,
     _iter_flat_tags_static,
     _record_public_skill_modifier,
@@ -442,7 +442,7 @@ def _h_counter_success_buff_permanent(tag: EffectTag, ctx: Ctx) -> None:
     """COUNTER_SUCCESS_BUFF_PERMANENT: 应对成功后获得永久增益（指挥家）"""
     if not ctx.user:
         return
-    _apply_buff(ctx.user, tag.params)
+    _apply_ability_buff(ctx.user, tag.params)
 
 
 
@@ -530,8 +530,7 @@ def _h_team_synergy_bug_swarm_attack(tag: EffectTag, ctx: Ctx) -> None:
     bonus_pct = tag.params.get("bonus_pct", 0.15)
     total = bonus_pct * bug_count
     if total > 0:
-        ctx.user.atk_up += total
-        ctx.user.spatk_up += total
+        _apply_ability_buff(ctx.user, {"atk": total, "spatk": total}, bug_count)
 
 
 
@@ -548,8 +547,7 @@ def _h_team_synergy_bug_swarm_inspire(tag: EffectTag, ctx: Ctx) -> None:
     bonus_pct = tag.params.get("bonus_pct", 0.1)
     total = bonus_pct * bug_count
     if total > 0:
-        ctx.user.atk_up += total
-        ctx.user.spatk_up += total
+        _apply_ability_buff(ctx.user, {"atk": total, "spatk": total}, bug_count)
 
 
 
@@ -563,8 +561,7 @@ def _h_team_synergy_brave_if_bugs(tag: EffectTag, ctx: Ctx) -> None:
                    for mon in user_team)
     if has_bugs:
         bonus_pct = tag.params.get("bonus_pct", 0.5)
-        ctx.user.atk_up += bonus_pct
-        ctx.user.spatk_up += bonus_pct
+        _apply_ability_buff(ctx.user, {"atk": bonus_pct, "spatk": bonus_pct})
 
 
 
@@ -812,8 +809,7 @@ def _h_freeze_immunity_and_buff(tag: EffectTag, ctx: Ctx) -> None:
     if not ctx.user:
         return
     def_bonus = tag.params.get("def_bonus", 0.2)
-    ctx.user.def_up += def_bonus
-    ctx.user.spdef_up += def_bonus
+    _apply_ability_buff(ctx.user, {"def": def_bonus, "spdef": def_bonus})
     ctx.user.ability_state["freeze_immune"] = True
 
 
@@ -847,7 +843,7 @@ def _h_on_skill_element_buff(tag: EffectTag, ctx: Ctx) -> None:
     """ON_SKILL_ELEMENT_BUFF: 使用某系技能后获得buff（助燃/爆燃）"""
     buff = tag.params.get("buff", {})
     if buff:
-        _apply_buff(ctx.user, buff)
+        _apply_ability_buff(ctx.user, buff)
 
 
 
@@ -939,7 +935,7 @@ def _h_on_kill_buff(tag: EffectTag, ctx: Ctx) -> None:
     """ON_KILL_BUFF: 击败敌方后获得buff（恶魔的晚宴）— ON_KILL 时机已确认击败"""
     buff = tag.params.get("buff", {})
     if buff and ctx.user:
-        _apply_buff(ctx.user, buff)
+        _apply_ability_buff(ctx.user, buff, tag.params.get("stacks", 1))
 
 
 
@@ -961,7 +957,7 @@ def _h_entry_buff(tag: EffectTag, ctx: Ctx) -> None:
     buff = tag.params.get("buff", {})
     duration = tag.params.get("duration", 0)
     if buff:
-        _apply_buff(ctx.user, buff)
+        _apply_ability_buff(ctx.user, buff)
     if duration:
         ctx.user.ability_state["entry_buff_duration"] = duration
         ctx.user.ability_state["entry_buff_keys"] = list(buff.keys())
@@ -1076,7 +1072,7 @@ def _h_energy_cost_condition_buff(tag: EffectTag, ctx: Ctx) -> None:
     skill = ctx.skill or ctx.result.get("skill")
     if skill and getattr(skill, "_base_energy_cost", skill.energy_cost) == cost:
         if buff:
-            _apply_buff(ctx.user, buff)
+            _apply_ability_buff(ctx.user, buff)
 
 
 
@@ -1130,6 +1126,15 @@ def _h_entry_buff_per_skill_count(tag: EffectTag, ctx: Ctx) -> None:
         return
 
     per = tag.params.get("per_count", {})
+    if tag.params.get("status_key"):
+        from nrc_core.compound_status import CompoundStatus
+        key = tag.params["status_key"]
+        ctx.user.compound_statuses[key] = CompoundStatus(
+            key, stacks=count,
+            skill_modifiers={"power": per.get("power_bonus", 0), "power_pct": per.get("power_pct", 0)},
+            skill_types=tuple(_TYPE_MAP[element].value for element in tag.params.get("element_filter", [])),
+        )
+        return
     element_filter = tag.params.get("element_filter", [])
     filter_types = {_TYPE_MAP.get(el) for el in element_filter} if element_filter else set()
 
@@ -1167,7 +1172,7 @@ def _h_entry_buff_per_skill_count(tag: EffectTag, ctx: Ctx) -> None:
     buff = per.get("buff", {})
     if buff:
         scaled = {k: v * count for k, v in buff.items()}
-        _apply_buff(ctx.user, scaled)
+        _apply_ability_buff(ctx.user, scaled, count)
 
     # grant_agility: 获得迅捷（不受count缩放）
     if per.get("grant_agility"):
@@ -1219,7 +1224,7 @@ def _h_conditional_entry_buff_total_cost(tag: EffectTag, ctx: Ctx) -> None:
     total_cost = sum(getattr(s, "_base_energy_cost", s.energy_cost) for s in ctx.user.skills)
     if total_cost < threshold:
         buff = tag.params.get("buff", {"def": 0.8, "spdef": 0.8})
-        _apply_buff(ctx.user, buff)
+        _apply_ability_buff(ctx.user, buff)
 
 
 
@@ -1234,7 +1239,7 @@ def _h_conditional_entry_buff_mp(tag: EffectTag, ctx: Ctx) -> None:
         mp = ctx.state.mp_a if team == "a" else ctx.state.mp_b
     if mp == mp_value:
         buff = tag.params.get("buff", {"atk": 0.5, "spatk": 0.5})
-        _apply_buff(ctx.user, buff)
+        _apply_ability_buff(ctx.user, buff)
 
 
 
@@ -1302,7 +1307,7 @@ def _h_weather_conditional_buff(tag: EffectTag, ctx: Ctx) -> None:
     weather = tag.params.get("weather", "rain")
     buff = tag.params.get("buff", {})
     if getattr(ctx.state, "weather", None) == weather:
-        _apply_buff(ctx.user, buff)
+        _apply_ability_buff(ctx.user, buff)
 
 
 
@@ -1317,7 +1322,7 @@ def _h_fainted_allies_buff(tag: EffectTag, ctx: Ctx) -> None:
         fainted += sum(1 for p in enemy_team if p.is_fainted)
     if fainted > 0:
         scaled_buff = {k: v * fainted for k, v in buff_per.items()}
-        _apply_buff(ctx.user, scaled_buff)
+        _apply_ability_buff(ctx.user, scaled_buff, fainted)
 
 
 

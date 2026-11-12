@@ -88,6 +88,9 @@ CATEGORY_NAME_MAP = {
     "防御": SkillCategory.DEFENSE, "变化": SkillCategory.STATUS, "状态": SkillCategory.STATUS,
 }
 
+# 规则配置统一接受“冰”和“冰系”等中文名称。
+TYPE_NAME_MAP.update({name.removesuffix("系"): value for name, value in tuple(TYPE_NAME_MAP.items())})
+
 
 def get_type_effectiveness(attack_type: Type, defense_type: Type | List[Type] | tuple[Type, ...]) -> float:
     """Return NRC dual-type effectiveness using the documented combination rules."""
@@ -346,6 +349,7 @@ class Pokemon:
     ability_effects: List[Any] = field(default_factory=list)  # List[AbilityEffect]
     ability_state: Dict[str, Any] = field(default_factory=dict)  # 特性运行时状态
     compound_statuses: Dict[str, CompoundStatus] = field(default_factory=dict)
+    devolution_forms: List[Dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self):
         if not self.pokemon_types:
@@ -418,6 +422,14 @@ class Pokemon:
     def calculation_modifier(self, attribute: str) -> float:
         """计算时临时合并独立增减益与组合状态，原始字段保持不变。"""
         return getattr(self, attribute) + sum(status.modifier(attribute) for status in self.compound_statuses.values())
+
+    def skill_modifier(self, skill: Skill, field: str) -> float:
+        """计算特性状态对当前技能的修正，不改写携带技能。"""
+        if field in {"power", "power_pct"} and skill.power < 0:
+            return 0.0
+        return sum(status.stacks * status.skill_modifiers.get(field, 0.0)
+                   for status in self.compound_statuses.values()
+                   if not status.skill_types or skill.skill_type.value in status.skill_types)
 
     def add_compound_status(self, key: str, name: str, modifiers: Dict[str, float], description: str = "") -> None:
         """增加一个完整状态的层数，其他状态可复用此入口。"""
@@ -513,6 +525,7 @@ class Pokemon:
         p.next_attack_power_bonus = self.next_attack_power_bonus
         p.next_attack_power_pct = self.next_attack_power_pct
         p.poison_stacks = self.poison_stacks
+        p.cute_stacks = self.cute_stacks
         p.burn_stacks = self.burn_stacks
         p.leech_stacks = self.leech_stacks
         p.electric_stacks = self.electric_stacks
@@ -533,6 +546,7 @@ class Pokemon:
         p.ability_effects = [ae.copy() for ae in self.ability_effects] if self.ability_effects else []
         p.ability_state = copy.deepcopy(self.ability_state)
         p.compound_statuses = copy.deepcopy(self.compound_statuses)
+        p.devolution_forms = copy.deepcopy(self.devolution_forms)
         return p
 
 

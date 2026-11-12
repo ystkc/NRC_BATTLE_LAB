@@ -244,6 +244,9 @@ def _get_timing(tag: str) -> str:
         return "ON_USE"
     etype = m.group(1)
 
+    if etype == "HEAL_ENERGY" and "condition='enemy_switch'" in tag:
+        return "IF"
+
     # PRE_USE
     if etype == "ENERGY_COST_DYNAMIC":
         return "PRE_USE"
@@ -748,6 +751,14 @@ def _extra_desc_tags(skill: Skill, raw_desc: str) -> List[str]:
     desc = _normalize_desc(_strip_counter_clauses(raw_desc))
     tags: List[str] = []
 
+    match = re.search(r"迸发[:：]本技能能耗-(\d+)", desc)
+    if match:
+        _add_unique(tags, _fmt_T("E.ENERGY_COST_DYNAMIC", condition="burst", reduce=int(match.group(1))))
+
+    match = re.search(r"若敌方本回合(?:更换|替换)精灵,?自己回复(\d+)点能量", desc)
+    if match:
+        _add_unique(tags, _fmt_T("E.HEAL_ENERGY", amount=int(match.group(1)), condition="enemy_switch"))
+
     match = re.search(r"获得(\d+)%吸血", desc)
     if match and "奉献" not in desc and "本次攻击吸血" not in desc:
         _add_unique(tags, _fmt_T("E.GRANT_LIFE_DRAIN", pct=_pct(match.group(1))))
@@ -1187,10 +1198,13 @@ def render_generated_file(mapping: Dict[str, List[SEEntry]]) -> str:
 
 
 def load_rows() -> List[sqlite3.Row]:
-    db_path = os.path.join(ROOT, "data", "nrc.db")
+    db_path = os.path.join(ROOT, "data", "nrc_wiki.db")
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT * FROM skill").fetchall()
+    rows = conn.execute(
+        "SELECT s.*, e.name AS element FROM skill_catalog s "
+        "LEFT JOIN elements e ON e.id = s.element_id"
+    ).fetchall()
     conn.close()
     return rows
 
@@ -1239,7 +1253,31 @@ def load_committed_generated_mapping() -> Dict[str, List[str]]:
 
 
 def main() -> None:
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--skills", nargs="+", help="仅更新指定技能，保留其他生成内容")
+    args = parser.parse_args()
     rows = load_rows()
+    if args.skills:
+        out_path = os.path.join(ROOT, "nrc_core", "skill_effects_generated.py")
+        with open(out_path, encoding="utf-8") as handle:
+            text = handle.read()
+        selected = {row["name"]: row for row in rows if row["name"] in args.skills}
+        for name in args.skills:
+            if name not in selected:
+                raise ValueError(f"未找到技能：{name}")
+            entries = tags_for_row(selected[name])
+            replacement = f'    "{name}": [\n'
+            replacement += "".join(f"        {_render_se(entry)},\n" for entry in entries)
+            replacement += "    ],"
+            pattern = r'    "' + re.escape(name) + r'": \[.*?\],(?=\n    "|\n})'
+            text, count = re.subn(pattern, lambda match: replacement, text, count=1, flags=re.S)
+            if not count:
+                raise ValueError(f"生成文件未找到技能：{name}")
+        with open(out_path, "w", encoding="utf-8") as handle:
+            handle.write(text)
+        return
     mapping, stats = generate_mapping(rows)
     out_path = os.path.join(ROOT, "nrc_core", "skill_effects_generated.py")
     with open(out_path, "w", encoding="utf-8") as handle:

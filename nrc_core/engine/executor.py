@@ -308,6 +308,7 @@ class EffectExecutor:
             weather = getattr(state, "weather", None)
             power = (
                 skill.power
+                + user.skill_modifier(skill, "power")
                 + user.skill_power_bonus
                 + user.next_attack_power_bonus
                 + result.get("_power_bonus", 0)
@@ -315,6 +316,7 @@ class EffectExecutor:
             power_mult = (
                 1.0
                 + user.skill_power_pct_mod
+                + user.skill_modifier(skill, "power_pct")
                 + user.next_attack_power_pct
                 + (result.get("_power_mult", 1.0) - 1.0)
             )
@@ -412,6 +414,7 @@ class EffectExecutor:
             weather = getattr(state, "weather", None)
             power = (
                 skill.power
+                + user.skill_modifier(skill, "power")
                 + user.skill_power_bonus
                 + user.next_attack_power_bonus
                 + result.get("_power_bonus", 0)
@@ -419,6 +422,7 @@ class EffectExecutor:
             power_mult = (
                 1.0
                 + user.skill_power_pct_mod
+                + user.skill_modifier(skill, "power_pct")
                 + user.next_attack_power_pct
                 + (result.get("_power_mult", 1.0) - 1.0)
             )

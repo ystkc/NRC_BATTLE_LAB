@@ -204,6 +204,16 @@ def _share_energy_to_bench(ctx: "Ctx", amount: int) -> None:
 
 
 
+def _apply_ability_buff(pokemon: "Pokemon", params: Dict, stacks: int = 1) -> None:
+    """特性加成保留来源和层数，五维数值仅在计算时展开。"""
+    from nrc_core.compound_status import buff_modifiers
+    name = _get_ability_name(pokemon)
+    extra = max(0, pokemon.ability_state.get("buff_extra_layers", 0))
+    per_stack = {key: value * (1 + extra) / stacks for key, value in params.items()}
+    pokemon.add_compound_status(name, name, buff_modifiers(per_stack))
+    pokemon.compound_statuses[name].stacks += stacks - 1
+
+
 def _apply_buff(pokemon: "Pokemon", params: Dict) -> None:
     """应用正向属性修改（写入 *_up 字段）"""
     # 营养液泡：获得增益时额外+N层
@@ -346,7 +356,8 @@ def _apply_permanent_mod(user: "Pokemon", skill: "Skill", params: Dict,
     if target == "cost":
         skill.energy_cost = max(0, skill.energy_cost + _adjust_cost_delta(user, delta))
     elif target == "power":
-        skill.power = max(0, skill.power + delta)
+        if skill.power >= 0:
+            skill.power = max(0, skill.power + delta)
     elif target == "hit_count":
         skill.hit_count = max(1, skill.hit_count + int(delta))
 
@@ -436,6 +447,16 @@ def _apply_matching_skill_mods(pokemon: "Pokemon", enemy: "Pokemon", params: Dic
         count = sum(max(0, s.energy_cost) for s in enemy.skills)
 
     power_pct = float(params.get("power_pct", 0.0)) * count
+    if params.get("status_key"):
+        from nrc_core.compound_status import CompoundStatus
+        from nrc_core.models import TYPE_NAME_MAP
+        key = params["status_key"]
+        pokemon.compound_statuses[key] = CompoundStatus(
+            key, stacks=count,
+            skill_modifiers={"power_pct": params.get("power_pct", 0), "power": params.get("power_bonus", 0)},
+            skill_types=tuple(TYPE_NAME_MAP[element].value for element in params.get("element", [])),
+        )
+        return
     power_bonus = int(params.get("power_bonus", 0)) * count
     hit_count_bonus = int(params.get("hit_count_bonus", 0)) * count
     grant_agility = bool(params.get("grant_agility", False))

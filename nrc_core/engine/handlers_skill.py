@@ -28,6 +28,8 @@ if TYPE_CHECKING:
 def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.battle import DamageCalculator, get_mark_damage_modifiers
     skill = ctx.skill
+    if skill.power < 0:
+        return
 
     # ── 惊吓: 能量=0的攻击者无法对目标造伤 ──
     if ctx.target.ability_state.get("immune_zero_energy_attacker") and ctx.user.energy == 0:
@@ -55,6 +57,7 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
 
     power = (
         skill.power
+        + ctx.user.skill_modifier(skill, "power")
         + ctx.user.skill_power_bonus
         + ctx.user.next_attack_power_bonus
         + ctx.result.get("_power_bonus", 0)
@@ -64,6 +67,7 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
     power_mult = (
         1.0
         + ctx.user.skill_power_pct_mod
+        + ctx.user.skill_modifier(skill, "power_pct")
         + ctx.user.next_attack_power_pct
         + (ctx.result.get("_power_mult", 1.0) - 1.0)
         + (attack_context.get("_power_mult", 1.0) - 1.0)
@@ -146,7 +150,11 @@ def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
 def _h_self_buff(tag: EffectTag, ctx: Ctx) -> None:
     if not _check_runtime_condition(tag, ctx):
         return
-    _apply_buff(ctx.user, tag.params)
+    if ctx.result.get("_is_ability_ctx"):
+        from nrc_core.engine.helpers import _apply_ability_buff
+        _apply_ability_buff(ctx.user, tag.params)
+    else:
+        _apply_buff(ctx.user, tag.params)
 
 
 

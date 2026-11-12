@@ -255,7 +255,7 @@ class BattleRulesSupport:
     @staticmethod
     def _snapshot_ability_states(pokemon: Pokemon) -> list[dict[str, Any]]:
         runtime = pokemon.ability_state or {}
-        result = [{"kind": "ability", "name": key, "stacks": status.stacks}
+        result = [{"kind": "status", "name": key, "stacks": status.stacks}
                   for key, status in pokemon.compound_statuses.items() if status.stacks > 0]
         for key, value in runtime.items():
             if key in {"layered_state", "lab_metadata", "battle_context", "last_skill_cost", "last_skill_turn", "faint_processed"} or str(key).startswith("_"):
@@ -316,7 +316,7 @@ class BattleRulesSupport:
                     old_stacks = old_item.get("stacks", 0)
                     new_stacks = new_item.get("stacks", 0)
                     if old_stacks != new_stacks:
-                        changes.append({"kind": kind, "name": name, "unit": new_item.get("unit") or old_item.get("unit"), "before": old_stacks, "after": new_stacks})
+                        changes.append({"kind": new_item.get("kind", old_item.get("kind", kind)), "name": name, "unit": new_item.get("unit") or old_item.get("unit"), "before": old_stacks, "after": new_stacks})
             if changes:
                 events.append({"type": "state_change", "team": team, "pokemon": current.get("name"), "changes": changes})
             if private_changes:

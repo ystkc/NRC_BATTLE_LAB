@@ -45,7 +45,10 @@ export function eventText(event) {
   }
   if (event.type === 'switch' || event.switched_to || event.target_switched_to) return `[${actor}切换精灵] ${event.switched_to || event.target_switched_to || '未知精灵'}`;
   if (event.type === 'turn') return `[回合结束] 第${event.after?.turn || event.turn || '?'}回合`;
-  if (event.type === 'status') return `[状态结算] ${event.status || event.message || '状态变化'}`;
+  if (event.type === 'charge') return `[${actor}聚能] ${event.pokemon}：能量 ${event.before}→${event.after}${event.interrupted ? '（被打断）' : ''}`;
+  if (event.type === 'status') return event.damage != null
+    ? `[状态结算] ${event.pokemon}：${event.status} ${event.stacks} 层，生命 ${event.before}→${event.after}，扣除 ${event.damage}`
+    : `[状态结算] ${event.status || event.message || '状态变化'}`;
   if (event.type === 'state_change') {
     const changes = (event.changes || []).map((change) => {
       const before = change.before == null ? '-' : change.before;

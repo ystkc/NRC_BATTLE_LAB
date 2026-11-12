@@ -261,9 +261,20 @@ def _cute_max_stacks(pokemon: "Pokemon") -> int:
 
 def _cute_add(pokemon: "Pokemon", stacks: int) -> int:
     """给精灵增加萌化层数，返回实际增加量。"""
-    cap = _cute_max_stacks(pokemon)
+    cap = min(_cute_max_stacks(pokemon), len(pokemon.devolution_forms))
     before = pokemon.cute_stacks
     pokemon.cute_stacks = min(cap, pokemon.cute_stacks + stacks)
+    if pokemon.cute_stacks > before:
+        form = pokemon.devolution_forms[pokemon.cute_stacks - 1]
+        pokemon.name = form["name"]
+        stats = form["stats"]
+        pokemon.hp = stats["hp"]
+        pokemon.current_hp = min(pokemon.current_hp, pokemon.hp)
+        pokemon.attack = stats["atk"]
+        pokemon.defense = stats["def"]
+        pokemon.sp_attack = stats["spatk"]
+        pokemon.sp_defense = stats["spdef"]
+        pokemon.speed = stats["speed"]
     return pokemon.cute_stacks - before
 
 
@@ -335,15 +346,17 @@ def _h_cute_if_power_bonus(tag: EffectTag, ctx: Ctx) -> None:
 
 
 def _h_cute_on_gain_power_perm(tag: EffectTag, ctx: Ctx) -> None:
-    """CUTE_ON_GAIN_POWER_PERM: 获得萌化后威力永久+N（撒娇）"""
+    """获得萌化后，所有原本具有威力的携带技能永久加威力。"""
     stacks = tag.params.get("stacks", 1)
     added = _cute_add(ctx.user, stacks)
     if added > 0:
-        delta = tag.params.get("delta", 20)
+        delta = tag.params.get("delta", 10)
+        before = [s.power for s in ctx.user.skills]
         for s in ctx.user.skills:
-            if s.name == (ctx.skill.name if ctx.skill else ""):
+            if s.power >= 0:
                 s.power = max(0, s.power + delta)
-                break
+        from nrc_core.engine.helpers import _record_public_skill_modifier
+        _record_public_skill_modifier(ctx.user, "power", delta, before)
 
 
 

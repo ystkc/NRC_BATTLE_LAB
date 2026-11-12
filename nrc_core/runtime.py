@@ -312,11 +312,13 @@ class BattleRuntime:
             return tuple(result)
         if active.is_fainted:
             return ()
+        enemy_team = current.battle.team_b if player == 0 else current.battle.team_a
+        enemy_index = current.battle.current_b if player == 0 else current.battle.current_a
         for index, skill in enumerate(active.skills):
             repetitions = max(1, int(getattr(skill, "use_count", 1) or 1))
             if active.ability_state.get("first_action_bonus"):
                 repetitions += 1
-            if active.energy < skill_energy_cost(active, skill) * repetitions or active.cooldowns.get(index, 0) > 0:
+            if active.energy < skill_energy_cost(active, skill, enemy_team[enemy_index]) * repetitions or active.cooldowns.get(index, 0) > 0:
                 continue
             options = tuple(getattr(skill, "choice_options", ()))
             if len(options) == 2:
@@ -413,6 +415,7 @@ class BattleRuntime:
                 state.battle.current_b = chosen
             pokemon = team[chosen]
             pokemon.entry_count += 1
+            pokemon.ability_state["_burst_pending"] = True
             _apply_mark_on_enter(state.battle, side, pokemon)
             enemy = state.battle.team_b[state.battle.current_b] if side == "a" else state.battle.team_a[state.battle.current_a]
             if pokemon.ability_effects:

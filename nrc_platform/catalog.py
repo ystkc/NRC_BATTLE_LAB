@@ -84,6 +84,10 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
             str(row["name"]): str(row["description"] or "")
             for row in connection.execute("SELECT name, description FROM skill_catalog")
         }
+        ability_descriptions = {
+            str(row["name"]): str(row["description"] or "")
+            for row in connection.execute("SELECT name, description FROM ability_catalog")
+        }
         skills_by_spirit: dict[str, list[str]] = {}
         for row in connection.execute("SELECT spirit_name, skill_name FROM spirit_skills ORDER BY id"):
             skills_by_spirit.setdefault(str(row[0]), []).append(str(row[1]))
@@ -121,6 +125,12 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
                 "base_speed": item.get("base_speed") or 0,
                 "skills": tuple(skills_by_spirit.get(name, ())),
             }
+        for record in pokemon.values():
+            record["previous_forms"] = []
+        for row in connection.execute("SELECT DISTINCT from_name, to_name FROM evolution_links"):
+            previous, evolved = str(row[0]), str(row[1])
+            if previous in pokemon and evolved in pokemon:
+                pokemon[evolved]["previous_forms"].append(previous)
         for name, record in pokemon.items():
             if record["skills"]:
                 continue
@@ -170,6 +180,7 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
         ability_effects=ability_effects,
         boss_forms=boss_forms,
         skill_descriptions=descriptions,
+        ability_descriptions=ability_descriptions,
         distributions=frozen_distributions,
     )
 

@@ -116,6 +116,15 @@ def normalize_observation(observation: Observation, battle: BattleState, catalog
             for key in _LEGACY:
                 item.pop(key, None)
             modifiers, statuses = creature_effects(pokemon)
+            ability_description = catalog.ability_descriptions.get(pokemon.ability, "")
+            compound_names = set(pokemon.compound_statuses) | {status.name for status in pokemon.compound_statuses.values()}
+            for entry in statuses:
+                entry.pop("description", None)
+                key = entry["name"].removesuffix("_negative")
+                if key in _ABILITY_STATUSES or key in compound_names:
+                    compound = pokemon.compound_statuses.get(key)
+                    source = compound.name if compound else pokemon.ability
+                    entry["description"] = catalog.ability_descriptions.get(source, ability_description)
             item["modifiers"] = modifiers
             item["statuses"] = statuses
             if not private:

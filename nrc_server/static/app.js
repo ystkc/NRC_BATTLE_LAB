@@ -433,11 +433,10 @@ function mergeObservation(data) {
 
 function stateEffects(item, side = 'own') {
   const effects = [];
-  const add = (name, value, unit = '层') => { if (Number.isFinite(Number(value)) && Number(value) !== 0) effects.push({ name: effectName(name), value, unit }); };
+  const add = (name, value, unit = '层', description = '') => { if (Number.isFinite(Number(value)) && Number(value) !== 0) effects.push({ name: effectName(name), value, unit, description }); };
   (item.modifiers || []).forEach((entry) => add(entry.name, entry.stacks, entry.unit));
   (item.statuses || []).forEach((entry) => {
-    add(entry.name, entry.stacks, entry.unit);
-    if (entry.description) state.effectDescriptions[entry.name] = entry.description;
+    add(entry.name, entry.stacks, entry.unit, entry.description);
   });
   (item.skills || []).forEach((skill) => {
     add(`${skill.name} 冷却`, skill.skill_states?.cooldown, '回合');
@@ -450,7 +449,7 @@ function stateEffects(item, side = 'own') {
 }
 
 function effectsMarkup(item, side = 'own') {
-  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect" data-effect-tip="${esc(name)}"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+  return stateEffects(item, side).map(({ name, value, unit, description }) => `<span class="field-effect" ${description ? `data-effect-tip="${esc(name)}" data-effect-description="${esc(description)}"` : ''}><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
 }
 
 function renderSide(side) {
@@ -458,7 +457,7 @@ function renderSide(side) {
   const team = state.teams[side] || [];
   const activeIndex = team.activeIndex || 0;
   const activeItem = team[activeIndex] || {};
-  const item = enemy && activeItem.fainted ? (team.find((candidate) => !candidate.fainted) || activeItem) : activeItem;
+  const item = activeItem;
   const prefix = enemy ? 'enemy' : 'own';
   const percent = item.max_hp ? Math.max(0, Math.min(100, Math.round(item.hp / item.max_hp * 100))) : item.hp_percent ?? 0;
   $(`#${prefix}-active-name`).textContent = item.name || '-';
@@ -537,12 +536,12 @@ function renderDrawer(title, html) { $('#drawer-title').textContent = title; $('
 function closeDrawer() { $('#drawer').classList.add('hidden'); }
 function drawerEffects(item) {
   const side = (state.teams.opponent || []).includes(item) ? 'opponent' : 'own';
-  return stateEffects(item, side).map(({ name, value, unit }) => `<span class="field-effect" data-effect-tip="${esc(name)}"><span class="field-effect-name">${esc(name)}</span><small>${esc(value)} ${esc(unit)}</small></span>`).join('');
+  return effectsMarkup(item, side);
 }
 
 function showEffectTip(target, event) {
   const tip = $('#skill-tooltip');
-  const description = state.effectDescriptions[target.dataset.effectTip] || target.dataset.effectTip;
+  const description = target.dataset.effectDescription;
   if (!tip || !description) return;
   tip.innerHTML = `<b>${esc(target.dataset.effectTip)}</b><p>${esc(description)}</p>`;
   tip.classList.remove('hidden');
@@ -596,7 +595,7 @@ async function playResolution(events, data, token) {
     state.events.push(event);
     appendEvent(event);
     updateBattleMeta();
-    await sleep(500);
+    await sleep(100);
   }
   if (token !== state.resolutionToken) return false;
   mergeObservation(data);

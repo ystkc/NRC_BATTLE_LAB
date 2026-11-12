@@ -23,6 +23,8 @@ class CompoundStatus:
     stacks: int = 0
     modifiers: dict[str, float] = field(default_factory=dict)
     description: str = ""
+    skill_modifiers: dict[str, float] = field(default_factory=dict)
+    skill_types: tuple[str, ...] = ()
 
     def modifier(self, attribute: str) -> float:
         """返回本次计算所需的派生值，不缓存、不消耗原始层数。"""
