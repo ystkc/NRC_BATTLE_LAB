@@ -1,0 +1,1102 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_core/battle.py,file,nrc_core/battle.py,T04,nrc_core/battle.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/battle.py:26:_iter_flat_tags,code_object,_iter_flat_tags,T04,nrc_core/battle.py,26,FILE:nrc_core/battle.py,从 List[SkillEffect] 或 List[EffectTag] 中提取所有 EffectTag（平铺）。,待核对
+CODE:nrc_core/battle.py:38:_has_tag_type,code_object,_has_tag_type,T04,nrc_core/battle.py,38,FILE:nrc_core/battle.py,检查效果列表中是否存在某类型的 EffectTag。,待核对
+CODE:nrc_core/battle.py:43:_find_tags,code_object,_find_tags,T04,nrc_core/battle.py,43,FILE:nrc_core/battle.py,返回效果列表中所有匹配类型的 EffectTag。,待核对
+CODE:nrc_core/battle.py:48:_ability_name,code_object,_ability_name,T04,nrc_core/battle.py,48,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:54:_has_ko_threat,code_object,_has_ko_threat,T04,nrc_core/battle.py,54,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:68:_apply_turn_start_ability_logic,code_object,_apply_turn_start_ability_logic,T04,nrc_core/battle.py,68,FILE:nrc_core/battle.py,回合开始：触发双方 ON_TURN_START 特性（预警/哨兵等）,待核对
+CODE:nrc_core/battle.py:89:_apply_context_abilities,code_object,_apply_context_abilities,T04,nrc_core/battle.py,89,FILE:nrc_core/battle.py,Apply deterministic abilities driven by the caller-provided context.,待核对
+CODE:nrc_core/battle.py:122:_clear_turn_temporary_ability_logic,code_object,_clear_turn_temporary_ability_logic,T04,nrc_core/battle.py,122,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:134:_transfer_pokemon_state,code_object,_transfer_pokemon_state,T04,nrc_core/battle.py,134,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:168:_is_burst_action,code_object,_is_burst_action,T04,nrc_core/battle.py,168,FILE:nrc_core/battle.py,入场后的首次主动行动可触发技能迸发，换入本身不消耗机会。,待核对
+CODE:nrc_core/battle.py:173:_temporary_skill_cost_delta,code_object,_temporary_skill_cost_delta,T04,nrc_core/battle.py,173,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:191:skill_energy_cost,code_object,skill_energy_cost,T04,nrc_core/battle.py,191,FILE:nrc_core/battle.py,技能面板、合法动作与实际扣能共用动态能耗计算。,待核对
+CODE:nrc_core/battle.py:204:_transform_to_guard_queen,code_object,_transform_to_guard_queen,T04,nrc_core/battle.py,204,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:252:_handle_counter_success_ability,code_object,_handle_counter_success_ability,T04,nrc_core/battle.py,252,FILE:nrc_core/battle.py,应对成功时触发特性（保卫等），通过数据驱动的 ON_COUNTER_SUCCESS,待核对
+CODE:nrc_core/battle.py:270:_process_revive_timers,code_object,_process_revive_timers,T04,nrc_core/battle.py,270,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:294:DamageCalculator,code_object,DamageCalculator,T04,nrc_core/battle.py,294,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:450:_transform_scope_matches,code_object,_transform_scope_matches,T04,nrc_core/battle.py,450,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:487:_apply_pending_skill_transforms,code_object,_apply_pending_skill_transforms,T04,nrc_core/battle.py,487,FILE:nrc_core/battle.py,"Resolve each used 巧变 slot once, immediately after the turn ends.",待核对
+CODE:nrc_core/battle.py:520:_compare_action_order,code_object,_compare_action_order,T04,nrc_core/battle.py,520,FILE:nrc_core/battle.py,比较回合内行动顺序: 先手等级 > 当前速度 > 随机。返回 -1 表示 A 先手，否则 B 先手。,待核对
+CODE:nrc_core/battle.py:547:get_actions,code_object,get_actions,T04,nrc_core/battle.py,547,FILE:nrc_core/battle.py,获取合法动作,待核对
+CODE:nrc_core/battle.py:574:ability_auto_switch,code_object,ability_auto_switch,T04,nrc_core/battle.py,574,FILE:nrc_core/battle.py,"特性驱动的自动换人：
+- reason=""zero_energy""  → auto_switch_zero_energy / swap_ally_zero_energy
+- reason=""every_turn""   → auto_switch_every_turn
+返回 True 表示实际发生了换人。",待核对
+CODE:nrc_core/battle.py:607:_random_disengage,code_object,_random_disengage,T04,nrc_core/battle.py,607,FILE:nrc_core/battle.py,执行脱离：从己方存活队伍中随机选择下一只精灵。,待核对
+CODE:nrc_core/battle.py:669:auto_switch,code_object,auto_switch,T04,nrc_core/battle.py,669,FILE:nrc_core/battle.py,"被动换人：精灵倒下后选择下一只上场精灵，不占用行动回合。
+
+A方（玩家）死亡：先用 alive[0] 占位，同时写入 pending_switch_requests
+让 server.py 在回合结束后弹出选人面板（异步等待玩家选择）。
+B方（AI）死亡：调用 switch_cb_b 让 AI 选择，无 callback 则选 alive[0]。",待核对
+CODE:nrc_core/battle.py:728:_trigger_battle_start_effects,code_object,_trigger_battle_start_effects,T04,nrc_core/battle.py,728,FILE:nrc_core/battle.py,只触发一次的开局特性。,待核对
+CODE:nrc_core/battle.py:749:_trigger_ally_counter_effects,code_object,_trigger_ally_counter_effects,T04,nrc_core/battle.py,749,FILE:nrc_core/battle.py,同队任意精灵应对成功后，触发该队的 ON_ALLY_COUNTER 特性。,待核对
+CODE:nrc_core/battle.py:761:turn_end_effects,code_object,turn_end_effects,T04,nrc_core/battle.py,761,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:1031:_check_fainted_and_deduct_mp,code_object,_check_fainted_and_deduct_mp,T04,nrc_core/battle.py,1031,FILE:nrc_core/battle.py,检查倒地精灵，扣除MP,待核对
+CODE:nrc_core/battle.py:1059:_apply_moisture_mark,code_object,_apply_moisture_mark,T04,nrc_core/battle.py,1059,FILE:nrc_core/battle.py,"湿润印记效果：每层为己方全队所有技能能耗永久 -1。
+每回合行动前触发一次；印记清零后不再叠加，效果永久保留在技能能耗上。",待核对
+CODE:nrc_core/battle.py:1080:_apply_mark_turn_end,code_object,_apply_mark_turn_end,T04,nrc_core/battle.py,1080,FILE:nrc_core/battle.py,"回合结束印记效果：中毒印记伤害 + 光合印记回能
+
+印记存储语义：对敌方施加的印记存在敌方的marks里。
+所以中毒印记在被毒方自己的marks中，光合印记也在己方自己的marks中。",待核对
+CODE:nrc_core/battle.py:1109:_clear_mirror_buff,code_object,_clear_mirror_buff,T04,nrc_core/battle.py,1109,FILE:nrc_core/battle.py,公平鸽下场时，清除对手 ability_state 里指向自己的 mirror_buff_to 引用。,待核对
+CODE:nrc_core/battle.py:1120:_apply_mark_on_enter,code_object,_apply_mark_on_enter,T04,nrc_core/battle.py,1120,FILE:nrc_core/battle.py,"入场时印记效果：降灵(失能量) + 荆刺(失HP) + 蓄电(记录入场回合)
+
+降灵/荆刺印记存在被施加方的marks中（敌方用降灵，印记存在我方marks里），
+所以入场时检查自己的marks。",待核对
+CODE:nrc_core/battle.py:1148:get_mark_damage_modifiers,code_object,get_mark_damage_modifiers,T04,nrc_core/battle.py,1148,FILE:nrc_core/battle.py,"根据场上印记计算攻击修正，返回 dict:
+  power_bonus: int   威力加成
+  power_mult: float  威力倍率乘数
+  atk_mult: float    攻击力倍率乘数
+  meteor_mark_stacks: int  星陨印记消耗层数 (额外魔伤)",待核对
+CODE:nrc_core/battle.py:1206:_get_current_pokemon,code_object,_get_current_pokemon,T04,nrc_core/battle.py,1206,FILE:nrc_core/battle.py,获取指定方当前在场精灵。,待核对
+CODE:nrc_core/battle.py:1213:_apply_share_gains,code_object,_apply_share_gains,T04,nrc_core/battle.py,1213,FILE:nrc_core/battle.py,系统发育：如果在场精灵有 share_gains，将本次获得的能量/生命等量分配给场下精灵。,待核对
+CODE:nrc_core/battle.py:1235:_get_skill_for_action,code_object,_get_skill_for_action,T04,nrc_core/battle.py,1235,FILE:nrc_core/battle.py,从 action 中获取技能对象，换人/跳过返回 None。,待核对
+CODE:nrc_core/battle.py:1247:_skill_has_counter_for,code_object,_skill_has_counter_for,T04,nrc_core/battle.py,1247,FILE:nrc_core/battle.py,检查 skill_a 是否有对 skill_b 类型的应对。,待核对
+CODE:nrc_core/battle.py:1278:execute_full_turn,code_object,execute_full_turn,T04,nrc_core/battle.py,1278,FILE:nrc_core/battle.py,"执行完整回合。
+
+应对机制：
+- 如果 A 的技能有对 B 技能类型的应对 → A 应对 B → B 先动但 A 的应对先结算
+- 如果双方互相应对 → 按正常先手顺序
+- 应对无视速度和先手等级
+
+switch_cb_a/b: 被动换人回调 (state, team_list, alive_indices) -> int
+  精灵倒下后让玩家/AI选择下一只上场精灵。",待核对
+CODE:nrc_core/battle.py:1418:_skill_use_repetitions,code_object,_skill_use_repetitions,T04,nrc_core/battle.py,1418,FILE:nrc_core/battle.py,无描述字符串,待核对
+CODE:nrc_core/battle.py:1432:_execute_repeated_action,code_object,_execute_repeated_action,T04,nrc_core/battle.py,1432,FILE:nrc_core/battle.py,"Execute a selected skill once per use count, as separate skill executions.",待核对
+CODE:nrc_core/battle.py:1454:_execute_with_counter,code_object,_execute_with_counter,T04,nrc_core/battle.py,1454,FILE:nrc_core/battle.py,执行行动+应对解析 (兼容新旧引擎),待核对
+CODE:nrc_core/battle.py:1820:_check_pre_interrupt,code_object,_check_pre_interrupt,T04,nrc_core/battle.py,1820,FILE:nrc_core/battle.py,"检查对方技能（enemy_skill）是否有针对本技能（skill）的应对打断（INTERRUPT）。
+
+用于在 execute_skill 之前判断：如果被打断，跳过主效果。
+这确保了""攻击应对状态→打断""时，状态技能的 buff 不会先生效再被打断。",待核对
+CODE:nrc_core/battle.py:1849:_execute_new_engine,code_object,_execute_new_engine,T04,nrc_core/battle.py,1849,FILE:nrc_core/battle.py,新引擎路径: 用 EffectExecutor 执行有 effects 的技能,待核对
+CODE:nrc_core/battle.py:1957:_apply_enemy_damage_reduction,code_object,_apply_enemy_damage_reduction,T04,nrc_core/battle.py,1957,FILE:nrc_core/battle.py,检查敌方技能减伤（防御/风墙/听桥等），返回减伤后的伤害值。,待核对
+CODE:nrc_core/battle.py:1976:_resolve_self_counters,code_object,_resolve_self_counters,T04,nrc_core/battle.py,1976,FILE:nrc_core/battle.py,处理我方技能的应对效果（毒液渗透/偷袭等），返回可能修改后的伤害值。,待核对
+CODE:nrc_core/battle.py:2022:_resolve_enemy_counters,code_object,_resolve_enemy_counters,T04,nrc_core/battle.py,2022,FILE:nrc_core/battle.py,处理对方技能的应对效果（防御/状态技能应对我方攻击）。,待核对
+CODE:nrc_core/battle.py:2078:_apply_ability_damage_reduction,code_object,_apply_ability_damage_reduction,T04,nrc_core/battle.py,2078,FILE:nrc_core/battle.py,"应用特性减伤（秩序鱿墨等），返回减伤后的伤害值。
+同时处理化茧特性：受致命伤时+1萌化并免死（damage 降为 enemy.current_hp - 1）。",待核对
+CODE:nrc_core/battle.py:2104:_check_frostbite_lethal,code_object,_check_frostbite_lethal,T04,nrc_core/battle.py,2104,FILE:nrc_core/battle.py,冻结实时致死检查：当前生命不高于最大生命×5%×冻结层数时死亡。,待核对
+CODE:nrc_core/battle.py:2113:_apply_damage_to_enemy,code_object,_apply_damage_to_enemy,T04,nrc_core/battle.py,2113,FILE:nrc_core/battle.py,对敌方造成最终伤害。,待核对
+CODE:nrc_core/battle.py:2150:_check_kill_effects,code_object,_check_kill_effects,T04,nrc_core/battle.py,2150,FILE:nrc_core/battle.py,击败检查 & 击败/自毁效果。,待核对
+CODE:nrc_core/battle.py:2183:_handle_post_skill_switches,code_object,_handle_post_skill_switches,T04,nrc_core/battle.py,2183,FILE:nrc_core/battle.py,Handle skill-triggered disengage and forced switching.,待核对
+CODE:nrc_core/battle.py:2205:_post_skill_effects,code_object,_post_skill_effects,T04,nrc_core/battle.py,2205,FILE:nrc_core/battle.py,技能后处理：印记驱散、传动、特性触发、条件增益、能耗调整等。,待核对
+CODE:nrc_core/battle.py:2288:_is_first_action,code_object,_is_first_action,T04,nrc_core/battle.py,2288,FILE:nrc_core/battle.py,判断当前行动是否先于对手,待核对
+CODE:nrc_core/battle.py:2301:get_priority,code_object,get_priority,T04,nrc_core/battle.py,2301,FILE:nrc_core/battle.py,获取先手等级。换人优先级最高(+99)，聚能正常(0)，技能看先手加成。,待核对
+CODE:nrc_core/battle.py:2316:check_winner,code_object,check_winner,T04,nrc_core/battle.py,2316,FILE:nrc_core/battle.py,检查胜负: 先失去4点MP(降到0)的玩家败北,待核对
+BRANCH:nrc_core/battle.py:29:true,code_branch,true,T04,nrc_core/battle.py,29,FILE:nrc_core/battle.py,not effects,待核对
+BRANCH:nrc_core/battle.py:29:false,code_branch,false,T04,nrc_core/battle.py,29,FILE:nrc_core/battle.py,not effects,待核对
+BRANCH:nrc_core/battle.py:31:body,code_branch,body,T04,nrc_core/battle.py,31,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:31:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,31,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:49:true,code_branch,true,T04,nrc_core/battle.py,49,FILE:nrc_core/battle.py,not pokemon.ability,待核对
+BRANCH:nrc_core/battle.py:49:false,code_branch,false,T04,nrc_core/battle.py,49,FILE:nrc_core/battle.py,not pokemon.ability,待核对
+BRANCH:nrc_core/battle.py:55:body,code_branch,body,T04,nrc_core/battle.py,55,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:55:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,55,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:74:body,code_branch,body,T04,nrc_core/battle.py,74,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:74:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,74,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:94:true,code_branch,true,T04,nrc_core/battle.py,94,FILE:nrc_core/battle.py,"ability == ""张弛有度""",待核对
+BRANCH:nrc_core/battle.py:94:false,code_branch,false,T04,nrc_core/battle.py,94,FILE:nrc_core/battle.py,"ability == ""张弛有度""",待核对
+BRANCH:nrc_core/battle.py:105:true,code_branch,true,T04,nrc_core/battle.py,105,FILE:nrc_core/battle.py,"ability == ""安眠""",待核对
+BRANCH:nrc_core/battle.py:105:false,code_branch,false,T04,nrc_core/battle.py,105,FILE:nrc_core/battle.py,"ability == ""安眠""",待核对
+BRANCH:nrc_core/battle.py:117:body,code_branch,body,T04,nrc_core/battle.py,117,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:117:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,117,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:123:body,code_branch,body,T04,nrc_core/battle.py,123,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:123:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,123,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:160:true,code_branch,true,T04,nrc_core/battle.py,160,FILE:nrc_core/battle.py,"""cute_mark"" in source.ability_state",待核对
+BRANCH:nrc_core/battle.py:160:false,code_branch,false,T04,nrc_core/battle.py,160,FILE:nrc_core/battle.py,"""cute_mark"" in source.ability_state",待核对
+BRANCH:nrc_core/battle.py:162:true,code_branch,true,T04,nrc_core/battle.py,162,FILE:nrc_core/battle.py,"""temporary_skill_cost_mods"" in source.ability_state",待核对
+BRANCH:nrc_core/battle.py:162:false,code_branch,false,T04,nrc_core/battle.py,162,FILE:nrc_core/battle.py,"""temporary_skill_cost_mods"" in source.ability_state",待核对
+BRANCH:nrc_core/battle.py:175:body,code_branch,body,T04,nrc_core/battle.py,175,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:175:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,175,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:194:body,code_branch,body,T04,nrc_core/battle.py,194,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:194:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,194,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:206:true,code_branch,true,T04,nrc_core/battle.py,206,FILE:nrc_core/battle.py,catalog is None,待核对
+BRANCH:nrc_core/battle.py:206:false,code_branch,false,T04,nrc_core/battle.py,206,FILE:nrc_core/battle.py,catalog is None,待核对
+BRANCH:nrc_core/battle.py:209:true,code_branch,true,T04,nrc_core/battle.py,209,FILE:nrc_core/battle.py,"""棋绮后"" in pokemon.name",待核对
+BRANCH:nrc_core/battle.py:209:false,code_branch,false,T04,nrc_core/battle.py,209,FILE:nrc_core/battle.py,"""棋绮后"" in pokemon.name",待核对
+BRANCH:nrc_core/battle.py:213:true,code_branch,true,T04,nrc_core/battle.py,213,FILE:nrc_core/battle.py,not data,待核对
+BRANCH:nrc_core/battle.py:213:false,code_branch,false,T04,nrc_core/battle.py,213,FILE:nrc_core/battle.py,not data,待核对
+BRANCH:nrc_core/battle.py:256:true,code_branch,true,T04,nrc_core/battle.py,256,FILE:nrc_core/battle.py,not pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:256:false,code_branch,false,T04,nrc_core/battle.py,256,FILE:nrc_core/battle.py,not pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:271:body,code_branch,body,T04,nrc_core/battle.py,271,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:271:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,271,FILE:nrc_core/battle.py,For,待核对
+CODE:nrc_core/battle.py:304:calculate,code_object,calculate,T04,nrc_core/battle.py,304,FILE:nrc_core/battle.py,无描述字符串,待核对
+BRANCH:nrc_core/battle.py:456:true,code_branch,true,T04,nrc_core/battle.py,456,FILE:nrc_core/battle.py,not scope,待核对
+BRANCH:nrc_core/battle.py:456:false,code_branch,false,T04,nrc_core/battle.py,456,FILE:nrc_core/battle.py,not scope,待核对
+BRANCH:nrc_core/battle.py:458:true,code_branch,true,T04,nrc_core/battle.py,458,FILE:nrc_core/battle.py,"""相关技能"" in scope",待核对
+BRANCH:nrc_core/battle.py:458:false,code_branch,false,T04,nrc_core/battle.py,458,FILE:nrc_core/battle.py,"""相关技能"" in scope",待核对
+BRANCH:nrc_core/battle.py:468:true,code_branch,true,T04,nrc_core/battle.py,468,FILE:nrc_core/battle.py,"""同系别"" in scope and candidate.skill_type != source.skill_type",待核对
+BRANCH:nrc_core/battle.py:468:false,code_branch,false,T04,nrc_core/battle.py,468,FILE:nrc_core/battle.py,"""同系别"" in scope and candidate.skill_type != source.skill_type",待核对
+BRANCH:nrc_core/battle.py:470:true,code_branch,true,T04,nrc_core/battle.py,470,FILE:nrc_core/battle.py,"""系"" in scope and ""同系别"" not in scope",待核对
+BRANCH:nrc_core/battle.py:470:false,code_branch,false,T04,nrc_core/battle.py,470,FILE:nrc_core/battle.py,"""系"" in scope and ""同系别"" not in scope",待核对
+BRANCH:nrc_core/battle.py:474:true,code_branch,true,T04,nrc_core/battle.py,474,FILE:nrc_core/battle.py,"""攻击"" in scope and candidate.category not in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:474:false,code_branch,false,T04,nrc_core/battle.py,474,FILE:nrc_core/battle.py,"""攻击"" in scope and candidate.category not in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:476:true,code_branch,true,T04,nrc_core/battle.py,476,FILE:nrc_core/battle.py,"""魔攻"" in scope and candidate.category != SkillCategory.MAGICAL",待核对
+BRANCH:nrc_core/battle.py:476:false,code_branch,false,T04,nrc_core/battle.py,476,FILE:nrc_core/battle.py,"""魔攻"" in scope and candidate.category != SkillCategory.MAGICAL",待核对
+BRANCH:nrc_core/battle.py:478:true,code_branch,true,T04,nrc_core/battle.py,478,FILE:nrc_core/battle.py,"""物攻"" in scope and candidate.category != SkillCategory.PHYSICAL",待核对
+BRANCH:nrc_core/battle.py:478:false,code_branch,false,T04,nrc_core/battle.py,478,FILE:nrc_core/battle.py,"""物攻"" in scope and candidate.category != SkillCategory.PHYSICAL",待核对
+BRANCH:nrc_core/battle.py:480:true,code_branch,true,T04,nrc_core/battle.py,480,FILE:nrc_core/battle.py,"""防御"" in scope and candidate.category != SkillCategory.DEFENSE",待核对
+BRANCH:nrc_core/battle.py:480:false,code_branch,false,T04,nrc_core/battle.py,480,FILE:nrc_core/battle.py,"""防御"" in scope and candidate.category != SkillCategory.DEFENSE",待核对
+BRANCH:nrc_core/battle.py:482:true,code_branch,true,T04,nrc_core/battle.py,482,FILE:nrc_core/battle.py,"""状态"" in scope and candidate.category != SkillCategory.STATUS",待核对
+BRANCH:nrc_core/battle.py:482:false,code_branch,false,T04,nrc_core/battle.py,482,FILE:nrc_core/battle.py,"""状态"" in scope and candidate.category != SkillCategory.STATUS",待核对
+BRANCH:nrc_core/battle.py:491:body,code_branch,body,T04,nrc_core/battle.py,491,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:491:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,491,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:524:true,code_branch,true,T04,nrc_core/battle.py,524,FILE:nrc_core/battle.py,pri_a != pri_b,待核对
+BRANCH:nrc_core/battle.py:524:false,code_branch,false,T04,nrc_core/battle.py,524,FILE:nrc_core/battle.py,pri_a != pri_b,待核对
+BRANCH:nrc_core/battle.py:536:true,code_branch,true,T04,nrc_core/battle.py,536,FILE:nrc_core/battle.py,slow_a > 0,待核对
+BRANCH:nrc_core/battle.py:536:false,code_branch,false,T04,nrc_core/battle.py,536,FILE:nrc_core/battle.py,slow_a > 0,待核对
+BRANCH:nrc_core/battle.py:538:true,code_branch,true,T04,nrc_core/battle.py,538,FILE:nrc_core/battle.py,slow_b > 0,待核对
+BRANCH:nrc_core/battle.py:538:false,code_branch,false,T04,nrc_core/battle.py,538,FILE:nrc_core/battle.py,slow_b > 0,待核对
+BRANCH:nrc_core/battle.py:541:true,code_branch,true,T04,nrc_core/battle.py,541,FILE:nrc_core/battle.py,spd_a != spd_b,待核对
+BRANCH:nrc_core/battle.py:541:false,code_branch,false,T04,nrc_core/battle.py,541,FILE:nrc_core/battle.py,spd_a != spd_b,待核对
+BRANCH:nrc_core/battle.py:554:true,code_branch,true,T04,nrc_core/battle.py,554,FILE:nrc_core/battle.py,current.is_fainted,待核对
+BRANCH:nrc_core/battle.py:554:false,code_branch,false,T04,nrc_core/battle.py,554,FILE:nrc_core/battle.py,current.is_fainted,待核对
+BRANCH:nrc_core/battle.py:562:body,code_branch,body,T04,nrc_core/battle.py,562,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:562:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,562,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:586:true,code_branch,true,T04,nrc_core/battle.py,586,FILE:nrc_core/battle.py,current.is_fainted,待核对
+BRANCH:nrc_core/battle.py:586:false,code_branch,false,T04,nrc_core/battle.py,586,FILE:nrc_core/battle.py,current.is_fainted,待核对
+BRANCH:nrc_core/battle.py:590:true,code_branch,true,T04,nrc_core/battle.py,590,FILE:nrc_core/battle.py,"reason == ""zero_energy""",待核对
+BRANCH:nrc_core/battle.py:590:false,code_branch,false,T04,nrc_core/battle.py,590,FILE:nrc_core/battle.py,"reason == ""zero_energy""",待核对
+BRANCH:nrc_core/battle.py:601:true,code_branch,true,T04,nrc_core/battle.py,601,FILE:nrc_core/battle.py,not should_switch,待核对
+BRANCH:nrc_core/battle.py:601:false,code_branch,false,T04,nrc_core/battle.py,601,FILE:nrc_core/battle.py,not should_switch,待核对
+BRANCH:nrc_core/battle.py:613:true,code_branch,true,T04,nrc_core/battle.py,613,FILE:nrc_core/battle.py,not alive,待核对
+BRANCH:nrc_core/battle.py:613:false,code_branch,false,T04,nrc_core/battle.py,613,FILE:nrc_core/battle.py,not alive,待核对
+BRANCH:nrc_core/battle.py:626:true,code_branch,true,T04,nrc_core/battle.py,626,FILE:nrc_core/battle.py,current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:626:false,code_branch,false,T04,nrc_core/battle.py,626,FILE:nrc_core/battle.py,current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:631:true,code_branch,true,T04,nrc_core/battle.py,631,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:631:false,code_branch,false,T04,nrc_core/battle.py,631,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:643:true,code_branch,true,T04,nrc_core/battle.py,643,FILE:nrc_core/battle.py,"""transfer_mods"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:643:false,code_branch,false,T04,nrc_core/battle.py,643,FILE:nrc_core/battle.py,"""transfer_mods"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:646:true,code_branch,true,T04,nrc_core/battle.py,646,FILE:nrc_core/battle.py,"""leave_heal_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:646:false,code_branch,false,T04,nrc_core/battle.py,646,FILE:nrc_core/battle.py,"""leave_heal_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:649:true,code_branch,true,T04,nrc_core/battle.py,649,FILE:nrc_core/battle.py,"""leave_buff_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:649:false,code_branch,false,T04,nrc_core/battle.py,649,FILE:nrc_core/battle.py,"""leave_buff_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:653:true,code_branch,true,T04,nrc_core/battle.py,653,FILE:nrc_core/battle.py,new_pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:653:false,code_branch,false,T04,nrc_core/battle.py,653,FILE:nrc_core/battle.py,new_pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:660:true,code_branch,true,T04,nrc_core/battle.py,660,FILE:nrc_core/battle.py,barrel_pending,待核对
+BRANCH:nrc_core/battle.py:660:false,code_branch,false,T04,nrc_core/battle.py,660,FILE:nrc_core/battle.py,barrel_pending,待核对
+BRANCH:nrc_core/battle.py:677:true,code_branch,true,T04,nrc_core/battle.py,677,FILE:nrc_core/battle.py,state.team_a[state.current_a].is_fainted,待核对
+BRANCH:nrc_core/battle.py:677:false,code_branch,false,T04,nrc_core/battle.py,677,FILE:nrc_core/battle.py,state.team_a[state.current_a].is_fainted,待核对
+BRANCH:nrc_core/battle.py:702:true,code_branch,true,T04,nrc_core/battle.py,702,FILE:nrc_core/battle.py,state.team_b[state.current_b].is_fainted,待核对
+BRANCH:nrc_core/battle.py:702:false,code_branch,false,T04,nrc_core/battle.py,702,FILE:nrc_core/battle.py,state.team_b[state.current_b].is_fainted,待核对
+BRANCH:nrc_core/battle.py:730:true,code_branch,true,T04,nrc_core/battle.py,730,FILE:nrc_core/battle.py,state.battle_start_effects_triggered,待核对
+BRANCH:nrc_core/battle.py:730:false,code_branch,false,T04,nrc_core/battle.py,730,FILE:nrc_core/battle.py,state.battle_start_effects_triggered,待核对
+BRANCH:nrc_core/battle.py:737:true,code_branch,true,T04,nrc_core/battle.py,737,FILE:nrc_core/battle.py,current_a.ability_effects and not current_a.is_fainted,待核对
+BRANCH:nrc_core/battle.py:737:false,code_branch,false,T04,nrc_core/battle.py,737,FILE:nrc_core/battle.py,current_a.ability_effects and not current_a.is_fainted,待核对
+BRANCH:nrc_core/battle.py:742:true,code_branch,true,T04,nrc_core/battle.py,742,FILE:nrc_core/battle.py,current_b.ability_effects and not current_b.is_fainted,待核对
+BRANCH:nrc_core/battle.py:742:false,code_branch,false,T04,nrc_core/battle.py,742,FILE:nrc_core/battle.py,current_b.ability_effects and not current_b.is_fainted,待核对
+BRANCH:nrc_core/battle.py:752:body,code_branch,body,T04,nrc_core/battle.py,752,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:752:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,752,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:766:body,code_branch,body,T04,nrc_core/battle.py,766,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:766:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,766,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:778:body,code_branch,body,T04,nrc_core/battle.py,778,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:778:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,778,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:803:body,code_branch,body,T04,nrc_core/battle.py,803,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:803:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,803,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:939:true,code_branch,true,T04,nrc_core/battle.py,939,FILE:nrc_core/battle.py,"state.weather in (""sandstorm"", ""hail"", ""snow"")",待核对
+BRANCH:nrc_core/battle.py:939:false,code_branch,false,T04,nrc_core/battle.py,939,FILE:nrc_core/battle.py,"state.weather in (""sandstorm"", ""hail"", ""snow"")",待核对
+BRANCH:nrc_core/battle.py:944:true,code_branch,true,T04,nrc_core/battle.py,944,FILE:nrc_core/battle.py,state.weather and state.weather_turns > 0,待核对
+BRANCH:nrc_core/battle.py:944:false,code_branch,false,T04,nrc_core/battle.py,944,FILE:nrc_core/battle.py,state.weather and state.weather_turns > 0,待核对
+BRANCH:nrc_core/battle.py:960:body,code_branch,body,T04,nrc_core/battle.py,960,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:960:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,960,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:978:body,code_branch,body,T04,nrc_core/battle.py,978,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:978:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,978,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:985:body,code_branch,body,T04,nrc_core/battle.py,985,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:985:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,985,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1035:true,code_branch,true,T04,nrc_core/battle.py,1035,FILE:nrc_core/battle.py,"pa.is_fainted and not pa.ability_state.get(""faint_processed"")",待核对
+BRANCH:nrc_core/battle.py:1035:false,code_branch,false,T04,nrc_core/battle.py,1035,FILE:nrc_core/battle.py,"pa.is_fainted and not pa.ability_state.get(""faint_processed"")",待核对
+BRANCH:nrc_core/battle.py:1047:true,code_branch,true,T04,nrc_core/battle.py,1047,FILE:nrc_core/battle.py,"pb.is_fainted and not pb.ability_state.get(""faint_processed"")",待核对
+BRANCH:nrc_core/battle.py:1047:false,code_branch,false,T04,nrc_core/battle.py,1047,FILE:nrc_core/battle.py,"pb.is_fainted and not pb.ability_state.get(""faint_processed"")",待核对
+BRANCH:nrc_core/battle.py:1064:body,code_branch,body,T04,nrc_core/battle.py,1064,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1064:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1064,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1086:body,code_branch,body,T04,nrc_core/battle.py,1086,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1086:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1086,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1114:true,code_branch,true,T04,nrc_core/battle.py,1114,FILE:nrc_core/battle.py,enemy_idx < len(enemy_list),待核对
+BRANCH:nrc_core/battle.py:1114:false,code_branch,false,T04,nrc_core/battle.py,1114,FILE:nrc_core/battle.py,enemy_idx < len(enemy_list),待核对
+BRANCH:nrc_core/battle.py:1130:true,code_branch,true,T04,nrc_core/battle.py,1130,FILE:nrc_core/battle.py,spirit_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1130:false,code_branch,false,T04,nrc_core/battle.py,1130,FILE:nrc_core/battle.py,spirit_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1135:true,code_branch,true,T04,nrc_core/battle.py,1135,FILE:nrc_core/battle.py,thorn_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1135:false,code_branch,false,T04,nrc_core/battle.py,1135,FILE:nrc_core/battle.py,thorn_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1144:true,code_branch,true,T04,nrc_core/battle.py,1144,FILE:nrc_core/battle.py,"get_mark_stacks(my_marks, ""charge_mark"") > 0",待核对
+BRANCH:nrc_core/battle.py:1144:false,code_branch,false,T04,nrc_core/battle.py,1144,FILE:nrc_core/battle.py,"get_mark_stacks(my_marks, ""charge_mark"") > 0",待核对
+BRANCH:nrc_core/battle.py:1165:true,code_branch,true,T04,nrc_core/battle.py,1165,FILE:nrc_core/battle.py,dragon > 0,待核对
+BRANCH:nrc_core/battle.py:1165:false,code_branch,false,T04,nrc_core/battle.py,1165,FILE:nrc_core/battle.py,dragon > 0,待核对
+BRANCH:nrc_core/battle.py:1172:true,code_branch,true,T04,nrc_core/battle.py,1172,FILE:nrc_core/battle.py,wind > 0 and is_first,待核对
+BRANCH:nrc_core/battle.py:1172:false,code_branch,false,T04,nrc_core/battle.py,1172,FILE:nrc_core/battle.py,wind > 0 and is_first,待核对
+BRANCH:nrc_core/battle.py:1177:true,code_branch,true,T04,nrc_core/battle.py,1177,FILE:nrc_core/battle.py,charge > 0,待核对
+BRANCH:nrc_core/battle.py:1177:false,code_branch,false,T04,nrc_core/battle.py,1177,FILE:nrc_core/battle.py,charge > 0,待核对
+BRANCH:nrc_core/battle.py:1184:true,code_branch,true,T04,nrc_core/battle.py,1184,FILE:nrc_core/battle.py,attack > 0,待核对
+BRANCH:nrc_core/battle.py:1184:false,code_branch,false,T04,nrc_core/battle.py,1184,FILE:nrc_core/battle.py,attack > 0,待核对
+BRANCH:nrc_core/battle.py:1189:true,code_branch,true,T04,nrc_core/battle.py,1189,FILE:nrc_core/battle.py,sluggish > 0 and not is_first,待核对
+BRANCH:nrc_core/battle.py:1189:false,code_branch,false,T04,nrc_core/battle.py,1189,FILE:nrc_core/battle.py,sluggish > 0 and not is_first,待核对
+BRANCH:nrc_core/battle.py:1194:true,code_branch,true,T04,nrc_core/battle.py,1194,FILE:nrc_core/battle.py,momentum > 0,待核对
+BRANCH:nrc_core/battle.py:1194:false,code_branch,false,T04,nrc_core/battle.py,1194,FILE:nrc_core/battle.py,momentum > 0,待核对
+BRANCH:nrc_core/battle.py:1200:true,code_branch,true,T04,nrc_core/battle.py,1200,FILE:nrc_core/battle.py,meteor > 0,待核对
+BRANCH:nrc_core/battle.py:1200:false,code_branch,false,T04,nrc_core/battle.py,1200,FILE:nrc_core/battle.py,meteor > 0,待核对
+BRANCH:nrc_core/battle.py:1208:true,code_branch,true,T04,nrc_core/battle.py,1208,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1208:false,code_branch,false,T04,nrc_core/battle.py,1208,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1218:true,code_branch,true,T04,nrc_core/battle.py,1218,FILE:nrc_core/battle.py,"not current.ability_state.get(""share_gains"") or current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:1218:false,code_branch,false,T04,nrc_core/battle.py,1218,FILE:nrc_core/battle.py,"not current.ability_state.get(""share_gains"") or current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:1222:true,code_branch,true,T04,nrc_core/battle.py,1222,FILE:nrc_core/battle.py,hp_gained == 0 and energy_gained == 0,待核对
+BRANCH:nrc_core/battle.py:1222:false,code_branch,false,T04,nrc_core/battle.py,1222,FILE:nrc_core/battle.py,hp_gained == 0 and energy_gained == 0,待核对
+BRANCH:nrc_core/battle.py:1225:true,code_branch,true,T04,nrc_core/battle.py,1225,FILE:nrc_core/battle.py,not bench,待核对
+BRANCH:nrc_core/battle.py:1225:false,code_branch,false,T04,nrc_core/battle.py,1225,FILE:nrc_core/battle.py,not bench,待核对
+BRANCH:nrc_core/battle.py:1228:body,code_branch,body,T04,nrc_core/battle.py,1228,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1228:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1228,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1237:true,code_branch,true,T04,nrc_core/battle.py,1237,FILE:nrc_core/battle.py,action[0] < 0,待核对
+BRANCH:nrc_core/battle.py:1237:false,code_branch,false,T04,nrc_core/battle.py,1237,FILE:nrc_core/battle.py,action[0] < 0,待核对
+BRANCH:nrc_core/battle.py:1242:true,code_branch,true,T04,nrc_core/battle.py,1242,FILE:nrc_core/battle.py,action[0] >= len(pokemon.skills),待核对
+BRANCH:nrc_core/battle.py:1242:false,code_branch,false,T04,nrc_core/battle.py,1242,FILE:nrc_core/battle.py,action[0] >= len(pokemon.skills),待核对
+BRANCH:nrc_core/battle.py:1249:true,code_branch,true,T04,nrc_core/battle.py,1249,FILE:nrc_core/battle.py,not skill_a or not skill_b,待核对
+BRANCH:nrc_core/battle.py:1249:false,code_branch,false,T04,nrc_core/battle.py,1249,FILE:nrc_core/battle.py,not skill_a or not skill_b,待核对
+BRANCH:nrc_core/battle.py:1259:true,code_branch,true,T04,nrc_core/battle.py,1259,FILE:nrc_core/battle.py,not enemy_cat,待核对
+BRANCH:nrc_core/battle.py:1259:false,code_branch,false,T04,nrc_core/battle.py,1259,FILE:nrc_core/battle.py,not enemy_cat,待核对
+BRANCH:nrc_core/battle.py:1261:body,code_branch,body,T04,nrc_core/battle.py,1261,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1261:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1261,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1291:true,code_branch,true,T04,nrc_core/battle.py,1291,FILE:nrc_core/battle.py,not preserve_report,待核对
+BRANCH:nrc_core/battle.py:1291:false,code_branch,false,T04,nrc_core/battle.py,1291,FILE:nrc_core/battle.py,not preserve_report,待核对
+BRANCH:nrc_core/battle.py:1301:true,code_branch,true,T04,nrc_core/battle.py,1301,FILE:nrc_core/battle.py,"not getattr(state, ""turn_start_prepared"", False)",待核对
+BRANCH:nrc_core/battle.py:1301:false,code_branch,false,T04,nrc_core/battle.py,1301,FILE:nrc_core/battle.py,"not getattr(state, ""turn_start_prepared"", False)",待核对
+BRANCH:nrc_core/battle.py:1324:true,code_branch,true,T04,nrc_core/battle.py,1324,FILE:nrc_core/battle.py,a_attack_counter and not b_counters_a,待核对
+BRANCH:nrc_core/battle.py:1324:false,code_branch,false,T04,nrc_core/battle.py,1324,FILE:nrc_core/battle.py,a_attack_counter and not b_counters_a,待核对
+BRANCH:nrc_core/battle.py:1364:true,code_branch,true,T04,nrc_core/battle.py,1364,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1364:false,code_branch,false,T04,nrc_core/battle.py,1364,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1371:true,code_branch,true,T04,nrc_core/battle.py,1371,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1371:false,code_branch,false,T04,nrc_core/battle.py,1371,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1378:true,code_branch,true,T04,nrc_core/battle.py,1378,FILE:nrc_core/battle.py,not second_killed_by_first,待核对
+BRANCH:nrc_core/battle.py:1378:false,code_branch,false,T04,nrc_core/battle.py,1378,FILE:nrc_core/battle.py,not second_killed_by_first,待核对
+BRANCH:nrc_core/battle.py:1398:true,code_branch,true,T04,nrc_core/battle.py,1398,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1398:false,code_branch,false,T04,nrc_core/battle.py,1398,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1403:body,code_branch,body,T04,nrc_core/battle.py,1403,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1403:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1403,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1419:true,code_branch,true,T04,nrc_core/battle.py,1419,FILE:nrc_core/battle.py,action[0] < 0,待核对
+BRANCH:nrc_core/battle.py:1419:false,code_branch,false,T04,nrc_core/battle.py,1419,FILE:nrc_core/battle.py,action[0] < 0,待核对
+BRANCH:nrc_core/battle.py:1424:true,code_branch,true,T04,nrc_core/battle.py,1424,FILE:nrc_core/battle.py,action[0] >= len(current.skills),待核对
+BRANCH:nrc_core/battle.py:1424:false,code_branch,false,T04,nrc_core/battle.py,1424,FILE:nrc_core/battle.py,action[0] >= len(current.skills),待核对
+BRANCH:nrc_core/battle.py:1427:true,code_branch,true,T04,nrc_core/battle.py,1427,FILE:nrc_core/battle.py,"current.ability_state.get(""first_action_bonus"")",待核对
+BRANCH:nrc_core/battle.py:1427:false,code_branch,false,T04,nrc_core/battle.py,1427,FILE:nrc_core/battle.py,"current.ability_state.get(""first_action_bonus"")",待核对
+BRANCH:nrc_core/battle.py:1438:body,code_branch,body,T04,nrc_core/battle.py,1438,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1438:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1438,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1465:true,code_branch,true,T04,nrc_core/battle.py,1465,FILE:nrc_core/battle.py,current.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1465:false,code_branch,false,T04,nrc_core/battle.py,1465,FILE:nrc_core/battle.py,current.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1469:true,code_branch,true,T04,nrc_core/battle.py,1469,FILE:nrc_core/battle.py,action[0] == -2,待核对
+BRANCH:nrc_core/battle.py:1469:false,code_branch,false,T04,nrc_core/battle.py,1469,FILE:nrc_core/battle.py,action[0] == -2,待核对
+BRANCH:nrc_core/battle.py:1584:true,code_branch,true,T04,nrc_core/battle.py,1584,FILE:nrc_core/battle.py,action[0] == -1,待核对
+BRANCH:nrc_core/battle.py:1584:false,code_branch,false,T04,nrc_core/battle.py,1584,FILE:nrc_core/battle.py,action[0] == -1,待核对
+BRANCH:nrc_core/battle.py:1630:true,code_branch,true,T04,nrc_core/battle.py,1630,FILE:nrc_core/battle.py,slot_lock is not None and action[0] not in slot_lock,待核对
+BRANCH:nrc_core/battle.py:1630:false,code_branch,false,T04,nrc_core/battle.py,1630,FILE:nrc_core/battle.py,slot_lock is not None and action[0] not in slot_lock,待核对
+BRANCH:nrc_core/battle.py:1636:true,code_branch,true,T04,nrc_core/battle.py,1636,FILE:nrc_core/battle.py,skill.charge,待核对
+BRANCH:nrc_core/battle.py:1636:false,code_branch,false,T04,nrc_core/battle.py,1636,FILE:nrc_core/battle.py,skill.charge,待核对
+BRANCH:nrc_core/battle.py:1662:true,code_branch,true,T04,nrc_core/battle.py,1662,FILE:nrc_core/battle.py,"momentum_stacks > 0 and skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:1662:false,code_branch,false,T04,nrc_core/battle.py,1662,FILE:nrc_core/battle.py,"momentum_stacks > 0 and skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:1670:true,code_branch,true,T04,nrc_core/battle.py,1670,FILE:nrc_core/battle.py,current.energy < actual_cost,待核对
+BRANCH:nrc_core/battle.py:1670:false,code_branch,false,T04,nrc_core/battle.py,1670,FILE:nrc_core/battle.py,current.energy < actual_cost,待核对
+BRANCH:nrc_core/battle.py:1706:true,code_branch,true,T04,nrc_core/battle.py,1706,FILE:nrc_core/battle.py,"transformed_restore is None and (
+        getattr(skill, ""transform_dynamic_scope"", """")
+        or getattr(skill, ""transform_scope"", """")
+    )",待核对
+BRANCH:nrc_core/battle.py:1706:false,code_branch,false,T04,nrc_core/battle.py,1706,FILE:nrc_core/battle.py,"transformed_restore is None and (
+        getattr(skill, ""transform_dynamic_scope"", """")
+        or getattr(skill, ""transform_scope"", """")
+    )",待核对
+BRANCH:nrc_core/battle.py:1720:true,code_branch,true,T04,nrc_core/battle.py,1720,FILE:nrc_core/battle.py,"not is_burst and burst_extend > 0 and getattr(skill, ""burst"", False)",待核对
+BRANCH:nrc_core/battle.py:1720:false,code_branch,false,T04,nrc_core/battle.py,1720,FILE:nrc_core/battle.py,"not is_burst and burst_extend > 0 and getattr(skill, ""burst"", False)",待核对
+BRANCH:nrc_core/battle.py:1724:true,code_branch,true,T04,nrc_core/battle.py,1724,FILE:nrc_core/battle.py,is_burst,待核对
+BRANCH:nrc_core/battle.py:1724:false,code_branch,false,T04,nrc_core/battle.py,1724,FILE:nrc_core/battle.py,is_burst,待核对
+BRANCH:nrc_core/battle.py:1753:true,code_branch,true,T04,nrc_core/battle.py,1753,FILE:nrc_core/battle.py,"devotion and getattr(skill, ""devotion_affected"", False)",待核对
+BRANCH:nrc_core/battle.py:1753:false,code_branch,false,T04,nrc_core/battle.py,1753,FILE:nrc_core/battle.py,"devotion and getattr(skill, ""devotion_affected"", False)",待核对
+BRANCH:nrc_core/battle.py:1776:true,code_branch,true,T04,nrc_core/battle.py,1776,FILE:nrc_core/battle.py,is_first,待核对
+BRANCH:nrc_core/battle.py:1776:false,code_branch,false,T04,nrc_core/battle.py,1776,FILE:nrc_core/battle.py,is_first,待核对
+BRANCH:nrc_core/battle.py:1791:body,code_branch,body,T04,nrc_core/battle.py,1791,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1791:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1791,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1805:true,code_branch,true,T04,nrc_core/battle.py,1805,FILE:nrc_core/battle.py,fs_power_applied > 0,待核对
+BRANCH:nrc_core/battle.py:1805:false,code_branch,false,T04,nrc_core/battle.py,1805,FILE:nrc_core/battle.py,fs_power_applied > 0,待核对
+BRANCH:nrc_core/battle.py:1807:true,code_branch,true,T04,nrc_core/battle.py,1807,FILE:nrc_core/battle.py,"current.ability_state.pop(""_fs_hit_applied"", False)",待核对
+BRANCH:nrc_core/battle.py:1807:false,code_branch,false,T04,nrc_core/battle.py,1807,FILE:nrc_core/battle.py,"current.ability_state.pop(""_fs_hit_applied"", False)",待核对
+BRANCH:nrc_core/battle.py:1812:true,code_branch,true,T04,nrc_core/battle.py,1812,FILE:nrc_core/battle.py,burst_applied > 0,待核对
+BRANCH:nrc_core/battle.py:1812:false,code_branch,false,T04,nrc_core/battle.py,1812,FILE:nrc_core/battle.py,burst_applied > 0,待核对
+BRANCH:nrc_core/battle.py:1815:true,code_branch,true,T04,nrc_core/battle.py,1815,FILE:nrc_core/battle.py,transformed_restore is not None and action[0] < len(team_list[idx].skills) and team_list[idx].skills[action[0]] is skill,待核对
+BRANCH:nrc_core/battle.py:1815:false,code_branch,false,T04,nrc_core/battle.py,1815,FILE:nrc_core/battle.py,transformed_restore is not None and action[0] < len(team_list[idx].skills) and team_list[idx].skills[action[0]] is skill,待核对
+BRANCH:nrc_core/battle.py:1826:true,code_branch,true,T04,nrc_core/battle.py,1826,FILE:nrc_core/battle.py,"not enemy_skill or not getattr(enemy_skill, ""effects"", None)",待核对
+BRANCH:nrc_core/battle.py:1826:false,code_branch,false,T04,nrc_core/battle.py,1826,FILE:nrc_core/battle.py,"not enemy_skill or not getattr(enemy_skill, ""effects"", None)",待核对
+BRANCH:nrc_core/battle.py:1836:true,code_branch,true,T04,nrc_core/battle.py,1836,FILE:nrc_core/battle.py,not my_cat,待核对
+BRANCH:nrc_core/battle.py:1836:false,code_branch,false,T04,nrc_core/battle.py,1836,FILE:nrc_core/battle.py,not my_cat,待核对
+BRANCH:nrc_core/battle.py:1838:body,code_branch,body,T04,nrc_core/battle.py,1838,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1838:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1838,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1861:true,code_branch,true,T04,nrc_core/battle.py,1861,FILE:nrc_core/battle.py,enemy_action[0] >= 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1861:false,code_branch,false,T04,nrc_core/battle.py,1861,FILE:nrc_core/battle.py,enemy_action[0] >= 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1870:true,code_branch,true,T04,nrc_core/battle.py,1870,FILE:nrc_core/battle.py,interrupted_by_counter,待核对
+BRANCH:nrc_core/battle.py:1870:false,code_branch,false,T04,nrc_core/battle.py,1870,FILE:nrc_core/battle.py,interrupted_by_counter,待核对
+BRANCH:nrc_core/battle.py:1959:true,code_branch,true,T04,nrc_core/battle.py,1959,FILE:nrc_core/battle.py,"enemy_skill and hasattr(enemy_skill, ""effects"") and enemy_skill.effects",待核对
+BRANCH:nrc_core/battle.py:1959:false,code_branch,false,T04,nrc_core/battle.py,1959,FILE:nrc_core/battle.py,"enemy_skill and hasattr(enemy_skill, ""effects"") and enemy_skill.effects",待核对
+BRANCH:nrc_core/battle.py:1967:true,code_branch,true,T04,nrc_core/battle.py,1967,FILE:nrc_core/battle.py,"enemy_skill and damage > 0 and getattr(enemy_skill, ""damage_reduction"", 0) > 0",待核对
+BRANCH:nrc_core/battle.py:1967:false,code_branch,false,T04,nrc_core/battle.py,1967,FILE:nrc_core/battle.py,"enemy_skill and damage > 0 and getattr(enemy_skill, ""damage_reduction"", 0) > 0",待核对
+BRANCH:nrc_core/battle.py:1980:true,code_branch,true,T04,nrc_core/battle.py,1980,FILE:nrc_core/battle.py,"not (enemy_skill and not enemy.is_fainted and result[""counter_effects""] and should_resolve)",待核对
+BRANCH:nrc_core/battle.py:1980:false,code_branch,false,T04,nrc_core/battle.py,1980,FILE:nrc_core/battle.py,"not (enemy_skill and not enemy.is_fainted and result[""counter_effects""] and should_resolve)",待核对
+BRANCH:nrc_core/battle.py:1983:body,code_branch,body,T04,nrc_core/battle.py,1983,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1983:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1983,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2026:true,code_branch,true,T04,nrc_core/battle.py,2026,FILE:nrc_core/battle.py,"not (enemy_skill and hasattr(enemy_skill, ""effects"") and enemy_skill.effects)",待核对
+BRANCH:nrc_core/battle.py:2026:false,code_branch,false,T04,nrc_core/battle.py,2026,FILE:nrc_core/battle.py,"not (enemy_skill and hasattr(enemy_skill, ""effects"") and enemy_skill.effects)",待核对
+BRANCH:nrc_core/battle.py:2028:true,code_branch,true,T04,nrc_core/battle.py,2028,FILE:nrc_core/battle.py,"_has_tag_type(enemy_skill.effects, E.DAMAGE)",待核对
+BRANCH:nrc_core/battle.py:2028:false,code_branch,false,T04,nrc_core/battle.py,2028,FILE:nrc_core/battle.py,"_has_tag_type(enemy_skill.effects, E.DAMAGE)",待核对
+BRANCH:nrc_core/battle.py:2033:body,code_branch,body,T04,nrc_core/battle.py,2033,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2033:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2033,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2042:body,code_branch,body,T04,nrc_core/battle.py,2042,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2042:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2042,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2082:true,code_branch,true,T04,nrc_core/battle.py,2082,FILE:nrc_core/battle.py,enemy.ability_effects and damage > 0,待核对
+BRANCH:nrc_core/battle.py:2082:false,code_branch,false,T04,nrc_core/battle.py,2082,FILE:nrc_core/battle.py,enemy.ability_effects and damage > 0,待核对
+BRANCH:nrc_core/battle.py:2106:true,code_branch,true,T04,nrc_core/battle.py,2106,FILE:nrc_core/battle.py,pokemon.is_fainted,待核对
+BRANCH:nrc_core/battle.py:2106:false,code_branch,false,T04,nrc_core/battle.py,2106,FILE:nrc_core/battle.py,pokemon.is_fainted,待核对
+BRANCH:nrc_core/battle.py:2108:true,code_branch,true,T04,nrc_core/battle.py,2108,FILE:nrc_core/battle.py,pokemon.freeze_stacks > 0 and pokemon.current_hp <= pokemon.freeze_threshold,待核对
+BRANCH:nrc_core/battle.py:2108:false,code_branch,false,T04,nrc_core/battle.py,2108,FILE:nrc_core/battle.py,pokemon.freeze_stacks > 0 and pokemon.current_hp <= pokemon.freeze_threshold,待核对
+BRANCH:nrc_core/battle.py:2117:true,code_branch,true,T04,nrc_core/battle.py,2117,FILE:nrc_core/battle.py,damage > 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:2117:false,code_branch,false,T04,nrc_core/battle.py,2117,FILE:nrc_core/battle.py,damage > 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:2145:true,code_branch,true,T04,nrc_core/battle.py,2145,FILE:nrc_core/battle.py,"enemy.ability_state.pop(""guard_transform_pending"", None)",待核对
+BRANCH:nrc_core/battle.py:2145:false,code_branch,false,T04,nrc_core/battle.py,2145,FILE:nrc_core/battle.py,"enemy.ability_state.pop(""guard_transform_pending"", None)",待核对
+BRANCH:nrc_core/battle.py:2152:true,code_branch,true,T04,nrc_core/battle.py,2152,FILE:nrc_core/battle.py,enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:2152:false,code_branch,false,T04,nrc_core/battle.py,2152,FILE:nrc_core/battle.py,enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:2178:true,code_branch,true,T04,nrc_core/battle.py,2178,FILE:nrc_core/battle.py,"result.get(""_self_ko"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2178:false,code_branch,false,T04,nrc_core/battle.py,2178,FILE:nrc_core/battle.py,"result.get(""_self_ko"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2187:true,code_branch,true,T04,nrc_core/battle.py,2187,FILE:nrc_core/battle.py,"result.get(""force_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2187:false,code_branch,false,T04,nrc_core/battle.py,2187,FILE:nrc_core/battle.py,"result.get(""force_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2192:true,code_branch,true,T04,nrc_core/battle.py,2192,FILE:nrc_core/battle.py,"result.get(""force_enemy_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2192:false,code_branch,false,T04,nrc_core/battle.py,2192,FILE:nrc_core/battle.py,"result.get(""force_enemy_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2196:true,code_branch,true,T04,nrc_core/battle.py,2196,FILE:nrc_core/battle.py,"result.get(""_counter_enemy_self_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2196:false,code_branch,false,T04,nrc_core/battle.py,2196,FILE:nrc_core/battle.py,"result.get(""_counter_enemy_self_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2200:true,code_branch,true,T04,nrc_core/battle.py,2200,FILE:nrc_core/battle.py,"result.get(""_counter_force_attacker_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2200:false,code_branch,false,T04,nrc_core/battle.py,2200,FILE:nrc_core/battle.py,"result.get(""_counter_force_attacker_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2207:true,code_branch,true,T04,nrc_core/battle.py,2207,FILE:nrc_core/battle.py,"result.get(""interrupted"")",待核对
+BRANCH:nrc_core/battle.py:2207:false,code_branch,false,T04,nrc_core/battle.py,2207,FILE:nrc_core/battle.py,"result.get(""interrupted"")",待核对
+BRANCH:nrc_core/battle.py:2210:true,code_branch,true,T04,nrc_core/battle.py,2210,FILE:nrc_core/battle.py,"result.get(""_dispel_if_not_blocked"")",待核对
+BRANCH:nrc_core/battle.py:2210:false,code_branch,false,T04,nrc_core/battle.py,2210,FILE:nrc_core/battle.py,"result.get(""_dispel_if_not_blocked"")",待核对
+BRANCH:nrc_core/battle.py:2222:true,code_branch,true,T04,nrc_core/battle.py,2222,FILE:nrc_core/battle.py,drive_value > 0,待核对
+BRANCH:nrc_core/battle.py:2222:false,code_branch,false,T04,nrc_core/battle.py,2222,FILE:nrc_core/battle.py,drive_value > 0,待核对
+BRANCH:nrc_core/battle.py:2226:true,code_branch,true,T04,nrc_core/battle.py,2226,FILE:nrc_core/battle.py,current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2226:false,code_branch,false,T04,nrc_core/battle.py,2226,FILE:nrc_core/battle.py,current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2234:body,code_branch,body,T04,nrc_core/battle.py,2234,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2234:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2234,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2240:true,code_branch,true,T04,nrc_core/battle.py,2240,FILE:nrc_core/battle.py,cond_buff,待核对
+BRANCH:nrc_core/battle.py:2240:false,code_branch,false,T04,nrc_core/battle.py,2240,FILE:nrc_core/battle.py,cond_buff,待核对
+BRANCH:nrc_core/battle.py:2247:true,code_branch,true,T04,nrc_core/battle.py,2247,FILE:nrc_core/battle.py,"result.get(""_replay_agility"")",待核对
+BRANCH:nrc_core/battle.py:2247:false,code_branch,false,T04,nrc_core/battle.py,2247,FILE:nrc_core/battle.py,"result.get(""_replay_agility"")",待核对
+BRANCH:nrc_core/battle.py:2251:true,code_branch,true,T04,nrc_core/battle.py,2251,FILE:nrc_core/battle.py,"result.get(""_agility_cost_share"")",待核对
+BRANCH:nrc_core/battle.py:2251:false,code_branch,false,T04,nrc_core/battle.py,2251,FILE:nrc_core/battle.py,"result.get(""_agility_cost_share"")",待核对
+BRANCH:nrc_core/battle.py:2260:true,code_branch,true,T04,nrc_core/battle.py,2260,FILE:nrc_core/battle.py,energy_refund > 0,待核对
+BRANCH:nrc_core/battle.py:2260:false,code_branch,false,T04,nrc_core/battle.py,2260,FILE:nrc_core/battle.py,energy_refund > 0,待核对
+BRANCH:nrc_core/battle.py:2281:true,code_branch,true,T04,nrc_core/battle.py,2281,FILE:nrc_core/battle.py,type_cn,待核对
+BRANCH:nrc_core/battle.py:2281:false,code_branch,false,T04,nrc_core/battle.py,2281,FILE:nrc_core/battle.py,type_cn,待核对
+BRANCH:nrc_core/battle.py:2291:true,code_branch,true,T04,nrc_core/battle.py,2291,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2291:false,code_branch,false,T04,nrc_core/battle.py,2291,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2296:true,code_branch,true,T04,nrc_core/battle.py,2296,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2296:false,code_branch,false,T04,nrc_core/battle.py,2296,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2303:true,code_branch,true,T04,nrc_core/battle.py,2303,FILE:nrc_core/battle.py,action[0] == -2,待核对
+BRANCH:nrc_core/battle.py:2303:false,code_branch,false,T04,nrc_core/battle.py,2303,FILE:nrc_core/battle.py,action[0] == -2,待核对
+BRANCH:nrc_core/battle.py:2305:true,code_branch,true,T04,nrc_core/battle.py,2305,FILE:nrc_core/battle.py,action[0] < 0,待核对
+BRANCH:nrc_core/battle.py:2305:false,code_branch,false,T04,nrc_core/battle.py,2305,FILE:nrc_core/battle.py,action[0] < 0,待核对
+BRANCH:nrc_core/battle.py:2309:true,code_branch,true,T04,nrc_core/battle.py,2309,FILE:nrc_core/battle.py,action[0] >= len(team_list[idx].skills),待核对
+BRANCH:nrc_core/battle.py:2309:false,code_branch,false,T04,nrc_core/battle.py,2309,FILE:nrc_core/battle.py,action[0] >= len(team_list[idx].skills),待核对
+BRANCH:nrc_core/battle.py:2318:true,code_branch,true,T04,nrc_core/battle.py,2318,FILE:nrc_core/battle.py,state.mp_a <= 0,待核对
+BRANCH:nrc_core/battle.py:2318:false,code_branch,false,T04,nrc_core/battle.py,2318,FILE:nrc_core/battle.py,state.mp_a <= 0,待核对
+BRANCH:nrc_core/battle.py:2320:true,code_branch,true,T04,nrc_core/battle.py,2320,FILE:nrc_core/battle.py,state.mp_b <= 0,待核对
+BRANCH:nrc_core/battle.py:2320:false,code_branch,false,T04,nrc_core/battle.py,2320,FILE:nrc_core/battle.py,state.mp_b <= 0,待核对
+BRANCH:nrc_core/battle.py:2324:true,code_branch,true,T04,nrc_core/battle.py,2324,FILE:nrc_core/battle.py,not alive_a and alive_b,待核对
+BRANCH:nrc_core/battle.py:2324:false,code_branch,false,T04,nrc_core/battle.py,2324,FILE:nrc_core/battle.py,not alive_a and alive_b,待核对
+BRANCH:nrc_core/battle.py:2326:true,code_branch,true,T04,nrc_core/battle.py,2326,FILE:nrc_core/battle.py,not alive_b and alive_a,待核对
+BRANCH:nrc_core/battle.py:2326:false,code_branch,false,T04,nrc_core/battle.py,2326,FILE:nrc_core/battle.py,not alive_b and alive_a,待核对
+BRANCH:nrc_core/battle.py:2328:true,code_branch,true,T04,nrc_core/battle.py,2328,FILE:nrc_core/battle.py,not alive_a and not alive_b,待核对
+BRANCH:nrc_core/battle.py:2328:false,code_branch,false,T04,nrc_core/battle.py,2328,FILE:nrc_core/battle.py,not alive_a and not alive_b,待核对
+BRANCH:nrc_core/battle.py:32:true,code_branch,true,T04,nrc_core/battle.py,32,FILE:nrc_core/battle.py,"isinstance(item, SkillEffect)",待核对
+BRANCH:nrc_core/battle.py:32:false,code_branch,false,T04,nrc_core/battle.py,32,FILE:nrc_core/battle.py,"isinstance(item, SkillEffect)",待核对
+BRANCH:nrc_core/battle.py:56:true,code_branch,true,T04,nrc_core/battle.py,56,FILE:nrc_core/battle.py,skill.power <= 0,待核对
+BRANCH:nrc_core/battle.py:56:false,code_branch,false,T04,nrc_core/battle.py,56,FILE:nrc_core/battle.py,skill.power <= 0,待核对
+BRANCH:nrc_core/battle.py:58:true,code_branch,true,T04,nrc_core/battle.py,58,FILE:nrc_core/battle.py,attacker.energy < skill.energy_cost,待核对
+BRANCH:nrc_core/battle.py:58:false,code_branch,false,T04,nrc_core/battle.py,58,FILE:nrc_core/battle.py,attacker.energy < skill.energy_cost,待核对
+BRANCH:nrc_core/battle.py:60:true,code_branch,true,T04,nrc_core/battle.py,60,FILE:nrc_core/battle.py,"attacker.cooldowns.get(idx, 0) > 0",待核对
+BRANCH:nrc_core/battle.py:60:false,code_branch,false,T04,nrc_core/battle.py,60,FILE:nrc_core/battle.py,"attacker.cooldowns.get(idx, 0) > 0",待核对
+BRANCH:nrc_core/battle.py:63:true,code_branch,true,T04,nrc_core/battle.py,63,FILE:nrc_core/battle.py,damage >= defender.current_hp,待核对
+BRANCH:nrc_core/battle.py:63:false,code_branch,false,T04,nrc_core/battle.py,63,FILE:nrc_core/battle.py,damage >= defender.current_hp,待核对
+BRANCH:nrc_core/battle.py:76:true,code_branch,true,T04,nrc_core/battle.py,76,FILE:nrc_core/battle.py,current.is_fainted or not current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:76:false,code_branch,false,T04,nrc_core/battle.py,76,FILE:nrc_core/battle.py,current.is_fainted or not current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:96:body,code_branch,body,T04,nrc_core/battle.py,96,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:96:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,96,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:99:true,code_branch,true,T04,nrc_core/battle.py,99,FILE:nrc_core/battle.py,weekend is not None,待核对
+BRANCH:nrc_core/battle.py:99:false,code_branch,false,T04,nrc_core/battle.py,99,FILE:nrc_core/battle.py,weekend is not None,待核对
+BRANCH:nrc_core/battle.py:108:true,code_branch,true,T04,nrc_core/battle.py,108,FILE:nrc_core/battle.py,"is_night and not current.ability_state.get(""sleep_entry_applied"")",待核对
+BRANCH:nrc_core/battle.py:108:false,code_branch,false,T04,nrc_core/battle.py,108,FILE:nrc_core/battle.py,"is_night and not current.ability_state.get(""sleep_entry_applied"")",待核对
+BRANCH:nrc_core/battle.py:118:body,code_branch,body,T04,nrc_core/battle.py,118,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:118:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,118,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:124:true,code_branch,true,T04,nrc_core/battle.py,124,FILE:nrc_core/battle.py,"pokemon.ability_state.pop(""threat_speed_bonus_active"", None)",待核对
+BRANCH:nrc_core/battle.py:124:false,code_branch,false,T04,nrc_core/battle.py,124,FILE:nrc_core/battle.py,"pokemon.ability_state.pop(""threat_speed_bonus_active"", None)",待核对
+BRANCH:nrc_core/battle.py:130:body,code_branch,body,T04,nrc_core/battle.py,130,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:130:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,130,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:178:true,code_branch,true,T04,nrc_core/battle.py,178,FILE:nrc_core/battle.py,"filt == ""all""",待核对
+BRANCH:nrc_core/battle.py:178:false,code_branch,false,T04,nrc_core/battle.py,178,FILE:nrc_core/battle.py,"filt == ""all""",待核对
+BRANCH:nrc_core/battle.py:186:true,code_branch,true,T04,nrc_core/battle.py,186,FILE:nrc_core/battle.py,matched,待核对
+BRANCH:nrc_core/battle.py:186:false,code_branch,false,T04,nrc_core/battle.py,186,FILE:nrc_core/battle.py,matched,待核对
+BRANCH:nrc_core/battle.py:195:true,code_branch,true,T04,nrc_core/battle.py,195,FILE:nrc_core/battle.py,tag.type != E.ENERGY_COST_DYNAMIC,待核对
+BRANCH:nrc_core/battle.py:195:false,code_branch,false,T04,nrc_core/battle.py,195,FILE:nrc_core/battle.py,tag.type != E.ENERGY_COST_DYNAMIC,待核对
+BRANCH:nrc_core/battle.py:197:true,code_branch,true,T04,nrc_core/battle.py,197,FILE:nrc_core/battle.py,"tag.params.get(""condition"") == ""burst"" and _is_burst_action(current, skill)",待核对
+BRANCH:nrc_core/battle.py:197:false,code_branch,false,T04,nrc_core/battle.py,197,FILE:nrc_core/battle.py,"tag.params.get(""condition"") == ""burst"" and _is_burst_action(current, skill)",待核对
+BRANCH:nrc_core/battle.py:211:true,code_branch,true,T04,nrc_core/battle.py,211,FILE:nrc_core/battle.py,"""白子"" in pokemon.name",待核对
+BRANCH:nrc_core/battle.py:211:false,code_branch,false,T04,nrc_core/battle.py,211,FILE:nrc_core/battle.py,"""白子"" in pokemon.name",待核对
+BRANCH:nrc_core/battle.py:259:true,code_branch,true,T04,nrc_core/battle.py,259,FILE:nrc_core/battle.py,pokemon in state.team_a,待核对
+BRANCH:nrc_core/battle.py:259:false,code_branch,false,T04,nrc_core/battle.py,259,FILE:nrc_core/battle.py,pokemon in state.team_a,待核对
+BRANCH:nrc_core/battle.py:260:true,code_branch,true,T04,nrc_core/battle.py,260,FILE:nrc_core/battle.py,pokemon in state.team_a,待核对
+BRANCH:nrc_core/battle.py:260:false,code_branch,false,T04,nrc_core/battle.py,260,FILE:nrc_core/battle.py,pokemon in state.team_a,待核对
+BRANCH:nrc_core/battle.py:262:true,code_branch,true,T04,nrc_core/battle.py,262,FILE:nrc_core/battle.py,pokemon in state.team_a,待核对
+BRANCH:nrc_core/battle.py:262:false,code_branch,false,T04,nrc_core/battle.py,262,FILE:nrc_core/battle.py,pokemon in state.team_a,待核对
+BRANCH:nrc_core/battle.py:273:true,code_branch,true,T04,nrc_core/battle.py,273,FILE:nrc_core/battle.py,turns_left is None,待核对
+BRANCH:nrc_core/battle.py:273:false,code_branch,false,T04,nrc_core/battle.py,273,FILE:nrc_core/battle.py,turns_left is None,待核对
+BRANCH:nrc_core/battle.py:276:true,code_branch,true,T04,nrc_core/battle.py,276,FILE:nrc_core/battle.py,turns_left > 0,待核对
+BRANCH:nrc_core/battle.py:276:false,code_branch,false,T04,nrc_core/battle.py,276,FILE:nrc_core/battle.py,turns_left > 0,待核对
+BRANCH:nrc_core/battle.py:308:true,code_branch,true,T04,nrc_core/battle.py,308,FILE:nrc_core/battle.py,power <= 0,待核对
+BRANCH:nrc_core/battle.py:308:false,code_branch,false,T04,nrc_core/battle.py,308,FILE:nrc_core/battle.py,power <= 0,待核对
+BRANCH:nrc_core/battle.py:316:true,code_branch,true,T04,nrc_core/battle.py,316,FILE:nrc_core/battle.py,"getattr(attacker, ""ability_state"", {}).get(""barrel_active"")",待核对
+BRANCH:nrc_core/battle.py:316:false,code_branch,false,T04,nrc_core/battle.py,316,FILE:nrc_core/battle.py,"getattr(attacker, ""ability_state"", {}).get(""barrel_active"")",待核对
+BRANCH:nrc_core/battle.py:318:true,code_branch,true,T04,nrc_core/battle.py,318,FILE:nrc_core/battle.py,"getattr(defender, ""ability_state"", {}).get(""barrel_active"")",待核对
+BRANCH:nrc_core/battle.py:318:false,code_branch,false,T04,nrc_core/battle.py,318,FILE:nrc_core/battle.py,"getattr(defender, ""ability_state"", {}).get(""barrel_active"")",待核对
+BRANCH:nrc_core/battle.py:326:true,code_branch,true,T04,nrc_core/battle.py,326,FILE:nrc_core/battle.py,weather,待核对
+BRANCH:nrc_core/battle.py:326:false,code_branch,false,T04,nrc_core/battle.py,326,FILE:nrc_core/battle.py,weather,待核对
+CODE:nrc_core/battle.py:339:calculate_path,code_object,calculate_path,T04,nrc_core/battle.py,339,FILE:nrc_core/battle.py,无描述字符串,待核对
+BRANCH:nrc_core/battle.py:391:true,code_branch,true,T04,nrc_core/battle.py,391,FILE:nrc_core/battle.py,paint_config,待核对
+BRANCH:nrc_core/battle.py:391:false,code_branch,false,T04,nrc_core/battle.py,391,FILE:nrc_core/battle.py,paint_config,待核对
+BRANCH:nrc_core/battle.py:472:true,code_branch,true,T04,nrc_core/battle.py,472,FILE:nrc_core/battle.py,expected_type is not None and candidate.skill_type != expected_type,待核对
+BRANCH:nrc_core/battle.py:472:false,code_branch,false,T04,nrc_core/battle.py,472,FILE:nrc_core/battle.py,expected_type is not None and candidate.skill_type != expected_type,待核对
+BRANCH:nrc_core/battle.py:489:true,code_branch,true,T04,nrc_core/battle.py,489,FILE:nrc_core/battle.py,state.catalog is not None,待核对
+BRANCH:nrc_core/battle.py:489:false,code_branch,false,T04,nrc_core/battle.py,489,FILE:nrc_core/battle.py,state.catalog is not None,待核对
+BRANCH:nrc_core/battle.py:492:body,code_branch,body,T04,nrc_core/battle.py,492,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:492:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,492,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:550:true,code_branch,true,T04,nrc_core/battle.py,550,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:550:false,code_branch,false,T04,nrc_core/battle.py,550,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:551:true,code_branch,true,T04,nrc_core/battle.py,551,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:551:false,code_branch,false,T04,nrc_core/battle.py,551,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:555:body,code_branch,body,T04,nrc_core/battle.py,555,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:555:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,555,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:565:true,code_branch,true,T04,nrc_core/battle.py,565,FILE:nrc_core/battle.py,"current.ability_state.get(""first_action_bonus"")",待核对
+BRANCH:nrc_core/battle.py:565:false,code_branch,false,T04,nrc_core/battle.py,565,FILE:nrc_core/battle.py,"current.ability_state.get(""first_action_bonus"")",待核对
+BRANCH:nrc_core/battle.py:567:true,code_branch,true,T04,nrc_core/battle.py,567,FILE:nrc_core/battle.py,current.energy >= skill.energy_cost * repetitions and cd <= 0,待核对
+BRANCH:nrc_core/battle.py:567:false,code_branch,false,T04,nrc_core/battle.py,567,FILE:nrc_core/battle.py,current.energy >= skill.energy_cost * repetitions and cd <= 0,待核对
+BRANCH:nrc_core/battle.py:570:true,code_branch,true,T04,nrc_core/battle.py,570,FILE:nrc_core/battle.py,actions,待核对
+BRANCH:nrc_core/battle.py:570:false,code_branch,false,T04,nrc_core/battle.py,570,FILE:nrc_core/battle.py,actions,待核对
+BRANCH:nrc_core/battle.py:582:true,code_branch,true,T04,nrc_core/battle.py,582,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:582:false,code_branch,false,T04,nrc_core/battle.py,582,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:583:true,code_branch,true,T04,nrc_core/battle.py,583,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:583:false,code_branch,false,T04,nrc_core/battle.py,583,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:592:true,code_branch,true,T04,nrc_core/battle.py,592,FILE:nrc_core/battle.py,"current.ability_state.get(""auto_switch_zero_energy"") and current.energy <= 0",待核对
+BRANCH:nrc_core/battle.py:592:false,code_branch,false,T04,nrc_core/battle.py,592,FILE:nrc_core/battle.py,"current.ability_state.get(""auto_switch_zero_energy"") and current.energy <= 0",待核对
+BRANCH:nrc_core/battle.py:597:true,code_branch,true,T04,nrc_core/battle.py,597,FILE:nrc_core/battle.py,"reason == ""every_turn""",待核对
+BRANCH:nrc_core/battle.py:597:false,code_branch,false,T04,nrc_core/battle.py,597,FILE:nrc_core/battle.py,"reason == ""every_turn""",待核对
+BRANCH:nrc_core/battle.py:609:true,code_branch,true,T04,nrc_core/battle.py,609,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:609:false,code_branch,false,T04,nrc_core/battle.py,609,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:610:true,code_branch,true,T04,nrc_core/battle.py,610,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:610:false,code_branch,false,T04,nrc_core/battle.py,610,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:615:true,code_branch,true,T04,nrc_core/battle.py,615,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:615:false,code_branch,false,T04,nrc_core/battle.py,615,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:616:true,code_branch,true,T04,nrc_core/battle.py,616,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:616:false,code_branch,false,T04,nrc_core/battle.py,616,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:644:body,code_branch,body,T04,nrc_core/battle.py,644,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:644:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,644,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:655:true,code_branch,true,T04,nrc_core/battle.py,655,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:655:false,code_branch,false,T04,nrc_core/battle.py,655,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:659:true,code_branch,true,T04,nrc_core/battle.py,659,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:659:false,code_branch,false,T04,nrc_core/battle.py,659,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:662:true,code_branch,true,T04,nrc_core/battle.py,662,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:662:false,code_branch,false,T04,nrc_core/battle.py,662,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:679:true,code_branch,true,T04,nrc_core/battle.py,679,FILE:nrc_core/battle.py,alive,待核对
+BRANCH:nrc_core/battle.py:679:false,code_branch,false,T04,nrc_core/battle.py,679,FILE:nrc_core/battle.py,alive,待核对
+BRANCH:nrc_core/battle.py:704:true,code_branch,true,T04,nrc_core/battle.py,704,FILE:nrc_core/battle.py,alive,待核对
+BRANCH:nrc_core/battle.py:704:false,code_branch,false,T04,nrc_core/battle.py,704,FILE:nrc_core/battle.py,alive,待核对
+BRANCH:nrc_core/battle.py:751:true,code_branch,true,T04,nrc_core/battle.py,751,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:751:false,code_branch,false,T04,nrc_core/battle.py,751,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:753:true,code_branch,true,T04,nrc_core/battle.py,753,FILE:nrc_core/battle.py,p.is_fainted or not p.ability_effects,待核对
+BRANCH:nrc_core/battle.py:753:false,code_branch,false,T04,nrc_core/battle.py,753,FILE:nrc_core/battle.py,p.is_fainted or not p.ability_effects,待核对
+BRANCH:nrc_core/battle.py:767:true,code_branch,true,T04,nrc_core/battle.py,767,FILE:nrc_core/battle.py,pokemon.is_fainted,待核对
+BRANCH:nrc_core/battle.py:767:false,code_branch,false,T04,nrc_core/battle.py,767,FILE:nrc_core/battle.py,pokemon.is_fainted,待核对
+BRANCH:nrc_core/battle.py:780:true,code_branch,true,T04,nrc_core/battle.py,780,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:780:false,code_branch,false,T04,nrc_core/battle.py,780,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:782:true,code_branch,true,T04,nrc_core/battle.py,782,FILE:nrc_core/battle.py,p.ability_effects,待核对
+BRANCH:nrc_core/battle.py:782:false,code_branch,false,T04,nrc_core/battle.py,782,FILE:nrc_core/battle.py,p.ability_effects,待核对
+BRANCH:nrc_core/battle.py:805:true,code_branch,true,T04,nrc_core/battle.py,805,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:805:false,code_branch,false,T04,nrc_core/battle.py,805,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:813:body,code_branch,body,T04,nrc_core/battle.py,813,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:813:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,813,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:919:true,code_branch,true,T04,nrc_core/battle.py,919,FILE:nrc_core/battle.py,"_ability_name(p) == ""安眠""
+            and sleep_time in {""night"", ""晚上"", ""夜晚""}
+            and not p.is_fainted",待核对
+BRANCH:nrc_core/battle.py:919:false,code_branch,false,T04,nrc_core/battle.py,919,FILE:nrc_core/battle.py,"_ability_name(p) == ""安眠""
+            and sleep_time in {""night"", ""晚上"", ""夜晚""}
+            and not p.is_fainted",待核对
+BRANCH:nrc_core/battle.py:929:true,code_branch,true,T04,nrc_core/battle.py,929,FILE:nrc_core/battle.py,meteor_add > 0 and not p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:929:false,code_branch,false,T04,nrc_core/battle.py,929,FILE:nrc_core/battle.py,meteor_add > 0 and not p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:934:true,code_branch,true,T04,nrc_core/battle.py,934,FILE:nrc_core/battle.py,p.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:934:false,code_branch,false,T04,nrc_core/battle.py,934,FILE:nrc_core/battle.py,p.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:946:true,code_branch,true,T04,nrc_core/battle.py,946,FILE:nrc_core/battle.py,state.weather_turns <= 0,待核对
+BRANCH:nrc_core/battle.py:946:false,code_branch,false,T04,nrc_core/battle.py,946,FILE:nrc_core/battle.py,state.weather_turns <= 0,待核对
+BRANCH:nrc_core/battle.py:961:body,code_branch,body,T04,nrc_core/battle.py,961,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:961:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,961,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:964:true,code_branch,true,T04,nrc_core/battle.py,964,FILE:nrc_core/battle.py,"p.ability_state.get(""temporary_skill_cost_mods"")",待核对
+BRANCH:nrc_core/battle.py:964:false,code_branch,false,T04,nrc_core/battle.py,964,FILE:nrc_core/battle.py,"p.ability_state.get(""temporary_skill_cost_mods"")",待核对
+BRANCH:nrc_core/battle.py:981:true,code_branch,true,T04,nrc_core/battle.py,981,FILE:nrc_core/battle.py,value > 0,待核对
+BRANCH:nrc_core/battle.py:981:false,code_branch,false,T04,nrc_core/battle.py,981,FILE:nrc_core/battle.py,value > 0,待核对
+BRANCH:nrc_core/battle.py:987:true,code_branch,true,T04,nrc_core/battle.py,987,FILE:nrc_core/battle.py,remaining <= 0,待核对
+BRANCH:nrc_core/battle.py:987:false,code_branch,false,T04,nrc_core/battle.py,987,FILE:nrc_core/battle.py,remaining <= 0,待核对
+BRANCH:nrc_core/battle.py:989:true,code_branch,true,T04,nrc_core/battle.py,989,FILE:nrc_core/battle.py,not pokemon.is_fainted,待核对
+BRANCH:nrc_core/battle.py:989:false,code_branch,false,T04,nrc_core/battle.py,989,FILE:nrc_core/battle.py,not pokemon.is_fainted,待核对
+BRANCH:nrc_core/battle.py:997:true,code_branch,true,T04,nrc_core/battle.py,997,FILE:nrc_core/battle.py,remaining,待核对
+BRANCH:nrc_core/battle.py:997:false,code_branch,false,T04,nrc_core/battle.py,997,FILE:nrc_core/battle.py,remaining,待核对
+BRANCH:nrc_core/battle.py:1038:true,code_branch,true,T04,nrc_core/battle.py,1038,FILE:nrc_core/battle.py,"not pa.ability_state.get(""faint_no_mp_loss"")",待核对
+BRANCH:nrc_core/battle.py:1038:false,code_branch,false,T04,nrc_core/battle.py,1038,FILE:nrc_core/battle.py,"not pa.ability_state.get(""faint_no_mp_loss"")",待核对
+BRANCH:nrc_core/battle.py:1043:true,code_branch,true,T04,nrc_core/battle.py,1043,FILE:nrc_core/battle.py,pa.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1043:false,code_branch,false,T04,nrc_core/battle.py,1043,FILE:nrc_core/battle.py,pa.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1049:true,code_branch,true,T04,nrc_core/battle.py,1049,FILE:nrc_core/battle.py,"not pb.ability_state.get(""faint_no_mp_loss"")",待核对
+BRANCH:nrc_core/battle.py:1049:false,code_branch,false,T04,nrc_core/battle.py,1049,FILE:nrc_core/battle.py,"not pb.ability_state.get(""faint_no_mp_loss"")",待核对
+BRANCH:nrc_core/battle.py:1053:true,code_branch,true,T04,nrc_core/battle.py,1053,FILE:nrc_core/battle.py,pb.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1053:false,code_branch,false,T04,nrc_core/battle.py,1053,FILE:nrc_core/battle.py,pb.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1066:true,code_branch,true,T04,nrc_core/battle.py,1066,FILE:nrc_core/battle.py,stacks <= 0,待核对
+BRANCH:nrc_core/battle.py:1066:false,code_branch,false,T04,nrc_core/battle.py,1066,FILE:nrc_core/battle.py,stacks <= 0,待核对
+BRANCH:nrc_core/battle.py:1069:body,code_branch,body,T04,nrc_core/battle.py,1069,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1069:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1069,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1091:true,code_branch,true,T04,nrc_core/battle.py,1091,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1091:false,code_branch,false,T04,nrc_core/battle.py,1091,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1096:true,code_branch,true,T04,nrc_core/battle.py,1096,FILE:nrc_core/battle.py,poison_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1096:false,code_branch,false,T04,nrc_core/battle.py,1096,FILE:nrc_core/battle.py,poison_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1105:true,code_branch,true,T04,nrc_core/battle.py,1105,FILE:nrc_core/battle.py,solar_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1105:false,code_branch,false,T04,nrc_core/battle.py,1105,FILE:nrc_core/battle.py,solar_mark > 0,待核对
+BRANCH:nrc_core/battle.py:1111:true,code_branch,true,T04,nrc_core/battle.py,1111,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1111:false,code_branch,false,T04,nrc_core/battle.py,1111,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1112:true,code_branch,true,T04,nrc_core/battle.py,1112,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1112:false,code_branch,false,T04,nrc_core/battle.py,1112,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1113:true,code_branch,true,T04,nrc_core/battle.py,1113,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1113:false,code_branch,false,T04,nrc_core/battle.py,1113,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1116:true,code_branch,true,T04,nrc_core/battle.py,1116,FILE:nrc_core/battle.py,"enemy.ability_state.get(""mirror_buff_to"") is leaving",待核对
+BRANCH:nrc_core/battle.py:1116:false,code_branch,false,T04,nrc_core/battle.py,1116,FILE:nrc_core/battle.py,"enemy.ability_state.get(""mirror_buff_to"") is leaving",待核对
+BRANCH:nrc_core/battle.py:1126:true,code_branch,true,T04,nrc_core/battle.py,1126,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1126:false,code_branch,false,T04,nrc_core/battle.py,1126,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1138:true,code_branch,true,T04,nrc_core/battle.py,1138,FILE:nrc_core/battle.py,pokemon.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:1138:false,code_branch,false,T04,nrc_core/battle.py,1138,FILE:nrc_core/battle.py,pokemon.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:1143:true,code_branch,true,T04,nrc_core/battle.py,1143,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1143:false,code_branch,false,T04,nrc_core/battle.py,1143,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1157:true,code_branch,true,T04,nrc_core/battle.py,1157,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1157:false,code_branch,false,T04,nrc_core/battle.py,1157,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1158:true,code_branch,true,T04,nrc_core/battle.py,1158,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1158:false,code_branch,false,T04,nrc_core/battle.py,1158,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1167:true,code_branch,true,T04,nrc_core/battle.py,1167,FILE:nrc_core/battle.py,base_cost == 5,待核对
+BRANCH:nrc_core/battle.py:1167:false,code_branch,false,T04,nrc_core/battle.py,1167,FILE:nrc_core/battle.py,base_cost == 5,待核对
+BRANCH:nrc_core/battle.py:1179:true,code_branch,true,T04,nrc_core/battle.py,1179,FILE:nrc_core/battle.py,state.turn == entry_turn,待核对
+BRANCH:nrc_core/battle.py:1179:false,code_branch,false,T04,nrc_core/battle.py,1179,FILE:nrc_core/battle.py,state.turn == entry_turn,待核对
+BRANCH:nrc_core/battle.py:1195:true,code_branch,true,T04,nrc_core/battle.py,1195,FILE:nrc_core/battle.py,"skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:1195:false,code_branch,false,T04,nrc_core/battle.py,1195,FILE:nrc_core/battle.py,"skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:1215:true,code_branch,true,T04,nrc_core/battle.py,1215,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1215:false,code_branch,false,T04,nrc_core/battle.py,1215,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1216:true,code_branch,true,T04,nrc_core/battle.py,1216,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1216:false,code_branch,false,T04,nrc_core/battle.py,1216,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1229:true,code_branch,true,T04,nrc_core/battle.py,1229,FILE:nrc_core/battle.py,hp_gained > 0,待核对
+BRANCH:nrc_core/battle.py:1229:false,code_branch,false,T04,nrc_core/battle.py,1229,FILE:nrc_core/battle.py,hp_gained > 0,待核对
+BRANCH:nrc_core/battle.py:1231:true,code_branch,true,T04,nrc_core/battle.py,1231,FILE:nrc_core/battle.py,energy_gained > 0,待核对
+BRANCH:nrc_core/battle.py:1231:false,code_branch,false,T04,nrc_core/battle.py,1231,FILE:nrc_core/battle.py,energy_gained > 0,待核对
+BRANCH:nrc_core/battle.py:1239:true,code_branch,true,T04,nrc_core/battle.py,1239,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1239:false,code_branch,false,T04,nrc_core/battle.py,1239,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1240:true,code_branch,true,T04,nrc_core/battle.py,1240,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1240:false,code_branch,false,T04,nrc_core/battle.py,1240,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1262:true,code_branch,true,T04,nrc_core/battle.py,1262,FILE:nrc_core/battle.py,"isinstance(item, _SE) and item.timing == _ST.ON_COUNTER",待核对
+BRANCH:nrc_core/battle.py:1262:false,code_branch,false,T04,nrc_core/battle.py,1262,FILE:nrc_core/battle.py,"isinstance(item, _SE) and item.timing == _ST.ON_COUNTER",待核对
+BRANCH:nrc_core/battle.py:1328:true,code_branch,true,T04,nrc_core/battle.py,1328,FILE:nrc_core/battle.py,b_attack_counter and not a_counters_b,待核对
+BRANCH:nrc_core/battle.py:1328:false,code_branch,false,T04,nrc_core/battle.py,1328,FILE:nrc_core/battle.py,b_attack_counter and not a_counters_b,待核对
+BRANCH:nrc_core/battle.py:1385:true,code_branch,true,T04,nrc_core/battle.py,1385,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1385:false,code_branch,false,T04,nrc_core/battle.py,1385,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1392:true,code_branch,true,T04,nrc_core/battle.py,1392,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1392:false,code_branch,false,T04,nrc_core/battle.py,1392,FILE:nrc_core/battle.py,check_winner(state),待核对
+BRANCH:nrc_core/battle.py:1421:true,code_branch,true,T04,nrc_core/battle.py,1421,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1421:false,code_branch,false,T04,nrc_core/battle.py,1421,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1422:true,code_branch,true,T04,nrc_core/battle.py,1422,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1422:false,code_branch,false,T04,nrc_core/battle.py,1422,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1437:true,code_branch,true,T04,nrc_core/battle.py,1437,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1437:false,code_branch,false,T04,nrc_core/battle.py,1437,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1443:true,code_branch,true,T04,nrc_core/battle.py,1443,FILE:nrc_core/battle.py,current_index != original_index or current.is_fainted or enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1443:false,code_branch,false,T04,nrc_core/battle.py,1443,FILE:nrc_core/battle.py,current_index != original_index or current.is_fainted or enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1445:true,code_branch,true,T04,nrc_core/battle.py,1445,FILE:nrc_core/battle.py,repetition > 0 and current.energy < current.skills[action[0]].energy_cost,待核对
+BRANCH:nrc_core/battle.py:1445:false,code_branch,false,T04,nrc_core/battle.py,1445,FILE:nrc_core/battle.py,repetition > 0 and current.energy < current.skills[action[0]].energy_cost,待核对
+BRANCH:nrc_core/battle.py:1450:true,code_branch,true,T04,nrc_core/battle.py,1450,FILE:nrc_core/battle.py,current_index_after != original_index or current_after.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1450:false,code_branch,false,T04,nrc_core/battle.py,1450,FILE:nrc_core/battle.py,current_index_after != original_index or current_after.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1458:true,code_branch,true,T04,nrc_core/battle.py,1458,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1458:false,code_branch,false,T04,nrc_core/battle.py,1458,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1459:true,code_branch,true,T04,nrc_core/battle.py,1459,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1459:false,code_branch,false,T04,nrc_core/battle.py,1459,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1460:true,code_branch,true,T04,nrc_core/battle.py,1460,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1460:false,code_branch,false,T04,nrc_core/battle.py,1460,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1461:true,code_branch,true,T04,nrc_core/battle.py,1461,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1461:false,code_branch,false,T04,nrc_core/battle.py,1461,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1489:true,code_branch,true,T04,nrc_core/battle.py,1489,FILE:nrc_core/battle.py,old_pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1489:false,code_branch,false,T04,nrc_core/battle.py,1489,FILE:nrc_core/battle.py,old_pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1495:true,code_branch,true,T04,nrc_core/battle.py,1495,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1495:false,code_branch,false,T04,nrc_core/battle.py,1495,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1508:true,code_branch,true,T04,nrc_core/battle.py,1508,FILE:nrc_core/battle.py,"""transfer_mods"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:1508:false,code_branch,false,T04,nrc_core/battle.py,1508,FILE:nrc_core/battle.py,"""transfer_mods"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:1522:true,code_branch,true,T04,nrc_core/battle.py,1522,FILE:nrc_core/battle.py,"""leave_heal_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:1522:false,code_branch,false,T04,nrc_core/battle.py,1522,FILE:nrc_core/battle.py,"""leave_heal_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:1528:true,code_branch,true,T04,nrc_core/battle.py,1528,FILE:nrc_core/battle.py,"""leave_buff_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:1528:false,code_branch,false,T04,nrc_core/battle.py,1528,FILE:nrc_core/battle.py,"""leave_buff_ally"" in transfer_ctx",待核对
+BRANCH:nrc_core/battle.py:1533:true,code_branch,true,T04,nrc_core/battle.py,1533,FILE:nrc_core/battle.py,new_pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1533:false,code_branch,false,T04,nrc_core/battle.py,1533,FILE:nrc_core/battle.py,new_pokemon.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1547:true,code_branch,true,T04,nrc_core/battle.py,1547,FILE:nrc_core/battle.py,barrel_pending,待核对
+BRANCH:nrc_core/battle.py:1547:false,code_branch,false,T04,nrc_core/battle.py,1547,FILE:nrc_core/battle.py,barrel_pending,待核对
+BRANCH:nrc_core/battle.py:1558:true,code_branch,true,T04,nrc_core/battle.py,1558,FILE:nrc_core/battle.py,"new_pokemon.ability_state.pop(""cast_all_normal_double_cost"", False)",待核对
+BRANCH:nrc_core/battle.py:1558:false,code_branch,false,T04,nrc_core/battle.py,1558,FILE:nrc_core/battle.py,"new_pokemon.ability_state.pop(""cast_all_normal_double_cost"", False)",待核对
+BRANCH:nrc_core/battle.py:1574:true,code_branch,true,T04,nrc_core/battle.py,1574,FILE:nrc_core/battle.py,enemy.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1574:false,code_branch,false,T04,nrc_core/battle.py,1574,FILE:nrc_core/battle.py,enemy.ability_effects,待核对
+BRANCH:nrc_core/battle.py:1588:true,code_branch,true,T04,nrc_core/battle.py,1588,FILE:nrc_core/battle.py,enemy_action[0] >= 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1588:false,code_branch,false,T04,nrc_core/battle.py,1588,FILE:nrc_core/battle.py,enemy_action[0] >= 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:1591:true,code_branch,true,T04,nrc_core/battle.py,1591,FILE:nrc_core/battle.py,"enemy_skill_obj and hasattr(enemy_skill_obj, ""effects"")",待核对
+BRANCH:nrc_core/battle.py:1591:false,code_branch,false,T04,nrc_core/battle.py,1591,FILE:nrc_core/battle.py,"enemy_skill_obj and hasattr(enemy_skill_obj, ""effects"")",待核对
+BRANCH:nrc_core/battle.py:1601:true,code_branch,true,T04,nrc_core/battle.py,1601,FILE:nrc_core/battle.py,not interrupted,待核对
+BRANCH:nrc_core/battle.py:1601:false,code_branch,false,T04,nrc_core/battle.py,1601,FILE:nrc_core/battle.py,not interrupted,待核对
+BRANCH:nrc_core/battle.py:1637:true,code_branch,true,T04,nrc_core/battle.py,1637,FILE:nrc_core/battle.py,current.charging_skill_idx != action[0],待核对
+BRANCH:nrc_core/battle.py:1637:false,code_branch,false,T04,nrc_core/battle.py,1637,FILE:nrc_core/battle.py,current.charging_skill_idx != action[0],待核对
+BRANCH:nrc_core/battle.py:1659:true,code_branch,true,T04,nrc_core/battle.py,1659,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1659:false,code_branch,false,T04,nrc_core/battle.py,1659,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1672:true,code_branch,true,T04,nrc_core/battle.py,1672,FILE:nrc_core/battle.py,"current.ability_state.get(""hp_for_energy"")",待核对
+BRANCH:nrc_core/battle.py:1672:false,code_branch,false,T04,nrc_core/battle.py,1672,FILE:nrc_core/battle.py,"current.ability_state.get(""hp_for_energy"")",待核对
+BRANCH:nrc_core/battle.py:1716:true,code_branch,true,T04,nrc_core/battle.py,1716,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1716:false,code_branch,false,T04,nrc_core/battle.py,1716,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1722:true,code_branch,true,T04,nrc_core/battle.py,1722,FILE:nrc_core/battle.py,state.turn <= entry_turn + burst_extend,待核对
+BRANCH:nrc_core/battle.py:1722:false,code_branch,false,T04,nrc_core/battle.py,1722,FILE:nrc_core/battle.py,state.turn <= entry_turn + burst_extend,待核对
+BRANCH:nrc_core/battle.py:1727:true,code_branch,true,T04,nrc_core/battle.py,1727,FILE:nrc_core/battle.py,burst_bonus > 0,待核对
+BRANCH:nrc_core/battle.py:1727:false,code_branch,false,T04,nrc_core/battle.py,1727,FILE:nrc_core/battle.py,burst_bonus > 0,待核对
+BRANCH:nrc_core/battle.py:1732:true,code_branch,true,T04,nrc_core/battle.py,1732,FILE:nrc_core/battle.py,burst_cost_up > 0,待核对
+BRANCH:nrc_core/battle.py:1732:false,code_branch,false,T04,nrc_core/battle.py,1732,FILE:nrc_core/battle.py,burst_cost_up > 0,待核对
+BRANCH:nrc_core/battle.py:1739:true,code_branch,true,T04,nrc_core/battle.py,1739,FILE:nrc_core/battle.py,burst_elem,待核对
+BRANCH:nrc_core/battle.py:1739:false,code_branch,false,T04,nrc_core/battle.py,1739,FILE:nrc_core/battle.py,burst_elem,待核对
+BRANCH:nrc_core/battle.py:1752:true,code_branch,true,T04,nrc_core/battle.py,1752,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1752:false,code_branch,false,T04,nrc_core/battle.py,1752,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1756:true,code_branch,true,T04,nrc_core/battle.py,1756,FILE:nrc_core/battle.py,dev_cost_reduce > 0,待核对
+BRANCH:nrc_core/battle.py:1756:false,code_branch,false,T04,nrc_core/battle.py,1756,FILE:nrc_core/battle.py,dev_cost_reduce > 0,待核对
+BRANCH:nrc_core/battle.py:1760:true,code_branch,true,T04,nrc_core/battle.py,1760,FILE:nrc_core/battle.py,dev_power > 0,待核对
+BRANCH:nrc_core/battle.py:1760:false,code_branch,false,T04,nrc_core/battle.py,1760,FILE:nrc_core/battle.py,dev_power > 0,待核对
+BRANCH:nrc_core/battle.py:1764:true,code_branch,true,T04,nrc_core/battle.py,1764,FILE:nrc_core/battle.py,dev_drain > 0,待核对
+BRANCH:nrc_core/battle.py:1764:false,code_branch,false,T04,nrc_core/battle.py,1764,FILE:nrc_core/battle.py,dev_drain > 0,待核对
+BRANCH:nrc_core/battle.py:1768:true,code_branch,true,T04,nrc_core/battle.py,1768,FILE:nrc_core/battle.py,dev_poison > 0,待核对
+BRANCH:nrc_core/battle.py:1768:false,code_branch,false,T04,nrc_core/battle.py,1768,FILE:nrc_core/battle.py,dev_poison > 0,待核对
+BRANCH:nrc_core/battle.py:1772:true,code_branch,true,T04,nrc_core/battle.py,1772,FILE:nrc_core/battle.py,dev_hits > 0,待核对
+BRANCH:nrc_core/battle.py:1772:false,code_branch,false,T04,nrc_core/battle.py,1772,FILE:nrc_core/battle.py,dev_hits > 0,待核对
+BRANCH:nrc_core/battle.py:1779:true,code_branch,true,T04,nrc_core/battle.py,1779,FILE:nrc_core/battle.py,"fs_power > 0 and skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:1779:false,code_branch,false,T04,nrc_core/battle.py,1779,FILE:nrc_core/battle.py,"fs_power > 0 and skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/battle.py:1784:true,code_branch,true,T04,nrc_core/battle.py,1784,FILE:nrc_core/battle.py,"current.ability_state.get(""first_strike_hit_bonus"")",待核对
+BRANCH:nrc_core/battle.py:1784:false,code_branch,false,T04,nrc_core/battle.py,1784,FILE:nrc_core/battle.py,"current.ability_state.get(""first_strike_hit_bonus"")",待核对
+BRANCH:nrc_core/battle.py:1792:true,code_branch,true,T04,nrc_core/battle.py,1792,FILE:nrc_core/battle.py,"report.get(""type"") == ""skill"" and report.get(""team"") == team",待核对
+BRANCH:nrc_core/battle.py:1792:false,code_branch,false,T04,nrc_core/battle.py,1792,FILE:nrc_core/battle.py,"report.get(""type"") == ""skill"" and report.get(""team"") == team",待核对
+BRANCH:nrc_core/battle.py:1839:true,code_branch,true,T04,nrc_core/battle.py,1839,FILE:nrc_core/battle.py,"isinstance(item, _SE) and item.timing == _ST.ON_COUNTER",待核对
+BRANCH:nrc_core/battle.py:1839:false,code_branch,false,T04,nrc_core/battle.py,1839,FILE:nrc_core/battle.py,"isinstance(item, _SE) and item.timing == _ST.ON_COUNTER",待核对
+BRANCH:nrc_core/battle.py:1855:true,code_branch,true,T04,nrc_core/battle.py,1855,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1855:false,code_branch,false,T04,nrc_core/battle.py,1855,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1856:true,code_branch,true,T04,nrc_core/battle.py,1856,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1856:false,code_branch,false,T04,nrc_core/battle.py,1856,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1857:true,code_branch,true,T04,nrc_core/battle.py,1857,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1857:false,code_branch,false,T04,nrc_core/battle.py,1857,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1860:true,code_branch,true,T04,nrc_core/battle.py,1860,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1860:false,code_branch,false,T04,nrc_core/battle.py,1860,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1918:true,code_branch,true,T04,nrc_core/battle.py,1918,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1918:false,code_branch,false,T04,nrc_core/battle.py,1918,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1919:true,code_branch,true,T04,nrc_core/battle.py,1919,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1919:false,code_branch,false,T04,nrc_core/battle.py,1919,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1920:true,code_branch,true,T04,nrc_core/battle.py,1920,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1920:false,code_branch,false,T04,nrc_core/battle.py,1920,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1923:true,code_branch,true,T04,nrc_core/battle.py,1923,FILE:nrc_core/battle.py,is_damage_skill,待核对
+BRANCH:nrc_core/battle.py:1923:false,code_branch,false,T04,nrc_core/battle.py,1923,FILE:nrc_core/battle.py,is_damage_skill,待核对
+BRANCH:nrc_core/battle.py:1960:body,code_branch,body,T04,nrc_core/battle.py,1960,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1960:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1960,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1995:true,code_branch,true,T04,nrc_core/battle.py,1995,FILE:nrc_core/battle.py,"counter_result and ""final_damage"" in counter_result",待核对
+BRANCH:nrc_core/battle.py:1995:false,code_branch,false,T04,nrc_core/battle.py,1995,FILE:nrc_core/battle.py,"counter_result and ""final_damage"" in counter_result",待核对
+BRANCH:nrc_core/battle.py:1998:true,code_branch,true,T04,nrc_core/battle.py,1998,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:1998:false,code_branch,false,T04,nrc_core/battle.py,1998,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:2006:true,code_branch,true,T04,nrc_core/battle.py,2006,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""interrupted"")",待核对
+BRANCH:nrc_core/battle.py:2006:false,code_branch,false,T04,nrc_core/battle.py,2006,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""interrupted"")",待核对
+BRANCH:nrc_core/battle.py:2009:true,code_branch,true,T04,nrc_core/battle.py,2009,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:2009:false,code_branch,false,T04,nrc_core/battle.py,2009,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:2035:true,code_branch,true,T04,nrc_core/battle.py,2035,FILE:nrc_core/battle.py,"isinstance(item, _SE)",待核对
+BRANCH:nrc_core/battle.py:2035:false,code_branch,false,T04,nrc_core/battle.py,2035,FILE:nrc_core/battle.py,"isinstance(item, _SE)",待核对
+BRANCH:nrc_core/battle.py:2055:true,code_branch,true,T04,nrc_core/battle.py,2055,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:2055:false,code_branch,false,T04,nrc_core/battle.py,2055,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:2063:true,code_branch,true,T04,nrc_core/battle.py,2063,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:2063:false,code_branch,false,T04,nrc_core/battle.py,2063,FILE:nrc_core/battle.py,counter_succeeded,待核对
+BRANCH:nrc_core/battle.py:2070:true,code_branch,true,T04,nrc_core/battle.py,2070,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2070:false,code_branch,false,T04,nrc_core/battle.py,2070,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2074:true,code_branch,true,T04,nrc_core/battle.py,2074,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_enemy_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2074:false,code_branch,false,T04,nrc_core/battle.py,2074,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_enemy_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2089:true,code_branch,true,T04,nrc_core/battle.py,2089,FILE:nrc_core/battle.py,"ability_result.get(""damage_reduction"", 0) > 0",待核对
+BRANCH:nrc_core/battle.py:2089:false,code_branch,false,T04,nrc_core/battle.py,2089,FILE:nrc_core/battle.py,"ability_result.get(""damage_reduction"", 0) > 0",待核对
+BRANCH:nrc_core/battle.py:2097:true,code_branch,true,T04,nrc_core/battle.py,2097,FILE:nrc_core/battle.py,"ability_result.get(""blocked_lethal"")",待核对
+BRANCH:nrc_core/battle.py:2097:false,code_branch,false,T04,nrc_core/battle.py,2097,FILE:nrc_core/battle.py,"ability_result.get(""blocked_lethal"")",待核对
+BRANCH:nrc_core/battle.py:2119:true,code_branch,true,T04,nrc_core/battle.py,2119,FILE:nrc_core/battle.py,"enemy.ability_state.get(""immune_zero_energy_attacker"")",待核对
+BRANCH:nrc_core/battle.py:2119:false,code_branch,false,T04,nrc_core/battle.py,2119,FILE:nrc_core/battle.py,"enemy.ability_state.get(""immune_zero_energy_attacker"")",待核对
+BRANCH:nrc_core/battle.py:2125:true,code_branch,true,T04,nrc_core/battle.py,2125,FILE:nrc_core/battle.py,"damage > 0 and enemy.ability_state.get(""immune_low_cost_attack"") is not None",待核对
+BRANCH:nrc_core/battle.py:2125:false,code_branch,false,T04,nrc_core/battle.py,2125,FILE:nrc_core/battle.py,"damage > 0 and enemy.ability_state.get(""immune_low_cost_attack"") is not None",待核对
+BRANCH:nrc_core/battle.py:2133:true,code_branch,true,T04,nrc_core/battle.py,2133,FILE:nrc_core/battle.py,damage > 0,待核对
+BRANCH:nrc_core/battle.py:2133:false,code_branch,false,T04,nrc_core/battle.py,2133,FILE:nrc_core/battle.py,damage > 0,待核对
+BRANCH:nrc_core/battle.py:2153:body,code_branch,body,T04,nrc_core/battle.py,2153,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2153:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2153,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2160:true,code_branch,true,T04,nrc_core/battle.py,2160,FILE:nrc_core/battle.py,current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2160:false,code_branch,false,T04,nrc_core/battle.py,2160,FILE:nrc_core/battle.py,current.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2167:true,code_branch,true,T04,nrc_core/battle.py,2167,FILE:nrc_core/battle.py,enemy.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2167:false,code_branch,false,T04,nrc_core/battle.py,2167,FILE:nrc_core/battle.py,enemy.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2172:true,code_branch,true,T04,nrc_core/battle.py,2172,FILE:nrc_core/battle.py,enemy.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2172:false,code_branch,false,T04,nrc_core/battle.py,2172,FILE:nrc_core/battle.py,enemy.ability_effects,待核对
+BRANCH:nrc_core/battle.py:2185:true,code_branch,true,T04,nrc_core/battle.py,2185,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2185:false,code_branch,false,T04,nrc_core/battle.py,2185,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2189:true,code_branch,true,T04,nrc_core/battle.py,2189,FILE:nrc_core/battle.py,"current.ability_state.pop(""force_switch_after_action"", None)",待核对
+BRANCH:nrc_core/battle.py:2189:false,code_branch,false,T04,nrc_core/battle.py,2189,FILE:nrc_core/battle.py,"current.ability_state.pop(""force_switch_after_action"", None)",待核对
+BRANCH:nrc_core/battle.py:2212:true,code_branch,true,T04,nrc_core/battle.py,2212,FILE:nrc_core/battle.py,enemy_skill and enemy_skill.effects,待核对
+BRANCH:nrc_core/battle.py:2212:false,code_branch,false,T04,nrc_core/battle.py,2212,FILE:nrc_core/battle.py,enemy_skill and enemy_skill.effects,待核对
+BRANCH:nrc_core/battle.py:2216:true,code_branch,true,T04,nrc_core/battle.py,2216,FILE:nrc_core/battle.py,not was_blocked,待核对
+BRANCH:nrc_core/battle.py:2216:false,code_branch,false,T04,nrc_core/battle.py,2216,FILE:nrc_core/battle.py,not was_blocked,待核对
+BRANCH:nrc_core/battle.py:2235:true,code_branch,true,T04,nrc_core/battle.py,2235,FILE:nrc_core/battle.py,"tag.type == E.PERMANENT_MOD and tag.params.get(""trigger"") == ""per_use""",待核对
+BRANCH:nrc_core/battle.py:2235:false,code_branch,false,T04,nrc_core/battle.py,2235,FILE:nrc_core/battle.py,"tag.type == E.PERMANENT_MOD and tag.params.get(""trigger"") == ""per_use""",待核对
+BRANCH:nrc_core/battle.py:2242:true,code_branch,true,T04,nrc_core/battle.py,2242,FILE:nrc_core/battle.py,enemy_switched,待核对
+BRANCH:nrc_core/battle.py:2242:false,code_branch,false,T04,nrc_core/battle.py,2242,FILE:nrc_core/battle.py,enemy_switched,待核对
+BRANCH:nrc_core/battle.py:2253:body,code_branch,body,T04,nrc_core/battle.py,2253,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2253:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2253,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2262:true,code_branch,true,T04,nrc_core/battle.py,2262,FILE:nrc_core/battle.py,"current.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/battle.py:2262:false,code_branch,false,T04,nrc_core/battle.py,2262,FILE:nrc_core/battle.py,"current.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/battle.py:2271:true,code_branch,true,T04,nrc_core/battle.py,2271,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2271:false,code_branch,false,T04,nrc_core/battle.py,2271,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2284:true,code_branch,true,T04,nrc_core/battle.py,2284,FILE:nrc_core/battle.py,"hasattr(skill.category, ""value"")",待核对
+BRANCH:nrc_core/battle.py:2284:false,code_branch,false,T04,nrc_core/battle.py,2284,FILE:nrc_core/battle.py,"hasattr(skill.category, ""value"")",待核对
+BRANCH:nrc_core/battle.py:2307:true,code_branch,true,T04,nrc_core/battle.py,2307,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2307:false,code_branch,false,T04,nrc_core/battle.py,2307,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2308:true,code_branch,true,T04,nrc_core/battle.py,2308,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2308:false,code_branch,false,T04,nrc_core/battle.py,2308,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:101:body,code_branch,body,T04,nrc_core/battle.py,101,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:101:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,101,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:110:body,code_branch,body,T04,nrc_core/battle.py,110,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:110:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,110,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:125:true,code_branch,true,T04,nrc_core/battle.py,125,FILE:nrc_core/battle.py,pokemon.speed_up >= 0.5,待核对
+BRANCH:nrc_core/battle.py:125:false,code_branch,false,T04,nrc_core/battle.py,125,FILE:nrc_core/battle.py,pokemon.speed_up >= 0.5,待核对
+BRANCH:nrc_core/battle.py:180:true,code_branch,true,T04,nrc_core/battle.py,180,FILE:nrc_core/battle.py,"filt == ""attack""",待核对
+BRANCH:nrc_core/battle.py:180:false,code_branch,false,T04,nrc_core/battle.py,180,FILE:nrc_core/battle.py,"filt == ""attack""",待核对
+BRANCH:nrc_core/battle.py:199:true,code_branch,true,T04,nrc_core/battle.py,199,FILE:nrc_core/battle.py,"tag.params.get(""per"") == ""enemy_poison"" and enemy is not None",待核对
+BRANCH:nrc_core/battle.py:199:false,code_branch,false,T04,nrc_core/battle.py,199,FILE:nrc_core/battle.py,"tag.params.get(""per"") == ""enemy_poison"" and enemy is not None",待核对
+BRANCH:nrc_core/battle.py:322:true,code_branch,true,T04,nrc_core/battle.py,322,FILE:nrc_core/battle.py,skill.skill_type in attacker.pokemon_types,待核对
+BRANCH:nrc_core/battle.py:322:false,code_branch,false,T04,nrc_core/battle.py,322,FILE:nrc_core/battle.py,skill.skill_type in attacker.pokemon_types,待核对
+BRANCH:nrc_core/battle.py:340:true,code_branch,true,T04,nrc_core/battle.py,340,FILE:nrc_core/battle.py,category == SkillCategory.MAGICAL,待核对
+BRANCH:nrc_core/battle.py:340:false,code_branch,false,T04,nrc_core/battle.py,340,FILE:nrc_core/battle.py,category == SkillCategory.MAGICAL,待核对
+BRANCH:nrc_core/battle.py:377:true,code_branch,true,T04,nrc_core/battle.py,377,FILE:nrc_core/battle.py,"getattr(skill, ""_resonance_dual_path"", False)",待核对
+BRANCH:nrc_core/battle.py:377:false,code_branch,false,T04,nrc_core/battle.py,377,FILE:nrc_core/battle.py,"getattr(skill, ""_resonance_dual_path"", False)",待核对
+BRANCH:nrc_core/battle.py:395:body,code_branch,body,T04,nrc_core/battle.py,395,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:395:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,395,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:493:body,code_branch,body,T04,nrc_core/battle.py,493,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:493:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,493,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:525:true,code_branch,true,T04,nrc_core/battle.py,525,FILE:nrc_core/battle.py,pri_a > pri_b,待核对
+BRANCH:nrc_core/battle.py:525:false,code_branch,false,T04,nrc_core/battle.py,525,FILE:nrc_core/battle.py,pri_a > pri_b,待核对
+BRANCH:nrc_core/battle.py:542:true,code_branch,true,T04,nrc_core/battle.py,542,FILE:nrc_core/battle.py,spd_a > spd_b,待核对
+BRANCH:nrc_core/battle.py:542:false,code_branch,false,T04,nrc_core/battle.py,542,FILE:nrc_core/battle.py,spd_a > spd_b,待核对
+BRANCH:nrc_core/battle.py:556:true,code_branch,true,T04,nrc_core/battle.py,556,FILE:nrc_core/battle.py,i != idx and not p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:556:false,code_branch,false,T04,nrc_core/battle.py,556,FILE:nrc_core/battle.py,i != idx and not p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:558:true,code_branch,true,T04,nrc_core/battle.py,558,FILE:nrc_core/battle.py,actions,待核对
+BRANCH:nrc_core/battle.py:558:false,code_branch,false,T04,nrc_core/battle.py,558,FILE:nrc_core/battle.py,actions,待核对
+BRANCH:nrc_core/battle.py:595:true,code_branch,true,T04,nrc_core/battle.py,595,FILE:nrc_core/battle.py,"current.ability_state.get(""swap_ally_zero_energy"") and current.energy <= 0",待核对
+BRANCH:nrc_core/battle.py:595:false,code_branch,false,T04,nrc_core/battle.py,595,FILE:nrc_core/battle.py,"current.ability_state.get(""swap_ally_zero_energy"") and current.energy <= 0",待核对
+BRANCH:nrc_core/battle.py:598:true,code_branch,true,T04,nrc_core/battle.py,598,FILE:nrc_core/battle.py,"current.ability_state.get(""auto_switch_every_turn"")",待核对
+BRANCH:nrc_core/battle.py:598:false,code_branch,false,T04,nrc_core/battle.py,598,FILE:nrc_core/battle.py,"current.ability_state.get(""auto_switch_every_turn"")",待核对
+BRANCH:nrc_core/battle.py:683:true,code_branch,true,T04,nrc_core/battle.py,683,FILE:nrc_core/battle.py,chosen not in alive,待核对
+BRANCH:nrc_core/battle.py:683:false,code_branch,false,T04,nrc_core/battle.py,683,FILE:nrc_core/battle.py,chosen not in alive,待核对
+BRANCH:nrc_core/battle.py:685:true,code_branch,true,T04,nrc_core/battle.py,685,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:685:false,code_branch,false,T04,nrc_core/battle.py,685,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:699:true,code_branch,true,T04,nrc_core/battle.py,699,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:699:false,code_branch,false,T04,nrc_core/battle.py,699,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:710:true,code_branch,true,T04,nrc_core/battle.py,710,FILE:nrc_core/battle.py,switch_cb_b,待核对
+BRANCH:nrc_core/battle.py:710:false,code_branch,false,T04,nrc_core/battle.py,710,FILE:nrc_core/battle.py,switch_cb_b,待核对
+BRANCH:nrc_core/battle.py:719:true,code_branch,true,T04,nrc_core/battle.py,719,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:719:false,code_branch,false,T04,nrc_core/battle.py,719,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:722:true,code_branch,true,T04,nrc_core/battle.py,722,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:722:false,code_branch,false,T04,nrc_core/battle.py,722,FILE:nrc_core/battle.py,chosen is not None,待核对
+BRANCH:nrc_core/battle.py:788:true,code_branch,true,T04,nrc_core/battle.py,788,FILE:nrc_core/battle.py,"ctx.get(""burn_no_decay"")",待核对
+BRANCH:nrc_core/battle.py:788:false,code_branch,false,T04,nrc_core/battle.py,788,FILE:nrc_core/battle.py,"ctx.get(""burn_no_decay"")",待核对
+BRANCH:nrc_core/battle.py:796:true,code_branch,true,T04,nrc_core/battle.py,796,FILE:nrc_core/battle.py,"ctx.get(""burn_no_decay"")",待核对
+BRANCH:nrc_core/battle.py:796:false,code_branch,false,T04,nrc_core/battle.py,796,FILE:nrc_core/battle.py,"ctx.get(""burn_no_decay"")",待核对
+BRANCH:nrc_core/battle.py:815:true,code_branch,true,T04,nrc_core/battle.py,815,FILE:nrc_core/battle.py,p.poison_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:815:false,code_branch,false,T04,nrc_core/battle.py,815,FILE:nrc_core/battle.py,p.poison_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:832:true,code_branch,true,T04,nrc_core/battle.py,832,FILE:nrc_core/battle.py,"p.poison_stacks > 0 and enemy_p.ability_state.get(""extra_poison_tick"")",待核对
+BRANCH:nrc_core/battle.py:832:false,code_branch,false,T04,nrc_core/battle.py,832,FILE:nrc_core/battle.py,"p.poison_stacks > 0 and enemy_p.ability_state.get(""extra_poison_tick"")",待核对
+BRANCH:nrc_core/battle.py:846:true,code_branch,true,T04,nrc_core/battle.py,846,FILE:nrc_core/battle.py,p.burn_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:846:false,code_branch,false,T04,nrc_core/battle.py,846,FILE:nrc_core/battle.py,p.burn_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:867:true,code_branch,true,T04,nrc_core/battle.py,867,FILE:nrc_core/battle.py,p.leech_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:867:false,code_branch,false,T04,nrc_core/battle.py,867,FILE:nrc_core/battle.py,p.leech_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:882:true,code_branch,true,T04,nrc_core/battle.py,882,FILE:nrc_core/battle.py,p.meteor_countdown > 0,待核对
+BRANCH:nrc_core/battle.py:882:false,code_branch,false,T04,nrc_core/battle.py,882,FILE:nrc_core/battle.py,p.meteor_countdown > 0,待核对
+BRANCH:nrc_core/battle.py:904:true,code_branch,true,T04,nrc_core/battle.py,904,FILE:nrc_core/battle.py,heal_per_turn > 0 and not p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:904:false,code_branch,false,T04,nrc_core/battle.py,904,FILE:nrc_core/battle.py,heal_per_turn > 0 and not p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:913:true,code_branch,true,T04,nrc_core/battle.py,913,FILE:nrc_core/battle.py,p.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:913:false,code_branch,false,T04,nrc_core/battle.py,913,FILE:nrc_core/battle.py,p.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:948:true,code_branch,true,T04,nrc_core/battle.py,948,FILE:nrc_core/battle.py,"state.weather == ""sandstorm"" and state.sandstorm_original_costs",待核对
+BRANCH:nrc_core/battle.py:948:false,code_branch,false,T04,nrc_core/battle.py,948,FILE:nrc_core/battle.py,"state.weather == ""sandstorm"" and state.sandstorm_original_costs",待核对
+BRANCH:nrc_core/battle.py:962:true,code_branch,true,T04,nrc_core/battle.py,962,FILE:nrc_core/battle.py,p.cooldowns[k] > 0,待核对
+BRANCH:nrc_core/battle.py:962:false,code_branch,false,T04,nrc_core/battle.py,962,FILE:nrc_core/battle.py,p.cooldowns[k] > 0,待核对
+BRANCH:nrc_core/battle.py:966:body,code_branch,body,T04,nrc_core/battle.py,966,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:966:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,966,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:972:true,code_branch,true,T04,nrc_core/battle.py,972,FILE:nrc_core/battle.py,next_mods,待核对
+BRANCH:nrc_core/battle.py:972:false,code_branch,false,T04,nrc_core/battle.py,972,FILE:nrc_core/battle.py,next_mods,待核对
+BRANCH:nrc_core/battle.py:979:true,code_branch,true,T04,nrc_core/battle.py,979,FILE:nrc_core/battle.py,"side == ""a""",待核对
+BRANCH:nrc_core/battle.py:979:false,code_branch,false,T04,nrc_core/battle.py,979,FILE:nrc_core/battle.py,"side == ""a""",待核对
+BRANCH:nrc_core/battle.py:992:true,code_branch,true,T04,nrc_core/battle.py,992,FILE:nrc_core/battle.py,anti,待核对
+BRANCH:nrc_core/battle.py:992:false,code_branch,false,T04,nrc_core/battle.py,992,FILE:nrc_core/battle.py,anti,待核对
+BRANCH:nrc_core/battle.py:1068:true,code_branch,true,T04,nrc_core/battle.py,1068,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1068:false,code_branch,false,T04,nrc_core/battle.py,1068,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1071:body,code_branch,body,T04,nrc_core/battle.py,1071,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1071:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1071,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1099:true,code_branch,true,T04,nrc_core/battle.py,1099,FILE:nrc_core/battle.py,p.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:1099:false,code_branch,false,T04,nrc_core/battle.py,1099,FILE:nrc_core/battle.py,p.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:1264:true,code_branch,true,T04,nrc_core/battle.py,1264,FILE:nrc_core/battle.py,counter_cat == enemy_cat or not counter_cat,待核对
+BRANCH:nrc_core/battle.py:1264:false,code_branch,false,T04,nrc_core/battle.py,1264,FILE:nrc_core/battle.py,counter_cat == enemy_cat or not counter_cat,待核对
+BRANCH:nrc_core/battle.py:1266:true,code_branch,true,T04,nrc_core/battle.py,1266,FILE:nrc_core/battle.py,"hasattr(item, ""type"")",待核对
+BRANCH:nrc_core/battle.py:1266:false,code_branch,false,T04,nrc_core/battle.py,1266,FILE:nrc_core/battle.py,"hasattr(item, ""type"")",待核对
+BRANCH:nrc_core/battle.py:1331:true,code_branch,true,T04,nrc_core/battle.py,1331,FILE:nrc_core/battle.py,a_counters_b and not b_counters_a,待核对
+BRANCH:nrc_core/battle.py:1331:false,code_branch,false,T04,nrc_core/battle.py,1331,FILE:nrc_core/battle.py,a_counters_b and not b_counters_a,待核对
+BRANCH:nrc_core/battle.py:1439:true,code_branch,true,T04,nrc_core/battle.py,1439,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1439:false,code_branch,false,T04,nrc_core/battle.py,1439,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1441:true,code_branch,true,T04,nrc_core/battle.py,1441,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1441:false,code_branch,false,T04,nrc_core/battle.py,1441,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1448:true,code_branch,true,T04,nrc_core/battle.py,1448,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1448:false,code_branch,false,T04,nrc_core/battle.py,1448,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1540:true,code_branch,true,T04,nrc_core/battle.py,1540,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1540:false,code_branch,false,T04,nrc_core/battle.py,1540,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1546:true,code_branch,true,T04,nrc_core/battle.py,1546,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1546:false,code_branch,false,T04,nrc_core/battle.py,1546,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1549:true,code_branch,true,T04,nrc_core/battle.py,1549,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1549:false,code_branch,false,T04,nrc_core/battle.py,1549,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1560:body,code_branch,body,T04,nrc_core/battle.py,1560,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1560:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1560,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1592:body,code_branch,body,T04,nrc_core/battle.py,1592,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1592:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1592,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1639:true,code_branch,true,T04,nrc_core/battle.py,1639,FILE:nrc_core/battle.py,"current.ability_state.get(""charge_free_skill"") and current.charging_skill_idx >= 0",待核对
+BRANCH:nrc_core/battle.py:1639:false,code_branch,false,T04,nrc_core/battle.py,1639,FILE:nrc_core/battle.py,"current.ability_state.get(""charge_free_skill"") and current.charging_skill_idx >= 0",待核对
+BRANCH:nrc_core/battle.py:1675:true,code_branch,true,T04,nrc_core/battle.py,1675,FILE:nrc_core/battle.py,current.current_hp > hp_cost,待核对
+BRANCH:nrc_core/battle.py:1675:false,code_branch,false,T04,nrc_core/battle.py,1675,FILE:nrc_core/battle.py,current.current_hp > hp_cost,待核对
+BRANCH:nrc_core/battle.py:1734:body,code_branch,body,T04,nrc_core/battle.py,1734,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1734:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1734,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1747:true,code_branch,true,T04,nrc_core/battle.py,1747,FILE:nrc_core/battle.py,"skill.skill_type.value == TYPE_CHINESE_MAP.get(elem_name, """")",待核对
+BRANCH:nrc_core/battle.py:1747:false,code_branch,false,T04,nrc_core/battle.py,1747,FILE:nrc_core/battle.py,"skill.skill_type.value == TYPE_CHINESE_MAP.get(elem_name, """")",待核对
+BRANCH:nrc_core/battle.py:1841:true,code_branch,true,T04,nrc_core/battle.py,1841,FILE:nrc_core/battle.py,counter_cat == my_cat or not counter_cat,待核对
+BRANCH:nrc_core/battle.py:1841:false,code_branch,false,T04,nrc_core/battle.py,1841,FILE:nrc_core/battle.py,counter_cat == my_cat or not counter_cat,待核对
+BRANCH:nrc_core/battle.py:1961:true,code_branch,true,T04,nrc_core/battle.py,1961,FILE:nrc_core/battle.py,e2.type == E.DAMAGE_REDUCTION and damage > 0,待核对
+BRANCH:nrc_core/battle.py:1961:false,code_branch,false,T04,nrc_core/battle.py,1961,FILE:nrc_core/battle.py,e2.type == E.DAMAGE_REDUCTION and damage > 0,待核对
+BRANCH:nrc_core/battle.py:1984:true,code_branch,true,T04,nrc_core/battle.py,1984,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1984:false,code_branch,false,T04,nrc_core/battle.py,1984,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1999:body,code_branch,body,T04,nrc_core/battle.py,1999,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1999:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1999,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2014:true,code_branch,true,T04,nrc_core/battle.py,2014,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2014:false,code_branch,false,T04,nrc_core/battle.py,2014,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_switch"") and not current.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2016:true,code_branch,true,T04,nrc_core/battle.py,2016,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_enemy_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2016:false,code_branch,false,T04,nrc_core/battle.py,2016,FILE:nrc_core/battle.py,"counter_result and counter_result.get(""force_enemy_switch"") and not enemy.is_fainted",待核对
+BRANCH:nrc_core/battle.py:2037:true,code_branch,true,T04,nrc_core/battle.py,2037,FILE:nrc_core/battle.py,item.timing == _ST.ON_COUNTER,待核对
+BRANCH:nrc_core/battle.py:2037:false,code_branch,false,T04,nrc_core/battle.py,2037,FILE:nrc_core/battle.py,item.timing == _ST.ON_COUNTER,待核对
+BRANCH:nrc_core/battle.py:2039:true,code_branch,true,T04,nrc_core/battle.py,2039,FILE:nrc_core/battle.py,"hasattr(item, ""type"") and item.type in (E.COUNTER_ATTACK, E.COUNTER_STATUS, E.COUNTER_DEFENSE)",待核对
+BRANCH:nrc_core/battle.py:2039:false,code_branch,false,T04,nrc_core/battle.py,2039,FILE:nrc_core/battle.py,"hasattr(item, ""type"") and item.type in (E.COUNTER_ATTACK, E.COUNTER_STATUS, E.COUNTER_DEFENSE)",待核对
+BRANCH:nrc_core/battle.py:2044:true,code_branch,true,T04,nrc_core/battle.py,2044,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2044:false,code_branch,false,T04,nrc_core/battle.py,2044,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2056:body,code_branch,body,T04,nrc_core/battle.py,2056,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2056:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2056,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2120:true,code_branch,true,T04,nrc_core/battle.py,2120,FILE:nrc_core/battle.py,attacker is not None and attacker.energy <= 0,待核对
+BRANCH:nrc_core/battle.py:2120:false,code_branch,false,T04,nrc_core/battle.py,2120,FILE:nrc_core/battle.py,attacker is not None and attacker.energy <= 0,待核对
+BRANCH:nrc_core/battle.py:2127:true,code_branch,true,T04,nrc_core/battle.py,2127,FILE:nrc_core/battle.py,"skill is not None and getattr(skill, ""_last_actual_cost"", skill.energy_cost) <= threshold",待核对
+BRANCH:nrc_core/battle.py:2127:false,code_branch,false,T04,nrc_core/battle.py,2127,FILE:nrc_core/battle.py,"skill is not None and getattr(skill, ""_last_actual_cost"", skill.energy_cost) <= threshold",待核对
+BRANCH:nrc_core/battle.py:2135:true,code_branch,true,T04,nrc_core/battle.py,2135,FILE:nrc_core/battle.py,enemy.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:2135:false,code_branch,false,T04,nrc_core/battle.py,2135,FILE:nrc_core/battle.py,enemy.current_hp <= 0,待核对
+BRANCH:nrc_core/battle.py:2154:true,code_branch,true,T04,nrc_core/battle.py,2154,FILE:nrc_core/battle.py,"tag.type == E.CONVERT_POISON_TO_MARK and tag.params.get(""on"") == ""kill""",待核对
+BRANCH:nrc_core/battle.py:2154:false,code_branch,false,T04,nrc_core/battle.py,2154,FILE:nrc_core/battle.py,"tag.type == E.CONVERT_POISON_TO_MARK and tag.params.get(""on"") == ""kill""",待核对
+BRANCH:nrc_core/battle.py:2214:true,code_branch,true,T04,nrc_core/battle.py,2214,FILE:nrc_core/battle.py,enemy_skill and enemy_skill.damage_reduction > 0,待核对
+BRANCH:nrc_core/battle.py:2214:false,code_branch,false,T04,nrc_core/battle.py,2214,FILE:nrc_core/battle.py,enemy_skill and enemy_skill.damage_reduction > 0,待核对
+BRANCH:nrc_core/battle.py:2241:true,code_branch,true,T04,nrc_core/battle.py,2241,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2241:false,code_branch,false,T04,nrc_core/battle.py,2241,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2254:true,code_branch,true,T04,nrc_core/battle.py,2254,FILE:nrc_core/battle.py,s.agility,待核对
+BRANCH:nrc_core/battle.py:2254:false,code_branch,false,T04,nrc_core/battle.py,2254,FILE:nrc_core/battle.py,s.agility,待核对
+BRANCH:nrc_core/battle.py:100:true,code_branch,true,T04,nrc_core/battle.py,100,FILE:nrc_core/battle.py,bool(weekend),待核对
+BRANCH:nrc_core/battle.py:100:false,code_branch,false,T04,nrc_core/battle.py,100,FILE:nrc_core/battle.py,bool(weekend),待核对
+BRANCH:nrc_core/battle.py:119:true,code_branch,true,T04,nrc_core/battle.py,119,FILE:nrc_core/battle.py,magic_hat_active,待核对
+BRANCH:nrc_core/battle.py:119:false,code_branch,false,T04,nrc_core/battle.py,119,FILE:nrc_core/battle.py,magic_hat_active,待核对
+BRANCH:nrc_core/battle.py:182:true,code_branch,true,T04,nrc_core/battle.py,182,FILE:nrc_core/battle.py,"filt == ""used_skill""",待核对
+BRANCH:nrc_core/battle.py:182:false,code_branch,false,T04,nrc_core/battle.py,182,FILE:nrc_core/battle.py,"filt == ""used_skill""",待核对
+BRANCH:nrc_core/battle.py:328:true,code_branch,true,T04,nrc_core/battle.py,328,FILE:nrc_core/battle.py,"hasattr(skill.skill_type, ""value"")",待核对
+BRANCH:nrc_core/battle.py:328:false,code_branch,false,T04,nrc_core/battle.py,328,FILE:nrc_core/battle.py,"hasattr(skill.skill_type, ""value"")",待核对
+BRANCH:nrc_core/battle.py:499:true,code_branch,true,T04,nrc_core/battle.py,499,FILE:nrc_core/battle.py,"not getattr(skill, ""transform_pending"", False) or not scope",待核对
+BRANCH:nrc_core/battle.py:499:false,code_branch,false,T04,nrc_core/battle.py,499,FILE:nrc_core/battle.py,"not getattr(skill, ""transform_pending"", False) or not scope",待核对
+BRANCH:nrc_core/battle.py:503:true,code_branch,true,T04,nrc_core/battle.py,503,FILE:nrc_core/battle.py,candidates is None,待核对
+BRANCH:nrc_core/battle.py:503:false,code_branch,false,T04,nrc_core/battle.py,503,FILE:nrc_core/battle.py,candidates is None,待核对
+BRANCH:nrc_core/battle.py:507:true,code_branch,true,T04,nrc_core/battle.py,507,FILE:nrc_core/battle.py,not candidates,待核对
+BRANCH:nrc_core/battle.py:507:false,code_branch,false,T04,nrc_core/battle.py,507,FILE:nrc_core/battle.py,not candidates,待核对
+BRANCH:nrc_core/battle.py:682:true,code_branch,true,T04,nrc_core/battle.py,682,FILE:nrc_core/battle.py,switch_cb_a,待核对
+BRANCH:nrc_core/battle.py:682:false,code_branch,false,T04,nrc_core/battle.py,682,FILE:nrc_core/battle.py,switch_cb_a,待核对
+BRANCH:nrc_core/battle.py:712:true,code_branch,true,T04,nrc_core/battle.py,712,FILE:nrc_core/battle.py,chosen in alive,待核对
+BRANCH:nrc_core/battle.py:712:false,code_branch,false,T04,nrc_core/battle.py,712,FILE:nrc_core/battle.py,chosen in alive,待核对
+BRANCH:nrc_core/battle.py:827:true,code_branch,true,T04,nrc_core/battle.py,827,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:827:false,code_branch,false,T04,nrc_core/battle.py,827,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:841:true,code_branch,true,T04,nrc_core/battle.py,841,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:841:false,code_branch,false,T04,nrc_core/battle.py,841,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:854:true,code_branch,true,T04,nrc_core/battle.py,854,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:854:false,code_branch,false,T04,nrc_core/battle.py,854,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:858:true,code_branch,true,T04,nrc_core/battle.py,858,FILE:nrc_core/battle.py,enemy_team_id in burn_no_decay,待核对
+BRANCH:nrc_core/battle.py:858:false,code_branch,false,T04,nrc_core/battle.py,858,FILE:nrc_core/battle.py,enemy_team_id in burn_no_decay,待核对
+BRANCH:nrc_core/battle.py:871:true,code_branch,true,T04,nrc_core/battle.py,871,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:871:false,code_branch,false,T04,nrc_core/battle.py,871,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:874:true,code_branch,true,T04,nrc_core/battle.py,874,FILE:nrc_core/battle.py,not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:874:false,code_branch,false,T04,nrc_core/battle.py,874,FILE:nrc_core/battle.py,not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:884:true,code_branch,true,T04,nrc_core/battle.py,884,FILE:nrc_core/battle.py,p.meteor_countdown <= 0 and p.meteor_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:884:false,code_branch,false,T04,nrc_core/battle.py,884,FILE:nrc_core/battle.py,p.meteor_countdown <= 0 and p.meteor_stacks > 0,待核对
+BRANCH:nrc_core/battle.py:907:true,code_branch,true,T04,nrc_core/battle.py,907,FILE:nrc_core/battle.py,anti,待核对
+BRANCH:nrc_core/battle.py:907:false,code_branch,false,T04,nrc_core/battle.py,907,FILE:nrc_core/battle.py,anti,待核对
+BRANCH:nrc_core/battle.py:930:true,code_branch,true,T04,nrc_core/battle.py,930,FILE:nrc_core/battle.py,"team_id == ""a""",待核对
+BRANCH:nrc_core/battle.py:930:false,code_branch,false,T04,nrc_core/battle.py,930,FILE:nrc_core/battle.py,"team_id == ""a""",待核对
+BRANCH:nrc_core/battle.py:949:body,code_branch,body,T04,nrc_core/battle.py,949,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:949:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,949,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:968:true,code_branch,true,T04,nrc_core/battle.py,968,FILE:nrc_core/battle.py,turns > 0,待核对
+BRANCH:nrc_core/battle.py:968:false,code_branch,false,T04,nrc_core/battle.py,968,FILE:nrc_core/battle.py,turns > 0,待核对
+BRANCH:nrc_core/battle.py:1073:true,code_branch,true,T04,nrc_core/battle.py,1073,FILE:nrc_core/battle.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/battle.py:1073:false,code_branch,false,T04,nrc_core/battle.py,1073,FILE:nrc_core/battle.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/battle.py:1273:true,code_branch,true,T04,nrc_core/battle.py,1273,FILE:nrc_core/battle.py,type_to_cat.get(item.type) == enemy_cat,待核对
+BRANCH:nrc_core/battle.py:1273:false,code_branch,false,T04,nrc_core/battle.py,1273,FILE:nrc_core/battle.py,type_to_cat.get(item.type) == enemy_cat,待核对
+BRANCH:nrc_core/battle.py:1336:true,code_branch,true,T04,nrc_core/battle.py,1336,FILE:nrc_core/battle.py,b_counters_a and not a_counters_b,待核对
+BRANCH:nrc_core/battle.py:1336:false,code_branch,false,T04,nrc_core/battle.py,1336,FILE:nrc_core/battle.py,b_counters_a and not a_counters_b,待核对
+BRANCH:nrc_core/battle.py:1440:true,code_branch,true,T04,nrc_core/battle.py,1440,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1440:false,code_branch,false,T04,nrc_core/battle.py,1440,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1442:true,code_branch,true,T04,nrc_core/battle.py,1442,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1442:false,code_branch,false,T04,nrc_core/battle.py,1442,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1449:true,code_branch,true,T04,nrc_core/battle.py,1449,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1449:false,code_branch,false,T04,nrc_core/battle.py,1449,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1561:true,code_branch,true,T04,nrc_core/battle.py,1561,FILE:nrc_core/battle.py,s.skill_type == PkType.NORMAL,待核对
+BRANCH:nrc_core/battle.py:1561:false,code_branch,false,T04,nrc_core/battle.py,1561,FILE:nrc_core/battle.py,s.skill_type == PkType.NORMAL,待核对
+BRANCH:nrc_core/battle.py:1589:true,code_branch,true,T04,nrc_core/battle.py,1589,FILE:nrc_core/battle.py,enemy_action[0] < len(enemy.skills),待核对
+BRANCH:nrc_core/battle.py:1589:false,code_branch,false,T04,nrc_core/battle.py,1589,FILE:nrc_core/battle.py,enemy_action[0] < len(enemy.skills),待核对
+BRANCH:nrc_core/battle.py:1594:true,code_branch,true,T04,nrc_core/battle.py,1594,FILE:nrc_core/battle.py,"isinstance(se, _SE2) and se.timing == _ST2.ON_COUNTER",待核对
+BRANCH:nrc_core/battle.py:1594:false,code_branch,false,T04,nrc_core/battle.py,1594,FILE:nrc_core/battle.py,"isinstance(se, _SE2) and se.timing == _ST2.ON_COUNTER",待核对
+BRANCH:nrc_core/battle.py:1599:true,code_branch,true,T04,nrc_core/battle.py,1599,FILE:nrc_core/battle.py,interrupted,待核对
+BRANCH:nrc_core/battle.py:1599:false,code_branch,false,T04,nrc_core/battle.py,1599,FILE:nrc_core/battle.py,interrupted,待核对
+BRANCH:nrc_core/battle.py:1603:true,code_branch,true,T04,nrc_core/battle.py,1603,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1603:false,code_branch,false,T04,nrc_core/battle.py,1603,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1646:true,code_branch,true,T04,nrc_core/battle.py,1646,FILE:nrc_core/battle.py,charge_reduce > 0,待核对
+BRANCH:nrc_core/battle.py:1646:false,code_branch,false,T04,nrc_core/battle.py,1646,FILE:nrc_core/battle.py,charge_reduce > 0,待核对
+BRANCH:nrc_core/battle.py:1843:body,code_branch,body,T04,nrc_core/battle.py,1843,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1843:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1843,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1941:true,code_branch,true,T04,nrc_core/battle.py,1941,FILE:nrc_core/battle.py,effectiveness == 0,待核对
+BRANCH:nrc_core/battle.py:1941:false,code_branch,false,T04,nrc_core/battle.py,1941,FILE:nrc_core/battle.py,effectiveness == 0,待核对
+BRANCH:nrc_core/battle.py:1991:true,code_branch,true,T04,nrc_core/battle.py,1991,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1991:false,code_branch,false,T04,nrc_core/battle.py,1991,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2000:true,code_branch,true,T04,nrc_core/battle.py,2000,FILE:nrc_core/battle.py,"not getattr(s, ""effects"", None)",待核对
+BRANCH:nrc_core/battle.py:2000:false,code_branch,false,T04,nrc_core/battle.py,2000,FILE:nrc_core/battle.py,"not getattr(s, ""effects"", None)",待核对
+BRANCH:nrc_core/battle.py:2002:body,code_branch,body,T04,nrc_core/battle.py,2002,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2002:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2002,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2051:true,code_branch,true,T04,nrc_core/battle.py,2051,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2051:false,code_branch,false,T04,nrc_core/battle.py,2051,FILE:nrc_core/battle.py,"enemy_team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2057:true,code_branch,true,T04,nrc_core/battle.py,2057,FILE:nrc_core/battle.py,"not getattr(s, ""effects"", None)",待核对
+BRANCH:nrc_core/battle.py:2057:false,code_branch,false,T04,nrc_core/battle.py,2057,FILE:nrc_core/battle.py,"not getattr(s, ""effects"", None)",待核对
+BRANCH:nrc_core/battle.py:2059:body,code_branch,body,T04,nrc_core/battle.py,2059,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2059:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,2059,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:2138:true,code_branch,true,T04,nrc_core/battle.py,2138,FILE:nrc_core/battle.py,attacker,待核对
+BRANCH:nrc_core/battle.py:2138:false,code_branch,false,T04,nrc_core/battle.py,2138,FILE:nrc_core/battle.py,attacker,待核对
+BRANCH:nrc_core/battle.py:2139:true,code_branch,true,T04,nrc_core/battle.py,2139,FILE:nrc_core/battle.py,skill,待核对
+BRANCH:nrc_core/battle.py:2139:false,code_branch,false,T04,nrc_core/battle.py,2139,FILE:nrc_core/battle.py,skill,待核对
+BRANCH:nrc_core/battle.py:184:true,code_branch,true,T04,nrc_core/battle.py,184,FILE:nrc_core/battle.py,"filt == ""other_skills""",待核对
+BRANCH:nrc_core/battle.py:184:false,code_branch,false,T04,nrc_core/battle.py,184,FILE:nrc_core/battle.py,"filt == ""other_skills""",待核对
+BRANCH:nrc_core/battle.py:857:true,code_branch,true,T04,nrc_core/battle.py,857,FILE:nrc_core/battle.py,"team_id == ""a""",待核对
+BRANCH:nrc_core/battle.py:857:false,code_branch,false,T04,nrc_core/battle.py,857,FILE:nrc_core/battle.py,"team_id == ""a""",待核对
+BRANCH:nrc_core/battle.py:876:true,code_branch,true,T04,nrc_core/battle.py,876,FILE:nrc_core/battle.py,anti,待核对
+BRANCH:nrc_core/battle.py:876:false,code_branch,false,T04,nrc_core/battle.py,876,FILE:nrc_core/battle.py,anti,待核对
+BRANCH:nrc_core/battle.py:887:true,code_branch,true,T04,nrc_core/battle.py,887,FILE:nrc_core/battle.py,"p.ability_state.get(""half_meteor_full_damage"")",待核对
+BRANCH:nrc_core/battle.py:887:false,code_branch,false,T04,nrc_core/battle.py,887,FILE:nrc_core/battle.py,"p.ability_state.get(""half_meteor_full_damage"")",待核对
+BRANCH:nrc_core/battle.py:894:true,code_branch,true,T04,nrc_core/battle.py,894,FILE:nrc_core/battle.py,not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:894:false,code_branch,false,T04,nrc_core/battle.py,894,FILE:nrc_core/battle.py,not enemy.is_fainted,待核对
+BRANCH:nrc_core/battle.py:950:true,code_branch,true,T04,nrc_core/battle.py,950,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:950:false,code_branch,false,T04,nrc_core/battle.py,950,FILE:nrc_core/battle.py,p.is_fainted,待核对
+BRANCH:nrc_core/battle.py:952:body,code_branch,body,T04,nrc_core/battle.py,952,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:952:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,952,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1076:true,code_branch,true,T04,nrc_core/battle.py,1076,FILE:nrc_core/battle.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/battle.py:1076:false,code_branch,false,T04,nrc_core/battle.py,1076,FILE:nrc_core/battle.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/battle.py:1342:true,code_branch,true,T04,nrc_core/battle.py,1342,FILE:nrc_core/battle.py,"_compare_action_order(state, action_a, action_b) == -1",待核对
+BRANCH:nrc_core/battle.py:1342:false,code_branch,false,T04,nrc_core/battle.py,1342,FILE:nrc_core/battle.py,"_compare_action_order(state, action_a, action_b) == -1",待核对
+BRANCH:nrc_core/battle.py:1563:true,code_branch,true,T04,nrc_core/battle.py,1563,FILE:nrc_core/battle.py,new_pokemon.energy >= cost and not s.charge,待核对
+BRANCH:nrc_core/battle.py:1563:false,code_branch,false,T04,nrc_core/battle.py,1563,FILE:nrc_core/battle.py,new_pokemon.energy >= cost and not s.charge,待核对
+BRANCH:nrc_core/battle.py:1595:body,code_branch,body,T04,nrc_core/battle.py,1595,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1595:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1595,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1648:body,code_branch,body,T04,nrc_core/battle.py,1648,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1648:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/battle.py,1648,FILE:nrc_core/battle.py,For,待核对
+BRANCH:nrc_core/battle.py:1844:true,code_branch,true,T04,nrc_core/battle.py,1844,FILE:nrc_core/battle.py,tag.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/battle.py:1844:false,code_branch,false,T04,nrc_core/battle.py,1844,FILE:nrc_core/battle.py,tag.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/battle.py:1942:true,code_branch,true,T04,nrc_core/battle.py,1942,FILE:nrc_core/battle.py,effectiveness is not None and effectiveness < 0.5,待核对
+BRANCH:nrc_core/battle.py:1942:false,code_branch,false,T04,nrc_core/battle.py,1942,FILE:nrc_core/battle.py,effectiveness is not None and effectiveness < 0.5,待核对
+BRANCH:nrc_core/battle.py:2003:true,code_branch,true,T04,nrc_core/battle.py,2003,FILE:nrc_core/battle.py,"tag.type == E.PERMANENT_MOD and tag.params.get(""trigger"") == ""per_counter""",待核对
+BRANCH:nrc_core/battle.py:2003:false,code_branch,false,T04,nrc_core/battle.py,2003,FILE:nrc_core/battle.py,"tag.type == E.PERMANENT_MOD and tag.params.get(""trigger"") == ""per_counter""",待核对
+BRANCH:nrc_core/battle.py:2060:true,code_branch,true,T04,nrc_core/battle.py,2060,FILE:nrc_core/battle.py,"tag.type == E.PERMANENT_MOD and tag.params.get(""trigger"") == ""per_counter""",待核对
+BRANCH:nrc_core/battle.py:2060:false,code_branch,false,T04,nrc_core/battle.py,2060,FILE:nrc_core/battle.py,"tag.type == E.PERMANENT_MOD and tag.params.get(""trigger"") == ""per_counter""",待核对
+BRANCH:nrc_core/battle.py:2155:true,code_branch,true,T04,nrc_core/battle.py,2155,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:2155:false,code_branch,false,T04,nrc_core/battle.py,2155,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:954:true,code_branch,true,T04,nrc_core/battle.py,954,FILE:nrc_core/battle.py,key in state.sandstorm_original_costs,待核对
+BRANCH:nrc_core/battle.py:954:false,code_branch,false,T04,nrc_core/battle.py,954,FILE:nrc_core/battle.py,key in state.sandstorm_original_costs,待核对
+BRANCH:nrc_core/battle.py:1596:true,code_branch,true,T04,nrc_core/battle.py,1596,FILE:nrc_core/battle.py,t.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/battle.py:1596:false,code_branch,false,T04,nrc_core/battle.py,1596,FILE:nrc_core/battle.py,t.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/battle.py:1943:true,code_branch,true,T04,nrc_core/battle.py,1943,FILE:nrc_core/battle.py,effectiveness is not None and effectiveness < 1,待核对
+BRANCH:nrc_core/battle.py:1943:false,code_branch,false,T04,nrc_core/battle.py,1943,FILE:nrc_core/battle.py,effectiveness is not None and effectiveness < 1,待核对
+BRANCH:nrc_core/battle.py:1951:true,code_branch,true,T04,nrc_core/battle.py,1951,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1951:false,code_branch,false,T04,nrc_core/battle.py,1951,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1953:true,code_branch,true,T04,nrc_core/battle.py,1953,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1953:false,code_branch,false,T04,nrc_core/battle.py,1953,FILE:nrc_core/battle.py,"team == ""a""",待核对
+BRANCH:nrc_core/battle.py:1944:true,code_branch,true,T04,nrc_core/battle.py,1944,FILE:nrc_core/battle.py,effectiveness == 1,待核对
+BRANCH:nrc_core/battle.py:1944:false,code_branch,false,T04,nrc_core/battle.py,1944,FILE:nrc_core/battle.py,effectiveness == 1,待核对
+BRANCH:nrc_core/battle.py:2130:true,code_branch,true,T04,nrc_core/battle.py,2130,FILE:nrc_core/battle.py,attacker,待核对
+BRANCH:nrc_core/battle.py:2130:false,code_branch,false,T04,nrc_core/battle.py,2130,FILE:nrc_core/battle.py,attacker,待核对
+BRANCH:nrc_core/battle.py:2131:true,code_branch,true,T04,nrc_core/battle.py,2131,FILE:nrc_core/battle.py,skill,待核对
+BRANCH:nrc_core/battle.py:2131:false,code_branch,false,T04,nrc_core/battle.py,2131,FILE:nrc_core/battle.py,skill,待核对
+BRANCH:nrc_core/battle.py:1945:true,code_branch,true,T04,nrc_core/battle.py,1945,FILE:nrc_core/battle.py,effectiveness is not None and effectiveness <= 2,待核对
+BRANCH:nrc_core/battle.py:1945:false,code_branch,false,T04,nrc_core/battle.py,1945,FILE:nrc_core/battle.py,effectiveness is not None and effectiveness <= 2,待核对
+BRANCH:nrc_core/battle.py:1946:true,code_branch,true,T04,nrc_core/battle.py,1946,FILE:nrc_core/battle.py,effectiveness is not None,待核对
+BRANCH:nrc_core/battle.py:1946:false,code_branch,false,T04,nrc_core/battle.py,1946,FILE:nrc_core/battle.py,effectiveness is not None,待核对
+FILE:nrc_core/core.py,file,nrc_core/core.py,T04,nrc_core/core.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/core.py:24:TurnResult,code_object,TurnResult,T04,nrc_core/core.py,24,FILE:nrc_core/core.py,无描述字符串,待核对
+CODE:nrc_core/core.py:32:_action_view,code_object,_action_view,T04,nrc_core/core.py,32,FILE:nrc_core/core.py,无描述字符串,待核对
+CODE:nrc_core/core.py:42:_display_power,code_object,_display_power,T04,nrc_core/core.py,42,FILE:nrc_core/core.py,无描述字符串,待核对
+CODE:nrc_core/core.py:76:_turn_start_skill_display,code_object,_turn_start_skill_display,T04,nrc_core/core.py,76,FILE:nrc_core/core.py,计算当前技能面板；只读调用方应传入状态副本。,待核对
+CODE:nrc_core/core.py:140:simulate_turn,code_object,simulate_turn,T04,nrc_core/core.py,140,FILE:nrc_core/core.py,Execute exactly one supplied turn; episode history belongs to platform.,待核对
+BRANCH:nrc_core/core.py:36:true,code_branch,true,T04,nrc_core/core.py,36,FILE:nrc_core/core.py,not action or action[0] < 0 or action[0] >= len(current.skills),待核对
+BRANCH:nrc_core/core.py:36:false,code_branch,false,T04,nrc_core/core.py,36,FILE:nrc_core/core.py,not action or action[0] < 0 or action[0] >= len(current.skills),待核对
+BRANCH:nrc_core/core.py:49:true,code_branch,true,T04,nrc_core/core.py,49,FILE:nrc_core/core.py,not action or action[0] < 0 or action[0] >= len(current.skills),待核对
+BRANCH:nrc_core/core.py:49:false,code_branch,false,T04,nrc_core/core.py,49,FILE:nrc_core/core.py,not action or action[0] < 0 or action[0] >= len(current.skills),待核对
+BRANCH:nrc_core/core.py:54:true,code_branch,true,T04,nrc_core/core.py,54,FILE:nrc_core/core.py,skill.power <= 0,待核对
+BRANCH:nrc_core/core.py:54:false,code_branch,false,T04,nrc_core/core.py,54,FILE:nrc_core/core.py,skill.power <= 0,待核对
+BRANCH:nrc_core/core.py:85:body,code_branch,body,T04,nrc_core/core.py,85,FILE:nrc_core/core.py,For,待核对
+BRANCH:nrc_core/core.py:85:zero_or_exit,code_branch,zero_or_exit,T04,nrc_core/core.py,85,FILE:nrc_core/core.py,For,待核对
+BRANCH:nrc_core/core.py:157:true,code_branch,true,T04,nrc_core/core.py,157,FILE:nrc_core/core.py,"not getattr(next_state, ""turn_start_prepared"", False)",待核对
+BRANCH:nrc_core/core.py:157:false,code_branch,false,T04,nrc_core/core.py,157,FILE:nrc_core/core.py,"not getattr(next_state, ""turn_start_prepared"", False)",待核对
+BRANCH:nrc_core/core.py:33:true,code_branch,true,T04,nrc_core/core.py,33,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:33:false,code_branch,false,T04,nrc_core/core.py,33,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:34:true,code_branch,true,T04,nrc_core/core.py,34,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:34:false,code_branch,false,T04,nrc_core/core.py,34,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:43:true,code_branch,true,T04,nrc_core/core.py,43,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:43:false,code_branch,false,T04,nrc_core/core.py,43,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:44:true,code_branch,true,T04,nrc_core/core.py,44,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:44:false,code_branch,false,T04,nrc_core/core.py,44,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:45:true,code_branch,true,T04,nrc_core/core.py,45,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:45:false,code_branch,false,T04,nrc_core/core.py,45,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:46:true,code_branch,true,T04,nrc_core/core.py,46,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:46:false,code_branch,false,T04,nrc_core/core.py,46,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:78:true,code_branch,true,T04,nrc_core/core.py,78,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:78:false,code_branch,false,T04,nrc_core/core.py,78,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:79:true,code_branch,true,T04,nrc_core/core.py,79,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:79:false,code_branch,false,T04,nrc_core/core.py,79,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:81:true,code_branch,true,T04,nrc_core/core.py,81,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:81:false,code_branch,false,T04,nrc_core/core.py,81,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:82:true,code_branch,true,T04,nrc_core/core.py,82,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:82:false,code_branch,false,T04,nrc_core/core.py,82,FILE:nrc_core/core.py,"team == ""a""",待核对
+BRANCH:nrc_core/core.py:89:true,code_branch,true,T04,nrc_core/core.py,89,FILE:nrc_core/core.py,skill.power < 0,待核对
+BRANCH:nrc_core/core.py:89:false,code_branch,false,T04,nrc_core/core.py,89,FILE:nrc_core/core.py,skill.power < 0,待核对
+BRANCH:nrc_core/core.py:95:true,code_branch,true,T04,nrc_core/core.py,95,FILE:nrc_core/core.py,"skill.category in {SkillCategory.PHYSICAL, SkillCategory.MAGICAL} and skill.power > 0",待核对
+BRANCH:nrc_core/core.py:95:false,code_branch,false,T04,nrc_core/core.py,95,FILE:nrc_core/core.py,"skill.category in {SkillCategory.PHYSICAL, SkillCategory.MAGICAL} and skill.power > 0",待核对
+BRANCH:nrc_core/core.py:142:true,code_branch,true,T04,nrc_core/core.py,142,FILE:nrc_core/core.py,clone,待核对
+BRANCH:nrc_core/core.py:142:false,code_branch,false,T04,nrc_core/core.py,142,FILE:nrc_core/core.py,clone,待核对
+BRANCH:nrc_core/core.py:105:true,code_branch,true,T04,nrc_core/core.py,105,FILE:nrc_core/core.py,previous_details is None,待核对
+BRANCH:nrc_core/core.py:105:false,code_branch,false,T04,nrc_core/core.py,105,FILE:nrc_core/core.py,previous_details is None,待核对
+BRANCH:nrc_core/core.py:109:true,code_branch,true,T04,nrc_core/core.py,109,FILE:nrc_core/core.py,previous_effectiveness is None,待核对
+BRANCH:nrc_core/core.py:109:false,code_branch,false,T04,nrc_core/core.py,109,FILE:nrc_core/core.py,previous_effectiveness is None,待核对
+BRANCH:nrc_core/core.py:37:true,code_branch,true,T04,nrc_core/core.py,37,FILE:nrc_core/core.py,action and action[0] == -1,待核对
+BRANCH:nrc_core/core.py:37:false,code_branch,false,T04,nrc_core/core.py,37,FILE:nrc_core/core.py,action and action[0] == -1,待核对
+FILE:nrc_core/rng.py,file,nrc_core/rng.py,T04,nrc_core/rng.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/rng.py:20:get_rng,code_object,get_rng,T04,nrc_core/rng.py,20,FILE:nrc_core/rng.py,无描述字符串,待核对
+CODE:nrc_core/rng.py:25:rng_scope,code_object,rng_scope,T04,nrc_core/rng.py,25,FILE:nrc_core/rng.py,无描述字符串,待核对
+CODE:nrc_core/rng.py:33:choice,code_object,choice,T04,nrc_core/rng.py,33,FILE:nrc_core/rng.py,无描述字符串,待核对
+CODE:nrc_core/rng.py:37:shuffle,code_object,shuffle,T04,nrc_core/rng.py,37,FILE:nrc_core/rng.py,无描述字符串,待核对
+CODE:nrc_core/rng.py:41:randrange,code_object,randrange,T04,nrc_core/rng.py,41,FILE:nrc_core/rng.py,无描述字符串,待核对

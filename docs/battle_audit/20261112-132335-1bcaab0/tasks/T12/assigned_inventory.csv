@@ -1,0 +1,121 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_server/__init__.py,file,nrc_server/__init__.py,T12,nrc_server/__init__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/presentation.py,file,nrc_server/presentation.py,T12,nrc_server/presentation.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_server/presentation.py:10:_base_name,code_object,_base_name,T12,nrc_server/presentation.py,10,FILE:nrc_server/presentation.py,取资源匹配使用的精灵基础名称。,待核对
+CODE:nrc_server/presentation.py:16:_asset_files,code_object,_asset_files,T12,nrc_server/presentation.py,16,FILE:nrc_server/presentation.py,缓存静态资源目录内容。,待核对
+CODE:nrc_server/presentation.py:24:_asset,code_object,_asset,T12,nrc_server/presentation.py,24,FILE:nrc_server/presentation.py,按原名称匹配资源文件，不参与资料解析。,待核对
+CODE:nrc_server/presentation.py:39:_asset_exact,code_object,_asset_exact,T12,nrc_server/presentation.py,39,FILE:nrc_server/presentation.py,返回存在的精确资源路径。,待核对
+CODE:nrc_server/presentation.py:45:decorate_response,code_object,decorate_response,T12,nrc_server/presentation.py,45,FILE:nrc_server/presentation.py,只补充静态资源信息，不修改对局规则与可见性。,待核对
+BRANCH:nrc_server/presentation.py:19:true,code_branch,true,T12,nrc_server/presentation.py,19,FILE:nrc_server/presentation.py,not folder.exists(),待核对
+BRANCH:nrc_server/presentation.py:19:false,code_branch,false,T12,nrc_server/presentation.py,19,FILE:nrc_server/presentation.py,not folder.exists(),待核对
+BRANCH:nrc_server/presentation.py:28:true,code_branch,true,T12,nrc_server/presentation.py,28,FILE:nrc_server/presentation.py,not candidates,待核对
+BRANCH:nrc_server/presentation.py:28:false,code_branch,false,T12,nrc_server/presentation.py,28,FILE:nrc_server/presentation.py,not candidates,待核对
+BRANCH:nrc_server/presentation.py:30:true,code_branch,true,T12,nrc_server/presentation.py,30,FILE:nrc_server/presentation.py,portrait,待核对
+BRANCH:nrc_server/presentation.py:30:false,code_branch,false,T12,nrc_server/presentation.py,30,FILE:nrc_server/presentation.py,portrait,待核对
+BRANCH:nrc_server/presentation.py:34:true,code_branch,true,T12,nrc_server/presentation.py,34,FILE:nrc_server/presentation.py,not candidates,待核对
+BRANCH:nrc_server/presentation.py:34:false,code_branch,false,T12,nrc_server/presentation.py,34,FILE:nrc_server/presentation.py,not candidates,待核对
+CODE:nrc_server/presentation.py:48:decorate,code_object,decorate,T12,nrc_server/presentation.py,48,FILE:nrc_server/presentation.py,递归装饰响应中的显示条目。,待核对
+BRANCH:nrc_server/presentation.py:75:true,code_branch,true,T12,nrc_server/presentation.py,75,FILE:nrc_server/presentation.py,"isinstance(result, dict) and result.get(""bloodline_attributes"") is not None",待核对
+BRANCH:nrc_server/presentation.py:75:false,code_branch,false,T12,nrc_server/presentation.py,75,FILE:nrc_server/presentation.py,"isinstance(result, dict) and result.get(""bloodline_attributes"") is not None",待核对
+BRANCH:nrc_server/presentation.py:42:true,code_branch,true,T12,nrc_server/presentation.py,42,FILE:nrc_server/presentation.py,path.is_file(),待核对
+BRANCH:nrc_server/presentation.py:42:false,code_branch,false,T12,nrc_server/presentation.py,42,FILE:nrc_server/presentation.py,path.is_file(),待核对
+BRANCH:nrc_server/presentation.py:50:true,code_branch,true,T12,nrc_server/presentation.py,50,FILE:nrc_server/presentation.py,"isinstance(item, list)",待核对
+BRANCH:nrc_server/presentation.py:50:false,code_branch,false,T12,nrc_server/presentation.py,50,FILE:nrc_server/presentation.py,"isinstance(item, list)",待核对
+BRANCH:nrc_server/presentation.py:51:body,code_branch,body,T12,nrc_server/presentation.py,51,FILE:nrc_server/presentation.py,For,待核对
+BRANCH:nrc_server/presentation.py:51:zero_or_exit,code_branch,zero_or_exit,T12,nrc_server/presentation.py,51,FILE:nrc_server/presentation.py,For,待核对
+BRANCH:nrc_server/presentation.py:53:true,code_branch,true,T12,nrc_server/presentation.py,53,FILE:nrc_server/presentation.py,"isinstance(item, dict)",待核对
+BRANCH:nrc_server/presentation.py:53:false,code_branch,false,T12,nrc_server/presentation.py,53,FILE:nrc_server/presentation.py,"isinstance(item, dict)",待核对
+BRANCH:nrc_server/presentation.py:77:true,code_branch,true,T12,nrc_server/presentation.py,77,FILE:nrc_server/presentation.py,bloodline,待核对
+BRANCH:nrc_server/presentation.py:77:false,code_branch,false,T12,nrc_server/presentation.py,77,FILE:nrc_server/presentation.py,bloodline,待核对
+BRANCH:nrc_server/presentation.py:54:body,code_branch,body,T12,nrc_server/presentation.py,54,FILE:nrc_server/presentation.py,For,待核对
+BRANCH:nrc_server/presentation.py:54:zero_or_exit,code_branch,zero_or_exit,T12,nrc_server/presentation.py,54,FILE:nrc_server/presentation.py,For,待核对
+BRANCH:nrc_server/presentation.py:58:true,code_branch,true,T12,nrc_server/presentation.py,58,FILE:nrc_server/presentation.py,"name and ""name"" not in item",待核对
+BRANCH:nrc_server/presentation.py:58:false,code_branch,false,T12,nrc_server/presentation.py,58,FILE:nrc_server/presentation.py,"name and ""name"" not in item",待核对
+BRANCH:nrc_server/presentation.py:62:true,code_branch,true,T12,nrc_server/presentation.py,62,FILE:nrc_server/presentation.py,name and creature,待核对
+BRANCH:nrc_server/presentation.py:62:false,code_branch,false,T12,nrc_server/presentation.py,62,FILE:nrc_server/presentation.py,name and creature,待核对
+BRANCH:nrc_server/presentation.py:65:true,code_branch,true,T12,nrc_server/presentation.py,65,FILE:nrc_server/presentation.py,name and skill,待核对
+BRANCH:nrc_server/presentation.py:65:false,code_branch,false,T12,nrc_server/presentation.py,65,FILE:nrc_server/presentation.py,name and skill,待核对
+BRANCH:nrc_server/presentation.py:68:true,code_branch,true,T12,nrc_server/presentation.py,68,FILE:nrc_server/presentation.py,element,待核对
+BRANCH:nrc_server/presentation.py:68:false,code_branch,false,T12,nrc_server/presentation.py,68,FILE:nrc_server/presentation.py,element,待核对
+BRANCH:nrc_server/presentation.py:71:true,code_branch,true,T12,nrc_server/presentation.py,71,FILE:nrc_server/presentation.py,"""type_effectiveness"" in item",待核对
+BRANCH:nrc_server/presentation.py:71:false,code_branch,false,T12,nrc_server/presentation.py,71,FILE:nrc_server/presentation.py,"""type_effectiveness"" in item",待核对
+BRANCH:nrc_server/presentation.py:72:true,code_branch,true,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,multiplier is None,待核对
+BRANCH:nrc_server/presentation.py:72:false,code_branch,false,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,multiplier is None,待核对
+BRANCH:nrc_server/presentation.py:72:true,code_branch,true,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,float(multiplier) > 2,待核对
+BRANCH:nrc_server/presentation.py:72:false,code_branch,false,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,float(multiplier) > 2,待核对
+BRANCH:nrc_server/presentation.py:72:true,code_branch,true,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,float(multiplier) > 1,待核对
+BRANCH:nrc_server/presentation.py:72:false,code_branch,false,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,float(multiplier) > 1,待核对
+BRANCH:nrc_server/presentation.py:72:true,code_branch,true,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,0 < float(multiplier) < 0.5,待核对
+BRANCH:nrc_server/presentation.py:72:false,code_branch,false,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,0 < float(multiplier) < 0.5,待核对
+BRANCH:nrc_server/presentation.py:72:true,code_branch,true,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,0 < float(multiplier) < 1,待核对
+BRANCH:nrc_server/presentation.py:72:false,code_branch,false,T12,nrc_server/presentation.py,72,FILE:nrc_server/presentation.py,0 < float(multiplier) < 1,待核对
+FILE:nrc_server/README.md,file,nrc_server/README.md,T12,nrc_server/README.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/server.py,file,nrc_server/server.py,T12,nrc_server/server.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_server/server.py:19:_error_response,code_object,_error_response,T12,nrc_server/server.py,19,FILE:nrc_server/server.py,把平台错误映射为 HTTP 响应。,待核对
+CODE:nrc_server/server.py:31:_identity,code_object,_identity,T12,nrc_server/server.py,31,FILE:nrc_server/server.py,将浏览器令牌解析为稳定身份，首次入场时签发令牌。,待核对
+CODE:nrc_server/server.py:43:_token_for,code_object,_token_for,T12,nrc_server/server.py,43,FILE:nrc_server/server.py,返回稳定身份已绑定的令牌。,待核对
+CODE:nrc_server/server.py:48:_payload,code_object,_payload,T12,nrc_server/server.py,48,FILE:nrc_server/server.py,验证 JSON 顶层为对象，避免无效请求进入平台。,待核对
+CODE:nrc_server/server.py:56:create_app,code_object,create_app,T12,nrc_server/server.py,56,FILE:nrc_server/server.py,装配 HTTP 路由、身份认证与资源服务。,待核对
+CODE:nrc_server/server.py:238:main,code_object,main,T12,nrc_server/server.py,238,FILE:nrc_server/server.py,无描述字符串,待核对
+BRANCH:nrc_server/server.py:246:true,code_branch,true,T12,nrc_server/server.py,246,FILE:nrc_server/server.py,"__name__ == ""__main__""",待核对
+BRANCH:nrc_server/server.py:246:false,code_branch,false,T12,nrc_server/server.py,246,FILE:nrc_server/server.py,"__name__ == ""__main__""",待核对
+BRANCH:nrc_server/server.py:21:true,code_branch,true,T12,nrc_server/server.py,21,FILE:nrc_server/server.py,"isinstance(error, PlatformError)",待核对
+BRANCH:nrc_server/server.py:21:false,code_branch,false,T12,nrc_server/server.py,21,FILE:nrc_server/server.py,"isinstance(error, PlatformError)",待核对
+BRANCH:nrc_server/server.py:25:true,code_branch,true,T12,nrc_server/server.py,25,FILE:nrc_server/server.py,"isinstance(error, (ValueError, TypeError))",待核对
+BRANCH:nrc_server/server.py:25:false,code_branch,false,T12,nrc_server/server.py,25,FILE:nrc_server/server.py,"isinstance(error, (ValueError, TypeError))",待核对
+BRANCH:nrc_server/server.py:34:true,code_branch,true,T12,nrc_server/server.py,34,FILE:nrc_server/server.py,token in app.state.sessions,待核对
+BRANCH:nrc_server/server.py:34:false,code_branch,false,T12,nrc_server/server.py,34,FILE:nrc_server/server.py,token in app.state.sessions,待核对
+BRANCH:nrc_server/server.py:36:true,code_branch,true,T12,nrc_server/server.py,36,FILE:nrc_server/server.py,not create,待核对
+BRANCH:nrc_server/server.py:36:false,code_branch,false,T12,nrc_server/server.py,36,FILE:nrc_server/server.py,not create,待核对
+BRANCH:nrc_server/server.py:51:true,code_branch,true,T12,nrc_server/server.py,51,FILE:nrc_server/server.py,"not isinstance(value, Mapping)",待核对
+BRANCH:nrc_server/server.py:51:false,code_branch,false,T12,nrc_server/server.py,51,FILE:nrc_server/server.py,"not isinstance(value, Mapping)",待核对
+CODE:nrc_server/server.py:66:index,code_object,index,T12,nrc_server/server.py,66,FILE:nrc_server/server.py,提供浏览器页面。,待核对
+CODE:nrc_server/server.py:71:catalog_index,code_object,catalog_index,T12,nrc_server/server.py,71,FILE:nrc_server/server.py,返回完整精灵与技能检索索引。,待核对
+CODE:nrc_server/server.py:80:catalog,code_object,catalog,T12,nrc_server/server.py,80,FILE:nrc_server/server.py,按名称与拼音筛选检索数据。,待核对
+CODE:nrc_server/server.py:89:pokemon_detail,code_object,pokemon_detail,T12,nrc_server/server.py,89,FILE:nrc_server/server.py,返回指定精灵的基础展示数据。,待核对
+CODE:nrc_server/server.py:98:pokemon_preview,code_object,pokemon_preview,T12,nrc_server/server.py,98,FILE:nrc_server/server.py,根据用户配置生成精灵面板预览。,待核对
+CODE:nrc_server/server.py:108:create_battle,code_object,create_battle,T12,nrc_server/server.py,108,FILE:nrc_server/server.py,为当前身份创建双人房间。,待核对
+CODE:nrc_server/server.py:120:join_battle,code_object,join_battle,T12,nrc_server/server.py,120,FILE:nrc_server/server.py,加入空闲席位或恢复当前身份席位。,待核对
+CODE:nrc_server/server.py:131:battle_summary,code_object,battle_summary,T12,nrc_server/server.py,131,FILE:nrc_server/server.py,返回当前玩家可见的房间摘要。,待核对
+CODE:nrc_server/server.py:141:opponent_roster,code_object,opponent_roster,T12,nrc_server/server.py,141,FILE:nrc_server/server.py,返回平台已遮蔽的对手阵容。,待核对
+CODE:nrc_server/server.py:151:set_rosters,code_object,set_rosters,T12,nrc_server/server.py,151,FILE:nrc_server/server.py,提交本人阵容并在双方确认后原子初始化。,待核对
+CODE:nrc_server/server.py:162:display,code_object,display,T12,nrc_server/server.py,162,FILE:nrc_server/server.py,返回本人技能显示值。,待核对
+CODE:nrc_server/server.py:172:matchups,code_object,matchups,T12,nrc_server/server.py,172,FILE:nrc_server/server.py,返回当前玩家可见的属性关系。,待核对
+CODE:nrc_server/server.py:182:actions,code_object,actions,T12,nrc_server/server.py,182,FILE:nrc_server/server.py,返回当前玩家的合法行动。,待核对
+CODE:nrc_server/server.py:192:public_state,code_object,public_state,T12,nrc_server/server.py,192,FILE:nrc_server/server.py,返回平台生成的玩家视角观测。,待核对
+CODE:nrc_server/server.py:202:operation,code_object,operation,T12,nrc_server/server.py,202,FILE:nrc_server/server.py,返回双方行动提交进度。,待核对
+CODE:nrc_server/server.py:212:battle_events,code_object,battle_events,T12,nrc_server/server.py,212,FILE:nrc_server/server.py,按玩家视角与游标返回公开战报。,待核对
+CODE:nrc_server/server.py:222:select_action,code_object,select_action,T12,nrc_server/server.py,222,FILE:nrc_server/server.py,幂等提交本人行动并追加展示事件。,待核对
+BRANCH:nrc_server/server.py:27:true,code_branch,true,T12,nrc_server/server.py,27,FILE:nrc_server/server.py,"message == ""player token is required""",待核对
+BRANCH:nrc_server/server.py:27:false,code_branch,false,T12,nrc_server/server.py,27,FILE:nrc_server/server.py,"message == ""player token is required""",待核对
+BRANCH:nrc_server/server.py:76:exception,code_branch,exception,T12,nrc_server/server.py,76,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:85:exception,code_branch,exception,T12,nrc_server/server.py,85,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:94:exception,code_branch,exception,T12,nrc_server/server.py,94,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:104:exception,code_branch,exception,T12,nrc_server/server.py,104,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:116:exception,code_branch,exception,T12,nrc_server/server.py,116,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:127:exception,code_branch,exception,T12,nrc_server/server.py,127,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:137:exception,code_branch,exception,T12,nrc_server/server.py,137,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:147:exception,code_branch,exception,T12,nrc_server/server.py,147,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:158:exception,code_branch,exception,T12,nrc_server/server.py,158,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:168:exception,code_branch,exception,T12,nrc_server/server.py,168,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:178:exception,code_branch,exception,T12,nrc_server/server.py,178,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:188:exception,code_branch,exception,T12,nrc_server/server.py,188,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:198:exception,code_branch,exception,T12,nrc_server/server.py,198,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:208:exception,code_branch,exception,T12,nrc_server/server.py,208,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:218:exception,code_branch,exception,T12,nrc_server/server.py,218,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:229:exception,code_branch,exception,T12,nrc_server/server.py,229,FILE:nrc_server/server.py,ExceptHandler,待核对
+BRANCH:nrc_server/server.py:27:true,code_branch,true,T12,nrc_server/server.py,27,FILE:nrc_server/server.py,"""not a member"" in message",待核对
+BRANCH:nrc_server/server.py:27:false,code_branch,false,T12,nrc_server/server.py,27,FILE:nrc_server/server.py,"""not a member"" in message",待核对
+BRANCH:nrc_server/server.py:27:true,code_branch,true,T12,nrc_server/server.py,27,FILE:nrc_server/server.py,"""not found"" in message",待核对
+BRANCH:nrc_server/server.py:27:false,code_branch,false,T12,nrc_server/server.py,27,FILE:nrc_server/server.py,"""not found"" in message",待核对
+FILE:nrc_server/static/api.js,file,nrc_server/static/api.js,T12,nrc_server/static/api.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/app.css,file,nrc_server/static/app.css,T12,nrc_server/static/app.css,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/app.js,file,nrc_server/static/app.js,T12,nrc_server/static/app.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/battle.js,file,nrc_server/static/battle.js,T12,nrc_server/static/battle.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/index.html,file,nrc_server/static/index.html,T12,nrc_server/static/index.html,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/opponent-roster.js,file,nrc_server/static/opponent-roster.js,T12,nrc_server/static/opponent-roster.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/overrides.css,file,nrc_server/static/overrides.css,T12,nrc_server/static/overrides.css,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/presentation.js,file,nrc_server/static/presentation.js,T12,nrc_server/static/presentation.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/roster.js,file,nrc_server/static/roster.js,T12,nrc_server/static/roster.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/session.js,file,nrc_server/static/session.js,T12,nrc_server/static/session.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_server/static/state.js,file,nrc_server/static/state.js,T12,nrc_server/static/state.js,1,,文件完整检查；测试和旧对局仅为线索,待核对

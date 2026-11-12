@@ -1,0 +1,495 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_core/engine/handlers_skill.py,file,nrc_core/engine/handlers_skill.py,T08,nrc_core/engine/handlers_skill.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:24:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,24,FILE:nrc_core/engine/handlers_skill.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:24:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,24,FILE:nrc_core/engine/handlers_skill.py,TYPE_CHECKING,待核对
+CODE:nrc_core/engine/handlers_skill.py:28:_h_damage,code_object,_h_damage,T08,nrc_core/engine/handlers_skill.py,28,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:150:_h_self_buff,code_object,_h_self_buff,T08,nrc_core/engine/handlers_skill.py,150,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:161:_h_self_debuff,code_object,_h_self_debuff,T08,nrc_core/engine/handlers_skill.py,161,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:168:_h_enemy_debuff,code_object,_h_enemy_debuff,T08,nrc_core/engine/handlers_skill.py,168,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:178:_h_heal_hp,code_object,_h_heal_hp,T08,nrc_core/engine/handlers_skill.py,178,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:200:_h_heal_energy,code_object,_h_heal_energy,T08,nrc_core/engine/handlers_skill.py,200,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:212:_h_self_ko,code_object,_h_self_ko,T08,nrc_core/engine/handlers_skill.py,212,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:217:_h_energy_all_in,code_object,_h_energy_all_in,T08,nrc_core/engine/handlers_skill.py,217,FILE:nrc_core/engine/handlers_skill.py,"ENERGY_ALL_IN: 消耗所有能量，威力按消耗量缩放（魔能爆）。
+在 PRE_USE 阶段执行：把当前能量换算成威力加成，然后清空能量。",待核对
+CODE:nrc_core/engine/handlers_skill.py:229:_h_reset_skill_cost,code_object,_h_reset_skill_cost,T08,nrc_core/engine/handlers_skill.py,229,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:238:_h_steal_energy,code_object,_h_steal_energy,T08,nrc_core/engine/handlers_skill.py,238,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:245:_h_enemy_lose_energy,code_object,_h_enemy_lose_energy,T08,nrc_core/engine/handlers_skill.py,245,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:260:_h_life_drain,code_object,_h_life_drain,T08,nrc_core/engine/handlers_skill.py,260,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:265:_h_grant_life_drain,code_object,_h_grant_life_drain,T08,nrc_core/engine/handlers_skill.py,265,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:270:_h_poison,code_object,_h_poison,T08,nrc_core/engine/handlers_skill.py,270,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:294:_h_burn,code_object,_h_burn,T08,nrc_core/engine/handlers_skill.py,294,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:302:_h_freeze,code_object,_h_freeze,T08,nrc_core/engine/handlers_skill.py,302,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:311:_h_electric_lure,code_object,_h_electric_lure,T08,nrc_core/engine/handlers_skill.py,311,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:317:_h_leech,code_object,_h_leech,T08,nrc_core/engine/handlers_skill.py,317,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:325:_h_meteor,code_object,_h_meteor,T08,nrc_core/engine/handlers_skill.py,325,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:332:_h_poison_mark,code_object,_h_poison_mark,T08,nrc_core/engine/handlers_skill.py,332,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:338:_h_moisture_mark,code_object,_h_moisture_mark,T08,nrc_core/engine/handlers_skill.py,338,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:361:_h_mark_generic,code_object,_h_mark_generic,T08,nrc_core/engine/handlers_skill.py,361,FILE:nrc_core/engine/handlers_skill.py,"通用印记 handler：根据 target 参数放入对应队伍的 marks dict。
+
+同一阵营（己方/敌方 marks dict）同时仅能存在1种正面印记和1种负面印记。
+新印记会覆盖同类（正面/负面）中的旧印记。",待核对
+CODE:nrc_core/engine/handlers_skill.py:393:_mark_stacks,code_object,_mark_stacks,T08,nrc_core/engine/handlers_skill.py,393,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:412:_h_dragon_mark,code_object,_h_dragon_mark,T08,nrc_core/engine/handlers_skill.py,412,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:417:_h_wind_mark,code_object,_h_wind_mark,T08,nrc_core/engine/handlers_skill.py,417,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:422:_h_charge_mark,code_object,_h_charge_mark,T08,nrc_core/engine/handlers_skill.py,422,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:427:_h_solar_mark,code_object,_h_solar_mark,T08,nrc_core/engine/handlers_skill.py,427,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:432:_h_attack_mark,code_object,_h_attack_mark,T08,nrc_core/engine/handlers_skill.py,432,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:437:_h_slow_mark,code_object,_h_slow_mark,T08,nrc_core/engine/handlers_skill.py,437,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:442:_h_sluggish_mark,code_object,_h_sluggish_mark,T08,nrc_core/engine/handlers_skill.py,442,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:447:_h_spirit_mark,code_object,_h_spirit_mark,T08,nrc_core/engine/handlers_skill.py,447,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:452:_h_meteor_mark,code_object,_h_meteor_mark,T08,nrc_core/engine/handlers_skill.py,452,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:457:_h_thorn_mark,code_object,_h_thorn_mark,T08,nrc_core/engine/handlers_skill.py,457,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:462:_h_momentum_mark,code_object,_h_momentum_mark,T08,nrc_core/engine/handlers_skill.py,462,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:467:_h_dispel_enemy_marks,code_object,_h_dispel_enemy_marks,T08,nrc_core/engine/handlers_skill.py,467,FILE:nrc_core/engine/handlers_skill.py,驱散敌方印记。stacks=N 时只驱散 N 层（从最大的印记扣），无 stacks 则全部清除。,待核对
+CODE:nrc_core/engine/handlers_skill.py:487:_h_convert_marks_to_burn,code_object,_h_convert_marks_to_burn,T08,nrc_core/engine/handlers_skill.py,487,FILE:nrc_core/engine/handlers_skill.py,炎爆术: 将敌方印记转换为 ratio 倍灼烧层数,待核对
+CODE:nrc_core/engine/handlers_skill.py:498:_h_dispel_marks_to_burn,code_object,_h_dispel_marks_to_burn,T08,nrc_core/engine/handlers_skill.py,498,FILE:nrc_core/engine/handlers_skill.py,焚烧烙印: 驱散双方所有印记，每层→N层灼烧,待核对
+CODE:nrc_core/engine/handlers_skill.py:511:_h_consume_marks_heal,code_object,_h_consume_marks_heal,T08,nrc_core/engine/handlers_skill.py,511,FILE:nrc_core/engine/handlers_skill.py,食腐: 驱散敌方印记，每层回复自己 heal_pct 生命,待核对
+CODE:nrc_core/engine/handlers_skill.py:527:_h_marks_to_meteor,code_object,_h_marks_to_meteor,T08,nrc_core/engine/handlers_skill.py,527,FILE:nrc_core/engine/handlers_skill.py,心灵洞悉: 敌方获得星陨，层数=敌方印记总层数,待核对
+CODE:nrc_core/engine/handlers_skill.py:538:_h_steal_marks,code_object,_h_steal_marks,T08,nrc_core/engine/handlers_skill.py,538,FILE:nrc_core/engine/handlers_skill.py,翅刃应对时: 偷取敌方印记给己方,待核对
+CODE:nrc_core/engine/handlers_skill.py:548:_h_energy_cost_per_enemy_mark,code_object,_h_energy_cost_per_enemy_mark,T08,nrc_core/engine/handlers_skill.py,548,FILE:nrc_core/engine/handlers_skill.py,四维降解: 敌方每层印记能耗-1,待核对
+CODE:nrc_core/engine/handlers_skill.py:557:_h_damage_reduction,code_object,_h_damage_reduction,T08,nrc_core/engine/handlers_skill.py,557,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:565:_h_force_switch,code_object,_h_force_switch,T08,nrc_core/engine/handlers_skill.py,565,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:570:_h_force_enemy_switch,code_object,_h_force_enemy_switch,T08,nrc_core/engine/handlers_skill.py,570,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:575:_h_agility,code_object,_h_agility,T08,nrc_core/engine/handlers_skill.py,575,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:580:_h_convert_buff_to_poison,code_object,_h_convert_buff_to_poison,T08,nrc_core/engine/handlers_skill.py,580,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:592:_h_convert_poison_to_mark,code_object,_h_convert_poison_to_mark,T08,nrc_core/engine/handlers_skill.py,592,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:609:_h_dispel_marks,code_object,_h_dispel_marks,T08,nrc_core/engine/handlers_skill.py,609,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:619:_h_conditional_buff,code_object,_h_conditional_buff,T08,nrc_core/engine/handlers_skill.py,619,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:651:_h_energy_cost_dynamic,code_object,_h_energy_cost_dynamic,T08,nrc_core/engine/handlers_skill.py,651,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:660:_h_power_dynamic,code_object,_h_power_dynamic,T08,nrc_core/engine/handlers_skill.py,660,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:718:_h_permanent_mod,code_object,_h_permanent_mod,T08,nrc_core/engine/handlers_skill.py,718,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:723:_h_skill_mod,code_object,_h_skill_mod,T08,nrc_core/engine/handlers_skill.py,723,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:760:_h_next_attack_mod,code_object,_h_next_attack_mod,T08,nrc_core/engine/handlers_skill.py,760,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:766:_h_cleanse,code_object,_h_cleanse,T08,nrc_core/engine/handlers_skill.py,766,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:776:_h_dispel_buffs,code_object,_h_dispel_buffs,T08,nrc_core/engine/handlers_skill.py,776,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:782:_h_dispel_debuffs,code_object,_h_dispel_debuffs,T08,nrc_core/engine/handlers_skill.py,782,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:788:_h_position_buff,code_object,_h_position_buff,T08,nrc_core/engine/handlers_skill.py,788,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:797:_h_drive,code_object,_h_drive,T08,nrc_core/engine/handlers_skill.py,797,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:830:_h_passive_energy_reduce,code_object,_h_passive_energy_reduce,T08,nrc_core/engine/handlers_skill.py,830,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:835:_h_replay_agility,code_object,_h_replay_agility,T08,nrc_core/engine/handlers_skill.py,835,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:840:_h_agility_cost_share,code_object,_h_agility_cost_share,T08,nrc_core/engine/handlers_skill.py,840,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:845:_h_energy_cost_accumulate,code_object,_h_energy_cost_accumulate,T08,nrc_core/engine/handlers_skill.py,845,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:851:_h_weather,code_object,_h_weather,T08,nrc_core/engine/handlers_skill.py,851,FILE:nrc_core/engine/handlers_skill.py,"设置天气，持续指定回合。params: {""type"": ""sunny""|""rain""|""sandstorm""|""hail""|""snow"", ""turns"": 8}",待核对
+CODE:nrc_core/engine/handlers_skill.py:881:_apply_weather_damage,code_object,_apply_weather_damage,T08,nrc_core/engine/handlers_skill.py,881,FILE:nrc_core/engine/handlers_skill.py,"回合结束时应用天气效果。
+- 沙暴：对非地/钢系造成 1/16 HP 伤害
+- 暴风雪：双方当前在场精灵获得 2 层冻结",待核对
+CODE:nrc_core/engine/handlers_skill.py:916:_h_enemy_energy_cost_up,code_object,_h_enemy_energy_cost_up,T08,nrc_core/engine/handlers_skill.py,916,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:943:_h_mirror_damage,code_object,_h_mirror_damage,T08,nrc_core/engine/handlers_skill.py,943,FILE:nrc_core/engine/handlers_skill.py,"反弹伤害（听桥）：将攻击方对自己造成的原始伤害值原样反弹给攻击方。
+ctx.damage 在 execute_counter 中传入的是减伤前的原始伤害值。
+如果 ctx.damage == 0（对方没有造成伤害，如状态/防御技能），则不反弹。",待核对
+CODE:nrc_core/engine/handlers_skill.py:959:_h_counter_override,code_object,_h_counter_override,T08,nrc_core/engine/handlers_skill.py,959,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:969:_h_passive_energy_reduce_water_ring,code_object,_h_passive_energy_reduce_water_ring,T08,nrc_core/engine/handlers_skill.py,969,FILE:nrc_core/engine/handlers_skill.py,水环应对攻击时：全技能能耗 -N（在 execute_counter 子效果中）,待核对
+CODE:nrc_core/engine/handlers_skill.py:979:_h_permanent_mod_ability,code_object,_h_permanent_mod_ability,T08,nrc_core/engine/handlers_skill.py,979,FILE:nrc_core/engine/handlers_skill.py,特性中的永久修改（身经百练）,待核对
+CODE:nrc_core/engine/handlers_skill.py:1031:_h_counter_attack,code_object,_h_counter_attack,T08,nrc_core/engine/handlers_skill.py,1031,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:1036:_h_counter_status,code_object,_h_counter_status,T08,nrc_core/engine/handlers_skill.py,1036,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_skill.py:1041:_h_counter_defense,code_object,_h_counter_defense,T08,nrc_core/engine/handlers_skill.py,1041,FILE:nrc_core/engine/handlers_skill.py,无描述字符串,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:31:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,31,FILE:nrc_core/engine/handlers_skill.py,skill.power < 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:31:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,31,FILE:nrc_core/engine/handlers_skill.py,skill.power < 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:35:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,35,FILE:nrc_core/engine/handlers_skill.py,"ctx.target.ability_state.get(""immune_zero_energy_attacker"") and ctx.user.energy == 0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:35:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,35,FILE:nrc_core/engine/handlers_skill.py,"ctx.target.ability_state.get(""immune_zero_energy_attacker"") and ctx.user.energy == 0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:41:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,41,FILE:nrc_core/engine/handlers_skill.py,immune_cost_threshold is not None,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:41:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,41,FILE:nrc_core/engine/handlers_skill.py,immune_cost_threshold is not None,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:76:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,76,FILE:nrc_core/engine/handlers_skill.py,power_mult != 1.0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:76:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,76,FILE:nrc_core/engine/handlers_skill.py,power_mult != 1.0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:78:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,78,FILE:nrc_core/engine/handlers_skill.py,power > 0 and not ctx.target.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:78:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,78,FILE:nrc_core/engine/handlers_skill.py,power > 0 and not ctx.target.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:151:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,151,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:151:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,151,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:153:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,153,FILE:nrc_core/engine/handlers_skill.py,"ctx.result.get(""_is_ability_ctx"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:153:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,153,FILE:nrc_core/engine/handlers_skill.py,"ctx.result.get(""_is_ability_ctx"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:162:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,162,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:162:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,162,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:169:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,169,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:169:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,169,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:171:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,171,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""invert"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:171:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,171,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""invert"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:182:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,182,FILE:nrc_core/engine/handlers_skill.py,"per == ""enemy_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:182:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,182,FILE:nrc_core/engine/handlers_skill.py,"per == ""enemy_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:187:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,187,FILE:nrc_core/engine/handlers_skill.py,heal > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:187:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,187,FILE:nrc_core/engine/handlers_skill.py,heal > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:201:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,201,FILE:nrc_core/engine/handlers_skill.py,"""set_to"" in tag.params",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:201:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,201,FILE:nrc_core/engine/handlers_skill.py,"""set_to"" in tag.params",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:223:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,223,FILE:nrc_core/engine/handlers_skill.py,current_energy > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:223:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,223,FILE:nrc_core/engine/handlers_skill.py,current_energy > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:233:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,233,FILE:nrc_core/engine/handlers_skill.py,0 <= slot < len(private),待核对
+BRANCH:nrc_core/engine/handlers_skill.py:233:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,233,FILE:nrc_core/engine/handlers_skill.py,0 <= slot < len(private),待核对
+BRANCH:nrc_core/engine/handlers_skill.py:247:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,247,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self_mp""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:247:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,247,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self_mp""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:272:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,272,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.POISON) or ctx.target.ability_state.get(""poison_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:272:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,272,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.POISON) or ctx.target.ability_state.get(""poison_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:276:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,276,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""stacks_per_poison_skill"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:276:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,276,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""stacks_per_poison_skill"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:280:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,280,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""stacks_per_mark"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:280:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,280,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""stacks_per_mark"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:287:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,287,FILE:nrc_core/engine/handlers_skill.py,"tgt in (""enemy"", ""enemy_new"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:287:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,287,FILE:nrc_core/engine/handlers_skill.py,"tgt in (""enemy"", ""enemy_new"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:296:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,296,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.FIRE) or ctx.target.ability_state.get(""burn_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:296:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,296,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.FIRE) or ctx.target.ability_state.get(""burn_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:304:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,304,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.ICE) or ctx.target.ability_state.get(""freeze_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:304:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,304,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.ICE) or ctx.target.ability_state.get(""freeze_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:319:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,319,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.GRASS) or ctx.target.ability_state.get(""leech_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:319:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,319,FILE:nrc_core/engine/handlers_skill.py,"has_type(ctx.target, Type.GRASS) or ctx.target.ability_state.get(""leech_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:327:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,327,FILE:nrc_core/engine/handlers_skill.py,ctx.target.meteor_countdown <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:327:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,327,FILE:nrc_core/engine/handlers_skill.py,ctx.target.meteor_countdown <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:340:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,340,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:340:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,340,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:349:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,349,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:349:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,349,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:368:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,368,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:368:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,368,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:374:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,374,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""mark_stack_additive"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:374:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,374,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""mark_stack_additive"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:380:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,380,FILE:nrc_core/engine/handlers_skill.py,mark_key in POSITIVE_MARKS,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:380:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,380,FILE:nrc_core/engine/handlers_skill.py,mark_key in POSITIVE_MARKS,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:471:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,471,FILE:nrc_core/engine/handlers_skill.py,stacks <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:471:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,471,FILE:nrc_core/engine/handlers_skill.py,stacks <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:492:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,492,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:492:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,492,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:506:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,506,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:506:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,506,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:517:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,517,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:517:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,517,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:531:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,531,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:531:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,531,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:542:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,542,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:542:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,542,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:552:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,552,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:552:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,552,FILE:nrc_core/engine/handlers_skill.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:560:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,560,FILE:nrc_core/engine/handlers_skill.py,"""ability_damage_reduction"" in ctx.result or ctx.result.get(""_is_ability_ctx"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:560:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,560,FILE:nrc_core/engine/handlers_skill.py,"""ability_damage_reduction"" in ctx.result or ctx.result.get(""_is_ability_ctx"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:582:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,582,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:582:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,582,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:587:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,587,FILE:nrc_core/engine/handlers_skill.py,total_buff > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:587:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,587,FILE:nrc_core/engine/handlers_skill.py,total_buff > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:596:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,596,FILE:nrc_core/engine/handlers_skill.py,"on == ""kill"" and ctx.target.is_fainted",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:596:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,596,FILE:nrc_core/engine/handlers_skill.py,"on == ""kill"" and ctx.target.is_fainted",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:611:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,611,FILE:nrc_core/engine/handlers_skill.py,"cond == ""not_blocked""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:611:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,611,FILE:nrc_core/engine/handlers_skill.py,"cond == ""not_blocked""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:622:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,622,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:622:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,622,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:654:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,654,FILE:nrc_core/engine/handlers_skill.py,"per == ""enemy_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:654:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,654,FILE:nrc_core/engine/handlers_skill.py,"per == ""enemy_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:662:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,662,FILE:nrc_core/engine/handlers_skill.py,"condition == ""first_strike"" and ctx.is_first",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:662:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,662,FILE:nrc_core/engine/handlers_skill.py,"condition == ""first_strike"" and ctx.is_first",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:724:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,724,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:724:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,724,FILE:nrc_core/engine/handlers_skill.py,"not _check_runtime_condition(tag, ctx)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:730:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,730,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:730:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,730,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:743:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,743,FILE:nrc_core/engine/handlers_skill.py,"stat == ""power""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:743:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,743,FILE:nrc_core/engine/handlers_skill.py,"stat == ""power""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:769:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,769,FILE:nrc_core/engine/handlers_skill.py,"mode in (""buffs"", ""all"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:769:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,769,FILE:nrc_core/engine/handlers_skill.py,"mode in (""buffs"", ""all"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:771:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,771,FILE:nrc_core/engine/handlers_skill.py,"mode in (""debuffs"", ""all"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:771:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,771,FILE:nrc_core/engine/handlers_skill.py,"mode in (""debuffs"", ""all"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:792:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,792,FILE:nrc_core/engine/handlers_skill.py,skill_idx in positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:792:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,792,FILE:nrc_core/engine/handlers_skill.py,skill_idx in positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:803:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,803,FILE:nrc_core/engine/handlers_skill.py,ctx.skill is None and positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:803:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,803,FILE:nrc_core/engine/handlers_skill.py,ctx.skill is None and positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:860:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,860,FILE:nrc_core/engine/handlers_skill.py,"weather_type == ""sandstorm""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:860:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,860,FILE:nrc_core/engine/handlers_skill.py,"weather_type == ""sandstorm""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:888:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,888,FILE:nrc_core/engine/handlers_skill.py,not w,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:888:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,888,FILE:nrc_core/engine/handlers_skill.py,not w,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:891:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,891,FILE:nrc_core/engine/handlers_skill.py,"w == ""sandstorm""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:891:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,891,FILE:nrc_core/engine/handlers_skill.py,"w == ""sandstorm""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:899:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,899,FILE:nrc_core/engine/handlers_skill.py,"w == ""snow""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:899:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,899,FILE:nrc_core/engine/handlers_skill.py,"w == ""snow""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:907:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,907,FILE:nrc_core/engine/handlers_skill.py,"w in {""thunder"", ""雷鸣""}",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:907:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,907,FILE:nrc_core/engine/handlers_skill.py,"w in {""thunder"", ""雷鸣""}",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:924:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,924,FILE:nrc_core/engine/handlers_skill.py,duration,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:924:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,924,FILE:nrc_core/engine/handlers_skill.py,duration,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:935:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,935,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:935:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,935,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:950:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,950,FILE:nrc_core/engine/handlers_skill.py,mirror_dmg > 0 and not ctx.target.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:950:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,950,FILE:nrc_core/engine/handlers_skill.py,mirror_dmg > 0 and not ctx.target.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:963:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,963,FILE:nrc_core/engine/handlers_skill.py,"replace_type == ""poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:963:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,963,FILE:nrc_core/engine/handlers_skill.py,"replace_type == ""poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:973:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,973,FILE:nrc_core/engine/handlers_skill.py,"rng == ""all""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:973:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,973,FILE:nrc_core/engine/handlers_skill.py,"rng == ""all""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:985:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,985,FILE:nrc_core/engine/handlers_skill.py,per_counter > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:985:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,985,FILE:nrc_core/engine/handlers_skill.py,per_counter > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:43:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,43,FILE:nrc_core/engine/handlers_skill.py,"skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:43:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,43,FILE:nrc_core/engine/handlers_skill.py,"skill.category in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:89:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,89,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""hit_count_per_poison"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:89:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,89,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""hit_count_per_poison"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:96:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,96,FILE:nrc_core/engine/handlers_skill.py,cute_per and ctx.user.cute_stacks > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:96:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,96,FILE:nrc_core/engine/handlers_skill.py,cute_per and ctx.user.cute_stacks > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:104:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,104,FILE:nrc_core/engine/handlers_skill.py,fixed_hit,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:104:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,104,FILE:nrc_core/engine/handlers_skill.py,fixed_hit,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:110:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,110,FILE:nrc_core/engine/handlers_skill.py,"mark_mods[""atk_mult""] > 1.0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:110:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,110,FILE:nrc_core/engine/handlers_skill.py,"mark_mods[""atk_mult""] > 1.0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:125:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,125,FILE:nrc_core/engine/handlers_skill.py,ctx.user.next_attack_power_bonus or ctx.user.next_attack_power_pct,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:125:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,125,FILE:nrc_core/engine/handlers_skill.py,ctx.user.next_attack_power_bonus or ctx.user.next_attack_power_pct,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:130:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,130,FILE:nrc_core/engine/handlers_skill.py,meteor_stacks > 0 and dmg > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:130:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,130,FILE:nrc_core/engine/handlers_skill.py,meteor_stacks > 0 and dmg > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:184:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,184,FILE:nrc_core/engine/handlers_skill.py,"per == ""enemy_burn""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:184:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,184,FILE:nrc_core/engine/handlers_skill.py,"per == ""enemy_burn""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:190:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,190,FILE:nrc_core/engine/handlers_skill.py,anti,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:190:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,190,FILE:nrc_core/engine/handlers_skill.py,anti,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:207:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,207,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""share_gains"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:207:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,207,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""share_gains"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:249:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,249,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:249:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,249,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:253:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,253,FILE:nrc_core/engine/handlers_skill.py,"tgt in (""enemy_new"", ""enemy"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:253:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,253,FILE:nrc_core/engine/handlers_skill.py,"tgt in (""enemy_new"", ""enemy"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:333:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,333,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:333:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,333,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:347:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,347,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:347:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,347,FILE:nrc_core/engine/handlers_skill.py,"tgt == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:348:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,348,FILE:nrc_core/engine/handlers_skill.py,"team_id == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:348:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,348,FILE:nrc_core/engine/handlers_skill.py,"team_id == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:351:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,351,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:351:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,351,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:381:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,381,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:381:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,381,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:384:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,384,FILE:nrc_core/engine/handlers_skill.py,mark_key in NEGATIVE_MARKS,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:384:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,384,FILE:nrc_core/engine/handlers_skill.py,mark_key in NEGATIVE_MARKS,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:469:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,469,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:469:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,469,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:476:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,476,FILE:nrc_core/engine/handlers_skill.py,remaining > 0 and enemy_marks,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:476:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,476,FILE:nrc_core/engine/handlers_skill.py,remaining > 0 and enemy_marks,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:490:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,490,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:490:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,490,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:514:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,514,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:514:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,514,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:520:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,520,FILE:nrc_core/engine/handlers_skill.py,anti,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:520:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,520,FILE:nrc_core/engine/handlers_skill.py,anti,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:529:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,529,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:529:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,529,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:533:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,533,FILE:nrc_core/engine/handlers_skill.py,ctx.target.meteor_countdown <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:533:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,533,FILE:nrc_core/engine/handlers_skill.py,ctx.target.meteor_countdown <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:540:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,540,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:540:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,540,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:541:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,541,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:541:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,541,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:550:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,550,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:550:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,550,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:584:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,584,FILE:nrc_core/engine/handlers_skill.py,v > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:584:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,584,FILE:nrc_core/engine/handlers_skill.py,v > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:595:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,595,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:595:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,595,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:600:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,600,FILE:nrc_core/engine/handlers_skill.py,ratio > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:600:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,600,FILE:nrc_core/engine/handlers_skill.py,ratio > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:624:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,624,FILE:nrc_core/engine/handlers_skill.py,"condition == ""after_use_hp_gt_half""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:624:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,624,FILE:nrc_core/engine/handlers_skill.py,"condition == ""after_use_hp_gt_half""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:665:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,665,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:665:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,665,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:726:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,726,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:726:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,726,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:734:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,734,FILE:nrc_core/engine/handlers_skill.py,not enemy_switched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:734:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,734,FILE:nrc_core/engine/handlers_skill.py,not enemy_switched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:736:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,736,FILE:nrc_core/engine/handlers_skill.py,"condition in (""self_hp_above"", ""self_hp_below"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:736:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,736,FILE:nrc_core/engine/handlers_skill.py,"condition in (""self_hp_above"", ""self_hp_below"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:745:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,745,FILE:nrc_core/engine/handlers_skill.py,"stat == ""power_pct""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:745:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,745,FILE:nrc_core/engine/handlers_skill.py,"stat == ""power_pct""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:767:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,767,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:767:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,767,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:777:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,777,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""enemy"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:777:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,777,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""enemy"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:783:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,783,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:783:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,783,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:799:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,799,FILE:nrc_core/engine/handlers_skill.py,"isinstance(ctx.result, dict)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:799:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,799,FILE:nrc_core/engine/handlers_skill.py,"isinstance(ctx.result, dict)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:804:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,804,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:804:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,804,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:861:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,861,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:861:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,861,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:893:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,893,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:893:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,893,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:896:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,896,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:896:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,896,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:901:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,901,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:901:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,901,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:909:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,909,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:909:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,909,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:930:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,930,FILE:nrc_core/engine/handlers_skill.py,"filt in (""used_skill"", ""other_skills"") and ctx.enemy_skill is not None",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:930:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,930,FILE:nrc_core/engine/handlers_skill.py,"filt in (""used_skill"", ""other_skills"") and ctx.enemy_skill is not None",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:936:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,936,FILE:nrc_core/engine/handlers_skill.py,"filt == ""attack"" and s.category in (SC.PHYSICAL, SC.MAGICAL)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:936:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,936,FILE:nrc_core/engine/handlers_skill.py,"filt == ""attack"" and s.category in (SC.PHYSICAL, SC.MAGICAL)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:953:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,953,FILE:nrc_core/engine/handlers_skill.py,ctx.target.current_hp <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:953:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,953,FILE:nrc_core/engine/handlers_skill.py,ctx.target.current_hp <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:974:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,974,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:974:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,974,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:982:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,982,FILE:nrc_core/engine/handlers_skill.py,"isinstance(ctx.result, dict)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:982:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,982,FILE:nrc_core/engine/handlers_skill.py,"isinstance(ctx.result, dict)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:996:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,996,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:996:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,996,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1006:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,1006,FILE:nrc_core/engine/handlers_skill.py,not positions and not elements,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1006:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,1006,FILE:nrc_core/engine/handlers_skill.py,not positions and not elements,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1011:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,1011,FILE:nrc_core/engine/handlers_skill.py,ctx.skill is not None,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1011:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,1011,FILE:nrc_core/engine/handlers_skill.py,ctx.skill is not None,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1015:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,1015,FILE:nrc_core/engine/handlers_skill.py,positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1015:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,1015,FILE:nrc_core/engine/handlers_skill.py,positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:45:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,45,FILE:nrc_core/engine/handlers_skill.py,actual_cost <= immune_cost_threshold,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:45:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,45,FILE:nrc_core/engine/handlers_skill.py,actual_cost <= immune_cost_threshold,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:91:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,91,FILE:nrc_core/engine/handlers_skill.py,"skill.category in (_SC.PHYSICAL, _SC.MAGICAL) and ctx.target.poison_stacks > 0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:91:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,91,FILE:nrc_core/engine/handlers_skill.py,"skill.category in (_SC.PHYSICAL, _SC.MAGICAL) and ctx.target.poison_stacks > 0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:98:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,98,FILE:nrc_core/engine/handlers_skill.py,"skill.category in (_SC2.PHYSICAL, _SC2.MAGICAL)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:98:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,98,FILE:nrc_core/engine/handlers_skill.py,"skill.category in (_SC2.PHYSICAL, _SC2.MAGICAL)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:132:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,132,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:132:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,132,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:143:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,143,FILE:nrc_core/engine/handlers_skill.py,ctx.target.current_hp <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:143:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,143,FILE:nrc_core/engine/handlers_skill.py,ctx.target.current_hp <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:195:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,195,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""share_gains"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:195:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,195,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""share_gains"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:282:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,282,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:282:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,282,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:341:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,341,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:341:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,341,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:343:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,343,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:343:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,343,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:347:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,347,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:347:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,347,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:353:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,353,FILE:nrc_core/engine/handlers_skill.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:353:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,353,FILE:nrc_core/engine/handlers_skill.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:369:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,369,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:369:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,369,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:371:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,371,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:371:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,371,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:382:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,382,FILE:nrc_core/engine/handlers_skill.py,existing_key in POSITIVE_MARKS and existing_key != mark_key,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:382:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,382,FILE:nrc_core/engine/handlers_skill.py,existing_key in POSITIVE_MARKS and existing_key != mark_key,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:385:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,385,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:385:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,385,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:478:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,478,FILE:nrc_core/engine/handlers_skill.py,"not isinstance(enemy_marks[max_key], (int, float)) or enemy_marks[max_key] <= 0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:478:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,478,FILE:nrc_core/engine/handlers_skill.py,"not isinstance(enemy_marks[max_key], (int, float)) or enemy_marks[max_key] <= 0",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:481:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,481,FILE:nrc_core/engine/handlers_skill.py,enemy_marks[max_key] <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:481:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,481,FILE:nrc_core/engine/handlers_skill.py,enemy_marks[max_key] <= 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:603:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,603,FILE:nrc_core/engine/handlers_skill.py,converted > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:603:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,603,FILE:nrc_core/engine/handlers_skill.py,converted > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:625:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,625,FILE:nrc_core/engine/handlers_skill.py,ctx.user.current_hp > ctx.user.hp / 2,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:625:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,625,FILE:nrc_core/engine/handlers_skill.py,ctx.user.current_hp > ctx.user.hp / 2,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:627:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,627,FILE:nrc_core/engine/handlers_skill.py,"condition in (""self_hp_gt"", ""self_hp_lt"", ""enemy_hp_gt"", ""enemy_hp_lt"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:627:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,627,FILE:nrc_core/engine/handlers_skill.py,"condition in (""self_hp_gt"", ""self_hp_lt"", ""enemy_hp_gt"", ""enemy_hp_lt"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:669:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,669,FILE:nrc_core/engine/handlers_skill.py,enemy_switched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:669:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,669,FILE:nrc_core/engine/handlers_skill.py,enemy_switched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:671:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,671,FILE:nrc_core/engine/handlers_skill.py,"condition == ""prev_status""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:671:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,671,FILE:nrc_core/engine/handlers_skill.py,"condition == ""prev_status""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:732:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,732,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:732:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,732,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:741:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,741,FILE:nrc_core/engine/handlers_skill.py,not matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:741:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,741,FILE:nrc_core/engine/handlers_skill.py,not matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:747:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,747,FILE:nrc_core/engine/handlers_skill.py,"stat == ""cost""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:747:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,747,FILE:nrc_core/engine/handlers_skill.py,"stat == ""cost""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:805:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,805,FILE:nrc_core/engine/handlers_skill.py,idx not in positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:805:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,805,FILE:nrc_core/engine/handlers_skill.py,idx not in positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:807:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,807,FILE:nrc_core/engine/handlers_skill.py,"not getattr(skill, ""effects"", None)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:807:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,807,FILE:nrc_core/engine/handlers_skill.py,"not getattr(skill, ""effects"", None)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:811:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,811,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:811:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,811,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:819:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,819,FILE:nrc_core/engine/handlers_skill.py,not has_drive,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:819:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,819,FILE:nrc_core/engine/handlers_skill.py,not has_drive,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:862:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,862,FILE:nrc_core/engine/handlers_skill.py,p.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:862:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,862,FILE:nrc_core/engine/handlers_skill.py,p.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:864:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,864,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:864:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,864,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:894:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,894,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not (has_type(p, Type.GROUND) or has_type(p, Type.STEEL))",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:894:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,894,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not (has_type(p, Type.GROUND) or has_type(p, Type.STEEL))",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:897:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,897,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not (has_type(p, Type.GROUND) or has_type(p, Type.STEEL))",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:897:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,897,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not (has_type(p, Type.GROUND) or has_type(p, Type.STEEL))",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:903:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,903,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not has_type(p, Type.ICE)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:903:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,903,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not has_type(p, Type.ICE)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:911:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,911,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not has_type(p, Type.ELECTRIC)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:911:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,911,FILE:nrc_core/engine/handlers_skill.py,"not p.is_fainted and not has_type(p, Type.ELECTRIC)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:938:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,938,FILE:nrc_core/engine/handlers_skill.py,"filt == ""all""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:938:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,938,FILE:nrc_core/engine/handlers_skill.py,"filt == ""all""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:997:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,997,FILE:nrc_core/engine/handlers_skill.py,"positions and _find_skill_index(ctx.user, s) not in positions",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:997:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,997,FILE:nrc_core/engine/handlers_skill.py,"positions and _find_skill_index(ctx.user, s) not in positions",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:999:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,999,FILE:nrc_core/engine/handlers_skill.py,elements,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:999:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,999,FILE:nrc_core/engine/handlers_skill.py,elements,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1016:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,1016,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1016:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,1016,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1026:body,code_branch,body,T08,nrc_core/engine/handlers_skill.py,1026,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1026:zero_or_exit,code_branch,zero_or_exit,T08,nrc_core/engine/handlers_skill.py,1026,FILE:nrc_core/engine/handlers_skill.py,For,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:131:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,131,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:131:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,131,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:133:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,133,FILE:nrc_core/engine/handlers_skill.py,"key == ""meteor_mark"" or key.startswith(""bard_mark:meteor_mark:"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:133:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,133,FILE:nrc_core/engine/handlers_skill.py,"key == ""meteor_mark"" or key.startswith(""bard_mark:meteor_mark:"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:356:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,356,FILE:nrc_core/engine/handlers_skill.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:356:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,356,FILE:nrc_core/engine/handlers_skill.py,"p.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:386:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,386,FILE:nrc_core/engine/handlers_skill.py,existing_key in NEGATIVE_MARKS and existing_key != mark_key,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:386:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,386,FILE:nrc_core/engine/handlers_skill.py,existing_key in NEGATIVE_MARKS and existing_key != mark_key,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:632:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,632,FILE:nrc_core/engine/handlers_skill.py,matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:632:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,632,FILE:nrc_core/engine/handlers_skill.py,matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:635:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,635,FILE:nrc_core/engine/handlers_skill.py,"condition in (""self_hp_above"", ""self_hp_below"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:635:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,635,FILE:nrc_core/engine/handlers_skill.py,"condition in (""self_hp_above"", ""self_hp_below"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:667:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,667,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:667:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,667,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:672:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,672,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""last_skill_category"") == ""状态"" and ctx.user.ability_state.get(""last_skill_turn"") == ctx.state.turn - 1",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:672:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,672,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""last_skill_category"") == ""状态"" and ctx.user.ability_state.get(""last_skill_turn"") == ctx.state.turn - 1",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:674:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,674,FILE:nrc_core/engine/handlers_skill.py,"condition == ""prev_counter_success""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:674:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,674,FILE:nrc_core/engine/handlers_skill.py,"condition == ""prev_counter_success""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:740:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,740,FILE:nrc_core/engine/handlers_skill.py,"condition == ""self_hp_above""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:740:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,740,FILE:nrc_core/engine/handlers_skill.py,"condition == ""self_hp_above""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:749:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,749,FILE:nrc_core/engine/handlers_skill.py,"stat == ""hit_count""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:749:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,749,FILE:nrc_core/engine/handlers_skill.py,"stat == ""hit_count""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:812:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,812,FILE:nrc_core/engine/handlers_skill.py,"isinstance(item, SkillEffect)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:812:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,812,FILE:nrc_core/engine/handlers_skill.py,"isinstance(item, SkillEffect)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:820:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,820,FILE:nrc_core/engine/handlers_skill.py,"skill.effects and isinstance(skill.effects[0], SkillEffect)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:820:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,820,FILE:nrc_core/engine/handlers_skill.py,"skill.effects and isinstance(skill.effects[0], SkillEffect)",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:865:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,865,FILE:nrc_core/engine/handlers_skill.py,sk.skill_type == TypeEnum.GROUND,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:865:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,865,FILE:nrc_core/engine/handlers_skill.py,sk.skill_type == TypeEnum.GROUND,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:988:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,988,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:988:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,988,FILE:nrc_core/engine/handlers_skill.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1001:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,1001,FILE:nrc_core/engine/handlers_skill.py,not type_matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1001:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,1001,FILE:nrc_core/engine/handlers_skill.py,not type_matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1017:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,1017,FILE:nrc_core/engine/handlers_skill.py,idx not in positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1017:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,1017,FILE:nrc_core/engine/handlers_skill.py,idx not in positions,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1019:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,1019,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"") == ""power""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:1019:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,1019,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"") == ""power""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:629:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,629,FILE:nrc_core/engine/handlers_skill.py,"condition.startswith(""self"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:629:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,629,FILE:nrc_core/engine/handlers_skill.py,"condition.startswith(""self"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:631:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,631,FILE:nrc_core/engine/handlers_skill.py,"condition.endswith(""_gt"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:631:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,631,FILE:nrc_core/engine/handlers_skill.py,"condition.endswith(""_gt"")",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:640:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,640,FILE:nrc_core/engine/handlers_skill.py,matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:640:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,640,FILE:nrc_core/engine/handlers_skill.py,matched,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:643:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,643,FILE:nrc_core/engine/handlers_skill.py,"condition == ""per_enemy_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:643:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,643,FILE:nrc_core/engine/handlers_skill.py,"condition == ""per_enemy_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:675:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,675,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""last_counter_success_turn"") == ctx.state.turn - 1",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:675:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,675,FILE:nrc_core/engine/handlers_skill.py,"ctx.user.ability_state.get(""last_counter_success_turn"") == ctx.state.turn - 1",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:677:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,677,FILE:nrc_core/engine/handlers_skill.py,"condition == ""energy_zero_after_use""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:677:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,677,FILE:nrc_core/engine/handlers_skill.py,"condition == ""energy_zero_after_use""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:751:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,751,FILE:nrc_core/engine/handlers_skill.py,"stat == ""current_hit_count""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:751:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,751,FILE:nrc_core/engine/handlers_skill.py,"stat == ""current_hit_count""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:817:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,817,FILE:nrc_core/engine/handlers_skill.py,"hasattr(item, ""type"") and item.type == E.DRIVE and item.params.get(""value"", 1) == value",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:817:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,817,FILE:nrc_core/engine/handlers_skill.py,"hasattr(item, ""type"") and item.type == E.DRIVE and item.params.get(""value"", 1) == value",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:867:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,867,FILE:nrc_core/engine/handlers_skill.py,key not in ctx.state.sandstorm_original_costs,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:867:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,867,FILE:nrc_core/engine/handlers_skill.py,key not in ctx.state.sandstorm_original_costs,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:904:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,904,FILE:nrc_core/engine/handlers_skill.py,team is state.team_a,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:904:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,904,FILE:nrc_core/engine/handlers_skill.py,team is state.team_a,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:633:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,633,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:633:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,633,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:639:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,639,FILE:nrc_core/engine/handlers_skill.py,"condition == ""self_hp_above""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:639:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,639,FILE:nrc_core/engine/handlers_skill.py,"condition == ""self_hp_above""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:645:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,645,FILE:nrc_core/engine/handlers_skill.py,stacks > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:645:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,645,FILE:nrc_core/engine/handlers_skill.py,stacks > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:678:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,678,FILE:nrc_core/engine/handlers_skill.py,ctx.user.energy == 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:678:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,678,FILE:nrc_core/engine/handlers_skill.py,ctx.user.energy == 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:680:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,680,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_energy_leq""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:680:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,680,FILE:nrc_core/engine/handlers_skill.py,"condition == ""enemy_energy_leq""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:753:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,753,FILE:nrc_core/engine/handlers_skill.py,"stat == ""current_hit_count_mult""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:753:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,753,FILE:nrc_core/engine/handlers_skill.py,"stat == ""current_hit_count_mult""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:477:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,477,FILE:nrc_core/engine/handlers_skill.py,"isinstance(enemy_marks[k], (int, float))",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:477:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,477,FILE:nrc_core/engine/handlers_skill.py,"isinstance(enemy_marks[k], (int, float))",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:641:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,641,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:641:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,641,FILE:nrc_core/engine/handlers_skill.py,"tag.params.get(""target"", ""self"") == ""self""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:682:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,682,FILE:nrc_core/engine/handlers_skill.py,ctx.target.energy <= threshold,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:682:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,682,FILE:nrc_core/engine/handlers_skill.py,ctx.target.energy <= threshold,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:688:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,688,FILE:nrc_core/engine/handlers_skill.py,"condition == ""self_missing_hp_step""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:688:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,688,FILE:nrc_core/engine/handlers_skill.py,"condition == ""self_missing_hp_step""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:755:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,755,FILE:nrc_core/engine/handlers_skill.py,"stat == ""priority""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:755:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,755,FILE:nrc_core/engine/handlers_skill.py,"stat == ""priority""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:906:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,906,FILE:nrc_core/engine/handlers_skill.py,team is state.team_a,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:906:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,906,FILE:nrc_core/engine/handlers_skill.py,team is state.team_a,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:683:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,683,FILE:nrc_core/engine/handlers_skill.py,"""multiplier"" in tag.params",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:683:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,683,FILE:nrc_core/engine/handlers_skill.py,"""multiplier"" in tag.params",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:691:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,691,FILE:nrc_core/engine/handlers_skill.py,step_pct > 0 and bonus_per_step,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:691:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,691,FILE:nrc_core/engine/handlers_skill.py,step_pct > 0 and bonus_per_step,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:696:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,696,FILE:nrc_core/engine/handlers_skill.py,"condition == ""energy_cost_above_base""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:696:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,696,FILE:nrc_core/engine/handlers_skill.py,"condition == ""energy_cost_above_base""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:694:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,694,FILE:nrc_core/engine/handlers_skill.py,steps > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:694:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,694,FILE:nrc_core/engine/handlers_skill.py,steps > 0,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:700:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,700,FILE:nrc_core/engine/handlers_skill.py,steps > 0 and bonus_per_step,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:700:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,700,FILE:nrc_core/engine/handlers_skill.py,steps > 0 and bonus_per_step,待核对
+BRANCH:nrc_core/engine/handlers_skill.py:702:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,702,FILE:nrc_core/engine/handlers_skill.py,"condition == ""per_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:702:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,702,FILE:nrc_core/engine/handlers_skill.py,"condition == ""per_poison""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:706:true,code_branch,true,T08,nrc_core/engine/handlers_skill.py,706,FILE:nrc_core/engine/handlers_skill.py,"condition == ""counter""",待核对
+BRANCH:nrc_core/engine/handlers_skill.py:706:false,code_branch,false,T08,nrc_core/engine/handlers_skill.py,706,FILE:nrc_core/engine/handlers_skill.py,"condition == ""counter""",待核对

@@ -1,0 +1,713 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_core/effect_engine.py,file,nrc_core/effect_engine.py,T07,nrc_core/effect_engine.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_core/effect_models.py,file,nrc_core/effect_models.py,T07,nrc_core/effect_models.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/effect_models.py:15:E,code_object,E,T07,nrc_core/effect_models.py,15,FILE:nrc_core/effect_models.py,效果原语类型 (Effect Type)。简写 E 方便数据层引用。,待核对
+CODE:nrc_core/effect_models.py:307:Timing,code_object,Timing,T07,nrc_core/effect_models.py,307,FILE:nrc_core/effect_models.py,特性触发时机,待核对
+CODE:nrc_core/effect_models.py:330:EffectTag,code_object,EffectTag,T07,nrc_core/effect_models.py,330,FILE:nrc_core/effect_models.py,"效果原语标签。
+
+Attributes:
+    type:        效果类型 (E 枚举)
+    params:      参数字典 (不同效果类型有不同参数)
+    condition:   触发条件 (可选, 仅特性需要)
+    sub_effects: 子效果列表 (应对容器用)",待核对
+CODE:nrc_core/effect_models.py:376:AbilityEffect,code_object,AbilityEffect,T07,nrc_core/effect_models.py,376,FILE:nrc_core/effect_models.py,"特性效果 = 触发时机 + 条件过滤 + 效果标签列表。
+
+Attributes:
+    timing:   触发时机 (Timing 枚举)
+    filter:   过滤条件 {""element"": ""水系""} = 仅水系技能触发
+    effects:  效果标签列表",待核对
+CODE:nrc_core/effect_models.py:411:SkillTiming,code_object,SkillTiming,T07,nrc_core/effect_models.py,411,FILE:nrc_core/effect_models.py,技能效果触发时机 — 让技能具备和特性一样的显式阶段语义。,待核对
+CODE:nrc_core/effect_models.py:424:SkillEffect,code_object,SkillEffect,T07,nrc_core/effect_models.py,424,FILE:nrc_core/effect_models.py,"技能效果 = 触发时机 + 条件过滤 + 效果标签列表。
+与 AbilityEffect 同构，但使用 SkillTiming 枚举。
+
+filter 键值:
+  category      ""attack""/""status""/""defense"" — 应对匹配类型
+  enemy_switch   True — 敌方本回合换宠
+  first_strike   True — 先手时
+  self_hp_lt     0.5  — 己方HP低于50%
+  self_hp_gt     0.5  — 己方HP高于50%
+  per            ""enemy_poison"" — 按层数缩放
+  on_kill        True — 击败敌方时
+  energy_zero_after True — 使用后能量为0
+  prev_counter_success True — 上回合应对成功
+  counter        True — 在应对阶段触发（偷袭3倍威力）",待核对
+CODE:nrc_core/effect_models.py:342:__init__,code_object,__init__,T07,nrc_core/effect_models.py,342,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:354:__repr__,code_object,__repr__,T07,nrc_core/effect_models.py,354,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:364:copy,code_object,copy,T07,nrc_core/effect_models.py,364,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:387:__init__,code_object,__init__,T07,nrc_core/effect_models.py,387,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:397:__repr__,code_object,__repr__,T07,nrc_core/effect_models.py,397,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:400:copy,code_object,copy,T07,nrc_core/effect_models.py,400,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:443:__init__,code_object,__init__,T07,nrc_core/effect_models.py,443,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:453:__repr__,code_object,__repr__,T07,nrc_core/effect_models.py,453,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+CODE:nrc_core/effect_models.py:456:copy,code_object,copy,T07,nrc_core/effect_models.py,456,FILE:nrc_core/effect_models.py,无描述字符串,待核对
+BRANCH:nrc_core/effect_models.py:356:true,code_branch,true,T07,nrc_core/effect_models.py,356,FILE:nrc_core/effect_models.py,self.params,待核对
+BRANCH:nrc_core/effect_models.py:356:false,code_branch,false,T07,nrc_core/effect_models.py,356,FILE:nrc_core/effect_models.py,self.params,待核对
+BRANCH:nrc_core/effect_models.py:358:true,code_branch,true,T07,nrc_core/effect_models.py,358,FILE:nrc_core/effect_models.py,self.condition,待核对
+BRANCH:nrc_core/effect_models.py:358:false,code_branch,false,T07,nrc_core/effect_models.py,358,FILE:nrc_core/effect_models.py,self.condition,待核对
+BRANCH:nrc_core/effect_models.py:360:true,code_branch,true,T07,nrc_core/effect_models.py,360,FILE:nrc_core/effect_models.py,self.sub_effects,待核对
+BRANCH:nrc_core/effect_models.py:360:false,code_branch,false,T07,nrc_core/effect_models.py,360,FILE:nrc_core/effect_models.py,self.sub_effects,待核对
+FILE:nrc_core/engine/__init__.py,file,nrc_core/engine/__init__.py,T07,nrc_core/engine/__init__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_core/engine/context.py,file,nrc_core/engine/context.py,T07,nrc_core/engine/context.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/context.py:5:true,code_branch,true,T07,nrc_core/engine/context.py,5,FILE:nrc_core/engine/context.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/context.py:5:false,code_branch,false,T07,nrc_core/engine/context.py,5,FILE:nrc_core/engine/context.py,TYPE_CHECKING,待核对
+CODE:nrc_core/engine/context.py:9:Ctx,code_object,Ctx,T07,nrc_core/engine/context.py,9,FILE:nrc_core/engine/context.py,"效果执行上下文 — 替代散落各处的参数传递。
+
+所有 handler 函数签名: (tag, ctx) -> None
+handler 可以读写 ctx 上的任意字段来传递信息。",待核对
+CODE:nrc_core/engine/context.py:22:__init__,code_object,__init__,T07,nrc_core/engine/context.py,22,FILE:nrc_core/engine/context.py,无描述字符串,待核对
+BRANCH:nrc_core/engine/context.py:39:true,code_branch,true,T07,nrc_core/engine/context.py,39,FILE:nrc_core/engine/context.py,result is not None,待核对
+BRANCH:nrc_core/engine/context.py:39:false,code_branch,false,T07,nrc_core/engine/context.py,39,FILE:nrc_core/engine/context.py,result is not None,待核对
+FILE:nrc_core/engine/dispatch.py,file,nrc_core/engine/dispatch.py,T07,nrc_core/engine/dispatch.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/dispatch.py:20:true,code_branch,true,T07,nrc_core/engine/dispatch.py,20,FILE:nrc_core/engine/dispatch.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/dispatch.py:20:false,code_branch,false,T07,nrc_core/engine/dispatch.py,20,FILE:nrc_core/engine/dispatch.py,TYPE_CHECKING,待核对
+CODE:nrc_core/engine/dispatch.py:24:_global_skill_cost_sources,code_object,_global_skill_cost_sources,T07,nrc_core/engine/dispatch.py,24,FILE:nrc_core/engine/dispatch.py,由规则入口明确作用域，不能用四个技能变化相同推断全局。,待核对
+CODE:nrc_core/engine/dispatch.py:85:_apply_tag,code_object,_apply_tag,T07,nrc_core/engine/dispatch.py,85,FILE:nrc_core/engine/dispatch.py,统一效果分发入口。ability_mode=True 时优先用特性专属 handler。,待核对
+BRANCH:nrc_core/engine/dispatch.py:34:true,code_branch,true,T07,nrc_core/engine/dispatch.py,34,FILE:nrc_core/engine/dispatch.py,name in reduce_handlers,待核对
+BRANCH:nrc_core/engine/dispatch.py:34:false,code_branch,false,T07,nrc_core/engine/dispatch.py,34,FILE:nrc_core/engine/dispatch.py,name in reduce_handlers,待核对
+BRANCH:nrc_core/engine/dispatch.py:40:true,code_branch,true,T07,nrc_core/engine/dispatch.py,40,FILE:nrc_core/engine/dispatch.py,"name == ""_h_counter_success_cost_reduce""",待核对
+BRANCH:nrc_core/engine/dispatch.py:40:false,code_branch,false,T07,nrc_core/engine/dispatch.py,40,FILE:nrc_core/engine/dispatch.py,"name == ""_h_counter_success_cost_reduce""",待核对
+BRANCH:nrc_core/engine/dispatch.py:42:true,code_branch,true,T07,nrc_core/engine/dispatch.py,42,FILE:nrc_core/engine/dispatch.py,"name in {""_h_enemy_all_cost_up"", ""_h_enemy_energy_cost_up""}",待核对
+BRANCH:nrc_core/engine/dispatch.py:42:false,code_branch,false,T07,nrc_core/engine/dispatch.py,42,FILE:nrc_core/engine/dispatch.py,"name in {""_h_enemy_all_cost_up"", ""_h_enemy_energy_cost_up""}",待核对
+BRANCH:nrc_core/engine/dispatch.py:46:true,code_branch,true,T07,nrc_core/engine/dispatch.py,46,FILE:nrc_core/engine/dispatch.py,"name == ""_h_contract_entry""",待核对
+BRANCH:nrc_core/engine/dispatch.py:46:false,code_branch,false,T07,nrc_core/engine/dispatch.py,46,FILE:nrc_core/engine/dispatch.py,"name == ""_h_contract_entry""",待核对
+BRANCH:nrc_core/engine/dispatch.py:50:true,code_branch,true,T07,nrc_core/engine/dispatch.py,50,FILE:nrc_core/engine/dispatch.py,"name == ""_h_extra_consumption_on_freeze""",待核对
+BRANCH:nrc_core/engine/dispatch.py:50:false,code_branch,false,T07,nrc_core/engine/dispatch.py,50,FILE:nrc_core/engine/dispatch.py,"name == ""_h_extra_consumption_on_freeze""",待核对
+BRANCH:nrc_core/engine/dispatch.py:54:true,code_branch,true,T07,nrc_core/engine/dispatch.py,54,FILE:nrc_core/engine/dispatch.py,"name == ""_h_entry_freeze_extra""",待核对
+BRANCH:nrc_core/engine/dispatch.py:54:false,code_branch,false,T07,nrc_core/engine/dispatch.py,54,FILE:nrc_core/engine/dispatch.py,"name == ""_h_entry_freeze_extra""",待核对
+BRANCH:nrc_core/engine/dispatch.py:56:true,code_branch,true,T07,nrc_core/engine/dispatch.py,56,FILE:nrc_core/engine/dispatch.py,"name == ""_h_carry_skill_cost_reduce"" and not params.get(""category"")",待核对
+BRANCH:nrc_core/engine/dispatch.py:56:false,code_branch,false,T07,nrc_core/engine/dispatch.py,56,FILE:nrc_core/engine/dispatch.py,"name == ""_h_carry_skill_cost_reduce"" and not params.get(""category"")",待核对
+BRANCH:nrc_core/engine/dispatch.py:58:true,code_branch,true,T07,nrc_core/engine/dispatch.py,58,FILE:nrc_core/engine/dispatch.py,"name == ""_h_cute_bench_cost_reduce""",待核对
+BRANCH:nrc_core/engine/dispatch.py:58:false,code_branch,false,T07,nrc_core/engine/dispatch.py,58,FILE:nrc_core/engine/dispatch.py,"name == ""_h_cute_bench_cost_reduce""",待核对
+BRANCH:nrc_core/engine/dispatch.py:62:true,code_branch,true,T07,nrc_core/engine/dispatch.py,62,FILE:nrc_core/engine/dispatch.py,"name == ""_h_refraction""",待核对
+BRANCH:nrc_core/engine/dispatch.py:62:false,code_branch,false,T07,nrc_core/engine/dispatch.py,62,FILE:nrc_core/engine/dispatch.py,"name == ""_h_refraction""",待核对
+BRANCH:nrc_core/engine/dispatch.py:66:true,code_branch,true,T07,nrc_core/engine/dispatch.py,66,FILE:nrc_core/engine/dispatch.py,"name == ""_h_entry_buff_per_skill_count"" and not params.get(""element_filter"")",待核对
+BRANCH:nrc_core/engine/dispatch.py:66:false,code_branch,false,T07,nrc_core/engine/dispatch.py,66,FILE:nrc_core/engine/dispatch.py,"name == ""_h_entry_buff_per_skill_count"" and not params.get(""element_filter"")",待核对
+BRANCH:nrc_core/engine/dispatch.py:72:true,code_branch,true,T07,nrc_core/engine/dispatch.py,72,FILE:nrc_core/engine/dispatch.py,"name == ""_h_permanent_mod_ability"" and ctx.skill is None",待核对
+BRANCH:nrc_core/engine/dispatch.py:72:false,code_branch,false,T07,nrc_core/engine/dispatch.py,72,FILE:nrc_core/engine/dispatch.py,"name == ""_h_permanent_mod_ability"" and ctx.skill is None",待核对
+BRANCH:nrc_core/engine/dispatch.py:96:true,code_branch,true,T07,nrc_core/engine/dispatch.py,96,FILE:nrc_core/engine/dispatch.py,ability_mode,待核对
+BRANCH:nrc_core/engine/dispatch.py:96:false,code_branch,false,T07,nrc_core/engine/dispatch.py,96,FILE:nrc_core/engine/dispatch.py,ability_mode,待核对
+BRANCH:nrc_core/engine/dispatch.py:100:true,code_branch,true,T07,nrc_core/engine/dispatch.py,100,FILE:nrc_core/engine/dispatch.py,handler,待核对
+BRANCH:nrc_core/engine/dispatch.py:100:false,code_branch,false,T07,nrc_core/engine/dispatch.py,100,FILE:nrc_core/engine/dispatch.py,handler,待核对
+BRANCH:nrc_core/engine/dispatch.py:122:body,code_branch,body,T07,nrc_core/engine/dispatch.py,122,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:122:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/dispatch.py,122,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:35:true,code_branch,true,T07,nrc_core/engine/dispatch.py,35,FILE:nrc_core/engine/dispatch.py,"name == ""_h_passive_energy_reduce_water_ring"" and params.get(""range"", ""all"") != ""all""",待核对
+BRANCH:nrc_core/engine/dispatch.py:35:false,code_branch,false,T07,nrc_core/engine/dispatch.py,35,FILE:nrc_core/engine/dispatch.py,"name == ""_h_passive_energy_reduce_water_ring"" and params.get(""range"", ""all"") != ""all""",待核对
+BRANCH:nrc_core/engine/dispatch.py:43:true,code_branch,true,T07,nrc_core/engine/dispatch.py,43,FILE:nrc_core/engine/dispatch.py,"params.get(""duration"") or params.get(""filter"", ""all"") != ""all""",待核对
+BRANCH:nrc_core/engine/dispatch.py:43:false,code_branch,false,T07,nrc_core/engine/dispatch.py,43,FILE:nrc_core/engine/dispatch.py,"params.get(""duration"") or params.get(""filter"", ""all"") != ""all""",待核对
+BRANCH:nrc_core/engine/dispatch.py:48:true,code_branch,true,T07,nrc_core/engine/dispatch.py,48,FILE:nrc_core/engine/dispatch.py,"ball in {""skill_cost"", ""网兜球"", ""combo""}",待核对
+BRANCH:nrc_core/engine/dispatch.py:48:false,code_branch,false,T07,nrc_core/engine/dispatch.py,48,FILE:nrc_core/engine/dispatch.py,"ball in {""skill_cost"", ""网兜球"", ""combo""}",待核对
+BRANCH:nrc_core/engine/dispatch.py:51:true,code_branch,true,T07,nrc_core/engine/dispatch.py,51,FILE:nrc_core/engine/dispatch.py,"ctx.result.get(""_ability_timing"") != Timing.ON_INFLICT_FREEZE.name or ctx.result.get(""freeze_stacks_added"", 0) <= 0",待核对
+BRANCH:nrc_core/engine/dispatch.py:51:false,code_branch,false,T07,nrc_core/engine/dispatch.py,51,FILE:nrc_core/engine/dispatch.py,"ctx.result.get(""_ability_timing"") != Timing.ON_INFLICT_FREEZE.name or ctx.result.get(""freeze_stacks_added"", 0) <= 0",待核对
+BRANCH:nrc_core/engine/dispatch.py:64:true,code_branch,true,T07,nrc_core/engine/dispatch.py,64,FILE:nrc_core/engine/dispatch.py,any(s is not ctx.skill and s.skill_type == Type.WATER for s in user.skills),待核对
+BRANCH:nrc_core/engine/dispatch.py:64:false,code_branch,false,T07,nrc_core/engine/dispatch.py,64,FILE:nrc_core/engine/dispatch.py,any(s is not ctx.skill and s.skill_type == Type.WATER for s in user.skills),待核对
+BRANCH:nrc_core/engine/dispatch.py:73:true,code_branch,true,T07,nrc_core/engine/dispatch.py,73,FILE:nrc_core/engine/dispatch.py,"params.get(""trigger"") in {""per_position_change"", ""per_counter"", ""per_use""}",待核对
+BRANCH:nrc_core/engine/dispatch.py:73:false,code_branch,false,T07,nrc_core/engine/dispatch.py,73,FILE:nrc_core/engine/dispatch.py,"params.get(""trigger"") in {""per_position_change"", ""per_counter"", ""per_use""}",待核对
+BRANCH:nrc_core/engine/dispatch.py:76:true,code_branch,true,T07,nrc_core/engine/dispatch.py,76,FILE:nrc_core/engine/dispatch.py,"not filters.get(""positions"") and not params.get(""skill_filter"") and not params.get(""per_counter"")",待核对
+BRANCH:nrc_core/engine/dispatch.py:76:false,code_branch,false,T07,nrc_core/engine/dispatch.py,76,FILE:nrc_core/engine/dispatch.py,"not filters.get(""positions"") and not params.get(""skill_filter"") and not params.get(""per_counter"")",待核对
+BRANCH:nrc_core/engine/dispatch.py:102:body,code_branch,body,T07,nrc_core/engine/dispatch.py,102,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:102:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/dispatch.py,102,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:112:body,code_branch,body,T07,nrc_core/engine/dispatch.py,112,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:112:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/dispatch.py,112,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:115:body,code_branch,body,T07,nrc_core/engine/dispatch.py,115,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:115:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/dispatch.py,115,FILE:nrc_core/engine/dispatch.py,For,待核对
+BRANCH:nrc_core/engine/dispatch.py:59:true,code_branch,true,T07,nrc_core/engine/dispatch.py,59,FILE:nrc_core/engine/dispatch.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/dispatch.py:59:false,code_branch,false,T07,nrc_core/engine/dispatch.py,59,FILE:nrc_core/engine/dispatch.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/dispatch.py:67:true,code_branch,true,T07,nrc_core/engine/dispatch.py,67,FILE:nrc_core/engine/dispatch.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/dispatch.py:67:false,code_branch,false,T07,nrc_core/engine/dispatch.py,67,FILE:nrc_core/engine/dispatch.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/dispatch.py:78:true,code_branch,true,T07,nrc_core/engine/dispatch.py,78,FILE:nrc_core/engine/dispatch.py,field,待核对
+BRANCH:nrc_core/engine/dispatch.py:78:false,code_branch,false,T07,nrc_core/engine/dispatch.py,78,FILE:nrc_core/engine/dispatch.py,field,待核对
+BRANCH:nrc_core/engine/dispatch.py:104:true,code_branch,true,T07,nrc_core/engine/dispatch.py,104,FILE:nrc_core/engine/dispatch.py,private is not None,待核对
+BRANCH:nrc_core/engine/dispatch.py:104:false,code_branch,false,T07,nrc_core/engine/dispatch.py,104,FILE:nrc_core/engine/dispatch.py,private is not None,待核对
+BRANCH:nrc_core/engine/dispatch.py:113:true,code_branch,true,T07,nrc_core/engine/dispatch.py,113,FILE:nrc_core/engine/dispatch.py,previous_ids != [id(skill) for skill in pokemon.skills],待核对
+BRANCH:nrc_core/engine/dispatch.py:113:false,code_branch,false,T07,nrc_core/engine/dispatch.py,113,FILE:nrc_core/engine/dispatch.py,previous_ids != [id(skill) for skill in pokemon.skills],待核对
+BRANCH:nrc_core/engine/dispatch.py:120:true,code_branch,true,T07,nrc_core/engine/dispatch.py,120,FILE:nrc_core/engine/dispatch.py,"delta and (handler.__name__ != ""_h_cute_on_gain_cost_reduce"" or any(getattr(s, field, 0) != value for s, value in zip(pokemon.skills, values)))",待核对
+BRANCH:nrc_core/engine/dispatch.py:120:false,code_branch,false,T07,nrc_core/engine/dispatch.py,120,FILE:nrc_core/engine/dispatch.py,"delta and (handler.__name__ != ""_h_cute_on_gain_cost_reduce"" or any(getattr(s, field, 0) != value for s, value in zip(pokemon.skills, values)))",待核对
+BRANCH:nrc_core/engine/dispatch.py:124:true,code_branch,true,T07,nrc_core/engine/dispatch.py,124,FILE:nrc_core/engine/dispatch.py,ability_mode,待核对
+BRANCH:nrc_core/engine/dispatch.py:124:false,code_branch,false,T07,nrc_core/engine/dispatch.py,124,FILE:nrc_core/engine/dispatch.py,ability_mode,待核对
+BRANCH:nrc_core/engine/dispatch.py:127:true,code_branch,true,T07,nrc_core/engine/dispatch.py,127,FILE:nrc_core/engine/dispatch.py,ctx.skill,待核对
+BRANCH:nrc_core/engine/dispatch.py:127:false,code_branch,false,T07,nrc_core/engine/dispatch.py,127,FILE:nrc_core/engine/dispatch.py,ctx.skill,待核对
+BRANCH:nrc_core/engine/dispatch.py:118:true,code_branch,true,T07,nrc_core/engine/dispatch.py,118,FILE:nrc_core/engine/dispatch.py,index < len(previous_global),待核对
+BRANCH:nrc_core/engine/dispatch.py:118:false,code_branch,false,T07,nrc_core/engine/dispatch.py,118,FILE:nrc_core/engine/dispatch.py,index < len(previous_global),待核对
+BRANCH:nrc_core/engine/dispatch.py:45:true,code_branch,true,T07,nrc_core/engine/dispatch.py,45,FILE:nrc_core/engine/dispatch.py,"name == ""_h_enemy_energy_cost_up""",待核对
+BRANCH:nrc_core/engine/dispatch.py:45:false,code_branch,false,T07,nrc_core/engine/dispatch.py,45,FILE:nrc_core/engine/dispatch.py,"name == ""_h_enemy_energy_cost_up""",待核对
+BRANCH:nrc_core/engine/dispatch.py:80:true,code_branch,true,T07,nrc_core/engine/dispatch.py,80,FILE:nrc_core/engine/dispatch.py,"field == ""energy_cost""",待核对
+BRANCH:nrc_core/engine/dispatch.py:80:false,code_branch,false,T07,nrc_core/engine/dispatch.py,80,FILE:nrc_core/engine/dispatch.py,"field == ""energy_cost""",待核对
+BRANCH:nrc_core/engine/dispatch.py:117:true,code_branch,true,T07,nrc_core/engine/dispatch.py,117,FILE:nrc_core/engine/dispatch.py,index < len(current_global),待核对
+BRANCH:nrc_core/engine/dispatch.py:117:false,code_branch,false,T07,nrc_core/engine/dispatch.py,117,FILE:nrc_core/engine/dispatch.py,index < len(current_global),待核对
+BRANCH:nrc_core/engine/dispatch.py:105:true,code_branch,true,T07,nrc_core/engine/dispatch.py,105,FILE:nrc_core/engine/dispatch.py,index < len(private),待核对
+BRANCH:nrc_core/engine/dispatch.py:105:false,code_branch,false,T07,nrc_core/engine/dispatch.py,105,FILE:nrc_core/engine/dispatch.py,index < len(private),待核对
+FILE:nrc_core/engine/executor.py,file,nrc_core/engine/executor.py,T07,nrc_core/engine/executor.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/executor.py:29:true,code_branch,true,T07,nrc_core/engine/executor.py,29,FILE:nrc_core/engine/executor.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/executor.py:29:false,code_branch,false,T07,nrc_core/engine/executor.py,29,FILE:nrc_core/engine/executor.py,TYPE_CHECKING,待核对
+CODE:nrc_core/engine/executor.py:33:EffectExecutor,code_object,EffectExecutor,T07,nrc_core/engine/executor.py,33,FILE:nrc_core/engine/executor.py,无状态的效果执行器。所有方法均为 @staticmethod。,待核对
+CODE:nrc_core/engine/executor.py:43:execute_skill,code_object,execute_skill,T07,nrc_core/engine/executor.py,43,FILE:nrc_core/engine/executor.py,"执行技能的全部效果。
+自动检测 effects 是 List[SkillEffect] 还是 List[EffectTag]，分别走新/旧路径。",待核对
+CODE:nrc_core/engine/executor.py:78:_execute_skill_legacy,code_object,_execute_skill_legacy,T07,nrc_core/engine/executor.py,78,FILE:nrc_core/engine/executor.py,"执行技能的全部效果（非应对部分）。
+应对容器（COUNTER_*）被收集到 result[""counter_effects""]，
+由 battle.py 在之后调用 execute_counter 处理。",待核对
+CODE:nrc_core/engine/executor.py:142:_execute_skill_se,code_object,_execute_skill_se,T07,nrc_core/engine/executor.py,142,FILE:nrc_core/engine/executor.py,按 SkillTiming 阶段顺序执行技能效果。,待核对
+CODE:nrc_core/engine/executor.py:239:execute_counter_se,code_object,execute_counter_se,T07,nrc_core/engine/executor.py,239,FILE:nrc_core/engine/executor.py,"执行新格式应对效果。
+counter_se 是 SkillEffect(timing=ON_COUNTER, filter={""category"": ...})",待核对
+CODE:nrc_core/engine/executor.py:348:execute_counter,code_object,execute_counter,T07,nrc_core/engine/executor.py,348,FILE:nrc_core/engine/executor.py,执行应对效果。自动检测新格式（SkillEffect）或旧格式（EffectTag）。,待核对
+CODE:nrc_core/engine/executor.py:454:execute_ability,code_object,execute_ability,T07,nrc_core/engine/executor.py,454,FILE:nrc_core/engine/executor.py,在指定时机触发特性效果。,待核对
+CODE:nrc_core/engine/executor.py:551:execute_agility_entry,code_object,execute_agility_entry,T07,nrc_core/engine/executor.py,551,FILE:nrc_core/engine/executor.py,入场时执行带迅捷标记的技能,待核对
+CODE:nrc_core/engine/executor.py:578:execute_drive,code_object,execute_drive,T07,nrc_core/engine/executor.py,578,FILE:nrc_core/engine/executor.py,执行传动：触发后方 N 位技能的被动效果。,待核对
+CODE:nrc_core/engine/executor.py:626:_check_ability_filter,code_object,_check_ability_filter,T07,nrc_core/engine/executor.py,626,FILE:nrc_core/engine/executor.py,无描述字符串,待核对
+BRANCH:nrc_core/engine/executor.py:61:true,code_branch,true,T07,nrc_core/engine/executor.py,61,FILE:nrc_core/engine/executor.py,"effects and isinstance(effects[0], SkillEffect)",待核对
+BRANCH:nrc_core/engine/executor.py:61:false,code_branch,false,T07,nrc_core/engine/executor.py,61,FILE:nrc_core/engine/executor.py,"effects and isinstance(effects[0], SkillEffect)",待核对
+BRANCH:nrc_core/engine/executor.py:110:body,code_branch,body,T07,nrc_core/engine/executor.py,110,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:110:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,110,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:118:body,code_branch,body,T07,nrc_core/engine/executor.py,118,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:118:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,118,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:121:true,code_branch,true,T07,nrc_core/engine/executor.py,121,FILE:nrc_core/engine/executor.py,"total_drain > 0 and result.get(""damage"", 0) > 0",待核对
+BRANCH:nrc_core/engine/executor.py:121:false,code_branch,false,T07,nrc_core/engine/executor.py,121,FILE:nrc_core/engine/executor.py,"total_drain > 0 and result.get(""damage"", 0) > 0",待核对
+BRANCH:nrc_core/engine/executor.py:128:body,code_branch,body,T07,nrc_core/engine/executor.py,128,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:128:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,128,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:130:body,code_branch,body,T07,nrc_core/engine/executor.py,130,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:130:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,130,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:132:true,code_branch,true,T07,nrc_core/engine/executor.py,132,FILE:nrc_core/engine/executor.py,"result.get(""_consume_next_attack_mod"")",待核对
+BRANCH:nrc_core/engine/executor.py:132:false,code_branch,false,T07,nrc_core/engine/executor.py,132,FILE:nrc_core/engine/executor.py,"result.get(""_consume_next_attack_mod"")",待核对
+BRANCH:nrc_core/engine/executor.py:173:body,code_branch,body,T07,nrc_core/engine/executor.py,173,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:173:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,173,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:179:body,code_branch,body,T07,nrc_core/engine/executor.py,179,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:179:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,179,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:187:body,code_branch,body,T07,nrc_core/engine/executor.py,187,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:187:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,187,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:194:body,code_branch,body,T07,nrc_core/engine/executor.py,194,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:194:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,194,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:198:true,code_branch,true,T07,nrc_core/engine/executor.py,198,FILE:nrc_core/engine/executor.py,"result.get(""damage"", 0) > 0",待核对
+BRANCH:nrc_core/engine/executor.py:198:false,code_branch,false,T07,nrc_core/engine/executor.py,198,FILE:nrc_core/engine/executor.py,"result.get(""damage"", 0) > 0",待核对
+BRANCH:nrc_core/engine/executor.py:205:body,code_branch,body,T07,nrc_core/engine/executor.py,205,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:205:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,205,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:210:body,code_branch,body,T07,nrc_core/engine/executor.py,210,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:210:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,210,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:217:true,code_branch,true,T07,nrc_core/engine/executor.py,217,FILE:nrc_core/engine/executor.py,"total_drain > 0 and result.get(""damage"", 0) > 0",待核对
+BRANCH:nrc_core/engine/executor.py:217:false,code_branch,false,T07,nrc_core/engine/executor.py,217,FILE:nrc_core/engine/executor.py,"total_drain > 0 and result.get(""damage"", 0) > 0",待核对
+BRANCH:nrc_core/engine/executor.py:226:body,code_branch,body,T07,nrc_core/engine/executor.py,226,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:226:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,226,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:228:true,code_branch,true,T07,nrc_core/engine/executor.py,228,FILE:nrc_core/engine/executor.py,"result.get(""_consume_next_attack_mod"")",待核对
+BRANCH:nrc_core/engine/executor.py:228:false,code_branch,false,T07,nrc_core/engine/executor.py,228,FILE:nrc_core/engine/executor.py,"result.get(""_consume_next_attack_mod"")",待核对
+BRANCH:nrc_core/engine/executor.py:265:true,code_branch,true,T07,nrc_core/engine/executor.py,265,FILE:nrc_core/engine/executor.py,"category == ""attack""",待核对
+BRANCH:nrc_core/engine/executor.py:265:false,code_branch,false,T07,nrc_core/engine/executor.py,265,FILE:nrc_core/engine/executor.py,"category == ""attack""",待核对
+BRANCH:nrc_core/engine/executor.py:275:true,code_branch,true,T07,nrc_core/engine/executor.py,275,FILE:nrc_core/engine/executor.py,not matched,待核对
+BRANCH:nrc_core/engine/executor.py:275:false,code_branch,false,T07,nrc_core/engine/executor.py,275,FILE:nrc_core/engine/executor.py,not matched,待核对
+BRANCH:nrc_core/engine/executor.py:282:true,code_branch,true,T07,nrc_core/engine/executor.py,282,FILE:nrc_core/engine/executor.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/executor.py:282:false,code_branch,false,T07,nrc_core/engine/executor.py,282,FILE:nrc_core/engine/executor.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/executor.py:293:body,code_branch,body,T07,nrc_core/engine/executor.py,293,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:293:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,293,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:306:true,code_branch,true,T07,nrc_core/engine/executor.py,306,FILE:nrc_core/engine/executor.py,"any(key in result for key in (""_power_bonus"", ""_power_mult"", ""_hit_count_bonus"", ""_hit_count_mult""))",待核对
+BRANCH:nrc_core/engine/executor.py:306:false,code_branch,false,T07,nrc_core/engine/executor.py,306,FILE:nrc_core/engine/executor.py,"any(key in result for key in (""_power_bonus"", ""_power_mult"", ""_hit_count_bonus"", ""_hit_count_mult""))",待核对
+BRANCH:nrc_core/engine/executor.py:361:true,code_branch,true,T07,nrc_core/engine/executor.py,361,FILE:nrc_core/engine/executor.py,"isinstance(counter_tag, SkillEffect)",待核对
+BRANCH:nrc_core/engine/executor.py:361:false,code_branch,false,T07,nrc_core/engine/executor.py,361,FILE:nrc_core/engine/executor.py,"isinstance(counter_tag, SkillEffect)",待核对
+BRANCH:nrc_core/engine/executor.py:377:true,code_branch,true,T07,nrc_core/engine/executor.py,377,FILE:nrc_core/engine/executor.py,counter_tag.type == E.COUNTER_ATTACK,待核对
+BRANCH:nrc_core/engine/executor.py:377:false,code_branch,false,T07,nrc_core/engine/executor.py,377,FILE:nrc_core/engine/executor.py,counter_tag.type == E.COUNTER_ATTACK,待核对
+BRANCH:nrc_core/engine/executor.py:384:true,code_branch,true,T07,nrc_core/engine/executor.py,384,FILE:nrc_core/engine/executor.py,not matched,待核对
+BRANCH:nrc_core/engine/executor.py:384:false,code_branch,false,T07,nrc_core/engine/executor.py,384,FILE:nrc_core/engine/executor.py,not matched,待核对
+BRANCH:nrc_core/engine/executor.py:388:true,code_branch,true,T07,nrc_core/engine/executor.py,388,FILE:nrc_core/engine/executor.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/executor.py:388:false,code_branch,false,T07,nrc_core/engine/executor.py,388,FILE:nrc_core/engine/executor.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/executor.py:399:body,code_branch,body,T07,nrc_core/engine/executor.py,399,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:399:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,399,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:412:true,code_branch,true,T07,nrc_core/engine/executor.py,412,FILE:nrc_core/engine/executor.py,"any(key in result for key in (""_power_bonus"", ""_power_mult"", ""_hit_count_bonus"", ""_hit_count_mult""))",待核对
+BRANCH:nrc_core/engine/executor.py:412:false,code_branch,false,T07,nrc_core/engine/executor.py,412,FILE:nrc_core/engine/executor.py,"any(key in result for key in (""_power_bonus"", ""_power_mult"", ""_hit_count_bonus"", ""_hit_count_mult""))",待核对
+BRANCH:nrc_core/engine/executor.py:466:true,code_branch,true,T07,nrc_core/engine/executor.py,466,FILE:nrc_core/engine/executor.py,context is None,待核对
+BRANCH:nrc_core/engine/executor.py:466:false,code_branch,false,T07,nrc_core/engine/executor.py,466,FILE:nrc_core/engine/executor.py,context is None,待核对
+BRANCH:nrc_core/engine/executor.py:469:body,code_branch,body,T07,nrc_core/engine/executor.py,469,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:469:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,469,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:558:body,code_branch,body,T07,nrc_core/engine/executor.py,558,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:558:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,558,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:588:true,code_branch,true,T07,nrc_core/engine/executor.py,588,FILE:nrc_core/engine/executor.py,skill_idx < 0,待核对
+BRANCH:nrc_core/engine/executor.py:588:false,code_branch,false,T07,nrc_core/engine/executor.py,588,FILE:nrc_core/engine/executor.py,skill_idx < 0,待核对
+BRANCH:nrc_core/engine/executor.py:592:true,code_branch,true,T07,nrc_core/engine/executor.py,592,FILE:nrc_core/engine/executor.py,n_skills == 0,待核对
+BRANCH:nrc_core/engine/executor.py:592:false,code_branch,false,T07,nrc_core/engine/executor.py,592,FILE:nrc_core/engine/executor.py,n_skills == 0,待核对
+BRANCH:nrc_core/engine/executor.py:598:true,code_branch,true,T07,nrc_core/engine/executor.py,598,FILE:nrc_core/engine/executor.py,"not getattr(target_skill, ""effects"", None)",待核对
+BRANCH:nrc_core/engine/executor.py:598:false,code_branch,false,T07,nrc_core/engine/executor.py,598,FILE:nrc_core/engine/executor.py,"not getattr(target_skill, ""effects"", None)",待核对
+BRANCH:nrc_core/engine/executor.py:601:body,code_branch,body,T07,nrc_core/engine/executor.py,601,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:601:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,601,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:635:true,code_branch,true,T07,nrc_core/engine/executor.py,635,FILE:nrc_core/engine/executor.py,not f,待核对
+BRANCH:nrc_core/engine/executor.py:635:false,code_branch,false,T07,nrc_core/engine/executor.py,635,FILE:nrc_core/engine/executor.py,not f,待核对
+BRANCH:nrc_core/engine/executor.py:638:true,code_branch,true,T07,nrc_core/engine/executor.py,638,FILE:nrc_core/engine/executor.py,"""element"" in f",待核对
+BRANCH:nrc_core/engine/executor.py:638:false,code_branch,false,T07,nrc_core/engine/executor.py,638,FILE:nrc_core/engine/executor.py,"""element"" in f",待核对
+BRANCH:nrc_core/engine/executor.py:651:true,code_branch,true,T07,nrc_core/engine/executor.py,651,FILE:nrc_core/engine/executor.py,"f.get(""condition"") == ""skill_element_not_enemy_type""",待核对
+BRANCH:nrc_core/engine/executor.py:651:false,code_branch,false,T07,nrc_core/engine/executor.py,651,FILE:nrc_core/engine/executor.py,"f.get(""condition"") == ""skill_element_not_enemy_type""",待核对
+BRANCH:nrc_core/engine/executor.py:657:true,code_branch,true,T07,nrc_core/engine/executor.py,657,FILE:nrc_core/engine/executor.py,"f.get(""condition"") == ""energy_zero""",待核对
+BRANCH:nrc_core/engine/executor.py:657:false,code_branch,false,T07,nrc_core/engine/executor.py,657,FILE:nrc_core/engine/executor.py,"f.get(""condition"") == ""energy_zero""",待核对
+BRANCH:nrc_core/engine/executor.py:660:true,code_branch,true,T07,nrc_core/engine/executor.py,660,FILE:nrc_core/engine/executor.py,"f.get(""condition"") == ""energy_not_zero""",待核对
+BRANCH:nrc_core/engine/executor.py:660:false,code_branch,false,T07,nrc_core/engine/executor.py,660,FILE:nrc_core/engine/executor.py,"f.get(""condition"") == ""energy_not_zero""",待核对
+BRANCH:nrc_core/engine/executor.py:663:true,code_branch,true,T07,nrc_core/engine/executor.py,663,FILE:nrc_core/engine/executor.py,"""positions"" in f",待核对
+BRANCH:nrc_core/engine/executor.py:663:false,code_branch,false,T07,nrc_core/engine/executor.py,663,FILE:nrc_core/engine/executor.py,"""positions"" in f",待核对
+BRANCH:nrc_core/engine/executor.py:111:true,code_branch,true,T07,nrc_core/engine/executor.py,111,FILE:nrc_core/engine/executor.py,"tag.params.get(""when"") == ""post_use""",待核对
+BRANCH:nrc_core/engine/executor.py:111:false,code_branch,false,T07,nrc_core/engine/executor.py,111,FILE:nrc_core/engine/executor.py,"tag.params.get(""when"") == ""post_use""",待核对
+BRANCH:nrc_core/engine/executor.py:114:true,code_branch,true,T07,nrc_core/engine/executor.py,114,FILE:nrc_core/engine/executor.py,tag.type == E.DAMAGE,待核对
+BRANCH:nrc_core/engine/executor.py:114:false,code_branch,false,T07,nrc_core/engine/executor.py,114,FILE:nrc_core/engine/executor.py,tag.type == E.DAMAGE,待核对
+BRANCH:nrc_core/engine/executor.py:124:true,code_branch,true,T07,nrc_core/engine/executor.py,124,FILE:nrc_core/engine/executor.py,anti,待核对
+BRANCH:nrc_core/engine/executor.py:124:false,code_branch,false,T07,nrc_core/engine/executor.py,124,FILE:nrc_core/engine/executor.py,anti,待核对
+BRANCH:nrc_core/engine/executor.py:174:true,code_branch,true,T07,nrc_core/engine/executor.py,174,FILE:nrc_core/engine/executor.py,"se.timing == SkillTiming.PRE_USE and _check_skill_filter(se.filter, ctx)",待核对
+BRANCH:nrc_core/engine/executor.py:174:false,code_branch,false,T07,nrc_core/engine/executor.py,174,FILE:nrc_core/engine/executor.py,"se.timing == SkillTiming.PRE_USE and _check_skill_filter(se.filter, ctx)",待核对
+BRANCH:nrc_core/engine/executor.py:180:true,code_branch,true,T07,nrc_core/engine/executor.py,180,FILE:nrc_core/engine/executor.py,"se.timing == SkillTiming.IF and _check_skill_filter(se.filter, ctx)",待核对
+BRANCH:nrc_core/engine/executor.py:180:false,code_branch,false,T07,nrc_core/engine/executor.py,180,FILE:nrc_core/engine/executor.py,"se.timing == SkillTiming.IF and _check_skill_filter(se.filter, ctx)",待核对
+BRANCH:nrc_core/engine/executor.py:188:true,code_branch,true,T07,nrc_core/engine/executor.py,188,FILE:nrc_core/engine/executor.py,se.timing == SkillTiming.ON_USE,待核对
+BRANCH:nrc_core/engine/executor.py:188:false,code_branch,false,T07,nrc_core/engine/executor.py,188,FILE:nrc_core/engine/executor.py,se.timing == SkillTiming.ON_USE,待核对
+BRANCH:nrc_core/engine/executor.py:199:body,code_branch,body,T07,nrc_core/engine/executor.py,199,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:199:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,199,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:206:true,code_branch,true,T07,nrc_core/engine/executor.py,206,FILE:nrc_core/engine/executor.py,se.timing == SkillTiming.ON_COUNTER,待核对
+BRANCH:nrc_core/engine/executor.py:206:false,code_branch,false,T07,nrc_core/engine/executor.py,206,FILE:nrc_core/engine/executor.py,se.timing == SkillTiming.ON_COUNTER,待核对
+BRANCH:nrc_core/engine/executor.py:211:true,code_branch,true,T07,nrc_core/engine/executor.py,211,FILE:nrc_core/engine/executor.py,se.timing == SkillTiming.POST_USE,待核对
+BRANCH:nrc_core/engine/executor.py:211:false,code_branch,false,T07,nrc_core/engine/executor.py,211,FILE:nrc_core/engine/executor.py,se.timing == SkillTiming.POST_USE,待核对
+BRANCH:nrc_core/engine/executor.py:220:true,code_branch,true,T07,nrc_core/engine/executor.py,220,FILE:nrc_core/engine/executor.py,anti,待核对
+BRANCH:nrc_core/engine/executor.py:220:false,code_branch,false,T07,nrc_core/engine/executor.py,220,FILE:nrc_core/engine/executor.py,anti,待核对
+BRANCH:nrc_core/engine/executor.py:267:true,code_branch,true,T07,nrc_core/engine/executor.py,267,FILE:nrc_core/engine/executor.py,"category == ""status""",待核对
+BRANCH:nrc_core/engine/executor.py:267:false,code_branch,false,T07,nrc_core/engine/executor.py,267,FILE:nrc_core/engine/executor.py,"category == ""status""",待核对
+BRANCH:nrc_core/engine/executor.py:294:true,code_branch,true,T07,nrc_core/engine/executor.py,294,FILE:nrc_core/engine/executor.py,tag.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/engine/executor.py:294:false,code_branch,false,T07,nrc_core/engine/executor.py,294,FILE:nrc_core/engine/executor.py,tag.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/engine/executor.py:323:true,code_branch,true,T07,nrc_core/engine/executor.py,323,FILE:nrc_core/engine/executor.py,power_mult != 1.0,待核对
+BRANCH:nrc_core/engine/executor.py:323:false,code_branch,false,T07,nrc_core/engine/executor.py,323,FILE:nrc_core/engine/executor.py,power_mult != 1.0,待核对
+BRANCH:nrc_core/engine/executor.py:379:true,code_branch,true,T07,nrc_core/engine/executor.py,379,FILE:nrc_core/engine/executor.py,counter_tag.type == E.COUNTER_STATUS,待核对
+BRANCH:nrc_core/engine/executor.py:379:false,code_branch,false,T07,nrc_core/engine/executor.py,379,FILE:nrc_core/engine/executor.py,counter_tag.type == E.COUNTER_STATUS,待核对
+BRANCH:nrc_core/engine/executor.py:400:true,code_branch,true,T07,nrc_core/engine/executor.py,400,FILE:nrc_core/engine/executor.py,sub.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/engine/executor.py:400:false,code_branch,false,T07,nrc_core/engine/executor.py,400,FILE:nrc_core/engine/executor.py,sub.type == E.INTERRUPT,待核对
+BRANCH:nrc_core/engine/executor.py:429:true,code_branch,true,T07,nrc_core/engine/executor.py,429,FILE:nrc_core/engine/executor.py,power_mult != 1.0,待核对
+BRANCH:nrc_core/engine/executor.py:429:false,code_branch,false,T07,nrc_core/engine/executor.py,429,FILE:nrc_core/engine/executor.py,power_mult != 1.0,待核对
+BRANCH:nrc_core/engine/executor.py:470:true,code_branch,true,T07,nrc_core/engine/executor.py,470,FILE:nrc_core/engine/executor.py,ae.timing != timing,待核对
+BRANCH:nrc_core/engine/executor.py:470:false,code_branch,false,T07,nrc_core/engine/executor.py,470,FILE:nrc_core/engine/executor.py,ae.timing != timing,待核对
+BRANCH:nrc_core/engine/executor.py:474:true,code_branch,true,T07,nrc_core/engine/executor.py,474,FILE:nrc_core/engine/executor.py,"not EffectExecutor._check_ability_filter(ae, pokemon, enemy, state, team, context)",待核对
+BRANCH:nrc_core/engine/executor.py:474:false,code_branch,false,T07,nrc_core/engine/executor.py,474,FILE:nrc_core/engine/executor.py,"not EffectExecutor._check_ability_filter(ae, pokemon, enemy, state, team, context)",待核对
+BRANCH:nrc_core/engine/executor.py:494:body,code_branch,body,T07,nrc_core/engine/executor.py,494,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:494:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,494,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:501:body,code_branch,body,T07,nrc_core/engine/executor.py,501,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:501:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,501,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:514:true,code_branch,true,T07,nrc_core/engine/executor.py,514,FILE:nrc_core/engine/executor.py,"not descriptions and any(
+                key not in known_context_keys and report_context_before.get(key) != value
+                for key, value in context.items() if isinstance(value, (str, int, float, bool, type(None)))
+            )",待核对
+BRANCH:nrc_core/engine/executor.py:514:false,code_branch,false,T07,nrc_core/engine/executor.py,514,FILE:nrc_core/engine/executor.py,"not descriptions and any(
+                key not in known_context_keys and report_context_before.get(key) != value
+                for key, value in context.items() if isinstance(value, (str, int, float, bool, type(None)))
+            )",待核对
+BRANCH:nrc_core/engine/executor.py:520:true,code_branch,true,T07,nrc_core/engine/executor.py,520,FILE:nrc_core/engine/executor.py,"(weather, weather_turns) != (state.weather, state.weather_turns)",待核对
+BRANCH:nrc_core/engine/executor.py:520:false,code_branch,false,T07,nrc_core/engine/executor.py,520,FILE:nrc_core/engine/executor.py,"(weather, weather_turns) != (state.weather, state.weather_turns)",待核对
+BRANCH:nrc_core/engine/executor.py:523:body,code_branch,body,T07,nrc_core/engine/executor.py,523,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:523:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,523,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:526:body,code_branch,body,T07,nrc_core/engine/executor.py,526,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:526:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,526,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:529:true,code_branch,true,T07,nrc_core/engine/executor.py,529,FILE:nrc_core/engine/executor.py,descriptions,待核对
+BRANCH:nrc_core/engine/executor.py:529:false,code_branch,false,T07,nrc_core/engine/executor.py,529,FILE:nrc_core/engine/executor.py,descriptions,待核对
+BRANCH:nrc_core/engine/executor.py:559:true,code_branch,true,T07,nrc_core/engine/executor.py,559,FILE:nrc_core/engine/executor.py,"not getattr(skill, ""effects"", None)",待核对
+BRANCH:nrc_core/engine/executor.py:559:false,code_branch,false,T07,nrc_core/engine/executor.py,559,FILE:nrc_core/engine/executor.py,"not getattr(skill, ""effects"", None)",待核对
+BRANCH:nrc_core/engine/executor.py:565:true,code_branch,true,T07,nrc_core/engine/executor.py,565,FILE:nrc_core/engine/executor.py,has_agility and pokemon.energy >= skill.energy_cost,待核对
+BRANCH:nrc_core/engine/executor.py:565:false,code_branch,false,T07,nrc_core/engine/executor.py,565,FILE:nrc_core/engine/executor.py,has_agility and pokemon.energy >= skill.energy_cost,待核对
+BRANCH:nrc_core/engine/executor.py:602:true,code_branch,true,T07,nrc_core/engine/executor.py,602,FILE:nrc_core/engine/executor.py,tag.type == E.PASSIVE_ENERGY_REDUCE,待核对
+BRANCH:nrc_core/engine/executor.py:602:false,code_branch,false,T07,nrc_core/engine/executor.py,602,FILE:nrc_core/engine/executor.py,tag.type == E.PASSIVE_ENERGY_REDUCE,待核对
+BRANCH:nrc_core/engine/executor.py:640:true,code_branch,true,T07,nrc_core/engine/executor.py,640,FILE:nrc_core/engine/executor.py,not skill,待核对
+BRANCH:nrc_core/engine/executor.py:640:false,code_branch,false,T07,nrc_core/engine/executor.py,640,FILE:nrc_core/engine/executor.py,not skill,待核对
+BRANCH:nrc_core/engine/executor.py:644:true,code_branch,true,T07,nrc_core/engine/executor.py,644,FILE:nrc_core/engine/executor.py,"not isinstance(elements, (list, tuple, set))",待核对
+BRANCH:nrc_core/engine/executor.py:644:false,code_branch,false,T07,nrc_core/engine/executor.py,644,FILE:nrc_core/engine/executor.py,"not isinstance(elements, (list, tuple, set))",待核对
+BRANCH:nrc_core/engine/executor.py:648:true,code_branch,true,T07,nrc_core/engine/executor.py,648,FILE:nrc_core/engine/executor.py,skill.skill_type not in expected_types,待核对
+BRANCH:nrc_core/engine/executor.py:648:false,code_branch,false,T07,nrc_core/engine/executor.py,648,FILE:nrc_core/engine/executor.py,skill.skill_type not in expected_types,待核对
+BRANCH:nrc_core/engine/executor.py:653:true,code_branch,true,T07,nrc_core/engine/executor.py,653,FILE:nrc_core/engine/executor.py,skill and skill.skill_type != enemy.pokemon_type,待核对
+BRANCH:nrc_core/engine/executor.py:653:false,code_branch,false,T07,nrc_core/engine/executor.py,653,FILE:nrc_core/engine/executor.py,skill and skill.skill_type != enemy.pokemon_type,待核对
+BRANCH:nrc_core/engine/executor.py:665:true,code_branch,true,T07,nrc_core/engine/executor.py,665,FILE:nrc_core/engine/executor.py,skill,待核对
+BRANCH:nrc_core/engine/executor.py:665:false,code_branch,false,T07,nrc_core/engine/executor.py,665,FILE:nrc_core/engine/executor.py,skill,待核对
+BRANCH:nrc_core/engine/executor.py:175:body,code_branch,body,T07,nrc_core/engine/executor.py,175,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:175:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,175,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:181:body,code_branch,body,T07,nrc_core/engine/executor.py,181,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:181:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,181,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:189:body,code_branch,body,T07,nrc_core/engine/executor.py,189,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:189:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,189,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:200:true,code_branch,true,T07,nrc_core/engine/executor.py,200,FILE:nrc_core/engine/executor.py,"se.timing == SkillTiming.ON_HIT and _check_skill_filter(se.filter, ctx)",待核对
+BRANCH:nrc_core/engine/executor.py:200:false,code_branch,false,T07,nrc_core/engine/executor.py,200,FILE:nrc_core/engine/executor.py,"se.timing == SkillTiming.ON_HIT and _check_skill_filter(se.filter, ctx)",待核对
+BRANCH:nrc_core/engine/executor.py:212:body,code_branch,body,T07,nrc_core/engine/executor.py,212,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:212:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,212,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:269:true,code_branch,true,T07,nrc_core/engine/executor.py,269,FILE:nrc_core/engine/executor.py,"category == ""defense""",待核对
+BRANCH:nrc_core/engine/executor.py:269:false,code_branch,false,T07,nrc_core/engine/executor.py,269,FILE:nrc_core/engine/executor.py,"category == ""defense""",待核对
+BRANCH:nrc_core/engine/executor.py:296:true,code_branch,true,T07,nrc_core/engine/executor.py,296,FILE:nrc_core/engine/executor.py,tag.type == E.FORCE_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:296:false,code_branch,false,T07,nrc_core/engine/executor.py,296,FILE:nrc_core/engine/executor.py,tag.type == E.FORCE_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:381:true,code_branch,true,T07,nrc_core/engine/executor.py,381,FILE:nrc_core/engine/executor.py,counter_tag.type == E.COUNTER_DEFENSE,待核对
+BRANCH:nrc_core/engine/executor.py:381:false,code_branch,false,T07,nrc_core/engine/executor.py,381,FILE:nrc_core/engine/executor.py,counter_tag.type == E.COUNTER_DEFENSE,待核对
+BRANCH:nrc_core/engine/executor.py:402:true,code_branch,true,T07,nrc_core/engine/executor.py,402,FILE:nrc_core/engine/executor.py,sub.type == E.FORCE_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:402:false,code_branch,false,T07,nrc_core/engine/executor.py,402,FILE:nrc_core/engine/executor.py,sub.type == E.FORCE_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:496:true,code_branch,true,T07,nrc_core/engine/executor.py,496,FILE:nrc_core/engine/executor.py,tag.type == E.DAMAGE_REDUCTION,待核对
+BRANCH:nrc_core/engine/executor.py:496:false,code_branch,false,T07,nrc_core/engine/executor.py,496,FILE:nrc_core/engine/executor.py,tag.type == E.DAMAGE_REDUCTION,待核对
+BRANCH:nrc_core/engine/executor.py:509:true,code_branch,true,T07,nrc_core/engine/executor.py,509,FILE:nrc_core/engine/executor.py,"isinstance(value, (int, float)) and value != old_value",待核对
+BRANCH:nrc_core/engine/executor.py:509:false,code_branch,false,T07,nrc_core/engine/executor.py,509,FILE:nrc_core/engine/executor.py,"isinstance(value, (int, float)) and value != old_value",待核对
+BRANCH:nrc_core/engine/executor.py:524:true,code_branch,true,T07,nrc_core/engine/executor.py,524,FILE:nrc_core/engine/executor.py,old_marks != marks,待核对
+BRANCH:nrc_core/engine/executor.py:524:false,code_branch,false,T07,nrc_core/engine/executor.py,524,FILE:nrc_core/engine/executor.py,old_marks != marks,待核对
+BRANCH:nrc_core/engine/executor.py:527:true,code_branch,true,T07,nrc_core/engine/executor.py,527,FILE:nrc_core/engine/executor.py,mp != old_mp,待核对
+BRANCH:nrc_core/engine/executor.py:527:false,code_branch,false,T07,nrc_core/engine/executor.py,527,FILE:nrc_core/engine/executor.py,mp != old_mp,待核对
+BRANCH:nrc_core/engine/executor.py:560:true,code_branch,true,T07,nrc_core/engine/executor.py,560,FILE:nrc_core/engine/executor.py,skill.agility and pokemon.energy >= skill.energy_cost,待核对
+BRANCH:nrc_core/engine/executor.py:560:false,code_branch,false,T07,nrc_core/engine/executor.py,560,FILE:nrc_core/engine/executor.py,skill.agility and pokemon.energy >= skill.energy_cost,待核对
+BRANCH:nrc_core/engine/executor.py:605:true,code_branch,true,T07,nrc_core/engine/executor.py,605,FILE:nrc_core/engine/executor.py,"rng == ""self""",待核对
+BRANCH:nrc_core/engine/executor.py:605:false,code_branch,false,T07,nrc_core/engine/executor.py,605,FILE:nrc_core/engine/executor.py,"rng == ""self""",待核对
+BRANCH:nrc_core/engine/executor.py:617:true,code_branch,true,T07,nrc_core/engine/executor.py,617,FILE:nrc_core/engine/executor.py,tag.type == E.PERMANENT_MOD,待核对
+BRANCH:nrc_core/engine/executor.py:617:false,code_branch,false,T07,nrc_core/engine/executor.py,617,FILE:nrc_core/engine/executor.py,tag.type == E.PERMANENT_MOD,待核对
+BRANCH:nrc_core/engine/executor.py:667:true,code_branch,true,T07,nrc_core/engine/executor.py,667,FILE:nrc_core/engine/executor.py,"idx not in f[""positions""]",待核对
+BRANCH:nrc_core/engine/executor.py:667:false,code_branch,false,T07,nrc_core/engine/executor.py,667,FILE:nrc_core/engine/executor.py,"idx not in f[""positions""]",待核对
+BRANCH:nrc_core/engine/executor.py:60:true,code_branch,true,T07,nrc_core/engine/executor.py,60,FILE:nrc_core/engine/executor.py,"effects and isinstance(effects[0], SkillEffect)",待核对
+BRANCH:nrc_core/engine/executor.py:60:false,code_branch,false,T07,nrc_core/engine/executor.py,60,FILE:nrc_core/engine/executor.py,"effects and isinstance(effects[0], SkillEffect)",待核对
+BRANCH:nrc_core/engine/executor.py:190:true,code_branch,true,T07,nrc_core/engine/executor.py,190,FILE:nrc_core/engine/executor.py,tag.type == E.DAMAGE,待核对
+BRANCH:nrc_core/engine/executor.py:190:false,code_branch,false,T07,nrc_core/engine/executor.py,190,FILE:nrc_core/engine/executor.py,tag.type == E.DAMAGE,待核对
+BRANCH:nrc_core/engine/executor.py:201:body,code_branch,body,T07,nrc_core/engine/executor.py,201,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:201:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,201,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:271:true,code_branch,true,T07,nrc_core/engine/executor.py,271,FILE:nrc_core/engine/executor.py,not category,待核对
+BRANCH:nrc_core/engine/executor.py:271:false,code_branch,false,T07,nrc_core/engine/executor.py,271,FILE:nrc_core/engine/executor.py,not category,待核对
+BRANCH:nrc_core/engine/executor.py:298:true,code_branch,true,T07,nrc_core/engine/executor.py,298,FILE:nrc_core/engine/executor.py,tag.type == E.FORCE_ENEMY_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:298:false,code_branch,false,T07,nrc_core/engine/executor.py,298,FILE:nrc_core/engine/executor.py,tag.type == E.FORCE_ENEMY_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:404:true,code_branch,true,T07,nrc_core/engine/executor.py,404,FILE:nrc_core/engine/executor.py,sub.type == E.FORCE_ENEMY_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:404:false,code_branch,false,T07,nrc_core/engine/executor.py,404,FILE:nrc_core/engine/executor.py,sub.type == E.FORCE_ENEMY_SWITCH,待核对
+BRANCH:nrc_core/engine/executor.py:610:true,code_branch,true,T07,nrc_core/engine/executor.py,610,FILE:nrc_core/engine/executor.py,"rng == ""adjacent""",待核对
+BRANCH:nrc_core/engine/executor.py:610:false,code_branch,false,T07,nrc_core/engine/executor.py,610,FILE:nrc_core/engine/executor.py,"rng == ""adjacent""",待核对
+BRANCH:nrc_core/engine/executor.py:618:true,code_branch,true,T07,nrc_core/engine/executor.py,618,FILE:nrc_core/engine/executor.py,"tag.params.get(""trigger"") == ""per_position_change""",待核对
+BRANCH:nrc_core/engine/executor.py:618:false,code_branch,false,T07,nrc_core/engine/executor.py,618,FILE:nrc_core/engine/executor.py,"tag.params.get(""trigger"") == ""per_position_change""",待核对
+BRANCH:nrc_core/engine/executor.py:300:true,code_branch,true,T07,nrc_core/engine/executor.py,300,FILE:nrc_core/engine/executor.py,tag.type == E.PASSIVE_ENERGY_REDUCE,待核对
+BRANCH:nrc_core/engine/executor.py:300:false,code_branch,false,T07,nrc_core/engine/executor.py,300,FILE:nrc_core/engine/executor.py,tag.type == E.PASSIVE_ENERGY_REDUCE,待核对
+BRANCH:nrc_core/engine/executor.py:406:true,code_branch,true,T07,nrc_core/engine/executor.py,406,FILE:nrc_core/engine/executor.py,sub.type == E.PASSIVE_ENERGY_REDUCE,待核对
+BRANCH:nrc_core/engine/executor.py:406:false,code_branch,false,T07,nrc_core/engine/executor.py,406,FILE:nrc_core/engine/executor.py,sub.type == E.PASSIVE_ENERGY_REDUCE,待核对
+BRANCH:nrc_core/engine/executor.py:611:body,code_branch,body,T07,nrc_core/engine/executor.py,611,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:611:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/executor.py,611,FILE:nrc_core/engine/executor.py,For,待核对
+BRANCH:nrc_core/engine/executor.py:510:true,code_branch,true,T07,nrc_core/engine/executor.py,510,FILE:nrc_core/engine/executor.py,percent,待核对
+BRANCH:nrc_core/engine/executor.py:510:false,code_branch,false,T07,nrc_core/engine/executor.py,510,FILE:nrc_core/engine/executor.py,percent,待核对
+BRANCH:nrc_core/engine/executor.py:510:true,code_branch,true,T07,nrc_core/engine/executor.py,510,FILE:nrc_core/engine/executor.py,percent,待核对
+BRANCH:nrc_core/engine/executor.py:510:false,code_branch,false,T07,nrc_core/engine/executor.py,510,FILE:nrc_core/engine/executor.py,percent,待核对
+BRANCH:nrc_core/engine/executor.py:525:true,code_branch,true,T07,nrc_core/engine/executor.py,525,FILE:nrc_core/engine/executor.py,side == team,待核对
+BRANCH:nrc_core/engine/executor.py:525:false,code_branch,false,T07,nrc_core/engine/executor.py,525,FILE:nrc_core/engine/executor.py,side == team,待核对
+BRANCH:nrc_core/engine/executor.py:528:true,code_branch,true,T07,nrc_core/engine/executor.py,528,FILE:nrc_core/engine/executor.py,side == team,待核对
+BRANCH:nrc_core/engine/executor.py:528:false,code_branch,false,T07,nrc_core/engine/executor.py,528,FILE:nrc_core/engine/executor.py,side == team,待核对
+FILE:nrc_core/engine/filters.py,file,nrc_core/engine/filters.py,T07,nrc_core/engine/filters.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/filters.py:9:true,code_branch,true,T07,nrc_core/engine/filters.py,9,FILE:nrc_core/engine/filters.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/filters.py:9:false,code_branch,false,T07,nrc_core/engine/filters.py,9,FILE:nrc_core/engine/filters.py,TYPE_CHECKING,待核对
+CODE:nrc_core/engine/filters.py:13:_check_runtime_condition,code_object,_check_runtime_condition,T07,nrc_core/engine/filters.py,13,FILE:nrc_core/engine/filters.py,无描述字符串,待核对
+CODE:nrc_core/engine/filters.py:33:_check_skill_filter,code_object,_check_skill_filter,T07,nrc_core/engine/filters.py,33,FILE:nrc_core/engine/filters.py,检查 SkillEffect 的 filter 条件是否满足。,待核对
+BRANCH:nrc_core/engine/filters.py:15:true,code_branch,true,T07,nrc_core/engine/filters.py,15,FILE:nrc_core/engine/filters.py,not condition,待核对
+BRANCH:nrc_core/engine/filters.py:15:false,code_branch,false,T07,nrc_core/engine/filters.py,15,FILE:nrc_core/engine/filters.py,not condition,待核对
+BRANCH:nrc_core/engine/filters.py:17:true,code_branch,true,T07,nrc_core/engine/filters.py,17,FILE:nrc_core/engine/filters.py,"condition == ""after_use_hp_gt_half""",待核对
+BRANCH:nrc_core/engine/filters.py:17:false,code_branch,false,T07,nrc_core/engine/filters.py,17,FILE:nrc_core/engine/filters.py,"condition == ""after_use_hp_gt_half""",待核对
+BRANCH:nrc_core/engine/filters.py:19:true,code_branch,true,T07,nrc_core/engine/filters.py,19,FILE:nrc_core/engine/filters.py,"condition in (""self_hp_above"", ""self_hp_below"")",待核对
+BRANCH:nrc_core/engine/filters.py:19:false,code_branch,false,T07,nrc_core/engine/filters.py,19,FILE:nrc_core/engine/filters.py,"condition in (""self_hp_above"", ""self_hp_below"")",待核对
+BRANCH:nrc_core/engine/filters.py:23:true,code_branch,true,T07,nrc_core/engine/filters.py,23,FILE:nrc_core/engine/filters.py,"condition in (""enemy_hp_above"", ""enemy_hp_below"")",待核对
+BRANCH:nrc_core/engine/filters.py:23:false,code_branch,false,T07,nrc_core/engine/filters.py,23,FILE:nrc_core/engine/filters.py,"condition in (""enemy_hp_above"", ""enemy_hp_below"")",待核对
+BRANCH:nrc_core/engine/filters.py:27:true,code_branch,true,T07,nrc_core/engine/filters.py,27,FILE:nrc_core/engine/filters.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/filters.py:27:false,code_branch,false,T07,nrc_core/engine/filters.py,27,FILE:nrc_core/engine/filters.py,"condition == ""enemy_switch""",待核对
+BRANCH:nrc_core/engine/filters.py:35:true,code_branch,true,T07,nrc_core/engine/filters.py,35,FILE:nrc_core/engine/filters.py,not filt,待核对
+BRANCH:nrc_core/engine/filters.py:35:false,code_branch,false,T07,nrc_core/engine/filters.py,35,FILE:nrc_core/engine/filters.py,not filt,待核对
+BRANCH:nrc_core/engine/filters.py:39:true,code_branch,true,T07,nrc_core/engine/filters.py,39,FILE:nrc_core/engine/filters.py,"""category"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:39:false,code_branch,false,T07,nrc_core/engine/filters.py,39,FILE:nrc_core/engine/filters.py,"""category"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:42:true,code_branch,true,T07,nrc_core/engine/filters.py,42,FILE:nrc_core/engine/filters.py,"filt.get(""enemy_switch"")",待核对
+BRANCH:nrc_core/engine/filters.py:42:false,code_branch,false,T07,nrc_core/engine/filters.py,42,FILE:nrc_core/engine/filters.py,"filt.get(""enemy_switch"")",待核对
+BRANCH:nrc_core/engine/filters.py:49:true,code_branch,true,T07,nrc_core/engine/filters.py,49,FILE:nrc_core/engine/filters.py,"filt.get(""first_strike"")",待核对
+BRANCH:nrc_core/engine/filters.py:49:false,code_branch,false,T07,nrc_core/engine/filters.py,49,FILE:nrc_core/engine/filters.py,"filt.get(""first_strike"")",待核对
+BRANCH:nrc_core/engine/filters.py:53:true,code_branch,true,T07,nrc_core/engine/filters.py,53,FILE:nrc_core/engine/filters.py,"""self_hp_lt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:53:false,code_branch,false,T07,nrc_core/engine/filters.py,53,FILE:nrc_core/engine/filters.py,"""self_hp_lt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:58:true,code_branch,true,T07,nrc_core/engine/filters.py,58,FILE:nrc_core/engine/filters.py,"""self_hp_gt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:58:false,code_branch,false,T07,nrc_core/engine/filters.py,58,FILE:nrc_core/engine/filters.py,"""self_hp_gt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:63:true,code_branch,true,T07,nrc_core/engine/filters.py,63,FILE:nrc_core/engine/filters.py,"""enemy_hp_lt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:63:false,code_branch,false,T07,nrc_core/engine/filters.py,63,FILE:nrc_core/engine/filters.py,"""enemy_hp_lt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:68:true,code_branch,true,T07,nrc_core/engine/filters.py,68,FILE:nrc_core/engine/filters.py,"""enemy_hp_gt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:68:false,code_branch,false,T07,nrc_core/engine/filters.py,68,FILE:nrc_core/engine/filters.py,"""enemy_hp_gt"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:73:true,code_branch,true,T07,nrc_core/engine/filters.py,73,FILE:nrc_core/engine/filters.py,"filt.get(""on_kill"")",待核对
+BRANCH:nrc_core/engine/filters.py:73:false,code_branch,false,T07,nrc_core/engine/filters.py,73,FILE:nrc_core/engine/filters.py,"filt.get(""on_kill"")",待核对
+BRANCH:nrc_core/engine/filters.py:83:true,code_branch,true,T07,nrc_core/engine/filters.py,83,FILE:nrc_core/engine/filters.py,"filt.get(""energy_zero_after"")",待核对
+BRANCH:nrc_core/engine/filters.py:83:false,code_branch,false,T07,nrc_core/engine/filters.py,83,FILE:nrc_core/engine/filters.py,"filt.get(""energy_zero_after"")",待核对
+BRANCH:nrc_core/engine/filters.py:87:true,code_branch,true,T07,nrc_core/engine/filters.py,87,FILE:nrc_core/engine/filters.py,"filt.get(""prev_counter_success"")",待核对
+BRANCH:nrc_core/engine/filters.py:87:false,code_branch,false,T07,nrc_core/engine/filters.py,87,FILE:nrc_core/engine/filters.py,"filt.get(""prev_counter_success"")",待核对
+BRANCH:nrc_core/engine/filters.py:91:true,code_branch,true,T07,nrc_core/engine/filters.py,91,FILE:nrc_core/engine/filters.py,"filt.get(""counter"")",待核对
+BRANCH:nrc_core/engine/filters.py:91:false,code_branch,false,T07,nrc_core/engine/filters.py,91,FILE:nrc_core/engine/filters.py,"filt.get(""counter"")",待核对
+BRANCH:nrc_core/engine/filters.py:95:true,code_branch,true,T07,nrc_core/engine/filters.py,95,FILE:nrc_core/engine/filters.py,"""per"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:95:false,code_branch,false,T07,nrc_core/engine/filters.py,95,FILE:nrc_core/engine/filters.py,"""per"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:105:true,code_branch,true,T07,nrc_core/engine/filters.py,105,FILE:nrc_core/engine/filters.py,"""self_hp_above"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:105:false,code_branch,false,T07,nrc_core/engine/filters.py,105,FILE:nrc_core/engine/filters.py,"""self_hp_above"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:111:true,code_branch,true,T07,nrc_core/engine/filters.py,111,FILE:nrc_core/engine/filters.py,"""self_hp_below"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:111:false,code_branch,false,T07,nrc_core/engine/filters.py,111,FILE:nrc_core/engine/filters.py,"""self_hp_below"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:117:true,code_branch,true,T07,nrc_core/engine/filters.py,117,FILE:nrc_core/engine/filters.py,"""prev_status"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:117:false,code_branch,false,T07,nrc_core/engine/filters.py,117,FILE:nrc_core/engine/filters.py,"""prev_status"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:122:true,code_branch,true,T07,nrc_core/engine/filters.py,122,FILE:nrc_core/engine/filters.py,"""self_missing_hp_step"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:122:false,code_branch,false,T07,nrc_core/engine/filters.py,122,FILE:nrc_core/engine/filters.py,"""self_missing_hp_step"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:126:true,code_branch,true,T07,nrc_core/engine/filters.py,126,FILE:nrc_core/engine/filters.py,"""energy_cost_above_base"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:126:false,code_branch,false,T07,nrc_core/engine/filters.py,126,FILE:nrc_core/engine/filters.py,"""energy_cost_above_base"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:130:true,code_branch,true,T07,nrc_core/engine/filters.py,130,FILE:nrc_core/engine/filters.py,"""per_enemy_poison"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:130:false,code_branch,false,T07,nrc_core/engine/filters.py,130,FILE:nrc_core/engine/filters.py,"""per_enemy_poison"" in filt",待核对
+BRANCH:nrc_core/engine/filters.py:46:true,code_branch,true,T07,nrc_core/engine/filters.py,46,FILE:nrc_core/engine/filters.py,not enemy_switched,待核对
+BRANCH:nrc_core/engine/filters.py:46:false,code_branch,false,T07,nrc_core/engine/filters.py,46,FILE:nrc_core/engine/filters.py,not enemy_switched,待核对
+BRANCH:nrc_core/engine/filters.py:50:true,code_branch,true,T07,nrc_core/engine/filters.py,50,FILE:nrc_core/engine/filters.py,not ctx.is_first,待核对
+BRANCH:nrc_core/engine/filters.py:50:false,code_branch,false,T07,nrc_core/engine/filters.py,50,FILE:nrc_core/engine/filters.py,not ctx.is_first,待核对
+BRANCH:nrc_core/engine/filters.py:55:true,code_branch,true,T07,nrc_core/engine/filters.py,55,FILE:nrc_core/engine/filters.py,"ratio >= filt[""self_hp_lt""]",待核对
+BRANCH:nrc_core/engine/filters.py:55:false,code_branch,false,T07,nrc_core/engine/filters.py,55,FILE:nrc_core/engine/filters.py,"ratio >= filt[""self_hp_lt""]",待核对
+BRANCH:nrc_core/engine/filters.py:60:true,code_branch,true,T07,nrc_core/engine/filters.py,60,FILE:nrc_core/engine/filters.py,"ratio <= filt[""self_hp_gt""]",待核对
+BRANCH:nrc_core/engine/filters.py:60:false,code_branch,false,T07,nrc_core/engine/filters.py,60,FILE:nrc_core/engine/filters.py,"ratio <= filt[""self_hp_gt""]",待核对
+BRANCH:nrc_core/engine/filters.py:65:true,code_branch,true,T07,nrc_core/engine/filters.py,65,FILE:nrc_core/engine/filters.py,"ratio >= filt[""enemy_hp_lt""]",待核对
+BRANCH:nrc_core/engine/filters.py:65:false,code_branch,false,T07,nrc_core/engine/filters.py,65,FILE:nrc_core/engine/filters.py,"ratio >= filt[""enemy_hp_lt""]",待核对
+BRANCH:nrc_core/engine/filters.py:70:true,code_branch,true,T07,nrc_core/engine/filters.py,70,FILE:nrc_core/engine/filters.py,"ratio <= filt[""enemy_hp_gt""]",待核对
+BRANCH:nrc_core/engine/filters.py:70:false,code_branch,false,T07,nrc_core/engine/filters.py,70,FILE:nrc_core/engine/filters.py,"ratio <= filt[""enemy_hp_gt""]",待核对
+BRANCH:nrc_core/engine/filters.py:80:true,code_branch,true,T07,nrc_core/engine/filters.py,80,FILE:nrc_core/engine/filters.py,not target_dead,待核对
+BRANCH:nrc_core/engine/filters.py:80:false,code_branch,false,T07,nrc_core/engine/filters.py,80,FILE:nrc_core/engine/filters.py,not target_dead,待核对
+BRANCH:nrc_core/engine/filters.py:84:true,code_branch,true,T07,nrc_core/engine/filters.py,84,FILE:nrc_core/engine/filters.py,ctx.user.energy > 0,待核对
+BRANCH:nrc_core/engine/filters.py:84:false,code_branch,false,T07,nrc_core/engine/filters.py,84,FILE:nrc_core/engine/filters.py,ctx.user.energy > 0,待核对
+BRANCH:nrc_core/engine/filters.py:88:true,code_branch,true,T07,nrc_core/engine/filters.py,88,FILE:nrc_core/engine/filters.py,"ctx.user.ability_state.get(""last_counter_success_turn"") != ctx.state.turn - 1",待核对
+BRANCH:nrc_core/engine/filters.py:88:false,code_branch,false,T07,nrc_core/engine/filters.py,88,FILE:nrc_core/engine/filters.py,"ctx.user.ability_state.get(""last_counter_success_turn"") != ctx.state.turn - 1",待核对
+BRANCH:nrc_core/engine/filters.py:98:true,code_branch,true,T07,nrc_core/engine/filters.py,98,FILE:nrc_core/engine/filters.py,"per == ""enemy_poison""",待核对
+BRANCH:nrc_core/engine/filters.py:98:false,code_branch,false,T07,nrc_core/engine/filters.py,98,FILE:nrc_core/engine/filters.py,"per == ""enemy_poison""",待核对
+BRANCH:nrc_core/engine/filters.py:108:true,code_branch,true,T07,nrc_core/engine/filters.py,108,FILE:nrc_core/engine/filters.py,"start_hp / max(1, ctx.user.hp) <= threshold",待核对
+BRANCH:nrc_core/engine/filters.py:108:false,code_branch,false,T07,nrc_core/engine/filters.py,108,FILE:nrc_core/engine/filters.py,"start_hp / max(1, ctx.user.hp) <= threshold",待核对
+BRANCH:nrc_core/engine/filters.py:114:true,code_branch,true,T07,nrc_core/engine/filters.py,114,FILE:nrc_core/engine/filters.py,"start_hp / max(1, ctx.user.hp) >= threshold",待核对
+BRANCH:nrc_core/engine/filters.py:114:false,code_branch,false,T07,nrc_core/engine/filters.py,114,FILE:nrc_core/engine/filters.py,"start_hp / max(1, ctx.user.hp) >= threshold",待核对
+BRANCH:nrc_core/engine/filters.py:118:true,code_branch,true,T07,nrc_core/engine/filters.py,118,FILE:nrc_core/engine/filters.py,"not (ctx.user.ability_state.get(""last_skill_category"") == ""状态""
+                and ctx.user.ability_state.get(""last_skill_turn"") == ctx.state.turn - 1)",待核对
+BRANCH:nrc_core/engine/filters.py:118:false,code_branch,false,T07,nrc_core/engine/filters.py,118,FILE:nrc_core/engine/filters.py,"not (ctx.user.ability_state.get(""last_skill_category"") == ""状态""
+                and ctx.user.ability_state.get(""last_skill_turn"") == ctx.state.turn - 1)",待核对
+BRANCH:nrc_core/engine/filters.py:131:true,code_branch,true,T07,nrc_core/engine/filters.py,131,FILE:nrc_core/engine/filters.py,ctx.target.poison_stacks <= 0,待核对
+BRANCH:nrc_core/engine/filters.py:131:false,code_branch,false,T07,nrc_core/engine/filters.py,131,FILE:nrc_core/engine/filters.py,ctx.target.poison_stacks <= 0,待核对
+BRANCH:nrc_core/engine/filters.py:22:true,code_branch,true,T07,nrc_core/engine/filters.py,22,FILE:nrc_core/engine/filters.py,"condition == ""self_hp_above""",待核对
+BRANCH:nrc_core/engine/filters.py:22:false,code_branch,false,T07,nrc_core/engine/filters.py,22,FILE:nrc_core/engine/filters.py,"condition == ""self_hp_above""",待核对
+BRANCH:nrc_core/engine/filters.py:26:true,code_branch,true,T07,nrc_core/engine/filters.py,26,FILE:nrc_core/engine/filters.py,"condition == ""enemy_hp_above""",待核对
+BRANCH:nrc_core/engine/filters.py:26:false,code_branch,false,T07,nrc_core/engine/filters.py,26,FILE:nrc_core/engine/filters.py,"condition == ""enemy_hp_above""",待核对
+BRANCH:nrc_core/engine/filters.py:44:true,code_branch,true,T07,nrc_core/engine/filters.py,44,FILE:nrc_core/engine/filters.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/filters.py:44:false,code_branch,false,T07,nrc_core/engine/filters.py,44,FILE:nrc_core/engine/filters.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/filters.py:99:true,code_branch,true,T07,nrc_core/engine/filters.py,99,FILE:nrc_core/engine/filters.py,ctx.target.poison_stacks <= 0,待核对
+BRANCH:nrc_core/engine/filters.py:99:false,code_branch,false,T07,nrc_core/engine/filters.py,99,FILE:nrc_core/engine/filters.py,ctx.target.poison_stacks <= 0,待核对
+BRANCH:nrc_core/engine/filters.py:101:true,code_branch,true,T07,nrc_core/engine/filters.py,101,FILE:nrc_core/engine/filters.py,"per == ""enemy_burn""",待核对
+BRANCH:nrc_core/engine/filters.py:101:false,code_branch,false,T07,nrc_core/engine/filters.py,101,FILE:nrc_core/engine/filters.py,"per == ""enemy_burn""",待核对
+BRANCH:nrc_core/engine/filters.py:28:true,code_branch,true,T07,nrc_core/engine/filters.py,28,FILE:nrc_core/engine/filters.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/filters.py:28:false,code_branch,false,T07,nrc_core/engine/filters.py,28,FILE:nrc_core/engine/filters.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/filters.py:102:true,code_branch,true,T07,nrc_core/engine/filters.py,102,FILE:nrc_core/engine/filters.py,ctx.target.burn_stacks <= 0,待核对
+BRANCH:nrc_core/engine/filters.py:102:false,code_branch,false,T07,nrc_core/engine/filters.py,102,FILE:nrc_core/engine/filters.py,ctx.target.burn_stacks <= 0,待核对
+FILE:nrc_core/engine/helpers.py,file,nrc_core/engine/helpers.py,T07,nrc_core/engine/helpers.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/helpers.py:7:true,code_branch,true,T07,nrc_core/engine/helpers.py,7,FILE:nrc_core/engine/helpers.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/helpers.py:7:false,code_branch,false,T07,nrc_core/engine/helpers.py,7,FILE:nrc_core/engine/helpers.py,TYPE_CHECKING,待核对
+CODE:nrc_core/engine/helpers.py:11:_get_ability_name,code_object,_get_ability_name,T07,nrc_core/engine/helpers.py,11,FILE:nrc_core/engine/helpers.py,从 '特性名:描述' 格式中提取特性名,待核对
+CODE:nrc_core/engine/helpers.py:22:_promise_modifiers,code_object,_promise_modifiers,T07,nrc_core/engine/helpers.py,22,FILE:nrc_core/engine/helpers.py,快照王子诺言监听的增益和减益。,待核对
+CODE:nrc_core/engine/helpers.py:36:_apply_prince_promise,code_object,_apply_prince_promise,T07,nrc_core/engine/helpers.py,36,FILE:nrc_core/engine/helpers.py,每回合首次获得增益或减益时应用能耗修正。,待核对
+CODE:nrc_core/engine/helpers.py:55:_find_skill_index,code_object,_find_skill_index,T07,nrc_core/engine/helpers.py,55,FILE:nrc_core/engine/helpers.py,找到技能在精灵技能列表中的索引,待核对
+CODE:nrc_core/engine/helpers.py:82:_ability_report_snapshot,code_object,_ability_report_snapshot,T07,nrc_core/engine/helpers.py,82,FILE:nrc_core/engine/helpers.py,仅记录可解释的数值，不复制特性运行时对象或隐藏技能定义。,待核对
+CODE:nrc_core/engine/helpers.py:97:_ability_runtime_snapshot,code_object,_ability_runtime_snapshot,T07,nrc_core/engine/helpers.py,97,FILE:nrc_core/engine/helpers.py,无描述字符串,待核对
+CODE:nrc_core/engine/helpers.py:117:_report_ability_changes,code_object,_report_ability_changes,T07,nrc_core/engine/helpers.py,117,FILE:nrc_core/engine/helpers.py,按实际差值报告，能量达到上限、条件未满足等情况不生成虚假增益。,待核对
+CODE:nrc_core/engine/helpers.py:185:_share_heal_to_bench,code_object,_share_heal_to_bench,T07,nrc_core/engine/helpers.py,185,FILE:nrc_core/engine/helpers.py,系统发育：将回复的HP等量随机分配给场下存活精灵,待核对
+CODE:nrc_core/engine/helpers.py:196:_share_energy_to_bench,code_object,_share_energy_to_bench,T07,nrc_core/engine/helpers.py,196,FILE:nrc_core/engine/helpers.py,系统发育：将获得的能量等量随机分配给场下存活精灵,待核对
+CODE:nrc_core/engine/helpers.py:207:_apply_ability_buff,code_object,_apply_ability_buff,T07,nrc_core/engine/helpers.py,207,FILE:nrc_core/engine/helpers.py,特性加成保留来源和层数，五维数值仅在计算时展开。,待核对
+CODE:nrc_core/engine/helpers.py:217:_apply_buff,code_object,_apply_buff,T07,nrc_core/engine/helpers.py,217,FILE:nrc_core/engine/helpers.py,应用正向属性修改（写入 *_up 字段）,待核对
+CODE:nrc_core/engine/helpers.py:260:_apply_debuff,code_object,_apply_debuff,T07,nrc_core/engine/helpers.py,260,FILE:nrc_core/engine/helpers.py,应用负向属性修改（写入 *_down 字段，params 中的值为正数）,待核对
+CODE:nrc_core/engine/helpers.py:281:_clear_buffs,code_object,_clear_buffs,T07,nrc_core/engine/helpers.py,281,FILE:nrc_core/engine/helpers.py,清除所有正向增益（*_up 字段归零，power_multiplier 重置）,待核对
+CODE:nrc_core/engine/helpers.py:300:_clear_debuffs,code_object,_clear_debuffs,T07,nrc_core/engine/helpers.py,300,FILE:nrc_core/engine/helpers.py,"清除属性负向减益（*_down 字段归零）。
+注意：不清除 poison/burn/leech/freeze 等持久状态——这些只能通过主动清除技能消除。",待核对
+CODE:nrc_core/engine/helpers.py:314:_ability_name,code_object,_ability_name,T07,nrc_core/engine/helpers.py,314,FILE:nrc_core/engine/helpers.py,无描述字符串,待核对
+CODE:nrc_core/engine/helpers.py:321:_adjust_cost_delta,code_object,_adjust_cost_delta,T07,nrc_core/engine/helpers.py,321,FILE:nrc_core/engine/helpers.py,能耗增减调整：对流特性反转增减方向，倾轧特性翻倍,待核对
+CODE:nrc_core/engine/helpers.py:331:_iter_flat_tags_static,code_object,_iter_flat_tags_static,T07,nrc_core/engine/helpers.py,331,FILE:nrc_core/engine/helpers.py,从 List[SkillEffect] 或 List[EffectTag] 中提取所有 EffectTag（平铺）。,待核对
+CODE:nrc_core/engine/helpers.py:343:_apply_permanent_mod,code_object,_apply_permanent_mod,T07,nrc_core/engine/helpers.py,343,FILE:nrc_core/engine/helpers.py,"应用永久修改（能耗/威力）。
+per_counter 和 per_position_change 由外部手动调用时传 force=True 绕过 guard。",待核对
+CODE:nrc_core/engine/helpers.py:366:_execute_agility_old,code_object,_execute_agility_old,T07,nrc_core/engine/helpers.py,366,FILE:nrc_core/engine/helpers.py,旧逻辑：执行迅捷技能（没有 effects 字段的技能）,待核对
+CODE:nrc_core/engine/helpers.py:388:_skill_matches_ability_filter,code_object,_skill_matches_ability_filter,T07,nrc_core/engine/helpers.py,388,FILE:nrc_core/engine/helpers.py,判断技能是否匹配特性筛选条件。,待核对
+CODE:nrc_core/engine/helpers.py:435:_apply_matching_skill_mods,code_object,_apply_matching_skill_mods,T07,nrc_core/engine/helpers.py,435,FILE:nrc_core/engine/helpers.py,对匹配的携带技能应用持久修改。,待核对
+CODE:nrc_core/engine/helpers.py:495:_record_public_skill_modifier,code_object,_record_public_skill_modifier,T07,nrc_core/engine/helpers.py,495,FILE:nrc_core/engine/helpers.py,记录已知全技能来源；逐槽实际变化仅供可见性层扣除，禁止公开。,待核对
+BRANCH:nrc_core/engine/helpers.py:13:true,code_branch,true,T07,nrc_core/engine/helpers.py,13,FILE:nrc_core/engine/helpers.py,""":"" in pokemon.ability",待核对
+BRANCH:nrc_core/engine/helpers.py:13:false,code_branch,false,T07,nrc_core/engine/helpers.py,13,FILE:nrc_core/engine/helpers.py,""":"" in pokemon.ability",待核对
+BRANCH:nrc_core/engine/helpers.py:15:true,code_branch,true,T07,nrc_core/engine/helpers.py,15,FILE:nrc_core/engine/helpers.py,"""："" in pokemon.ability",待核对
+BRANCH:nrc_core/engine/helpers.py:15:false,code_branch,false,T07,nrc_core/engine/helpers.py,15,FILE:nrc_core/engine/helpers.py,"""："" in pokemon.ability",待核对
+BRANCH:nrc_core/engine/helpers.py:38:true,code_branch,true,T07,nrc_core/engine/helpers.py,38,FILE:nrc_core/engine/helpers.py,"_ability_name(pokemon) != ""王子的诺言""",待核对
+BRANCH:nrc_core/engine/helpers.py:38:false,code_branch,false,T07,nrc_core/engine/helpers.py,38,FILE:nrc_core/engine/helpers.py,"_ability_name(pokemon) != ""王子的诺言""",待核对
+BRANCH:nrc_core/engine/helpers.py:41:body,code_branch,body,T07,nrc_core/engine/helpers.py,41,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:41:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,41,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:57:body,code_branch,body,T07,nrc_core/engine/helpers.py,57,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:57:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,57,FILE:nrc_core/engine/helpers.py,For,待核对
+CODE:nrc_core/engine/helpers.py:98:value_snapshot,code_object,value_snapshot,T07,nrc_core/engine/helpers.py,98,FILE:nrc_core/engine/helpers.py,无描述字符串,待核对
+BRANCH:nrc_core/engine/helpers.py:120:body,code_branch,body,T07,nrc_core/engine/helpers.py,120,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:120:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,120,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:190:true,code_branch,true,T07,nrc_core/engine/helpers.py,190,FILE:nrc_core/engine/helpers.py,bench,待核对
+BRANCH:nrc_core/engine/helpers.py:190:false,code_branch,false,T07,nrc_core/engine/helpers.py,190,FILE:nrc_core/engine/helpers.py,bench,待核对
+BRANCH:nrc_core/engine/helpers.py:201:true,code_branch,true,T07,nrc_core/engine/helpers.py,201,FILE:nrc_core/engine/helpers.py,bench,待核对
+BRANCH:nrc_core/engine/helpers.py:201:false,code_branch,false,T07,nrc_core/engine/helpers.py,201,FILE:nrc_core/engine/helpers.py,bench,待核对
+BRANCH:nrc_core/engine/helpers.py:222:true,code_branch,true,T07,nrc_core/engine/helpers.py,222,FILE:nrc_core/engine/helpers.py,"""atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:222:false,code_branch,false,T07,nrc_core/engine/helpers.py,222,FILE:nrc_core/engine/helpers.py,"""atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:224:true,code_branch,true,T07,nrc_core/engine/helpers.py,224,FILE:nrc_core/engine/helpers.py,"""def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:224:false,code_branch,false,T07,nrc_core/engine/helpers.py,224,FILE:nrc_core/engine/helpers.py,"""def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:226:true,code_branch,true,T07,nrc_core/engine/helpers.py,226,FILE:nrc_core/engine/helpers.py,"""spatk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:226:false,code_branch,false,T07,nrc_core/engine/helpers.py,226,FILE:nrc_core/engine/helpers.py,"""spatk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:228:true,code_branch,true,T07,nrc_core/engine/helpers.py,228,FILE:nrc_core/engine/helpers.py,"""spdef"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:228:false,code_branch,false,T07,nrc_core/engine/helpers.py,228,FILE:nrc_core/engine/helpers.py,"""spdef"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:230:true,code_branch,true,T07,nrc_core/engine/helpers.py,230,FILE:nrc_core/engine/helpers.py,"""speed"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:230:false,code_branch,false,T07,nrc_core/engine/helpers.py,230,FILE:nrc_core/engine/helpers.py,"""speed"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:232:true,code_branch,true,T07,nrc_core/engine/helpers.py,232,FILE:nrc_core/engine/helpers.py,"""all_atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:232:false,code_branch,false,T07,nrc_core/engine/helpers.py,232,FILE:nrc_core/engine/helpers.py,"""all_atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:235:true,code_branch,true,T07,nrc_core/engine/helpers.py,235,FILE:nrc_core/engine/helpers.py,"""all_def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:235:false,code_branch,false,T07,nrc_core/engine/helpers.py,235,FILE:nrc_core/engine/helpers.py,"""all_def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:242:true,code_branch,true,T07,nrc_core/engine/helpers.py,242,FILE:nrc_core/engine/helpers.py,mirror_target is not None and not mirror_target.is_fainted,待核对
+BRANCH:nrc_core/engine/helpers.py:242:false,code_branch,false,T07,nrc_core/engine/helpers.py,242,FILE:nrc_core/engine/helpers.py,mirror_target is not None and not mirror_target.is_fainted,待核对
+BRANCH:nrc_core/engine/helpers.py:262:true,code_branch,true,T07,nrc_core/engine/helpers.py,262,FILE:nrc_core/engine/helpers.py,"""atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:262:false,code_branch,false,T07,nrc_core/engine/helpers.py,262,FILE:nrc_core/engine/helpers.py,"""atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:264:true,code_branch,true,T07,nrc_core/engine/helpers.py,264,FILE:nrc_core/engine/helpers.py,"""def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:264:false,code_branch,false,T07,nrc_core/engine/helpers.py,264,FILE:nrc_core/engine/helpers.py,"""def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:266:true,code_branch,true,T07,nrc_core/engine/helpers.py,266,FILE:nrc_core/engine/helpers.py,"""spatk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:266:false,code_branch,false,T07,nrc_core/engine/helpers.py,266,FILE:nrc_core/engine/helpers.py,"""spatk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:268:true,code_branch,true,T07,nrc_core/engine/helpers.py,268,FILE:nrc_core/engine/helpers.py,"""spdef"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:268:false,code_branch,false,T07,nrc_core/engine/helpers.py,268,FILE:nrc_core/engine/helpers.py,"""spdef"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:270:true,code_branch,true,T07,nrc_core/engine/helpers.py,270,FILE:nrc_core/engine/helpers.py,"""speed"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:270:false,code_branch,false,T07,nrc_core/engine/helpers.py,270,FILE:nrc_core/engine/helpers.py,"""speed"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:272:true,code_branch,true,T07,nrc_core/engine/helpers.py,272,FILE:nrc_core/engine/helpers.py,"""all_atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:272:false,code_branch,false,T07,nrc_core/engine/helpers.py,272,FILE:nrc_core/engine/helpers.py,"""all_atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:275:true,code_branch,true,T07,nrc_core/engine/helpers.py,275,FILE:nrc_core/engine/helpers.py,"""all_def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:275:false,code_branch,false,T07,nrc_core/engine/helpers.py,275,FILE:nrc_core/engine/helpers.py,"""all_def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:315:true,code_branch,true,T07,nrc_core/engine/helpers.py,315,FILE:nrc_core/engine/helpers.py,"not getattr(pokemon, ""ability"", """")",待核对
+BRANCH:nrc_core/engine/helpers.py:315:false,code_branch,false,T07,nrc_core/engine/helpers.py,315,FILE:nrc_core/engine/helpers.py,"not getattr(pokemon, ""ability"", """")",待核对
+BRANCH:nrc_core/engine/helpers.py:323:true,code_branch,true,T07,nrc_core/engine/helpers.py,323,FILE:nrc_core/engine/helpers.py,"pokemon.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/engine/helpers.py:323:false,code_branch,false,T07,nrc_core/engine/helpers.py,323,FILE:nrc_core/engine/helpers.py,"pokemon.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_core/engine/helpers.py:325:true,code_branch,true,T07,nrc_core/engine/helpers.py,325,FILE:nrc_core/engine/helpers.py,"pokemon.ability_state.get(""cost_change_double"")",待核对
+BRANCH:nrc_core/engine/helpers.py:325:false,code_branch,false,T07,nrc_core/engine/helpers.py,325,FILE:nrc_core/engine/helpers.py,"pokemon.ability_state.get(""cost_change_double"")",待核对
+BRANCH:nrc_core/engine/helpers.py:333:true,code_branch,true,T07,nrc_core/engine/helpers.py,333,FILE:nrc_core/engine/helpers.py,not effects,待核对
+BRANCH:nrc_core/engine/helpers.py:333:false,code_branch,false,T07,nrc_core/engine/helpers.py,333,FILE:nrc_core/engine/helpers.py,not effects,待核对
+BRANCH:nrc_core/engine/helpers.py:335:body,code_branch,body,T07,nrc_core/engine/helpers.py,335,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:335:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,335,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:353:true,code_branch,true,T07,nrc_core/engine/helpers.py,353,FILE:nrc_core/engine/helpers.py,"not force and trigger in (""per_position_change"", ""per_counter"", ""per_use"")",待核对
+BRANCH:nrc_core/engine/helpers.py:353:false,code_branch,false,T07,nrc_core/engine/helpers.py,353,FILE:nrc_core/engine/helpers.py,"not force and trigger in (""per_position_change"", ""per_counter"", ""per_use"")",待核对
+BRANCH:nrc_core/engine/helpers.py:356:true,code_branch,true,T07,nrc_core/engine/helpers.py,356,FILE:nrc_core/engine/helpers.py,"target == ""cost""",待核对
+BRANCH:nrc_core/engine/helpers.py:356:false,code_branch,false,T07,nrc_core/engine/helpers.py,356,FILE:nrc_core/engine/helpers.py,"target == ""cost""",待核对
+BRANCH:nrc_core/engine/helpers.py:371:true,code_branch,true,T07,nrc_core/engine/helpers.py,371,FILE:nrc_core/engine/helpers.py,skill.poison_stacks > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:371:false,code_branch,false,T07,nrc_core/engine/helpers.py,371,FILE:nrc_core/engine/helpers.py,skill.poison_stacks > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:373:true,code_branch,true,T07,nrc_core/engine/helpers.py,373,FILE:nrc_core/engine/helpers.py,skill.burn_stacks > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:373:false,code_branch,false,T07,nrc_core/engine/helpers.py,373,FILE:nrc_core/engine/helpers.py,skill.burn_stacks > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:375:true,code_branch,true,T07,nrc_core/engine/helpers.py,375,FILE:nrc_core/engine/helpers.py,skill.leech_stacks > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:375:false,code_branch,false,T07,nrc_core/engine/helpers.py,375,FILE:nrc_core/engine/helpers.py,skill.leech_stacks > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:377:true,code_branch,true,T07,nrc_core/engine/helpers.py,377,FILE:nrc_core/engine/helpers.py,skill.power > 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/engine/helpers.py:377:false,code_branch,false,T07,nrc_core/engine/helpers.py,377,FILE:nrc_core/engine/helpers.py,skill.power > 0 and not enemy.is_fainted,待核对
+BRANCH:nrc_core/engine/helpers.py:394:true,code_branch,true,T07,nrc_core/engine/helpers.py,394,FILE:nrc_core/engine/helpers.py,elements,待核对
+BRANCH:nrc_core/engine/helpers.py:394:false,code_branch,false,T07,nrc_core/engine/helpers.py,394,FILE:nrc_core/engine/helpers.py,elements,待核对
+BRANCH:nrc_core/engine/helpers.py:402:true,code_branch,true,T07,nrc_core/engine/helpers.py,402,FILE:nrc_core/engine/helpers.py,"category == ""attack"" and skill.category not in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/engine/helpers.py:402:false,code_branch,false,T07,nrc_core/engine/helpers.py,402,FILE:nrc_core/engine/helpers.py,"category == ""attack"" and skill.category not in (SkillCategory.PHYSICAL, SkillCategory.MAGICAL)",待核对
+BRANCH:nrc_core/engine/helpers.py:404:true,code_branch,true,T07,nrc_core/engine/helpers.py,404,FILE:nrc_core/engine/helpers.py,"category == ""defense"" and skill.category != SkillCategory.DEFENSE",待核对
+BRANCH:nrc_core/engine/helpers.py:404:false,code_branch,false,T07,nrc_core/engine/helpers.py,404,FILE:nrc_core/engine/helpers.py,"category == ""defense"" and skill.category != SkillCategory.DEFENSE",待核对
+BRANCH:nrc_core/engine/helpers.py:406:true,code_branch,true,T07,nrc_core/engine/helpers.py,406,FILE:nrc_core/engine/helpers.py,"category == ""status"" and skill.category != SkillCategory.STATUS",待核对
+BRANCH:nrc_core/engine/helpers.py:406:false,code_branch,false,T07,nrc_core/engine/helpers.py,406,FILE:nrc_core/engine/helpers.py,"category == ""status"" and skill.category != SkillCategory.STATUS",待核对
+BRANCH:nrc_core/engine/helpers.py:409:true,code_branch,true,T07,nrc_core/engine/helpers.py,409,FILE:nrc_core/engine/helpers.py,"params.get(""attack_only"") and skill.power <= 0",待核对
+BRANCH:nrc_core/engine/helpers.py:409:false,code_branch,false,T07,nrc_core/engine/helpers.py,409,FILE:nrc_core/engine/helpers.py,"params.get(""attack_only"") and skill.power <= 0",待核对
+BRANCH:nrc_core/engine/helpers.py:412:true,code_branch,true,T07,nrc_core/engine/helpers.py,412,FILE:nrc_core/engine/helpers.py,"params.get(""pure_attack"")",待核对
+BRANCH:nrc_core/engine/helpers.py:412:false,code_branch,false,T07,nrc_core/engine/helpers.py,412,FILE:nrc_core/engine/helpers.py,"params.get(""pure_attack"")",待核对
+BRANCH:nrc_core/engine/helpers.py:420:true,code_branch,true,T07,nrc_core/engine/helpers.py,420,FILE:nrc_core/engine/helpers.py,"""energy_cost_gt"" in params and skill.energy_cost <= params[""energy_cost_gt""]",待核对
+BRANCH:nrc_core/engine/helpers.py:420:false,code_branch,false,T07,nrc_core/engine/helpers.py,420,FILE:nrc_core/engine/helpers.py,"""energy_cost_gt"" in params and skill.energy_cost <= params[""energy_cost_gt""]",待核对
+BRANCH:nrc_core/engine/helpers.py:422:true,code_branch,true,T07,nrc_core/engine/helpers.py,422,FILE:nrc_core/engine/helpers.py,"""energy_cost_ge"" in params and skill.energy_cost < params[""energy_cost_ge""]",待核对
+BRANCH:nrc_core/engine/helpers.py:422:false,code_branch,false,T07,nrc_core/engine/helpers.py,422,FILE:nrc_core/engine/helpers.py,"""energy_cost_ge"" in params and skill.energy_cost < params[""energy_cost_ge""]",待核对
+BRANCH:nrc_core/engine/helpers.py:424:true,code_branch,true,T07,nrc_core/engine/helpers.py,424,FILE:nrc_core/engine/helpers.py,"""energy_cost_lt"" in params and skill.energy_cost >= params[""energy_cost_lt""]",待核对
+BRANCH:nrc_core/engine/helpers.py:424:false,code_branch,false,T07,nrc_core/engine/helpers.py,424,FILE:nrc_core/engine/helpers.py,"""energy_cost_lt"" in params and skill.energy_cost >= params[""energy_cost_lt""]",待核对
+BRANCH:nrc_core/engine/helpers.py:426:true,code_branch,true,T07,nrc_core/engine/helpers.py,426,FILE:nrc_core/engine/helpers.py,"""energy_cost_le"" in params and skill.energy_cost > params[""energy_cost_le""]",待核对
+BRANCH:nrc_core/engine/helpers.py:426:false,code_branch,false,T07,nrc_core/engine/helpers.py,426,FILE:nrc_core/engine/helpers.py,"""energy_cost_le"" in params and skill.energy_cost > params[""energy_cost_le""]",待核对
+BRANCH:nrc_core/engine/helpers.py:428:true,code_branch,true,T07,nrc_core/engine/helpers.py,428,FILE:nrc_core/engine/helpers.py,"""energy_cost_eq"" in params and skill.energy_cost != params[""energy_cost_eq""]",待核对
+BRANCH:nrc_core/engine/helpers.py:428:false,code_branch,false,T07,nrc_core/engine/helpers.py,428,FILE:nrc_core/engine/helpers.py,"""energy_cost_eq"" in params and skill.energy_cost != params[""energy_cost_eq""]",待核对
+BRANCH:nrc_core/engine/helpers.py:439:true,code_branch,true,T07,nrc_core/engine/helpers.py,439,FILE:nrc_core/engine/helpers.py,"count_source == ""self_element""",待核对
+BRANCH:nrc_core/engine/helpers.py:439:false,code_branch,false,T07,nrc_core/engine/helpers.py,439,FILE:nrc_core/engine/helpers.py,"count_source == ""self_element""",待核对
+BRANCH:nrc_core/engine/helpers.py:450:true,code_branch,true,T07,nrc_core/engine/helpers.py,450,FILE:nrc_core/engine/helpers.py,"params.get(""status_key"")",待核对
+BRANCH:nrc_core/engine/helpers.py:450:false,code_branch,false,T07,nrc_core/engine/helpers.py,450,FILE:nrc_core/engine/helpers.py,"params.get(""status_key"")",待核对
+BRANCH:nrc_core/engine/helpers.py:469:body,code_branch,body,T07,nrc_core/engine/helpers.py,469,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:469:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,469,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:483:true,code_branch,true,T07,nrc_core/engine/helpers.py,483,FILE:nrc_core/engine/helpers.py,global_scope,待核对
+BRANCH:nrc_core/engine/helpers.py:483:false,code_branch,false,T07,nrc_core/engine/helpers.py,483,FILE:nrc_core/engine/helpers.py,global_scope,待核对
+BRANCH:nrc_core/engine/helpers.py:502:body,code_branch,body,T07,nrc_core/engine/helpers.py,502,FILE:nrc_core/engine/helpers.py,len(private) < len(pokemon.skills),待核对
+BRANCH:nrc_core/engine/helpers.py:502:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,502,FILE:nrc_core/engine/helpers.py,len(private) < len(pokemon.skills),待核对
+BRANCH:nrc_core/engine/helpers.py:504:body,code_branch,body,T07,nrc_core/engine/helpers.py,504,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:504:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,504,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:42:true,code_branch,true,T07,nrc_core/engine/helpers.py,42,FILE:nrc_core/engine/helpers.py,"not any(current > previous for current, previous in zip(after[index], before[index]))",待核对
+BRANCH:nrc_core/engine/helpers.py:42:false,code_branch,false,T07,nrc_core/engine/helpers.py,42,FILE:nrc_core/engine/helpers.py,"not any(current > previous for current, previous in zip(after[index], before[index]))",待核对
+BRANCH:nrc_core/engine/helpers.py:45:true,code_branch,true,T07,nrc_core/engine/helpers.py,45,FILE:nrc_core/engine/helpers.py,pokemon.ability_state.get(key) == turn,待核对
+BRANCH:nrc_core/engine/helpers.py:45:false,code_branch,false,T07,nrc_core/engine/helpers.py,45,FILE:nrc_core/engine/helpers.py,pokemon.ability_state.get(key) == turn,待核对
+BRANCH:nrc_core/engine/helpers.py:49:body,code_branch,body,T07,nrc_core/engine/helpers.py,49,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:49:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,49,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:58:true,code_branch,true,T07,nrc_core/engine/helpers.py,58,FILE:nrc_core/engine/helpers.py,s.name == skill.name,待核对
+BRANCH:nrc_core/engine/helpers.py:58:false,code_branch,false,T07,nrc_core/engine/helpers.py,58,FILE:nrc_core/engine/helpers.py,s.name == skill.name,待核对
+BRANCH:nrc_core/engine/helpers.py:99:true,code_branch,true,T07,nrc_core/engine/helpers.py,99,FILE:nrc_core/engine/helpers.py,"isinstance(value, (str, int, float, bool, type(None)))",待核对
+BRANCH:nrc_core/engine/helpers.py:99:false,code_branch,false,T07,nrc_core/engine/helpers.py,99,FILE:nrc_core/engine/helpers.py,"isinstance(value, (str, int, float, bool, type(None)))",待核对
+BRANCH:nrc_core/engine/helpers.py:101:true,code_branch,true,T07,nrc_core/engine/helpers.py,101,FILE:nrc_core/engine/helpers.py,"depth < 4 and isinstance(value, dict)",待核对
+BRANCH:nrc_core/engine/helpers.py:101:false,code_branch,false,T07,nrc_core/engine/helpers.py,101,FILE:nrc_core/engine/helpers.py,"depth < 4 and isinstance(value, dict)",待核对
+BRANCH:nrc_core/engine/helpers.py:104:true,code_branch,true,T07,nrc_core/engine/helpers.py,104,FILE:nrc_core/engine/helpers.py,"depth < 4 and isinstance(value, (list, tuple))",待核对
+BRANCH:nrc_core/engine/helpers.py:104:false,code_branch,false,T07,nrc_core/engine/helpers.py,104,FILE:nrc_core/engine/helpers.py,"depth < 4 and isinstance(value, (list, tuple))",待核对
+BRANCH:nrc_core/engine/helpers.py:123:body,code_branch,body,T07,nrc_core/engine/helpers.py,123,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:123:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,123,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:132:body,code_branch,body,T07,nrc_core/engine/helpers.py,132,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:132:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,132,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:146:body,code_branch,body,T07,nrc_core/engine/helpers.py,146,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:146:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,146,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:153:true,code_branch,true,T07,nrc_core/engine/helpers.py,153,FILE:nrc_core/engine/helpers.py,runtime != old_runtime and not changes,待核对
+BRANCH:nrc_core/engine/helpers.py:153:false,code_branch,false,T07,nrc_core/engine/helpers.py,153,FILE:nrc_core/engine/helpers.py,runtime != old_runtime and not changes,待核对
+BRANCH:nrc_core/engine/helpers.py:157:true,code_branch,true,T07,nrc_core/engine/helpers.py,157,FILE:nrc_core/engine/helpers.py,changes,待核对
+BRANCH:nrc_core/engine/helpers.py:157:false,code_branch,false,T07,nrc_core/engine/helpers.py,157,FILE:nrc_core/engine/helpers.py,changes,待核对
+BRANCH:nrc_core/engine/helpers.py:164:body,code_branch,body,T07,nrc_core/engine/helpers.py,164,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:164:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,164,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:178:true,code_branch,true,T07,nrc_core/engine/helpers.py,178,FILE:nrc_core/engine/helpers.py,skill_changes,待核对
+BRANCH:nrc_core/engine/helpers.py:178:false,code_branch,false,T07,nrc_core/engine/helpers.py,178,FILE:nrc_core/engine/helpers.py,skill_changes,待核对
+BRANCH:nrc_core/engine/helpers.py:187:true,code_branch,true,T07,nrc_core/engine/helpers.py,187,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:187:false,code_branch,false,T07,nrc_core/engine/helpers.py,187,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:188:true,code_branch,true,T07,nrc_core/engine/helpers.py,188,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:188:false,code_branch,false,T07,nrc_core/engine/helpers.py,188,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:198:true,code_branch,true,T07,nrc_core/engine/helpers.py,198,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:198:false,code_branch,false,T07,nrc_core/engine/helpers.py,198,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:199:true,code_branch,true,T07,nrc_core/engine/helpers.py,199,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:199:false,code_branch,false,T07,nrc_core/engine/helpers.py,199,FILE:nrc_core/engine/helpers.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/helpers.py:221:true,code_branch,true,T07,nrc_core/engine/helpers.py,221,FILE:nrc_core/engine/helpers.py,extra > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:221:false,code_branch,false,T07,nrc_core/engine/helpers.py,221,FILE:nrc_core/engine/helpers.py,extra > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:246:true,code_branch,true,T07,nrc_core/engine/helpers.py,246,FILE:nrc_core/engine/helpers.py,"""atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:246:false,code_branch,false,T07,nrc_core/engine/helpers.py,246,FILE:nrc_core/engine/helpers.py,"""atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:247:true,code_branch,true,T07,nrc_core/engine/helpers.py,247,FILE:nrc_core/engine/helpers.py,"""def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:247:false,code_branch,false,T07,nrc_core/engine/helpers.py,247,FILE:nrc_core/engine/helpers.py,"""def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:248:true,code_branch,true,T07,nrc_core/engine/helpers.py,248,FILE:nrc_core/engine/helpers.py,"""spatk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:248:false,code_branch,false,T07,nrc_core/engine/helpers.py,248,FILE:nrc_core/engine/helpers.py,"""spatk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:249:true,code_branch,true,T07,nrc_core/engine/helpers.py,249,FILE:nrc_core/engine/helpers.py,"""spdef"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:249:false,code_branch,false,T07,nrc_core/engine/helpers.py,249,FILE:nrc_core/engine/helpers.py,"""spdef"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:250:true,code_branch,true,T07,nrc_core/engine/helpers.py,250,FILE:nrc_core/engine/helpers.py,"""speed"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:250:false,code_branch,false,T07,nrc_core/engine/helpers.py,250,FILE:nrc_core/engine/helpers.py,"""speed"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:251:true,code_branch,true,T07,nrc_core/engine/helpers.py,251,FILE:nrc_core/engine/helpers.py,"""all_atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:251:false,code_branch,false,T07,nrc_core/engine/helpers.py,251,FILE:nrc_core/engine/helpers.py,"""all_atk"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:254:true,code_branch,true,T07,nrc_core/engine/helpers.py,254,FILE:nrc_core/engine/helpers.py,"""all_def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:254:false,code_branch,false,T07,nrc_core/engine/helpers.py,254,FILE:nrc_core/engine/helpers.py,"""all_def"" in params",待核对
+BRANCH:nrc_core/engine/helpers.py:336:true,code_branch,true,T07,nrc_core/engine/helpers.py,336,FILE:nrc_core/engine/helpers.py,"isinstance(item, SkillEffect)",待核对
+BRANCH:nrc_core/engine/helpers.py:336:false,code_branch,false,T07,nrc_core/engine/helpers.py,336,FILE:nrc_core/engine/helpers.py,"isinstance(item, SkillEffect)",待核对
+BRANCH:nrc_core/engine/helpers.py:358:true,code_branch,true,T07,nrc_core/engine/helpers.py,358,FILE:nrc_core/engine/helpers.py,"target == ""power""",待核对
+BRANCH:nrc_core/engine/helpers.py:358:false,code_branch,false,T07,nrc_core/engine/helpers.py,358,FILE:nrc_core/engine/helpers.py,"target == ""power""",待核对
+BRANCH:nrc_core/engine/helpers.py:381:true,code_branch,true,T07,nrc_core/engine/helpers.py,381,FILE:nrc_core/engine/helpers.py,enemy.current_hp <= 0,待核对
+BRANCH:nrc_core/engine/helpers.py:381:false,code_branch,false,T07,nrc_core/engine/helpers.py,381,FILE:nrc_core/engine/helpers.py,enemy.current_hp <= 0,待核对
+BRANCH:nrc_core/engine/helpers.py:395:true,code_branch,true,T07,nrc_core/engine/helpers.py,395,FILE:nrc_core/engine/helpers.py,"not isinstance(elements, (list, tuple, set))",待核对
+BRANCH:nrc_core/engine/helpers.py:395:false,code_branch,false,T07,nrc_core/engine/helpers.py,395,FILE:nrc_core/engine/helpers.py,"not isinstance(elements, (list, tuple, set))",待核对
+BRANCH:nrc_core/engine/helpers.py:398:true,code_branch,true,T07,nrc_core/engine/helpers.py,398,FILE:nrc_core/engine/helpers.py,skill.skill_type not in expected,待核对
+BRANCH:nrc_core/engine/helpers.py:398:false,code_branch,false,T07,nrc_core/engine/helpers.py,398,FILE:nrc_core/engine/helpers.py,skill.skill_type not in expected,待核对
+BRANCH:nrc_core/engine/helpers.py:413:true,code_branch,true,T07,nrc_core/engine/helpers.py,413,FILE:nrc_core/engine/helpers.py,skill.power <= 0,待核对
+BRANCH:nrc_core/engine/helpers.py:413:false,code_branch,false,T07,nrc_core/engine/helpers.py,413,FILE:nrc_core/engine/helpers.py,skill.power <= 0,待核对
+BRANCH:nrc_core/engine/helpers.py:417:true,code_branch,true,T07,nrc_core/engine/helpers.py,417,FILE:nrc_core/engine/helpers.py,not flat_tags or len(flat_tags) != 1 or flat_tags[0].type != E.DAMAGE,待核对
+BRANCH:nrc_core/engine/helpers.py:417:false,code_branch,false,T07,nrc_core/engine/helpers.py,417,FILE:nrc_core/engine/helpers.py,not flat_tags or len(flat_tags) != 1 or flat_tags[0].type != E.DAMAGE,待核对
+BRANCH:nrc_core/engine/helpers.py:442:true,code_branch,true,T07,nrc_core/engine/helpers.py,442,FILE:nrc_core/engine/helpers.py,"not isinstance(elements, (list, tuple, set))",待核对
+BRANCH:nrc_core/engine/helpers.py:442:false,code_branch,false,T07,nrc_core/engine/helpers.py,442,FILE:nrc_core/engine/helpers.py,"not isinstance(elements, (list, tuple, set))",待核对
+BRANCH:nrc_core/engine/helpers.py:446:true,code_branch,true,T07,nrc_core/engine/helpers.py,446,FILE:nrc_core/engine/helpers.py,"count_source == ""enemy_energy_sum""",待核对
+BRANCH:nrc_core/engine/helpers.py:446:false,code_branch,false,T07,nrc_core/engine/helpers.py,446,FILE:nrc_core/engine/helpers.py,"count_source == ""enemy_energy_sum""",待核对
+BRANCH:nrc_core/engine/helpers.py:470:true,code_branch,true,T07,nrc_core/engine/helpers.py,470,FILE:nrc_core/engine/helpers.py,"not _skill_matches_ability_filter(s, params)",待核对
+BRANCH:nrc_core/engine/helpers.py:470:false,code_branch,false,T07,nrc_core/engine/helpers.py,470,FILE:nrc_core/engine/helpers.py,"not _skill_matches_ability_filter(s, params)",待核对
+BRANCH:nrc_core/engine/helpers.py:473:true,code_branch,true,T07,nrc_core/engine/helpers.py,473,FILE:nrc_core/engine/helpers.py,power_pct or power_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:473:false,code_branch,false,T07,nrc_core/engine/helpers.py,473,FILE:nrc_core/engine/helpers.py,power_pct or power_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:478:true,code_branch,true,T07,nrc_core/engine/helpers.py,478,FILE:nrc_core/engine/helpers.py,hit_count_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:478:false,code_branch,false,T07,nrc_core/engine/helpers.py,478,FILE:nrc_core/engine/helpers.py,hit_count_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:481:true,code_branch,true,T07,nrc_core/engine/helpers.py,481,FILE:nrc_core/engine/helpers.py,grant_agility,待核对
+BRANCH:nrc_core/engine/helpers.py:481:false,code_branch,false,T07,nrc_core/engine/helpers.py,481,FILE:nrc_core/engine/helpers.py,grant_agility,待核对
+BRANCH:nrc_core/engine/helpers.py:485:true,code_branch,true,T07,nrc_core/engine/helpers.py,485,FILE:nrc_core/engine/helpers.py,power_pct or power_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:485:false,code_branch,false,T07,nrc_core/engine/helpers.py,485,FILE:nrc_core/engine/helpers.py,power_pct or power_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:490:true,code_branch,true,T07,nrc_core/engine/helpers.py,490,FILE:nrc_core/engine/helpers.py,hit_count_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:490:false,code_branch,false,T07,nrc_core/engine/helpers.py,490,FILE:nrc_core/engine/helpers.py,hit_count_bonus,待核对
+BRANCH:nrc_core/engine/helpers.py:126:true,code_branch,true,T07,nrc_core/engine/helpers.py,126,FILE:nrc_core/engine/helpers.py,abs(delta) < 1e-9,待核对
+BRANCH:nrc_core/engine/helpers.py:126:false,code_branch,false,T07,nrc_core/engine/helpers.py,126,FILE:nrc_core/engine/helpers.py,abs(delta) < 1e-9,待核对
+BRANCH:nrc_core/engine/helpers.py:136:true,code_branch,true,T07,nrc_core/engine/helpers.py,136,FILE:nrc_core/engine/helpers.py,delta,待核对
+BRANCH:nrc_core/engine/helpers.py:136:false,code_branch,false,T07,nrc_core/engine/helpers.py,136,FILE:nrc_core/engine/helpers.py,delta,待核对
+BRANCH:nrc_core/engine/helpers.py:150:true,code_branch,true,T07,nrc_core/engine/helpers.py,150,FILE:nrc_core/engine/helpers.py,before_stacks != after_stacks,待核对
+BRANCH:nrc_core/engine/helpers.py:150:false,code_branch,false,T07,nrc_core/engine/helpers.py,150,FILE:nrc_core/engine/helpers.py,before_stacks != after_stacks,待核对
+BRANCH:nrc_core/engine/helpers.py:165:true,code_branch,true,T07,nrc_core/engine/helpers.py,165,FILE:nrc_core/engine/helpers.py,slot >= len(old_skills),待核对
+BRANCH:nrc_core/engine/helpers.py:165:false,code_branch,false,T07,nrc_core/engine/helpers.py,165,FILE:nrc_core/engine/helpers.py,slot >= len(old_skills),待核对
+BRANCH:nrc_core/engine/helpers.py:168:body,code_branch,body,T07,nrc_core/engine/helpers.py,168,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:168:zero_or_exit,code_branch,zero_or_exit,T07,nrc_core/engine/helpers.py,168,FILE:nrc_core/engine/helpers.py,For,待核对
+BRANCH:nrc_core/engine/helpers.py:245:true,code_branch,true,T07,nrc_core/engine/helpers.py,245,FILE:nrc_core/engine/helpers.py,mirror_extra > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:245:false,code_branch,false,T07,nrc_core/engine/helpers.py,245,FILE:nrc_core/engine/helpers.py,mirror_extra > 0,待核对
+BRANCH:nrc_core/engine/helpers.py:359:true,code_branch,true,T07,nrc_core/engine/helpers.py,359,FILE:nrc_core/engine/helpers.py,skill.power >= 0,待核对
+BRANCH:nrc_core/engine/helpers.py:359:false,code_branch,false,T07,nrc_core/engine/helpers.py,359,FILE:nrc_core/engine/helpers.py,skill.power >= 0,待核对
+BRANCH:nrc_core/engine/helpers.py:361:true,code_branch,true,T07,nrc_core/engine/helpers.py,361,FILE:nrc_core/engine/helpers.py,"target == ""hit_count""",待核对
+BRANCH:nrc_core/engine/helpers.py:361:false,code_branch,false,T07,nrc_core/engine/helpers.py,361,FILE:nrc_core/engine/helpers.py,"target == ""hit_count""",待核对
+BRANCH:nrc_core/engine/helpers.py:416:true,code_branch,true,T07,nrc_core/engine/helpers.py,416,FILE:nrc_core/engine/helpers.py,skill.effects,待核对
+BRANCH:nrc_core/engine/helpers.py:416:false,code_branch,false,T07,nrc_core/engine/helpers.py,416,FILE:nrc_core/engine/helpers.py,skill.effects,待核对
+BRANCH:nrc_core/engine/helpers.py:129:true,code_branch,true,T07,nrc_core/engine/helpers.py,129,FILE:nrc_core/engine/helpers.py,percent,待核对
+BRANCH:nrc_core/engine/helpers.py:129:false,code_branch,false,T07,nrc_core/engine/helpers.py,129,FILE:nrc_core/engine/helpers.py,percent,待核对
+BRANCH:nrc_core/engine/helpers.py:174:true,code_branch,true,T07,nrc_core/engine/helpers.py,174,FILE:nrc_core/engine/helpers.py,delta,待核对
+BRANCH:nrc_core/engine/helpers.py:174:false,code_branch,false,T07,nrc_core/engine/helpers.py,174,FILE:nrc_core/engine/helpers.py,delta,待核对
+BRANCH:nrc_core/engine/helpers.py:171:true,code_branch,true,T07,nrc_core/engine/helpers.py,171,FILE:nrc_core/engine/helpers.py,slot < len(old_public_deltas),待核对
+BRANCH:nrc_core/engine/helpers.py:171:false,code_branch,false,T07,nrc_core/engine/helpers.py,171,FILE:nrc_core/engine/helpers.py,slot < len(old_public_deltas),待核对
+BRANCH:nrc_core/engine/helpers.py:172:true,code_branch,true,T07,nrc_core/engine/helpers.py,172,FILE:nrc_core/engine/helpers.py,slot < len(public_deltas),待核对
+BRANCH:nrc_core/engine/helpers.py:172:false,code_branch,false,T07,nrc_core/engine/helpers.py,172,FILE:nrc_core/engine/helpers.py,slot < len(public_deltas),待核对
+BRANCH:nrc_core/engine/helpers.py:130:true,code_branch,true,T07,nrc_core/engine/helpers.py,130,FILE:nrc_core/engine/helpers.py,percent,待核对
+BRANCH:nrc_core/engine/helpers.py:130:false,code_branch,false,T07,nrc_core/engine/helpers.py,130,FILE:nrc_core/engine/helpers.py,percent,待核对
+FILE:nrc_core/engine/registry.py,file,nrc_core/engine/registry.py,T07,nrc_core/engine/registry.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/registry.py:213:true,code_branch,true,T07,nrc_core/engine/registry.py,213,FILE:nrc_core/engine/registry.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/registry.py:213:false,code_branch,false,T07,nrc_core/engine/registry.py,213,FILE:nrc_core/engine/registry.py,TYPE_CHECKING,待核对

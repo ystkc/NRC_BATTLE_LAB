@@ -1,0 +1,347 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_platform/builder.py,file,nrc_platform/builder.py,T02,nrc_platform/builder.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_platform/builder.py:88:_layer_entries,code_object,_layer_entries,T02,nrc_platform/builder.py,88,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:103:_layer_name,code_object,_layer_name,T02,nrc_platform/builder.py,103,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:106:_layer_stacks,code_object,_layer_stacks,T02,nrc_platform/builder.py,106,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:112:_layer_unit_value,code_object,_layer_unit_value,T02,nrc_platform/builder.py,112,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:119:_stat_layer_key,code_object,_stat_layer_key,T02,nrc_platform/builder.py,119,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:123:_status_layer_key,code_object,_status_layer_key,T02,nrc_platform/builder.py,123,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:128:_LegacyBuild,code_object,_LegacyBuild,T02,nrc_platform/builder.py,128,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:136:BattleBuilder,code_object,BattleBuilder,T02,nrc_platform/builder.py,136,FILE:nrc_platform/builder.py,构造完整战斗状态，并提供共鸣与状态快照帮助方法。,待核对
+BRANCH:nrc_platform/builder.py:89:true,code_branch,true,T02,nrc_platform/builder.py,89,FILE:nrc_platform/builder.py,raw is None,待核对
+BRANCH:nrc_platform/builder.py:89:false,code_branch,false,T02,nrc_platform/builder.py,89,FILE:nrc_platform/builder.py,raw is None,待核对
+BRANCH:nrc_platform/builder.py:91:true,code_branch,true,T02,nrc_platform/builder.py,91,FILE:nrc_platform/builder.py,"isinstance(raw, dict)",待核对
+BRANCH:nrc_platform/builder.py:91:false,code_branch,false,T02,nrc_platform/builder.py,91,FILE:nrc_platform/builder.py,"isinstance(raw, dict)",待核对
+BRANCH:nrc_platform/builder.py:93:true,code_branch,true,T02,nrc_platform/builder.py,93,FILE:nrc_platform/builder.py,"not isinstance(raw, list)",待核对
+BRANCH:nrc_platform/builder.py:93:false,code_branch,false,T02,nrc_platform/builder.py,93,FILE:nrc_platform/builder.py,"not isinstance(raw, list)",待核对
+BRANCH:nrc_platform/builder.py:96:body,code_branch,body,T02,nrc_platform/builder.py,96,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:96:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,96,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:113:true,code_branch,true,T02,nrc_platform/builder.py,113,FILE:nrc_platform/builder.py,"isinstance(unit, (int, float))",待核对
+BRANCH:nrc_platform/builder.py:113:false,code_branch,false,T02,nrc_platform/builder.py,113,FILE:nrc_platform/builder.py,"isinstance(unit, (int, float))",待核对
+CODE:nrc_platform/builder.py:139:__init__,code_object,__init__,T02,nrc_platform/builder.py,139,FILE:nrc_platform/builder.py,接收已解析目录，不从核心反向调用平台查库。,待核对
+CODE:nrc_platform/builder.py:144:_build_legacy,code_object,_build_legacy,T02,nrc_platform/builder.py,144,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:197:_canonical_resonance,code_object,_canonical_resonance,T02,nrc_platform/builder.py,197,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:215:_bloodline_values,code_object,_bloodline_values,T02,nrc_platform/builder.py,215,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:223:_is_boss_bloodline,code_object,_is_boss_bloodline,T02,nrc_platform/builder.py,223,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:232:_bloodline_type,code_object,_bloodline_type,T02,nrc_platform/builder.py,232,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:245:_canonical_devotion_key,code_object,_canonical_devotion_key,T02,nrc_platform/builder.py,245,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:260:_normalize_devotion_counts,code_object,_normalize_devotion_counts,T02,nrc_platform/builder.py,260,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:268:_apply_devotion_input,code_object,_apply_devotion_input,T02,nrc_platform/builder.py,268,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:315:_distribution_rows,code_object,_distribution_rows,T02,nrc_platform/builder.py,315,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:318:_normalize_individual_values,code_object,_normalize_individual_values,T02,nrc_platform/builder.py,318,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:340:_resolve_combat_config,code_object,_resolve_combat_config,T02,nrc_platform/builder.py,340,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:391:_creature_to_legacy,code_object,_creature_to_legacy,T02,nrc_platform/builder.py,391,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:586:_known_skill_names,code_object,_known_skill_names,T02,nrc_platform/builder.py,586,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:589:_validate_setup,code_object,_validate_setup,T02,nrc_platform/builder.py,589,FILE:nrc_platform/builder.py,无描述字符串,待核对
+CODE:nrc_platform/builder.py:650:build,code_object,build,T02,nrc_platform/builder.py,650,FILE:nrc_platform/builder.py,校验并解析平台输入，返回不含未知占位的全知状态。,待核对
+BRANCH:nrc_platform/builder.py:97:true,code_branch,true,T02,nrc_platform/builder.py,97,FILE:nrc_platform/builder.py,"isinstance(item, str)",待核对
+BRANCH:nrc_platform/builder.py:97:false,code_branch,false,T02,nrc_platform/builder.py,97,FILE:nrc_platform/builder.py,"isinstance(item, str)",待核对
+BRANCH:nrc_platform/builder.py:109:exception,code_branch,exception,T02,nrc_platform/builder.py,109,FILE:nrc_platform/builder.py,ExceptHandler,待核对
+BRANCH:nrc_platform/builder.py:167:body,code_branch,body,T02,nrc_platform/builder.py,167,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:167:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,167,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:171:body,code_branch,body,T02,nrc_platform/builder.py,171,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:171:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,171,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:175:body,code_branch,body,T02,nrc_platform/builder.py,175,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:175:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,175,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:180:true,code_branch,true,T02,nrc_platform/builder.py,180,FILE:nrc_platform/builder.py,request.shared.weather_turns.known and request.shared.weather_turns.exists,待核对
+BRANCH:nrc_platform/builder.py:180:false,code_branch,false,T02,nrc_platform/builder.py,180,FILE:nrc_platform/builder.py,request.shared.weather_turns.known and request.shared.weather_turns.exists,待核对
+BRANCH:nrc_platform/builder.py:182:body,code_branch,body,T02,nrc_platform/builder.py,182,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:182:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,182,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:190:body,code_branch,body,T02,nrc_platform/builder.py,190,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:190:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,190,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:198:true,code_branch,true,T02,nrc_platform/builder.py,198,FILE:nrc_platform/builder.py,not value,待核对
+BRANCH:nrc_platform/builder.py:198:false,code_branch,false,T02,nrc_platform/builder.py,198,FILE:nrc_platform/builder.py,not value,待核对
+BRANCH:nrc_platform/builder.py:218:true,code_branch,true,T02,nrc_platform/builder.py,218,FILE:nrc_platform/builder.py,"isinstance(values, str)",待核对
+BRANCH:nrc_platform/builder.py:218:false,code_branch,false,T02,nrc_platform/builder.py,218,FILE:nrc_platform/builder.py,"isinstance(values, str)",待核对
+BRANCH:nrc_platform/builder.py:235:body,code_branch,body,T02,nrc_platform/builder.py,235,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:235:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,235,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:262:body,code_branch,body,T02,nrc_platform/builder.py,262,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:262:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,262,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:273:true,code_branch,true,T02,nrc_platform/builder.py,273,FILE:nrc_platform/builder.py,"specified.known and specified.exists and isinstance(specified.value, dict)",待核对
+BRANCH:nrc_platform/builder.py:273:false,code_branch,false,T02,nrc_platform/builder.py,273,FILE:nrc_platform/builder.py,"specified.known and specified.exists and isinstance(specified.value, dict)",待核对
+BRANCH:nrc_platform/builder.py:276:true,code_branch,true,T02,nrc_platform/builder.py,276,FILE:nrc_platform/builder.py,"random_counts.known and random_counts.exists and isinstance(random_counts.value, dict)",待核对
+BRANCH:nrc_platform/builder.py:276:false,code_branch,false,T02,nrc_platform/builder.py,276,FILE:nrc_platform/builder.py,"random_counts.known and random_counts.exists and isinstance(random_counts.value, dict)",待核对
+BRANCH:nrc_platform/builder.py:286:true,code_branch,true,T02,nrc_platform/builder.py,286,FILE:nrc_platform/builder.py,draws > 0 and not random_counts.known,待核对
+BRANCH:nrc_platform/builder.py:286:false,code_branch,false,T02,nrc_platform/builder.py,286,FILE:nrc_platform/builder.py,draws > 0 and not random_counts.known,待核对
+BRANCH:nrc_platform/builder.py:304:true,code_branch,true,T02,nrc_platform/builder.py,304,FILE:nrc_platform/builder.py,"side == ""a""",待核对
+BRANCH:nrc_platform/builder.py:304:false,code_branch,false,T02,nrc_platform/builder.py,304,FILE:nrc_platform/builder.py,"side == ""a""",待核对
+BRANCH:nrc_platform/builder.py:329:body,code_branch,body,T02,nrc_platform/builder.py,329,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:329:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,329,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:351:true,code_branch,true,T02,nrc_platform/builder.py,351,FILE:nrc_platform/builder.py,nature_explicit,待核对
+BRANCH:nrc_platform/builder.py:351:false,code_branch,false,T02,nrc_platform/builder.py,351,FILE:nrc_platform/builder.py,nature_explicit,待核对
+BRANCH:nrc_platform/builder.py:365:true,code_branch,true,T02,nrc_platform/builder.py,365,FILE:nrc_platform/builder.py,iv_explicit,待核对
+BRANCH:nrc_platform/builder.py:365:false,code_branch,false,T02,nrc_platform/builder.py,365,FILE:nrc_platform/builder.py,iv_explicit,待核对
+BRANCH:nrc_platform/builder.py:394:true,code_branch,true,T02,nrc_platform/builder.py,394,FILE:nrc_platform/builder.py,db_record is None,待核对
+BRANCH:nrc_platform/builder.py:394:false,code_branch,false,T02,nrc_platform/builder.py,394,FILE:nrc_platform/builder.py,db_record is None,待核对
+BRANCH:nrc_platform/builder.py:399:true,code_branch,true,T02,nrc_platform/builder.py,399,FILE:nrc_platform/builder.py,partial_stats,待核对
+BRANCH:nrc_platform/builder.py:399:false,code_branch,false,T02,nrc_platform/builder.py,399,FILE:nrc_platform/builder.py,partial_stats,待核对
+BRANCH:nrc_platform/builder.py:402:true,code_branch,true,T02,nrc_platform/builder.py,402,FILE:nrc_platform/builder.py,partial_stats,待核对
+BRANCH:nrc_platform/builder.py:402:false,code_branch,false,T02,nrc_platform/builder.py,402,FILE:nrc_platform/builder.py,partial_stats,待核对
+BRANCH:nrc_platform/builder.py:420:true,code_branch,true,T02,nrc_platform/builder.py,420,FILE:nrc_platform/builder.py,"not stats or set(stats) != {""hp"", ""atk"", ""def"", ""spatk"", ""spdef"", ""speed""}",待核对
+BRANCH:nrc_platform/builder.py:420:false,code_branch,false,T02,nrc_platform/builder.py,420,FILE:nrc_platform/builder.py,"not stats or set(stats) != {""hp"", ""atk"", ""def"", ""spatk"", ""spdef"", ""speed""}",待核对
+BRANCH:nrc_platform/builder.py:423:true,code_branch,true,T02,nrc_platform/builder.py,423,FILE:nrc_platform/builder.py,not type_value and db_record,待核对
+BRANCH:nrc_platform/builder.py:423:false,code_branch,false,T02,nrc_platform/builder.py,423,FILE:nrc_platform/builder.py,not type_value and db_record,待核对
+BRANCH:nrc_platform/builder.py:425:true,code_branch,true,T02,nrc_platform/builder.py,425,FILE:nrc_platform/builder.py,"isinstance(type_value, str)",待核对
+BRANCH:nrc_platform/builder.py:425:false,code_branch,false,T02,nrc_platform/builder.py,425,FILE:nrc_platform/builder.py,"isinstance(type_value, str)",待核对
+BRANCH:nrc_platform/builder.py:439:true,code_branch,true,T02,nrc_platform/builder.py,439,FILE:nrc_platform/builder.py,not skill_slots,待核对
+BRANCH:nrc_platform/builder.py:439:false,code_branch,false,T02,nrc_platform/builder.py,439,FILE:nrc_platform/builder.py,not skill_slots,待核对
+BRANCH:nrc_platform/builder.py:441:body,code_branch,body,T02,nrc_platform/builder.py,441,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:441:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,441,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:492:body,code_branch,body,T02,nrc_platform/builder.py,492,FILE:nrc_platform/builder.py,"previous_record and previous_record.get(""previous_forms"")",待核对
+BRANCH:nrc_platform/builder.py:492:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,492,FILE:nrc_platform/builder.py,"previous_record and previous_record.get(""previous_forms"")",待核对
+BRANCH:nrc_platform/builder.py:523:body,code_branch,body,T02,nrc_platform/builder.py,523,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:523:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,523,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:547:body,code_branch,body,T02,nrc_platform/builder.py,547,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:547:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,547,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:553:true,code_branch,true,T02,nrc_platform/builder.py,553,FILE:nrc_platform/builder.py,pokemon.freeze_stacks and pokemon.current_hp <= pokemon.freeze_threshold,待核对
+BRANCH:nrc_platform/builder.py:553:false,code_branch,false,T02,nrc_platform/builder.py,553,FILE:nrc_platform/builder.py,pokemon.freeze_stacks and pokemon.current_hp <= pokemon.freeze_threshold,待核对
+BRANCH:nrc_platform/builder.py:581:body,code_branch,body,T02,nrc_platform/builder.py,581,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:581:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,581,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:590:true,code_branch,true,T02,nrc_platform/builder.py,590,FILE:nrc_platform/builder.py,not request.own_team.creatures or not request.opponent_team.creatures,待核对
+BRANCH:nrc_platform/builder.py:590:false,code_branch,false,T02,nrc_platform/builder.py,590,FILE:nrc_platform/builder.py,not request.own_team.creatures or not request.opponent_team.creatures,待核对
+BRANCH:nrc_platform/builder.py:593:body,code_branch,body,T02,nrc_platform/builder.py,593,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:593:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,593,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:646:true,code_branch,true,T02,nrc_platform/builder.py,646,FILE:nrc_platform/builder.py,unsupported,待核对
+BRANCH:nrc_platform/builder.py:646:false,code_branch,false,T02,nrc_platform/builder.py,646,FILE:nrc_platform/builder.py,unsupported,待核对
+BRANCH:nrc_platform/builder.py:653:true,code_branch,true,T02,nrc_platform/builder.py,653,FILE:nrc_platform/builder.py,"""setup"" in raw and isinstance(raw[""setup""], Mapping)",待核对
+BRANCH:nrc_platform/builder.py:653:false,code_branch,false,T02,nrc_platform/builder.py,653,FILE:nrc_platform/builder.py,"""setup"" in raw and isinstance(raw[""setup""], Mapping)",待核对
+BRANCH:nrc_platform/builder.py:99:true,code_branch,true,T02,nrc_platform/builder.py,99,FILE:nrc_platform/builder.py,"isinstance(item, dict)",待核对
+BRANCH:nrc_platform/builder.py:99:false,code_branch,false,T02,nrc_platform/builder.py,99,FILE:nrc_platform/builder.py,"isinstance(item, dict)",待核对
+BRANCH:nrc_platform/builder.py:169:true,code_branch,true,T02,nrc_platform/builder.py,169,FILE:nrc_platform/builder.py,field.known and field.exists,待核对
+BRANCH:nrc_platform/builder.py:169:false,code_branch,false,T02,nrc_platform/builder.py,169,FILE:nrc_platform/builder.py,field.known and field.exists,待核对
+BRANCH:nrc_platform/builder.py:178:true,code_branch,true,T02,nrc_platform/builder.py,178,FILE:nrc_platform/builder.py,0 <= active_index < len(team_list) and team_list[active_index].entry_count <= 0,待核对
+BRANCH:nrc_platform/builder.py:178:false,code_branch,false,T02,nrc_platform/builder.py,178,FILE:nrc_platform/builder.py,0 <= active_index < len(team_list) and team_list[active_index].entry_count <= 0,待核对
+BRANCH:nrc_platform/builder.py:184:true,code_branch,true,T02,nrc_platform/builder.py,184,FILE:nrc_platform/builder.py,0 <= active < len(source.creatures),待核对
+BRANCH:nrc_platform/builder.py:184:false,code_branch,false,T02,nrc_platform/builder.py,184,FILE:nrc_platform/builder.py,0 <= active < len(source.creatures),待核对
+BRANCH:nrc_platform/builder.py:237:true,code_branch,true,T02,nrc_platform/builder.py,237,FILE:nrc_platform/builder.py,any(marker in text for marker in special),待核对
+BRANCH:nrc_platform/builder.py:237:false,code_branch,false,T02,nrc_platform/builder.py,237,FILE:nrc_platform/builder.py,any(marker in text for marker in special),待核对
+BRANCH:nrc_platform/builder.py:239:body,code_branch,body,T02,nrc_platform/builder.py,239,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:239:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,239,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:264:true,code_branch,true,T02,nrc_platform/builder.py,264,FILE:nrc_platform/builder.py,canonical in RANDOM_DEVOTION_CAPS,待核对
+BRANCH:nrc_platform/builder.py:264:false,code_branch,false,T02,nrc_platform/builder.py,264,FILE:nrc_platform/builder.py,canonical in RANDOM_DEVOTION_CAPS,待核对
+BRANCH:nrc_platform/builder.py:277:body,code_branch,body,T02,nrc_platform/builder.py,277,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:277:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,277,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:289:body,code_branch,body,T02,nrc_platform/builder.py,289,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:289:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,289,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:293:body,code_branch,body,T02,nrc_platform/builder.py,293,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:293:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,293,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:302:true,code_branch,true,T02,nrc_platform/builder.py,302,FILE:nrc_platform/builder.py,random_counts.known,待核对
+BRANCH:nrc_platform/builder.py:302:false,code_branch,false,T02,nrc_platform/builder.py,302,FILE:nrc_platform/builder.py,random_counts.known,待核对
+BRANCH:nrc_platform/builder.py:328:true,code_branch,true,T02,nrc_platform/builder.py,328,FILE:nrc_platform/builder.py,"isinstance(raw, dict)",待核对
+BRANCH:nrc_platform/builder.py:328:false,code_branch,false,T02,nrc_platform/builder.py,328,FILE:nrc_platform/builder.py,"isinstance(raw, dict)",待核对
+BRANCH:nrc_platform/builder.py:332:true,code_branch,true,T02,nrc_platform/builder.py,332,FILE:nrc_platform/builder.py,normalized is None,待核对
+BRANCH:nrc_platform/builder.py:332:false,code_branch,false,T02,nrc_platform/builder.py,332,FILE:nrc_platform/builder.py,normalized is None,待核对
+BRANCH:nrc_platform/builder.py:346:true,code_branch,true,T02,nrc_platform/builder.py,346,FILE:nrc_platform/builder.py,"isinstance(item.metadata, dict)",待核对
+BRANCH:nrc_platform/builder.py:346:false,code_branch,false,T02,nrc_platform/builder.py,346,FILE:nrc_platform/builder.py,"isinstance(item.metadata, dict)",待核对
+BRANCH:nrc_platform/builder.py:354:true,code_branch,true,T02,nrc_platform/builder.py,354,FILE:nrc_platform/builder.py,"mode in {""neutral"", ""zero"", ""all_zero""}",待核对
+BRANCH:nrc_platform/builder.py:354:false,code_branch,false,T02,nrc_platform/builder.py,354,FILE:nrc_platform/builder.py,"mode in {""neutral"", ""zero"", ""all_zero""}",待核对
+BRANCH:nrc_platform/builder.py:368:true,code_branch,true,T02,nrc_platform/builder.py,368,FILE:nrc_platform/builder.py,"mode in {""neutral"", ""zero"", ""all_zero""} or provided_stats",待核对
+BRANCH:nrc_platform/builder.py:368:false,code_branch,false,T02,nrc_platform/builder.py,368,FILE:nrc_platform/builder.py,"mode in {""neutral"", ""zero"", ""all_zero""} or provided_stats",待核对
+BRANCH:nrc_platform/builder.py:397:true,code_branch,true,T02,nrc_platform/builder.py,397,FILE:nrc_platform/builder.py,provided_stats,待核对
+BRANCH:nrc_platform/builder.py:397:false,code_branch,false,T02,nrc_platform/builder.py,397,FILE:nrc_platform/builder.py,provided_stats,待核对
+BRANCH:nrc_platform/builder.py:403:true,code_branch,true,T02,nrc_platform/builder.py,403,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:403:false,code_branch,false,T02,nrc_platform/builder.py,403,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:412:true,code_branch,true,T02,nrc_platform/builder.py,412,FILE:nrc_platform/builder.py,not stats,待核对
+BRANCH:nrc_platform/builder.py:412:false,code_branch,false,T02,nrc_platform/builder.py,412,FILE:nrc_platform/builder.py,not stats,待核对
+BRANCH:nrc_platform/builder.py:431:true,code_branch,true,T02,nrc_platform/builder.py,431,FILE:nrc_platform/builder.py,ability_name,待核对
+BRANCH:nrc_platform/builder.py:431:false,code_branch,false,T02,nrc_platform/builder.py,431,FILE:nrc_platform/builder.py,ability_name,待核对
+BRANCH:nrc_platform/builder.py:444:true,code_branch,true,T02,nrc_platform/builder.py,444,FILE:nrc_platform/builder.py,not skill_name and skill_id,待核对
+BRANCH:nrc_platform/builder.py:444:false,code_branch,false,T02,nrc_platform/builder.py,444,FILE:nrc_platform/builder.py,not skill_name and skill_id,待核对
+BRANCH:nrc_platform/builder.py:446:true,code_branch,true,T02,nrc_platform/builder.py,446,FILE:nrc_platform/builder.py,not skill_name,待核对
+BRANCH:nrc_platform/builder.py:446:false,code_branch,false,T02,nrc_platform/builder.py,446,FILE:nrc_platform/builder.py,not skill_name,待核对
+BRANCH:nrc_platform/builder.py:448:true,code_branch,true,T02,nrc_platform/builder.py,448,FILE:nrc_platform/builder.py,"skill_name == ""愿力冲击""",待核对
+BRANCH:nrc_platform/builder.py:448:false,code_branch,false,T02,nrc_platform/builder.py,448,FILE:nrc_platform/builder.py,"skill_name == ""愿力冲击""",待核对
+BRANCH:nrc_platform/builder.py:451:true,code_branch,true,T02,nrc_platform/builder.py,451,FILE:nrc_platform/builder.py,skill is None,待核对
+BRANCH:nrc_platform/builder.py:451:false,code_branch,false,T02,nrc_platform/builder.py,451,FILE:nrc_platform/builder.py,skill is None,待核对
+BRANCH:nrc_platform/builder.py:454:true,code_branch,true,T02,nrc_platform/builder.py,454,FILE:nrc_platform/builder.py,slot,待核对
+BRANCH:nrc_platform/builder.py:454:false,code_branch,false,T02,nrc_platform/builder.py,454,FILE:nrc_platform/builder.py,slot,待核对
+BRANCH:nrc_platform/builder.py:494:true,code_branch,true,T02,nrc_platform/builder.py,494,FILE:nrc_platform/builder.py,len(candidates) != 1 or candidates[0] in seen,待核对
+BRANCH:nrc_platform/builder.py:494:false,code_branch,false,T02,nrc_platform/builder.py,494,FILE:nrc_platform/builder.py,len(candidates) != 1 or candidates[0] in seen,待核对
+BRANCH:nrc_platform/builder.py:530:body,code_branch,body,T02,nrc_platform/builder.py,530,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:530:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,530,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:549:true,code_branch,true,T02,nrc_platform/builder.py,549,FILE:nrc_platform/builder.py,key in status_fields,待核对
+BRANCH:nrc_platform/builder.py:549:false,code_branch,false,T02,nrc_platform/builder.py,549,FILE:nrc_platform/builder.py,key in status_fields,待核对
+BRANCH:nrc_platform/builder.py:582:true,code_branch,true,T02,nrc_platform/builder.py,582,FILE:nrc_platform/builder.py,not field.known,待核对
+BRANCH:nrc_platform/builder.py:582:false,code_branch,false,T02,nrc_platform/builder.py,582,FILE:nrc_platform/builder.py,not field.known,待核对
+BRANCH:nrc_platform/builder.py:595:true,code_branch,true,T02,nrc_platform/builder.py,595,FILE:nrc_platform/builder.py,"resonance in {""flame_burst"", ""throttle""}",待核对
+BRANCH:nrc_platform/builder.py:595:false,code_branch,false,T02,nrc_platform/builder.py,595,FILE:nrc_platform/builder.py,"resonance in {""flame_burst"", ""throttle""}",待核对
+BRANCH:nrc_platform/builder.py:600:true,code_branch,true,T02,nrc_platform/builder.py,600,FILE:nrc_platform/builder.py,active_index < 0 or active_index >= len(team.creatures),待核对
+BRANCH:nrc_platform/builder.py:600:false,code_branch,false,T02,nrc_platform/builder.py,600,FILE:nrc_platform/builder.py,active_index < 0 or active_index >= len(team.creatures),待核对
+BRANCH:nrc_platform/builder.py:602:body,code_branch,body,T02,nrc_platform/builder.py,602,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:602:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,602,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:177:true,code_branch,true,T02,nrc_platform/builder.py,177,FILE:nrc_platform/builder.py,"team_id == ""a""",待核对
+BRANCH:nrc_platform/builder.py:177:false,code_branch,false,T02,nrc_platform/builder.py,177,FILE:nrc_platform/builder.py,"team_id == ""a""",待核对
+BRANCH:nrc_platform/builder.py:186:true,code_branch,true,T02,nrc_platform/builder.py,186,FILE:nrc_platform/builder.py,raw_marks.known and raw_marks.exists,待核对
+BRANCH:nrc_platform/builder.py:186:false,code_branch,false,T02,nrc_platform/builder.py,186,FILE:nrc_platform/builder.py,raw_marks.known and raw_marks.exists,待核对
+BRANCH:nrc_platform/builder.py:240:true,code_branch,true,T02,nrc_platform/builder.py,240,FILE:nrc_platform/builder.py,name and name in text,待核对
+BRANCH:nrc_platform/builder.py:240:false,code_branch,false,T02,nrc_platform/builder.py,240,FILE:nrc_platform/builder.py,name and name in text,待核对
+BRANCH:nrc_platform/builder.py:308:true,code_branch,true,T02,nrc_platform/builder.py,308,FILE:nrc_platform/builder.py,legacy_random,待核对
+BRANCH:nrc_platform/builder.py:308:false,code_branch,false,T02,nrc_platform/builder.py,308,FILE:nrc_platform/builder.py,legacy_random,待核对
+BRANCH:nrc_platform/builder.py:313:true,code_branch,true,T02,nrc_platform/builder.py,313,FILE:nrc_platform/builder.py,legacy_random,待核对
+BRANCH:nrc_platform/builder.py:313:false,code_branch,false,T02,nrc_platform/builder.py,313,FILE:nrc_platform/builder.py,legacy_random,待核对
+BRANCH:nrc_platform/builder.py:336:exception,code_branch,exception,T02,nrc_platform/builder.py,336,FILE:nrc_platform/builder.py,ExceptHandler,待核对
+BRANCH:nrc_platform/builder.py:357:true,code_branch,true,T02,nrc_platform/builder.py,357,FILE:nrc_platform/builder.py,nature_rows,待核对
+BRANCH:nrc_platform/builder.py:357:false,code_branch,false,T02,nrc_platform/builder.py,357,FILE:nrc_platform/builder.py,nature_rows,待核对
+BRANCH:nrc_platform/builder.py:413:true,code_branch,true,T02,nrc_platform/builder.py,413,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:413:false,code_branch,false,T02,nrc_platform/builder.py,413,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:430:true,code_branch,true,T02,nrc_platform/builder.py,430,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:430:false,code_branch,false,T02,nrc_platform/builder.py,430,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:442:true,code_branch,true,T02,nrc_platform/builder.py,442,FILE:nrc_platform/builder.py,slot,待核对
+BRANCH:nrc_platform/builder.py:442:false,code_branch,false,T02,nrc_platform/builder.py,442,FILE:nrc_platform/builder.py,slot,待核对
+BRANCH:nrc_platform/builder.py:443:true,code_branch,true,T02,nrc_platform/builder.py,443,FILE:nrc_platform/builder.py,slot,待核对
+BRANCH:nrc_platform/builder.py:443:false,code_branch,false,T02,nrc_platform/builder.py,443,FILE:nrc_platform/builder.py,slot,待核对
+BRANCH:nrc_platform/builder.py:455:true,code_branch,true,T02,nrc_platform/builder.py,455,FILE:nrc_platform/builder.py,slot.current_energy_cost.known and slot.current_energy_cost.exists,待核对
+BRANCH:nrc_platform/builder.py:455:false,code_branch,false,T02,nrc_platform/builder.py,455,FILE:nrc_platform/builder.py,slot.current_energy_cost.known and slot.current_energy_cost.exists,待核对
+BRANCH:nrc_platform/builder.py:457:true,code_branch,true,T02,nrc_platform/builder.py,457,FILE:nrc_platform/builder.py,slot.current_power.known and slot.current_power.exists,待核对
+BRANCH:nrc_platform/builder.py:457:false,code_branch,false,T02,nrc_platform/builder.py,457,FILE:nrc_platform/builder.py,slot.current_power.known and slot.current_power.exists,待核对
+BRANCH:nrc_platform/builder.py:525:true,code_branch,true,T02,nrc_platform/builder.py,525,FILE:nrc_platform/builder.py,"direction == ""up""",待核对
+BRANCH:nrc_platform/builder.py:525:false,code_branch,false,T02,nrc_platform/builder.py,525,FILE:nrc_platform/builder.py,"direction == ""up""",待核对
+BRANCH:nrc_platform/builder.py:532:true,code_branch,true,T02,nrc_platform/builder.py,532,FILE:nrc_platform/builder.py,stat,待核对
+BRANCH:nrc_platform/builder.py:532:false,code_branch,false,T02,nrc_platform/builder.py,532,FILE:nrc_platform/builder.py,stat,待核对
+BRANCH:nrc_platform/builder.py:542:true,code_branch,true,T02,nrc_platform/builder.py,542,FILE:nrc_platform/builder.py,raw_statuses is not None,待核对
+BRANCH:nrc_platform/builder.py:542:false,code_branch,false,T02,nrc_platform/builder.py,542,FILE:nrc_platform/builder.py,raw_statuses is not None,待核对
+BRANCH:nrc_platform/builder.py:561:true,code_branch,true,T02,nrc_platform/builder.py,561,FILE:nrc_platform/builder.py,item.creature_id.known,待核对
+BRANCH:nrc_platform/builder.py:561:false,code_branch,false,T02,nrc_platform/builder.py,561,FILE:nrc_platform/builder.py,item.creature_id.known,待核对
+BRANCH:nrc_platform/builder.py:562:true,code_branch,true,T02,nrc_platform/builder.py,562,FILE:nrc_platform/builder.py,item.evolution_stage.known,待核对
+BRANCH:nrc_platform/builder.py:562:false,code_branch,false,T02,nrc_platform/builder.py,562,FILE:nrc_platform/builder.py,item.evolution_stage.known,待核对
+BRANCH:nrc_platform/builder.py:563:true,code_branch,true,T02,nrc_platform/builder.py,563,FILE:nrc_platform/builder.py,item.bossified.known,待核对
+BRANCH:nrc_platform/builder.py:563:false,code_branch,false,T02,nrc_platform/builder.py,563,FILE:nrc_platform/builder.py,item.bossified.known,待核对
+BRANCH:nrc_platform/builder.py:564:true,code_branch,true,T02,nrc_platform/builder.py,564,FILE:nrc_platform/builder.py,item.base.bloodline_attributes.known,待核对
+BRANCH:nrc_platform/builder.py:564:false,code_branch,false,T02,nrc_platform/builder.py,564,FILE:nrc_platform/builder.py,item.base.bloodline_attributes.known,待核对
+BRANCH:nrc_platform/builder.py:577:true,code_branch,true,T02,nrc_platform/builder.py,577,FILE:nrc_platform/builder.py,item.skill_pool.known,待核对
+BRANCH:nrc_platform/builder.py:577:false,code_branch,false,T02,nrc_platform/builder.py,577,FILE:nrc_platform/builder.py,item.skill_pool.known,待核对
+BRANCH:nrc_platform/builder.py:597:true,code_branch,true,T02,nrc_platform/builder.py,597,FILE:nrc_platform/builder.py,"resonance not in {None, ""willpower"", ""boss"", ""solar_heal""}",待核对
+BRANCH:nrc_platform/builder.py:597:false,code_branch,false,T02,nrc_platform/builder.py,597,FILE:nrc_platform/builder.py,"resonance not in {None, ""willpower"", ""boss"", ""solar_heal""}",待核对
+BRANCH:nrc_platform/builder.py:605:true,code_branch,true,T02,nrc_platform/builder.py,605,FILE:nrc_platform/builder.py,not db_record,待核对
+BRANCH:nrc_platform/builder.py:605:false,code_branch,false,T02,nrc_platform/builder.py,605,FILE:nrc_platform/builder.py,not db_record,待核对
+BRANCH:nrc_platform/builder.py:607:true,code_branch,true,T02,nrc_platform/builder.py,607,FILE:nrc_platform/builder.py,creature.bossified.known and creature.bossified.or_default(False),待核对
+BRANCH:nrc_platform/builder.py:607:false,code_branch,false,T02,nrc_platform/builder.py,607,FILE:nrc_platform/builder.py,creature.bossified.known and creature.bossified.or_default(False),待核对
+BRANCH:nrc_platform/builder.py:610:true,code_branch,true,T02,nrc_platform/builder.py,610,FILE:nrc_platform/builder.py,creature.ability.name.known and creature.ability.name.exists,待核对
+BRANCH:nrc_platform/builder.py:610:false,code_branch,false,T02,nrc_platform/builder.py,610,FILE:nrc_platform/builder.py,creature.ability.name.known and creature.ability.name.exists,待核对
+BRANCH:nrc_platform/builder.py:619:body,code_branch,body,T02,nrc_platform/builder.py,619,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:619:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,619,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:628:true,code_branch,true,T02,nrc_platform/builder.py,628,FILE:nrc_platform/builder.py,not creature.skills,待核对
+BRANCH:nrc_platform/builder.py:628:false,code_branch,false,T02,nrc_platform/builder.py,628,FILE:nrc_platform/builder.py,not creature.skills,待核对
+BRANCH:nrc_platform/builder.py:630:body,code_branch,body,T02,nrc_platform/builder.py,630,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:630:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,630,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:643:body,code_branch,body,T02,nrc_platform/builder.py,643,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:643:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,643,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:160:true,code_branch,true,T02,nrc_platform/builder.py,160,FILE:nrc_platform/builder.py,request.shared.weather.known and request.shared.weather.exists,待核对
+BRANCH:nrc_platform/builder.py:160:false,code_branch,false,T02,nrc_platform/builder.py,160,FILE:nrc_platform/builder.py,request.shared.weather.known and request.shared.weather.exists,待核对
+BRANCH:nrc_platform/builder.py:187:body,code_branch,body,T02,nrc_platform/builder.py,187,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:187:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/builder.py,187,FILE:nrc_platform/builder.py,For,待核对
+BRANCH:nrc_platform/builder.py:370:true,code_branch,true,T02,nrc_platform/builder.py,370,FILE:nrc_platform/builder.py,not provided_stats,待核对
+BRANCH:nrc_platform/builder.py:370:false,code_branch,false,T02,nrc_platform/builder.py,370,FILE:nrc_platform/builder.py,not provided_stats,待核对
+BRANCH:nrc_platform/builder.py:378:true,code_branch,true,T02,nrc_platform/builder.py,378,FILE:nrc_platform/builder.py,talent_rows,待核对
+BRANCH:nrc_platform/builder.py:378:false,code_branch,false,T02,nrc_platform/builder.py,378,FILE:nrc_platform/builder.py,talent_rows,待核对
+BRANCH:nrc_platform/builder.py:507:true,code_branch,true,T02,nrc_platform/builder.py,507,FILE:nrc_platform/builder.py,provided_stats,待核对
+BRANCH:nrc_platform/builder.py:507:false,code_branch,false,T02,nrc_platform/builder.py,507,FILE:nrc_platform/builder.py,provided_stats,待核对
+BRANCH:nrc_platform/builder.py:567:true,code_branch,true,T02,nrc_platform/builder.py,567,FILE:nrc_platform/builder.py,provided_stats,待核对
+BRANCH:nrc_platform/builder.py:567:false,code_branch,false,T02,nrc_platform/builder.py,567,FILE:nrc_platform/builder.py,provided_stats,待核对
+BRANCH:nrc_platform/builder.py:574:true,code_branch,true,T02,nrc_platform/builder.py,574,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:574:false,code_branch,false,T02,nrc_platform/builder.py,574,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:612:true,code_branch,true,T02,nrc_platform/builder.py,612,FILE:nrc_platform/builder.py,"db_record.get(""ability"")",待核对
+BRANCH:nrc_platform/builder.py:612:false,code_branch,false,T02,nrc_platform/builder.py,612,FILE:nrc_platform/builder.py,"db_record.get(""ability"")",待核对
+BRANCH:nrc_platform/builder.py:620:true,code_branch,true,T02,nrc_platform/builder.py,620,FILE:nrc_platform/builder.py,not ability,待核对
+BRANCH:nrc_platform/builder.py:620:false,code_branch,false,T02,nrc_platform/builder.py,620,FILE:nrc_platform/builder.py,not ability,待核对
+BRANCH:nrc_platform/builder.py:622:true,code_branch,true,T02,nrc_platform/builder.py,622,FILE:nrc_platform/builder.py,"ability.split("":"", 1)[0].split(""："", 1)[0].strip() == ""契约的形状""",待核对
+BRANCH:nrc_platform/builder.py:622:false,code_branch,false,T02,nrc_platform/builder.py,622,FILE:nrc_platform/builder.py,"ability.split("":"", 1)[0].split(""："", 1)[0].strip() == ""契约的形状""",待核对
+BRANCH:nrc_platform/builder.py:626:true,code_branch,true,T02,nrc_platform/builder.py,626,FILE:nrc_platform/builder.py,not self.catalog.get_ability_effects(ability),待核对
+BRANCH:nrc_platform/builder.py:626:false,code_branch,false,T02,nrc_platform/builder.py,626,FILE:nrc_platform/builder.py,not self.catalog.get_ability_effects(ability),待核对
+BRANCH:nrc_platform/builder.py:632:true,code_branch,true,T02,nrc_platform/builder.py,632,FILE:nrc_platform/builder.py,not skill_name or skill_name not in self._known_skill_names(),待核对
+BRANCH:nrc_platform/builder.py:632:false,code_branch,false,T02,nrc_platform/builder.py,632,FILE:nrc_platform/builder.py,not skill_name or skill_name not in self._known_skill_names(),待核对
+BRANCH:nrc_platform/builder.py:634:true,code_branch,true,T02,nrc_platform/builder.py,634,FILE:nrc_platform/builder.py,"skill_name == ""愿力冲击""",待核对
+BRANCH:nrc_platform/builder.py:634:false,code_branch,false,T02,nrc_platform/builder.py,634,FILE:nrc_platform/builder.py,"skill_name == ""愿力冲击""",待核对
+BRANCH:nrc_platform/builder.py:637:true,code_branch,true,T02,nrc_platform/builder.py,637,FILE:nrc_platform/builder.py,parsed_skill is None,待核对
+BRANCH:nrc_platform/builder.py:637:false,code_branch,false,T02,nrc_platform/builder.py,637,FILE:nrc_platform/builder.py,parsed_skill is None,待核对
+BRANCH:nrc_platform/builder.py:639:true,code_branch,true,T02,nrc_platform/builder.py,639,FILE:nrc_platform/builder.py,parsed_skill.choice_options and len(parsed_skill.choice_options) != 2,待核对
+BRANCH:nrc_platform/builder.py:639:false,code_branch,false,T02,nrc_platform/builder.py,639,FILE:nrc_platform/builder.py,parsed_skill.choice_options and len(parsed_skill.choice_options) != 2,待核对
+BRANCH:nrc_platform/builder.py:641:true,code_branch,true,T02,nrc_platform/builder.py,641,FILE:nrc_platform/builder.py,parsed_skill.random_source,待核对
+BRANCH:nrc_platform/builder.py:641:false,code_branch,false,T02,nrc_platform/builder.py,641,FILE:nrc_platform/builder.py,parsed_skill.random_source,待核对
+BRANCH:nrc_platform/builder.py:644:true,code_branch,true,T02,nrc_platform/builder.py,644,FILE:nrc_platform/builder.py,(creature.metadata or {}).get(key),待核对
+BRANCH:nrc_platform/builder.py:644:false,code_branch,false,T02,nrc_platform/builder.py,644,FILE:nrc_platform/builder.py,(creature.metadata or {}).get(key),待核对
+BRANCH:nrc_platform/builder.py:509:true,code_branch,true,T02,nrc_platform/builder.py,509,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:509:false,code_branch,false,T02,nrc_platform/builder.py,509,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:510:true,code_branch,true,T02,nrc_platform/builder.py,510,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:510:false,code_branch,false,T02,nrc_platform/builder.py,510,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:511:true,code_branch,true,T02,nrc_platform/builder.py,511,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:511:false,code_branch,false,T02,nrc_platform/builder.py,511,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:512:true,code_branch,true,T02,nrc_platform/builder.py,512,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:512:false,code_branch,false,T02,nrc_platform/builder.py,512,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:513:true,code_branch,true,T02,nrc_platform/builder.py,513,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:513:false,code_branch,false,T02,nrc_platform/builder.py,513,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:514:true,code_branch,true,T02,nrc_platform/builder.py,514,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:514:false,code_branch,false,T02,nrc_platform/builder.py,514,FILE:nrc_platform/builder.py,db_record,待核对
+BRANCH:nrc_platform/builder.py:533:true,code_branch,true,T02,nrc_platform/builder.py,533,FILE:nrc_platform/builder.py,"entry.get(""_legacy"")",待核对
+BRANCH:nrc_platform/builder.py:533:false,code_branch,false,T02,nrc_platform/builder.py,533,FILE:nrc_platform/builder.py,"entry.get(""_legacy"")",待核对
+BRANCH:nrc_platform/builder.py:624:true,code_branch,true,T02,nrc_platform/builder.py,624,FILE:nrc_platform/builder.py,"ball not in {""普通咕噜球"", ""高级咕噜球"", ""国王球"", ""美妙球"", ""好战球"", ""光合球"", ""网兜球"", ""暗星球"", ""调温球"", ""绝缘球"", ""淘沙球"", ""变幻球"", ""柔软咕噜球""}",待核对
+BRANCH:nrc_platform/builder.py:624:false,code_branch,false,T02,nrc_platform/builder.py,624,FILE:nrc_platform/builder.py,"ball not in {""普通咕噜球"", ""高级咕噜球"", ""国王球"", ""美妙球"", ""好战球"", ""光合球"", ""网兜球"", ""暗星球"", ""调温球"", ""绝缘球"", ""淘沙球"", ""变幻球"", ""柔软咕噜球""}",待核对
+FILE:nrc_platform/catalog.py,file,nrc_platform/catalog.py,T02,nrc_platform/catalog.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_platform/catalog.py:49:_lookup,code_object,_lookup,T02,nrc_platform/catalog.py,49,FILE:nrc_platform/catalog.py,无描述字符串,待核对
+CODE:nrc_platform/catalog.py:59:_skill_effects,code_object,_skill_effects,T02,nrc_platform/catalog.py,59,FILE:nrc_platform/catalog.py,无描述字符串,待核对
+CODE:nrc_platform/catalog.py:65:_choice_options,code_object,_choice_options,T02,nrc_platform/catalog.py,65,FILE:nrc_platform/catalog.py,无描述字符串,待核对
+CODE:nrc_platform/catalog.py:73:load_catalog,code_object,load_catalog,T02,nrc_platform/catalog.py,73,FILE:nrc_platform/catalog.py,无描述字符串,待核对
+BRANCH:nrc_platform/catalog.py:16:exception,code_branch,exception,T02,nrc_platform/catalog.py,16,FILE:nrc_platform/catalog.py,ExceptHandler,待核对
+BRANCH:nrc_platform/catalog.py:51:true,code_branch,true,T02,nrc_platform/catalog.py,51,FILE:nrc_platform/catalog.py,text in mapping,待核对
+BRANCH:nrc_platform/catalog.py:51:false,code_branch,false,T02,nrc_platform/catalog.py,51,FILE:nrc_platform/catalog.py,text in mapping,待核对
+BRANCH:nrc_platform/catalog.py:53:body,code_branch,body,T02,nrc_platform/catalog.py,53,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:53:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,53,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:67:true,code_branch,true,T02,nrc_platform/catalog.py,67,FILE:nrc_platform/catalog.py,not match,待核对
+BRANCH:nrc_platform/catalog.py:67:false,code_branch,false,T02,nrc_platform/catalog.py,67,FILE:nrc_platform/catalog.py,not match,待核对
+BRANCH:nrc_platform/catalog.py:76:true,code_branch,true,T02,nrc_platform/catalog.py,76,FILE:nrc_platform/catalog.py,not database.exists(),待核对
+BRANCH:nrc_platform/catalog.py:76:false,code_branch,false,T02,nrc_platform/catalog.py,76,FILE:nrc_platform/catalog.py,not database.exists(),待核对
+BRANCH:nrc_platform/catalog.py:166:body,code_branch,body,T02,nrc_platform/catalog.py,166,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:166:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,166,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:54:true,code_branch,true,T02,nrc_platform/catalog.py,54,FILE:nrc_platform/catalog.py,key and key in text,待核对
+BRANCH:nrc_platform/catalog.py:54:false,code_branch,false,T02,nrc_platform/catalog.py,54,FILE:nrc_platform/catalog.py,key and key in text,待核对
+BRANCH:nrc_platform/catalog.py:70:true,code_branch,true,T02,nrc_platform/catalog.py,70,FILE:nrc_platform/catalog.py,len(options) == 2,待核对
+BRANCH:nrc_platform/catalog.py:70:false,code_branch,false,T02,nrc_platform/catalog.py,70,FILE:nrc_platform/catalog.py,len(options) == 2,待核对
+BRANCH:nrc_platform/catalog.py:74:true,code_branch,true,T02,nrc_platform/catalog.py,74,FILE:nrc_platform/catalog.py,data_dir,待核对
+BRANCH:nrc_platform/catalog.py:74:false,code_branch,false,T02,nrc_platform/catalog.py,74,FILE:nrc_platform/catalog.py,data_dir,待核对
+BRANCH:nrc_platform/catalog.py:92:body,code_branch,body,T02,nrc_platform/catalog.py,92,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:92:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,92,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:95:body,code_branch,body,T02,nrc_platform/catalog.py,95,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:95:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,95,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:103:body,code_branch,body,T02,nrc_platform/catalog.py,103,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:103:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,103,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:108:body,code_branch,body,T02,nrc_platform/catalog.py,108,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:108:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,108,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:128:body,code_branch,body,T02,nrc_platform/catalog.py,128,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:128:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,128,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:130:body,code_branch,body,T02,nrc_platform/catalog.py,130,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:130:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,130,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:134:body,code_branch,body,T02,nrc_platform/catalog.py,134,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:134:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,134,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:143:body,code_branch,body,T02,nrc_platform/catalog.py,143,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:143:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/catalog.py,143,FILE:nrc_platform/catalog.py,For,待核对
+BRANCH:nrc_platform/catalog.py:168:true,code_branch,true,T02,nrc_platform/catalog.py,168,FILE:nrc_platform/catalog.py,"number is not None and record.get(""is_lord"")",待核对
+BRANCH:nrc_platform/catalog.py:168:false,code_branch,false,T02,nrc_platform/catalog.py,168,FILE:nrc_platform/catalog.py,"number is not None and record.get(""is_lord"")",待核对
+BRANCH:nrc_platform/catalog.py:132:true,code_branch,true,T02,nrc_platform/catalog.py,132,FILE:nrc_platform/catalog.py,previous in pokemon and evolved in pokemon,待核对
+BRANCH:nrc_platform/catalog.py:132:false,code_branch,false,T02,nrc_platform/catalog.py,132,FILE:nrc_platform/catalog.py,previous in pokemon and evolved in pokemon,待核对
+BRANCH:nrc_platform/catalog.py:135:true,code_branch,true,T02,nrc_platform/catalog.py,135,FILE:nrc_platform/catalog.py,"record[""skills""]",待核对
+BRANCH:nrc_platform/catalog.py:135:false,code_branch,false,T02,nrc_platform/catalog.py,135,FILE:nrc_platform/catalog.py,"record[""skills""]",待核对
+BRANCH:nrc_platform/catalog.py:139:true,code_branch,true,T02,nrc_platform/catalog.py,139,FILE:nrc_platform/catalog.py,inherited,待核对
+BRANCH:nrc_platform/catalog.py:139:false,code_branch,false,T02,nrc_platform/catalog.py,139,FILE:nrc_platform/catalog.py,inherited,待核对
+BRANCH:nrc_platform/catalog.py:147:true,code_branch,true,T02,nrc_platform/catalog.py,147,FILE:nrc_platform/catalog.py,hit_match,待核对
+BRANCH:nrc_platform/catalog.py:147:false,code_branch,false,T02,nrc_platform/catalog.py,147,FILE:nrc_platform/catalog.py,hit_match,待核对
+BRANCH:nrc_platform/catalog.py:116:true,code_branch,true,T02,nrc_platform/catalog.py,116,FILE:nrc_platform/catalog.py,"item.get(""ability_id"")",待核对
+BRANCH:nrc_platform/catalog.py:116:false,code_branch,false,T02,nrc_platform/catalog.py,116,FILE:nrc_platform/catalog.py,"item.get(""ability_id"")",待核对
+FILE:nrc_platform/input.py,file,nrc_platform/input.py,T02,nrc_platform/input.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_platform/input.py:14:split_creature_spec,code_object,split_creature_spec,T02,nrc_platform/input.py,14,FILE:nrc_platform/input.py,Split ``name [hp]`` or ``name [hp atk def spatk spdef speed]``.,待核对
+CODE:nrc_platform/input.py:35:merge_creature_spec,code_object,merge_creature_spec,T02,nrc_platform/input.py,35,FILE:nrc_platform/input.py,Copy a creature mapping and move numeric suffixes into ``base.stats``.,待核对
+BRANCH:nrc_platform/input.py:17:true,code_branch,true,T02,nrc_platform/input.py,17,FILE:nrc_platform/input.py,not text,待核对
+BRANCH:nrc_platform/input.py:17:false,code_branch,false,T02,nrc_platform/input.py,17,FILE:nrc_platform/input.py,not text,待核对
+BRANCH:nrc_platform/input.py:21:body,code_branch,body,T02,nrc_platform/input.py,21,FILE:nrc_platform/input.py,numeric_start and _INTEGER.fullmatch(tokens[numeric_start - 1]),待核对
+BRANCH:nrc_platform/input.py:21:zero_or_exit,code_branch,zero_or_exit,T02,nrc_platform/input.py,21,FILE:nrc_platform/input.py,numeric_start and _INTEGER.fullmatch(tokens[numeric_start - 1]),待核对
+BRANCH:nrc_platform/input.py:24:true,code_branch,true,T02,nrc_platform/input.py,24,FILE:nrc_platform/input.py,"number_tokens and len(number_tokens) not in {1, 6}",待核对
+BRANCH:nrc_platform/input.py:24:false,code_branch,false,T02,nrc_platform/input.py,24,FILE:nrc_platform/input.py,"number_tokens and len(number_tokens) not in {1, 6}",待核对
+BRANCH:nrc_platform/input.py:28:true,code_branch,true,T02,nrc_platform/input.py,28,FILE:nrc_platform/input.py,len(number_tokens) == 1,待核对
+BRANCH:nrc_platform/input.py:28:false,code_branch,false,T02,nrc_platform/input.py,28,FILE:nrc_platform/input.py,len(number_tokens) == 1,待核对
+BRANCH:nrc_platform/input.py:39:true,code_branch,true,T02,nrc_platform/input.py,39,FILE:nrc_platform/input.py,"isinstance(raw_name, Mapping)",待核对
+BRANCH:nrc_platform/input.py:39:false,code_branch,false,T02,nrc_platform/input.py,39,FILE:nrc_platform/input.py,"isinstance(raw_name, Mapping)",待核对
+BRANCH:nrc_platform/input.py:42:true,code_branch,true,T02,nrc_platform/input.py,42,FILE:nrc_platform/input.py,name,待核对
+BRANCH:nrc_platform/input.py:42:false,code_branch,false,T02,nrc_platform/input.py,42,FILE:nrc_platform/input.py,name,待核对
+BRANCH:nrc_platform/input.py:44:true,code_branch,true,T02,nrc_platform/input.py,44,FILE:nrc_platform/input.py,stats,待核对
+BRANCH:nrc_platform/input.py:44:false,code_branch,false,T02,nrc_platform/input.py,44,FILE:nrc_platform/input.py,stats,待核对
+BRANCH:nrc_platform/input.py:30:true,code_branch,true,T02,nrc_platform/input.py,30,FILE:nrc_platform/input.py,len(number_tokens) == 6,待核对
+BRANCH:nrc_platform/input.py:30:false,code_branch,false,T02,nrc_platform/input.py,30,FILE:nrc_platform/input.py,len(number_tokens) == 6,待核对

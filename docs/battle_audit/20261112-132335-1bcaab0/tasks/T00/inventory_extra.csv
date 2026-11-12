@@ -1,0 +1,8 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+T00-CONTRACT:resonance_unreleased_flame,cross_module_contract,resonance_unreleased_flame,T00,data/部分规则详解/共鸣魔法.md,1,,闪焰爆发明确尚未上线,实际接口/明示未上线分别说明
+T00-CONTRACT:resonance_unreleased_throttle,cross_module_contract,resonance_unreleased_throttle,T00,data/部分规则详解/共鸣魔法.md,1,,节流术明确尚未上线,实际接口/明示未上线分别说明
+T00-CONTRACT:damage_fraction_11,cross_module_contract,damage_fraction_11,T00,data/伤害数值计算.md,1,,11个显式六维伤害用独立Fraction求期望，不证明六维本身正确,实际接口/明示未上线分别说明
+T00-CONTRACT:turn50_four_metrics,cross_module_contract,turn50_four_metrics,T00,data/README.md,1,,分别只由MP/存活/HP/能量决定，四个均进51且无winner，合T04-I03,实际接口/明示未上线分别说明
+T00-CONTRACT:multiple_reductions_minimum,cross_module_contract,multiple_reductions_minimum,T00,data/伤害数值计算.md,1,,80%技能+50%特性，多段预期3实际2；最低1被减为0；合T04-I01,实际接口/明示未上线分别说明
+T00-CONTRACT:two_submission_orders,cross_module_contract,two_submission_orders,T00,双人提交协议、固定种子与只读约定,1,,双顺序11回合一致及68只读/幂等/过期检查；不以回放自身作伤害预期,实际接口/明示未上线分别说明
+FILE:data/1002_round_replay_2026-10-05.json,file,data/1002_round_replay_2026-10-05.json,T00,data/1002_round_replay_2026-10-05.json,1,,旧回放14条记录，仅兼容线索不作规则,资料可读；缺完整初始输入

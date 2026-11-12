@@ -1,0 +1,211 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_core/engine/handlers_field.py,file,nrc_core/engine/handlers_field.py,T10,nrc_core/engine/handlers_field.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:nrc_core/engine/handlers_field.py:10:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,10,FILE:nrc_core/engine/handlers_field.py,TYPE_CHECKING,待核对
+BRANCH:nrc_core/engine/handlers_field.py:10:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,10,FILE:nrc_core/engine/handlers_field.py,TYPE_CHECKING,待核对
+CODE:nrc_core/engine/handlers_field.py:22:_grant_devotion,code_object,_grant_devotion,T10,nrc_core/engine/handlers_field.py,22,FILE:nrc_core/engine/handlers_field.py,无描述字符串,待核对
+CODE:nrc_core/engine/handlers_field.py:35:_h_devotion_grant,code_object,_h_devotion_grant,T10,nrc_core/engine/handlers_field.py,35,FILE:nrc_core/engine/handlers_field.py,DEVOTION_GRANT: 使用技能时获得指定类型的奉献1层,待核对
+CODE:nrc_core/engine/handlers_field.py:42:_h_devotion_grant_random,code_object,_h_devotion_grant_random,T10,nrc_core/engine/handlers_field.py,42,FILE:nrc_core/engine/handlers_field.py,DEVOTION_GRANT_RANDOM: 花精灵 — 回合结束随机获得1种奉献1层,待核对
+CODE:nrc_core/engine/handlers_field.py:50:_h_devotion_on_hit,code_object,_h_devotion_on_hit,T10,nrc_core/engine/handlers_field.py,50,FILE:nrc_core/engine/handlers_field.py,DEVOTION_ON_HIT: 坚韧铠甲 — 受攻击时随机获得1种奉献1层,待核对
+CODE:nrc_core/engine/handlers_field.py:58:_h_refraction,code_object,_h_refraction,T10,nrc_core/engine/handlers_field.py,58,FILE:nrc_core/engine/handlers_field.py,折射：按使用者携带的其他系别技能独立结算效果。,待核对
+CODE:nrc_core/engine/handlers_field.py:122:_h_drive_position_shift,code_object,_h_drive_position_shift,T10,nrc_core/engine/handlers_field.py,122,FILE:nrc_core/engine/handlers_field.py,DRIVE_POSITION_SHIFT: 翼轴 — 指定位置技能获得迅捷+传动,待核对
+CODE:nrc_core/engine/handlers_field.py:137:_h_drive_on_position_change,code_object,_h_drive_on_position_change,T10,nrc_core/engine/handlers_field.py,137,FILE:nrc_core/engine/handlers_field.py,DRIVE_ON_POSITION_CHANGE: 机械变式 — 技能位置变化时能耗-1,待核对
+CODE:nrc_core/engine/handlers_field.py:143:_h_charge_cost_reduce,code_object,_h_charge_cost_reduce,T10,nrc_core/engine/handlers_field.py,143,FILE:nrc_core/engine/handlers_field.py,CHARGE_COST_REDUCE: 洄游 — 每次蓄力全技能能耗永久-1（标记，由battle.py蓄力流程读取）,待核对
+CODE:nrc_core/engine/handlers_field.py:149:_h_charge_free_skill,code_object,_h_charge_free_skill,T10,nrc_core/engine/handlers_field.py,149,FILE:nrc_core/engine/handlers_field.py,CHARGE_FREE_SKILL: 嫉妒 — 蓄力状态下可用任一技能（标记）,待核对
+CODE:nrc_core/engine/handlers_field.py:155:_h_share_gains,code_object,_h_share_gains,T10,nrc_core/engine/handlers_field.py,155,FILE:nrc_core/engine/handlers_field.py,SHARE_GAINS: 系统发育 — 获得能量/生命时分配给场下精灵（标记）,待核对
+CODE:nrc_core/engine/handlers_field.py:161:_h_contract_entry,code_object,_h_contract_entry,T10,nrc_core/engine/handlers_field.py,161,FILE:nrc_core/engine/handlers_field.py,CONTRACT_ENTRY: apply the configured gulu-ball entry package.,待核对
+CODE:nrc_core/engine/handlers_field.py:244:_h_bloodline_entry,code_object,_h_bloodline_entry,T10,nrc_core/engine/handlers_field.py,244,FILE:nrc_core/engine/handlers_field.py,BLOODLINE_ENTRY: 稀兽花宝 — 根据系别入场效果，默认萌系：降低敌方60%双攻,待核对
+CODE:nrc_core/engine/handlers_field.py:254:_cute_max_stacks,code_object,_cute_max_stacks,T10,nrc_core/engine/handlers_field.py,254,FILE:nrc_core/engine/handlers_field.py,萌化层数上限（默认3层，特性'无忧无虑'无上限用999）,待核对
+CODE:nrc_core/engine/handlers_field.py:262:_cute_add,code_object,_cute_add,T10,nrc_core/engine/handlers_field.py,262,FILE:nrc_core/engine/handlers_field.py,给精灵增加萌化层数，返回实际增加量。,待核对
+CODE:nrc_core/engine/handlers_field.py:282:_h_cute_gain,code_object,_h_cute_gain,T10,nrc_core/engine/handlers_field.py,282,FILE:nrc_core/engine/handlers_field.py,CUTE_GAIN: 自己获得N层萌化,待核对
+CODE:nrc_core/engine/handlers_field.py:291:_h_cute_enemy_gain,code_object,_h_cute_enemy_gain,T10,nrc_core/engine/handlers_field.py,291,FILE:nrc_core/engine/handlers_field.py,CUTE_ENEMY_GAIN: 敌方获得N层萌化,待核对
+CODE:nrc_core/engine/handlers_field.py:300:_h_cute_all_bench,code_object,_h_cute_all_bench,T10,nrc_core/engine/handlers_field.py,300,FILE:nrc_core/engine/handlers_field.py,CUTE_ALL_BENCH: 场下所有精灵获得萌化（赤子之心/玩具乐园）,待核对
+CODE:nrc_core/engine/handlers_field.py:314:_h_cute_both,code_object,_h_cute_both,T10,nrc_core/engine/handlers_field.py,314,FILE:nrc_core/engine/handlers_field.py,CUTE_BOTH: 自己和敌方各获得N层萌化（甜心续航）,待核对
+CODE:nrc_core/engine/handlers_field.py:322:_h_cute_transfer,code_object,_h_cute_transfer,T10,nrc_core/engine/handlers_field.py,322,FILE:nrc_core/engine/handlers_field.py,CUTE_TRANSFER: 将自身萌化全部转移给敌方（反弹）,待核对
+CODE:nrc_core/engine/handlers_field.py:333:_h_cute_clear_self,code_object,_h_cute_clear_self,T10,nrc_core/engine/handlers_field.py,333,FILE:nrc_core/engine/handlers_field.py,CUTE_CLEAR_SELF: 解除自身萌化（逆向演化第一步）,待核对
+CODE:nrc_core/engine/handlers_field.py:340:_h_cute_if_power_bonus,code_object,_h_cute_if_power_bonus,T10,nrc_core/engine/handlers_field.py,340,FILE:nrc_core/engine/handlers_field.py,CUTE_IF_POWER_BONUS: 自己有萌化时本次技能威力+N（幼态延续/超级糖果）,待核对
+CODE:nrc_core/engine/handlers_field.py:348:_h_cute_on_gain_power_perm,code_object,_h_cute_on_gain_power_perm,T10,nrc_core/engine/handlers_field.py,348,FILE:nrc_core/engine/handlers_field.py,获得萌化后，所有原本具有威力的携带技能永久加威力。,待核对
+CODE:nrc_core/engine/handlers_field.py:363:_h_cute_on_gain_cost_reduce,code_object,_h_cute_on_gain_cost_reduce,T10,nrc_core/engine/handlers_field.py,363,FILE:nrc_core/engine/handlers_field.py,CUTE_ON_GAIN_COST_REDUCE: 获得萌化后全技能能耗永久-N（生日蛋糕）,待核对
+CODE:nrc_core/engine/handlers_field.py:374:_h_cute_on_gain_speed_perm,code_object,_h_cute_on_gain_speed_perm,T10,nrc_core/engine/handlers_field.py,374,FILE:nrc_core/engine/handlers_field.py,CUTE_ON_GAIN_SPEED_PERM: 获得萌化后速度永久+N（示弱）,待核对
+CODE:nrc_core/engine/handlers_field.py:384:_h_cute_team_power,code_object,_h_cute_team_power,T10,nrc_core/engine/handlers_field.py,384,FILE:nrc_core/engine/handlers_field.py,CUTE_TEAM_POWER: 双方全队萌化总层数决定连击数（月光合奏）,待核对
+CODE:nrc_core/engine/handlers_field.py:395:_h_cute_lethal_shield,code_object,_h_cute_lethal_shield,T10,nrc_core/engine/handlers_field.py,395,FILE:nrc_core/engine/handlers_field.py,CUTE_LETHAL_SHIELD: 受致命伤时+1萌化并免死（化茧特性 ON_TAKE_HIT）,待核对
+CODE:nrc_core/engine/handlers_field.py:407:_h_cute_no_cap,code_object,_h_cute_no_cap,T10,nrc_core/engine/handlers_field.py,407,FILE:nrc_core/engine/handlers_field.py,CUTE_NO_CAP: 萌化层数无上限（无忧无虑特性 PASSIVE）,待核对
+CODE:nrc_core/engine/handlers_field.py:413:_h_cute_hit_per_stack,code_object,_h_cute_hit_per_stack,T10,nrc_core/engine/handlers_field.py,413,FILE:nrc_core/engine/handlers_field.py,"CUTE_HIT_PER_STACK: 自由飘 — 自己每有1层萌化，技能连击+N（PASSIVE）
+PASSIVE handler: 存 ability_state 中的 per 值，实际连击在 _h_damage 里计算。",待核对
+CODE:nrc_core/engine/handlers_field.py:421:_h_cute_bench_cost_reduce,code_object,_h_cute_bench_cost_reduce,T10,nrc_core/engine/handlers_field.py,421,FILE:nrc_core/engine/handlers_field.py,CUTE_BENCH_COST_REDUCE: 友方场下每有1层萌化，入场时全能耗-1（守护者特性 ON_ENTER）,待核对
+BRANCH:nrc_core/engine/handlers_field.py:23:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,23,FILE:nrc_core/engine/handlers_field.py,devotion_type not in DEVOTION_TYPES,待核对
+BRANCH:nrc_core/engine/handlers_field.py:23:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,23,FILE:nrc_core/engine/handlers_field.py,devotion_type not in DEVOTION_TYPES,待核对
+BRANCH:nrc_core/engine/handlers_field.py:30:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,30,FILE:nrc_core/engine/handlers_field.py,is_random,待核对
+BRANCH:nrc_core/engine/handlers_field.py:30:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,30,FILE:nrc_core/engine/handlers_field.py,is_random,待核对
+BRANCH:nrc_core/engine/handlers_field.py:65:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,65,FILE:nrc_core/engine/handlers_field.py,PokemonType.LIGHT in {skill.skill_type for skill in ctx.user.skills if skill is not ctx.skill},待核对
+BRANCH:nrc_core/engine/handlers_field.py:65:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,65,FILE:nrc_core/engine/handlers_field.py,PokemonType.LIGHT in {skill.skill_type for skill in ctx.user.skills if skill is not ctx.skill},待核对
+BRANCH:nrc_core/engine/handlers_field.py:67:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,67,FILE:nrc_core/engine/handlers_field.py,PokemonType.NORMAL in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:67:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,67,FILE:nrc_core/engine/handlers_field.py,PokemonType.NORMAL in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:69:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,69,FILE:nrc_core/engine/handlers_field.py,PokemonType.WATER in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:69:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,69,FILE:nrc_core/engine/handlers_field.py,PokemonType.WATER in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:72:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,72,FILE:nrc_core/engine/handlers_field.py,PokemonType.GRASS in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:72:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,72,FILE:nrc_core/engine/handlers_field.py,PokemonType.GRASS in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:76:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,76,FILE:nrc_core/engine/handlers_field.py,PokemonType.ELECTRIC in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:76:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,76,FILE:nrc_core/engine/handlers_field.py,PokemonType.ELECTRIC in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:78:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,78,FILE:nrc_core/engine/handlers_field.py,PokemonType.STEEL in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:78:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,78,FILE:nrc_core/engine/handlers_field.py,PokemonType.STEEL in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:80:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,80,FILE:nrc_core/engine/handlers_field.py,PokemonType.FLYING in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:80:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,80,FILE:nrc_core/engine/handlers_field.py,PokemonType.FLYING in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:82:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,82,FILE:nrc_core/engine/handlers_field.py,PokemonType.DARK in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:82:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,82,FILE:nrc_core/engine/handlers_field.py,PokemonType.DARK in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:84:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,84,FILE:nrc_core/engine/handlers_field.py,PokemonType.FIGHTING in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:84:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,84,FILE:nrc_core/engine/handlers_field.py,PokemonType.FIGHTING in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:87:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,87,FILE:nrc_core/engine/handlers_field.py,not ctx.target,待核对
+BRANCH:nrc_core/engine/handlers_field.py:87:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,87,FILE:nrc_core/engine/handlers_field.py,not ctx.target,待核对
+BRANCH:nrc_core/engine/handlers_field.py:89:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,89,FILE:nrc_core/engine/handlers_field.py,PokemonType.FIRE in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:89:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,89,FILE:nrc_core/engine/handlers_field.py,PokemonType.FIRE in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:92:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,92,FILE:nrc_core/engine/handlers_field.py,PokemonType.ICE in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:92:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,92,FILE:nrc_core/engine/handlers_field.py,PokemonType.ICE in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:96:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,96,FILE:nrc_core/engine/handlers_field.py,PokemonType.POISON in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:96:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,96,FILE:nrc_core/engine/handlers_field.py,PokemonType.POISON in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:99:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,99,FILE:nrc_core/engine/handlers_field.py,PokemonType.PSYCHIC in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:99:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,99,FILE:nrc_core/engine/handlers_field.py,PokemonType.PSYCHIC in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:102:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,102,FILE:nrc_core/engine/handlers_field.py,PokemonType.BUG in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:102:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,102,FILE:nrc_core/engine/handlers_field.py,PokemonType.BUG in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:105:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,105,FILE:nrc_core/engine/handlers_field.py,PokemonType.DRAGON in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:105:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,105,FILE:nrc_core/engine/handlers_field.py,PokemonType.DRAGON in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:108:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,108,FILE:nrc_core/engine/handlers_field.py,PokemonType.FAIRY in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:108:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,108,FILE:nrc_core/engine/handlers_field.py,PokemonType.FAIRY in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:112:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,112,FILE:nrc_core/engine/handlers_field.py,PokemonType.GHOST in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:112:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,112,FILE:nrc_core/engine/handlers_field.py,PokemonType.GHOST in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:115:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,115,FILE:nrc_core/engine/handlers_field.py,PokemonType.GROUND in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:115:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,115,FILE:nrc_core/engine/handlers_field.py,PokemonType.GROUND in carried_types,待核对
+BRANCH:nrc_core/engine/handlers_field.py:128:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,128,FILE:nrc_core/engine/handlers_field.py,slot < len(skills),待核对
+BRANCH:nrc_core/engine/handlers_field.py:128:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,128,FILE:nrc_core/engine/handlers_field.py,slot < len(skills),待核对
+BRANCH:nrc_core/engine/handlers_field.py:166:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,166,FILE:nrc_core/engine/handlers_field.py,"ball == ""柔软咕噜球""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:166:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,166,FILE:nrc_core/engine/handlers_field.py,"ball == ""柔软咕噜球""",待核对
+CODE:nrc_core/engine/handlers_field.py:174:add_speed,code_object,add_speed,T10,nrc_core/engine/handlers_field.py,174,FILE:nrc_core/engine/handlers_field.py,无描述字符串,待核对
+BRANCH:nrc_core/engine/handlers_field.py:177:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,177,FILE:nrc_core/engine/handlers_field.py,"ball == ""普通咕噜球""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:177:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,177,FILE:nrc_core/engine/handlers_field.py,"ball == ""普通咕噜球""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:247:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,247,FILE:nrc_core/engine/handlers_field.py,"element == ""萌""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:247:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,247,FILE:nrc_core/engine/handlers_field.py,"element == ""萌""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:256:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,256,FILE:nrc_core/engine/handlers_field.py,"pokemon.ability_state.get(""cute_no_cap"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:256:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,256,FILE:nrc_core/engine/handlers_field.py,"pokemon.ability_state.get(""cute_no_cap"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:267:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,267,FILE:nrc_core/engine/handlers_field.py,pokemon.cute_stacks > before,待核对
+BRANCH:nrc_core/engine/handlers_field.py:267:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,267,FILE:nrc_core/engine/handlers_field.py,pokemon.cute_stacks > before,待核对
+BRANCH:nrc_core/engine/handlers_field.py:286:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,286,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:286:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,286,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:295:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,295,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:295:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,295,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:306:body,code_branch,body,T10,nrc_core/engine/handlers_field.py,306,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:306:zero_or_exit,code_branch,zero_or_exit,T10,nrc_core/engine/handlers_field.py,306,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:325:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,325,FILE:nrc_core/engine/handlers_field.py,n <= 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:325:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,325,FILE:nrc_core/engine/handlers_field.py,n <= 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:342:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,342,FILE:nrc_core/engine/handlers_field.py,ctx.user.cute_stacks > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:342:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,342,FILE:nrc_core/engine/handlers_field.py,ctx.user.cute_stacks > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:352:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,352,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:352:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,352,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:367:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,367,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:367:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,367,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:378:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,378,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:378:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,378,FILE:nrc_core/engine/handlers_field.py,added > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:390:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,390,FILE:nrc_core/engine/handlers_field.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:390:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,390,FILE:nrc_core/engine/handlers_field.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:399:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,399,FILE:nrc_core/engine/handlers_field.py,dmg >= ctx.user.current_hp and not ctx.user.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_field.py:399:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,399,FILE:nrc_core/engine/handlers_field.py,dmg >= ctx.user.current_hp and not ctx.user.is_fainted,待核对
+BRANCH:nrc_core/engine/handlers_field.py:427:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,427,FILE:nrc_core/engine/handlers_field.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:427:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,427,FILE:nrc_core/engine/handlers_field.py,total > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:28:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,28,FILE:nrc_core/engine/handlers_field.py,is_random,待核对
+BRANCH:nrc_core/engine/handlers_field.py:28:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,28,FILE:nrc_core/engine/handlers_field.py,is_random,待核对
+BRANCH:nrc_core/engine/handlers_field.py:29:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,29,FILE:nrc_core/engine/handlers_field.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:29:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,29,FILE:nrc_core/engine/handlers_field.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:70:body,code_branch,body,T10,nrc_core/engine/handlers_field.py,70,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:70:zero_or_exit,code_branch,zero_or_exit,T10,nrc_core/engine/handlers_field.py,70,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:74:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,74,FILE:nrc_core/engine/handlers_field.py,heal > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:74:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,74,FILE:nrc_core/engine/handlers_field.py,heal > 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:90:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,90,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""burn_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:90:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,90,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""burn_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:93:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,93,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""freeze_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:93:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,93,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""freeze_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:97:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,97,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""poison_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:97:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,97,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""poison_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:100:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,100,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""meteor_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:100:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,100,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""meteor_immune"") and not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:103:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,103,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:103:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,103,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:106:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,106,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:106:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,106,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:109:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,109,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:109:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,109,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:113:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,113,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""energy_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:113:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,113,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""energy_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:116:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,116,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:116:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,116,FILE:nrc_core/engine/handlers_field.py,"not ctx.target.ability_state.get(""debuff_immune"")",待核对
+BRANCH:nrc_core/engine/handlers_field.py:129:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,129,FILE:nrc_core/engine/handlers_field.py,agility,待核对
+BRANCH:nrc_core/engine/handlers_field.py:129:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,129,FILE:nrc_core/engine/handlers_field.py,agility,待核对
+BRANCH:nrc_core/engine/handlers_field.py:180:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,180,FILE:nrc_core/engine/handlers_field.py,"ball == ""高级咕噜球""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:180:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,180,FILE:nrc_core/engine/handlers_field.py,"ball == ""高级咕噜球""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:305:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,305,FILE:nrc_core/engine/handlers_field.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:305:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,305,FILE:nrc_core/engine/handlers_field.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:307:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,307,FILE:nrc_core/engine/handlers_field.py,not poke.is_fainted and poke is not ctx.user,待核对
+BRANCH:nrc_core/engine/handlers_field.py:307:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,307,FILE:nrc_core/engine/handlers_field.py,not poke.is_fainted and poke is not ctx.user,待核对
+BRANCH:nrc_core/engine/handlers_field.py:355:body,code_branch,body,T10,nrc_core/engine/handlers_field.py,355,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:355:zero_or_exit,code_branch,zero_or_exit,T10,nrc_core/engine/handlers_field.py,355,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:369:body,code_branch,body,T10,nrc_core/engine/handlers_field.py,369,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:369:zero_or_exit,code_branch,zero_or_exit,T10,nrc_core/engine/handlers_field.py,369,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:425:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,425,FILE:nrc_core/engine/handlers_field.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:425:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,425,FILE:nrc_core/engine/handlers_field.py,"team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:428:body,code_branch,body,T10,nrc_core/engine/handlers_field.py,428,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:428:zero_or_exit,code_branch,zero_or_exit,T10,nrc_core/engine/handlers_field.py,428,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:183:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,183,FILE:nrc_core/engine/handlers_field.py,"ball == ""国王球""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:183:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,183,FILE:nrc_core/engine/handlers_field.py,"ball == ""国王球""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:356:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,356,FILE:nrc_core/engine/handlers_field.py,s.power >= 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:356:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,356,FILE:nrc_core/engine/handlers_field.py,s.power >= 0,待核对
+BRANCH:nrc_core/engine/handlers_field.py:186:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,186,FILE:nrc_core/engine/handlers_field.py,"ball in {""美妙球"", ""skill_power""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:186:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,186,FILE:nrc_core/engine/handlers_field.py,"ball in {""美妙球"", ""skill_power""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:189:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,189,FILE:nrc_core/engine/handlers_field.py,"ball in {""好战球"", ""atk""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:189:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,189,FILE:nrc_core/engine/handlers_field.py,"ball in {""好战球"", ""atk""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:191:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,191,FILE:nrc_core/engine/handlers_field.py,"ball in {""光合球"", ""heal""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:191:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,191,FILE:nrc_core/engine/handlers_field.py,"ball in {""光合球"", ""heal""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:194:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,194,FILE:nrc_core/engine/handlers_field.py,"ball in {""skill_cost""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:194:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,194,FILE:nrc_core/engine/handlers_field.py,"ball in {""skill_cost""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:195:body,code_branch,body,T10,nrc_core/engine/handlers_field.py,195,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:195:zero_or_exit,code_branch,zero_or_exit,T10,nrc_core/engine/handlers_field.py,195,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:197:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,197,FILE:nrc_core/engine/handlers_field.py,"ball in {""spatk""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:197:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,197,FILE:nrc_core/engine/handlers_field.py,"ball in {""spatk""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:199:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,199,FILE:nrc_core/engine/handlers_field.py,"ball in {""网兜球"", ""combo""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:199:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,199,FILE:nrc_core/engine/handlers_field.py,"ball in {""网兜球"", ""combo""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:201:body,code_branch,body,T10,nrc_core/engine/handlers_field.py,201,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:201:zero_or_exit,code_branch,zero_or_exit,T10,nrc_core/engine/handlers_field.py,201,FILE:nrc_core/engine/handlers_field.py,For,待核对
+BRANCH:nrc_core/engine/handlers_field.py:203:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,203,FILE:nrc_core/engine/handlers_field.py,"ball in {""暗星球"", ""energy""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:203:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,203,FILE:nrc_core/engine/handlers_field.py,"ball in {""暗星球"", ""energy""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:206:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,206,FILE:nrc_core/engine/handlers_field.py,"ball in {""调温球"", ""freeze""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:206:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,206,FILE:nrc_core/engine/handlers_field.py,"ball in {""调温球"", ""freeze""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:207:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,207,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.ICE)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:207:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,207,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.ICE)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:209:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,209,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.FIRE)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:209:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,209,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.FIRE)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:211:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,211,FILE:nrc_core/engine/handlers_field.py,"ball in {""绝缘球"", ""speed""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:211:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,211,FILE:nrc_core/engine/handlers_field.py,"ball in {""绝缘球"", ""speed""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:213:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,213,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.POISON)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:213:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,213,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.POISON)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:215:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,215,FILE:nrc_core/engine/handlers_field.py,"ball in {""淘沙球"", ""slow_combo""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:215:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,215,FILE:nrc_core/engine/handlers_field.py,"ball in {""淘沙球"", ""slow_combo""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:219:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,219,FILE:nrc_core/engine/handlers_field.py,"ball in {""变幻球"", ""def""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:219:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,219,FILE:nrc_core/engine/handlers_field.py,"ball in {""变幻球"", ""def""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:223:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,223,FILE:nrc_core/engine/handlers_field.py,"ball in {""对手攻击"", ""enemy_atk""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:223:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,223,FILE:nrc_core/engine/handlers_field.py,"ball in {""对手攻击"", ""enemy_atk""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:221:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,221,FILE:nrc_core/engine/handlers_field.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:221:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,221,FILE:nrc_core/engine/handlers_field.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:225:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,225,FILE:nrc_core/engine/handlers_field.py,"ball in {""对手魔防"", ""enemy_spdef""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:225:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,225,FILE:nrc_core/engine/handlers_field.py,"ball in {""对手魔防"", ""enemy_spdef""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:227:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,227,FILE:nrc_core/engine/handlers_field.py,"ball in {""poison""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:227:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,227,FILE:nrc_core/engine/handlers_field.py,"ball in {""poison""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:228:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,228,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.POISON)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:228:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,228,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.POISON)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:230:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,230,FILE:nrc_core/engine/handlers_field.py,"ball in {""spdef""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:230:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,230,FILE:nrc_core/engine/handlers_field.py,"ball in {""spdef""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:233:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,233,FILE:nrc_core/engine/handlers_field.py,"ball in {""meteor""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:233:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,233,FILE:nrc_core/engine/handlers_field.py,"ball in {""meteor""}",待核对
+BRANCH:nrc_core/engine/handlers_field.py:236:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,236,FILE:nrc_core/engine/handlers_field.py,"ball == ""drain""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:236:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,236,FILE:nrc_core/engine/handlers_field.py,"ball == ""drain""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:234:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,234,FILE:nrc_core/engine/handlers_field.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:234:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,234,FILE:nrc_core/engine/handlers_field.py,"ctx.team == ""a""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:238:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,238,FILE:nrc_core/engine/handlers_field.py,"ball == ""burn""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:238:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,238,FILE:nrc_core/engine/handlers_field.py,"ball == ""burn""",待核对
+BRANCH:nrc_core/engine/handlers_field.py:239:true,code_branch,true,T10,nrc_core/engine/handlers_field.py,239,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.FIRE)",待核对
+BRANCH:nrc_core/engine/handlers_field.py:239:false,code_branch,false,T10,nrc_core/engine/handlers_field.py,239,FILE:nrc_core/engine/handlers_field.py,"not has_type(ctx.target, Type.FIRE)",待核对

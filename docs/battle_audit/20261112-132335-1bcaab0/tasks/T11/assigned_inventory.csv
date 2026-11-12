@@ -1,0 +1,639 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_platform/__init__.py,file,nrc_platform/__init__.py,T11,nrc_platform/__init__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_platform/platform.py,file,nrc_platform/platform.py,T11,nrc_platform/platform.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_platform/platform.py:35:PlatformError,code_object,PlatformError,T11,nrc_platform/platform.py,35,FILE:nrc_platform/platform.py,A structured error at the platform boundary.,待核对
+CODE:nrc_platform/platform.py:48:PlatformResult,code_object,PlatformResult,T11,nrc_platform/platform.py,48,FILE:nrc_platform/platform.py,Dict result that also supports attribute access in examples.,待核对
+CODE:nrc_platform/platform.py:62:_ManagedBattle,code_object,_ManagedBattle,T11,nrc_platform/platform.py,62,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:97:_Catalog,code_object,_Catalog,T11,nrc_platform/platform.py,97,FILE:nrc_platform/platform.py,All catalog lookup and user-input normalization lives in the platform.,待核对
+CODE:nrc_platform/platform.py:171:_serialized,code_object,_serialized,T11,nrc_platform/platform.py,171,FILE:nrc_platform/platform.py,同局请求串行化，异常时恢复暂存与历史。,待核对
+CODE:nrc_platform/platform.py:193:BattlePlatform,code_object,BattlePlatform,T11,nrc_platform/platform.py,193,FILE:nrc_platform/platform.py,持有双人对局，统一提交、历史和玩家视角。,待核对
+CODE:nrc_platform/platform.py:762:_known_value,code_object,_known_value,T11,nrc_platform/platform.py,762,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:768:_manifest_dict,code_object,_manifest_dict,T11,nrc_platform/platform.py,768,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:779:_side_code,code_object,_side_code,T11,nrc_platform/platform.py,779,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:787:_active_pair,code_object,_active_pair,T11,nrc_platform/platform.py,787,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:793:_find_skill_slot,code_object,_find_skill_slot,T11,nrc_platform/platform.py,793,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:810:_team_and_target,code_object,_team_and_target,T11,nrc_platform/platform.py,810,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:817:_resolve_type,code_object,_resolve_type,T11,nrc_platform/platform.py,817,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:826:_single_type_multiplier,code_object,_single_type_multiplier,T11,nrc_platform/platform.py,826,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:832:_indicator_for_multiplier,code_object,_indicator_for_multiplier,T11,nrc_platform/platform.py,832,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:849:create_platform,code_object,create_platform,T11,nrc_platform/platform.py,849,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:38:__init__,code_object,__init__,T11,nrc_platform/platform.py,38,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:44:to_dict,code_object,to_dict,T11,nrc_platform/platform.py,44,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:51:__getattr__,code_object,__getattr__,T11,nrc_platform/platform.py,51,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:57:to_dict,code_object,to_dict,T11,nrc_platform/platform.py,57,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:77:phase,code_object,phase,T11,nrc_platform/platform.py,77,FILE:nrc_platform/platform.py,阶段从唯一核心状态读取。,待核对
+CODE:nrc_platform/platform.py:82:decision_index,code_object,decision_index,T11,nrc_platform/platform.py,82,FILE:nrc_platform/platform.py,当前决策序号。,待核对
+CODE:nrc_platform/platform.py:87:terminal,code_object,terminal,T11,nrc_platform/platform.py,87,FILE:nrc_platform/platform.py,终局由核心判定。,待核对
+CODE:nrc_platform/platform.py:92:winner,code_object,winner,T11,nrc_platform/platform.py,92,FILE:nrc_platform/platform.py,胜方由核心判定。,待核对
+CODE:nrc_platform/platform.py:100:__init__,code_object,__init__,T11,nrc_platform/platform.py,100,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:104:_base_name,code_object,_base_name,T11,nrc_platform/platform.py,104,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:108:_aliases,code_object,_aliases,T11,nrc_platform/platform.py,108,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:117:resolve_pokemon,code_object,resolve_pokemon,T11,nrc_platform/platform.py,117,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:126:normalize_team,code_object,normalize_team,T11,nrc_platform/platform.py,126,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:144:_normalize_creature,code_object,_normalize_creature,T11,nrc_platform/platform.py,144,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:174:call,code_object,call,T11,nrc_platform/platform.py,174,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:196:__init__,code_object,__init__,T11,nrc_platform/platform.py,196,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:205:manifest,code_object,manifest,T11,nrc_platform/platform.py,205,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:209:get_battle_status,code_object,get_battle_status,T11,nrc_platform/platform.py,209,FILE:nrc_platform/platform.py,供房间编排读取唯一核心状态与提交进度。,待核对
+CODE:nrc_platform/platform.py:217:resolve_pokemon,code_object,resolve_pokemon,T11,nrc_platform/platform.py,217,FILE:nrc_platform/platform.py,Resolve a canonical creature record or a pinyin alias.,待核对
+CODE:nrc_platform/platform.py:221:create_battle,code_object,create_battle,T11,nrc_platform/platform.py,221,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:240:set_roster,code_object,set_roster,T11,nrc_platform/platform.py,240,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:272:submit_selection,code_object,submit_selection,T11,nrc_platform/platform.py,272,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:345:get_display_info,code_object,get_display_info,T11,nrc_platform/platform.py,345,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:381:get_matchup_relations,code_object,get_matchup_relations,T11,nrc_platform/platform.py,381,FILE:nrc_platform/platform.py,Rate every creature on one side by its best damaging skill against the opposing active creature.,待核对
+CODE:nrc_platform/platform.py:408:preview_creature,code_object,preview_creature,T11,nrc_platform/platform.py,408,FILE:nrc_platform/platform.py,Resolve one roster entry with the same combat-attribute path as battles.,待核对
+CODE:nrc_platform/platform.py:461:get_legal_actions,code_object,get_legal_actions,T11,nrc_platform/platform.py,461,FILE:nrc_platform/platform.py,Return the exact action keys currently accepted by the core.,待核对
+CODE:nrc_platform/platform.py:479:get_public_observation,code_object,get_public_observation,T11,nrc_platform/platform.py,479,FILE:nrc_platform/platform.py,Return the observer-scoped snapshot used by upper-layer clients.,待核对
+CODE:nrc_platform/platform.py:499:export_battle,code_object,export_battle,T11,nrc_platform/platform.py,499,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:522:import_battle,code_object,import_battle,T11,nrc_platform/platform.py,522,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:554:query_display_power,code_object,query_display_power,T11,nrc_platform/platform.py,554,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:568:predict_damage,code_object,predict_damage,T11,nrc_platform/platform.py,568,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:611:query_type_effectiveness,code_object,query_type_effectiveness,T11,nrc_platform/platform.py,611,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:626:_record_revealed,code_object,_record_revealed,T11,nrc_platform/platform.py,626,FILE:nrc_platform/platform.py,只在实际初始化或推进成功后登记上场，不由查询写入。,待核对
+CODE:nrc_platform/platform.py:633:_get_battle,code_object,_get_battle,T11,nrc_platform/platform.py,633,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:640:_ensure_mutable,code_object,_ensure_mutable,T11,nrc_platform/platform.py,640,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:644:_try_initialize,code_object,_try_initialize,T11,nrc_platform/platform.py,644,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:660:_resolve_pending_actions,code_object,_resolve_pending_actions,T11,nrc_platform/platform.py,660,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:671:_resolve_action_key,code_object,_resolve_action_key,T11,nrc_platform/platform.py,671,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:708:_coerce_episode,code_object,_coerce_episode,T11,nrc_platform/platform.py,708,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:719:_current_turn,code_object,_current_turn,T11,nrc_platform/platform.py,719,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:723:_state_delta,code_object,_state_delta,T11,nrc_platform/platform.py,723,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:728:_display_from_events,code_object,_display_from_events,T11,nrc_platform/platform.py,728,FILE:nrc_platform/platform.py,无描述字符串,待核对
+CODE:nrc_platform/platform.py:734:_static_display_info,code_object,_static_display_info,T11,nrc_platform/platform.py,734,FILE:nrc_platform/platform.py,无描述字符串,待核对
+BRANCH:nrc_platform/platform.py:763:true,code_branch,true,T11,nrc_platform/platform.py,763,FILE:nrc_platform/platform.py,"isinstance(value, Mapping) and ""known"" in value",待核对
+BRANCH:nrc_platform/platform.py:763:false,code_branch,false,T11,nrc_platform/platform.py,763,FILE:nrc_platform/platform.py,"isinstance(value, Mapping) and ""known"" in value",待核对
+BRANCH:nrc_platform/platform.py:780:true,code_branch,true,T11,nrc_platform/platform.py,780,FILE:nrc_platform/platform.py,"side in {""own"", ""a"", ""0"", 0}",待核对
+BRANCH:nrc_platform/platform.py:780:false,code_branch,false,T11,nrc_platform/platform.py,780,FILE:nrc_platform/platform.py,"side in {""own"", ""a"", ""0"", 0}",待核对
+BRANCH:nrc_platform/platform.py:782:true,code_branch,true,T11,nrc_platform/platform.py,782,FILE:nrc_platform/platform.py,"side in {""opponent"", ""b"", ""1"", 1}",待核对
+BRANCH:nrc_platform/platform.py:782:false,code_branch,false,T11,nrc_platform/platform.py,782,FILE:nrc_platform/platform.py,"side in {""opponent"", ""b"", ""1"", 1}",待核对
+BRANCH:nrc_platform/platform.py:788:true,code_branch,true,T11,nrc_platform/platform.py,788,FILE:nrc_platform/platform.py,"code == ""a""",待核对
+BRANCH:nrc_platform/platform.py:788:false,code_branch,false,T11,nrc_platform/platform.py,788,FILE:nrc_platform/platform.py,"code == ""a""",待核对
+BRANCH:nrc_platform/platform.py:795:true,code_branch,true,T11,nrc_platform/platform.py,795,FILE:nrc_platform/platform.py,"isinstance(reference, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:795:false,code_branch,false,T11,nrc_platform/platform.py,795,FILE:nrc_platform/platform.py,"isinstance(reference, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:799:true,code_branch,true,T11,nrc_platform/platform.py,799,FILE:nrc_platform/platform.py,"isinstance(reference, int)",待核对
+BRANCH:nrc_platform/platform.py:799:false,code_branch,false,T11,nrc_platform/platform.py,799,FILE:nrc_platform/platform.py,"isinstance(reference, int)",待核对
+BRANCH:nrc_platform/platform.py:801:true,code_branch,true,T11,nrc_platform/platform.py,801,FILE:nrc_platform/platform.py,reference is None,待核对
+BRANCH:nrc_platform/platform.py:801:false,code_branch,false,T11,nrc_platform/platform.py,801,FILE:nrc_platform/platform.py,reference is None,待核对
+BRANCH:nrc_platform/platform.py:804:body,code_branch,body,T11,nrc_platform/platform.py,804,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:804:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,804,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:812:true,code_branch,true,T11,nrc_platform/platform.py,812,FILE:nrc_platform/platform.py,"code == ""a""",待核对
+BRANCH:nrc_platform/platform.py:812:false,code_branch,false,T11,nrc_platform/platform.py,812,FILE:nrc_platform/platform.py,"code == ""a""",待核对
+BRANCH:nrc_platform/platform.py:818:true,code_branch,true,T11,nrc_platform/platform.py,818,FILE:nrc_platform/platform.py,"isinstance(value, Type)",待核对
+BRANCH:nrc_platform/platform.py:818:false,code_branch,false,T11,nrc_platform/platform.py,818,FILE:nrc_platform/platform.py,"isinstance(value, Type)",待核对
+BRANCH:nrc_platform/platform.py:833:true,code_branch,true,T11,nrc_platform/platform.py,833,FILE:nrc_platform/platform.py,multiplier is None,待核对
+BRANCH:nrc_platform/platform.py:833:false,code_branch,false,T11,nrc_platform/platform.py,833,FILE:nrc_platform/platform.py,multiplier is None,待核对
+BRANCH:nrc_platform/platform.py:836:true,code_branch,true,T11,nrc_platform/platform.py,836,FILE:nrc_platform/platform.py,multiplier == 0,待核对
+BRANCH:nrc_platform/platform.py:836:false,code_branch,false,T11,nrc_platform/platform.py,836,FILE:nrc_platform/platform.py,multiplier == 0,待核对
+BRANCH:nrc_platform/platform.py:838:true,code_branch,true,T11,nrc_platform/platform.py,838,FILE:nrc_platform/platform.py,multiplier < 0.5,待核对
+BRANCH:nrc_platform/platform.py:838:false,code_branch,false,T11,nrc_platform/platform.py,838,FILE:nrc_platform/platform.py,multiplier < 0.5,待核对
+BRANCH:nrc_platform/platform.py:840:true,code_branch,true,T11,nrc_platform/platform.py,840,FILE:nrc_platform/platform.py,multiplier < 1,待核对
+BRANCH:nrc_platform/platform.py:840:false,code_branch,false,T11,nrc_platform/platform.py,840,FILE:nrc_platform/platform.py,multiplier < 1,待核对
+BRANCH:nrc_platform/platform.py:842:true,code_branch,true,T11,nrc_platform/platform.py,842,FILE:nrc_platform/platform.py,multiplier == 1,待核对
+BRANCH:nrc_platform/platform.py:842:false,code_branch,false,T11,nrc_platform/platform.py,842,FILE:nrc_platform/platform.py,multiplier == 1,待核对
+BRANCH:nrc_platform/platform.py:844:true,code_branch,true,T11,nrc_platform/platform.py,844,FILE:nrc_platform/platform.py,multiplier <= 2,待核对
+BRANCH:nrc_platform/platform.py:844:false,code_branch,false,T11,nrc_platform/platform.py,844,FILE:nrc_platform/platform.py,multiplier <= 2,待核对
+BRANCH:nrc_platform/platform.py:119:true,code_branch,true,T11,nrc_platform/platform.py,119,FILE:nrc_platform/platform.py,not text,待核对
+BRANCH:nrc_platform/platform.py:119:false,code_branch,false,T11,nrc_platform/platform.py,119,FILE:nrc_platform/platform.py,not text,待核对
+BRANCH:nrc_platform/platform.py:122:true,code_branch,true,T11,nrc_platform/platform.py,122,FILE:nrc_platform/platform.py,direct,待核对
+BRANCH:nrc_platform/platform.py:122:false,code_branch,false,T11,nrc_platform/platform.py,122,FILE:nrc_platform/platform.py,direct,待核对
+BRANCH:nrc_platform/platform.py:127:true,code_branch,true,T11,nrc_platform/platform.py,127,FILE:nrc_platform/platform.py,"isinstance(raw, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:127:false,code_branch,false,T11,nrc_platform/platform.py,127,FILE:nrc_platform/platform.py,"isinstance(raw, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:134:body,code_branch,body,T11,nrc_platform/platform.py,134,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:134:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,134,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:147:true,code_branch,true,T11,nrc_platform/platform.py,147,FILE:nrc_platform/platform.py,not name,待核对
+BRANCH:nrc_platform/platform.py:147:false,code_branch,false,T11,nrc_platform/platform.py,147,FILE:nrc_platform/platform.py,not name,待核对
+BRANCH:nrc_platform/platform.py:152:true,code_branch,true,T11,nrc_platform/platform.py,152,FILE:nrc_platform/platform.py,record is None,待核对
+BRANCH:nrc_platform/platform.py:152:false,code_branch,false,T11,nrc_platform/platform.py,152,FILE:nrc_platform/platform.py,record is None,待核对
+BRANCH:nrc_platform/platform.py:159:true,code_branch,true,T11,nrc_platform/platform.py,159,FILE:nrc_platform/platform.py,ability_name and not self.catalog.get_ability_effects(ability_name),待核对
+BRANCH:nrc_platform/platform.py:159:false,code_branch,false,T11,nrc_platform/platform.py,159,FILE:nrc_platform/platform.py,ability_name and not self.catalog.get_ability_effects(ability_name),待核对
+BRANCH:nrc_platform/platform.py:163:true,code_branch,true,T11,nrc_platform/platform.py,163,FILE:nrc_platform/platform.py,"not creature.get(""skills"")",待核对
+BRANCH:nrc_platform/platform.py:163:false,code_branch,false,T11,nrc_platform/platform.py,163,FILE:nrc_platform/platform.py,"not creature.get(""skills"")",待核对
+BRANCH:nrc_platform/platform.py:222:true,code_branch,true,T11,nrc_platform/platform.py,222,FILE:nrc_platform/platform.py,"mode != ""full""",待核对
+BRANCH:nrc_platform/platform.py:222:false,code_branch,false,T11,nrc_platform/platform.py,222,FILE:nrc_platform/platform.py,"mode != ""full""",待核对
+BRANCH:nrc_platform/platform.py:224:true,code_branch,true,T11,nrc_platform/platform.py,224,FILE:nrc_platform/platform.py,rules_version is not None and rules_version != self.manifest.rules_version,待核对
+BRANCH:nrc_platform/platform.py:224:false,code_branch,false,T11,nrc_platform/platform.py,224,FILE:nrc_platform/platform.py,rules_version is not None and rules_version != self.manifest.rules_version,待核对
+BRANCH:nrc_platform/platform.py:243:true,code_branch,true,T11,nrc_platform/platform.py,243,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:243:false,code_branch,false,T11,nrc_platform/platform.py,243,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:245:true,code_branch,true,T11,nrc_platform/platform.py,245,FILE:nrc_platform/platform.py,request_id,待核对
+BRANCH:nrc_platform/platform.py:245:false,code_branch,false,T11,nrc_platform/platform.py,245,FILE:nrc_platform/platform.py,request_id,待核对
+BRANCH:nrc_platform/platform.py:247:true,code_branch,true,T11,nrc_platform/platform.py,247,FILE:nrc_platform/platform.py,request_id and request_id in battle.requests,待核对
+BRANCH:nrc_platform/platform.py:247:false,code_branch,false,T11,nrc_platform/platform.py,247,FILE:nrc_platform/platform.py,request_id and request_id in battle.requests,待核对
+BRANCH:nrc_platform/platform.py:249:true,code_branch,true,T11,nrc_platform/platform.py,249,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:249:false,code_branch,false,T11,nrc_platform/platform.py,249,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:252:true,code_branch,true,T11,nrc_platform/platform.py,252,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:252:false,code_branch,false,T11,nrc_platform/platform.py,252,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:267:true,code_branch,true,T11,nrc_platform/platform.py,267,FILE:nrc_platform/platform.py,request_id,待核对
+BRANCH:nrc_platform/platform.py:267:false,code_branch,false,T11,nrc_platform/platform.py,267,FILE:nrc_platform/platform.py,request_id,待核对
+BRANCH:nrc_platform/platform.py:275:true,code_branch,true,T11,nrc_platform/platform.py,275,FILE:nrc_platform/platform.py,request_id in battle.requests,待核对
+BRANCH:nrc_platform/platform.py:275:false,code_branch,false,T11,nrc_platform/platform.py,275,FILE:nrc_platform/platform.py,request_id in battle.requests,待核对
+BRANCH:nrc_platform/platform.py:278:true,code_branch,true,T11,nrc_platform/platform.py,278,FILE:nrc_platform/platform.py,decision_index is not None and decision_index != battle.decision_index,待核对
+BRANCH:nrc_platform/platform.py:278:false,code_branch,false,T11,nrc_platform/platform.py,278,FILE:nrc_platform/platform.py,decision_index is not None and decision_index != battle.decision_index,待核对
+BRANCH:nrc_platform/platform.py:280:true,code_branch,true,T11,nrc_platform/platform.py,280,FILE:nrc_platform/platform.py,side in battle.pending,待核对
+BRANCH:nrc_platform/platform.py:280:false,code_branch,false,T11,nrc_platform/platform.py,280,FILE:nrc_platform/platform.py,side in battle.pending,待核对
+BRANCH:nrc_platform/platform.py:282:true,code_branch,true,T11,nrc_platform/platform.py,282,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:282:false,code_branch,false,T11,nrc_platform/platform.py,282,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:284:true,code_branch,true,T11,nrc_platform/platform.py,284,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:284:false,code_branch,false,T11,nrc_platform/platform.py,284,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:293:true,code_branch,true,T11,nrc_platform/platform.py,293,FILE:nrc_platform/platform.py,not required_sides.issubset(battle.pending),待核对
+BRANCH:nrc_platform/platform.py:293:false,code_branch,false,T11,nrc_platform/platform.py,293,FILE:nrc_platform/platform.py,not required_sides.issubset(battle.pending),待核对
+BRANCH:nrc_platform/platform.py:347:true,code_branch,true,T11,nrc_platform/platform.py,347,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:347:false,code_branch,false,T11,nrc_platform/platform.py,347,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:349:true,code_branch,true,T11,nrc_platform/platform.py,349,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:349:false,code_branch,false,T11,nrc_platform/platform.py,349,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:363:body,code_branch,body,T11,nrc_platform/platform.py,363,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:363:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,363,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:384:true,code_branch,true,T11,nrc_platform/platform.py,384,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:384:false,code_branch,false,T11,nrc_platform/platform.py,384,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:386:true,code_branch,true,T11,nrc_platform/platform.py,386,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:386:false,code_branch,false,T11,nrc_platform/platform.py,386,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:390:body,code_branch,body,T11,nrc_platform/platform.py,390,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:390:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,390,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:413:true,code_branch,true,T11,nrc_platform/platform.py,413,FILE:nrc_platform/platform.py,not name,待核对
+BRANCH:nrc_platform/platform.py:413:false,code_branch,false,T11,nrc_platform/platform.py,413,FILE:nrc_platform/platform.py,not name,待核对
+BRANCH:nrc_platform/platform.py:416:true,code_branch,true,T11,nrc_platform/platform.py,416,FILE:nrc_platform/platform.py,record is None,待核对
+BRANCH:nrc_platform/platform.py:416:false,code_branch,false,T11,nrc_platform/platform.py,416,FILE:nrc_platform/platform.py,record is None,待核对
+BRANCH:nrc_platform/platform.py:420:true,code_branch,true,T11,nrc_platform/platform.py,420,FILE:nrc_platform/platform.py,"not raw.get(""skills"")",待核对
+BRANCH:nrc_platform/platform.py:420:false,code_branch,false,T11,nrc_platform/platform.py,420,FILE:nrc_platform/platform.py,"not raw.get(""skills"")",待核对
+BRANCH:nrc_platform/platform.py:428:true,code_branch,true,T11,nrc_platform/platform.py,428,FILE:nrc_platform/platform.py,"isinstance(bloodline, str)",待核对
+BRANCH:nrc_platform/platform.py:428:false,code_branch,false,T11,nrc_platform/platform.py,428,FILE:nrc_platform/platform.py,"isinstance(bloodline, str)",待核对
+BRANCH:nrc_platform/platform.py:464:true,code_branch,true,T11,nrc_platform/platform.py,464,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:464:false,code_branch,false,T11,nrc_platform/platform.py,464,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:466:true,code_branch,true,T11,nrc_platform/platform.py,466,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:466:false,code_branch,false,T11,nrc_platform/platform.py,466,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:482:true,code_branch,true,T11,nrc_platform/platform.py,482,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:482:false,code_branch,false,T11,nrc_platform/platform.py,482,FILE:nrc_platform/platform.py,"side not in {""own"", ""opponent""}",待核对
+BRANCH:nrc_platform/platform.py:484:true,code_branch,true,T11,nrc_platform/platform.py,484,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:484:false,code_branch,false,T11,nrc_platform/platform.py,484,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:518:true,code_branch,true,T11,nrc_platform/platform.py,518,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:518:false,code_branch,false,T11,nrc_platform/platform.py,518,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:523:true,code_branch,true,T11,nrc_platform/platform.py,523,FILE:nrc_platform/platform.py,"snapshot.get(""format"") != ""nrc_platform.session.v2""",待核对
+BRANCH:nrc_platform/platform.py:523:false,code_branch,false,T11,nrc_platform/platform.py,523,FILE:nrc_platform/platform.py,"snapshot.get(""format"") != ""nrc_platform.session.v2""",待核对
+BRANCH:nrc_platform/platform.py:525:true,code_branch,true,T11,nrc_platform/platform.py,525,FILE:nrc_platform/platform.py,"dict(snapshot.get(""manifest"") or {}) != _manifest_dict(self.manifest)",待核对
+BRANCH:nrc_platform/platform.py:525:false,code_branch,false,T11,nrc_platform/platform.py,525,FILE:nrc_platform/platform.py,"dict(snapshot.get(""manifest"") or {}) != _manifest_dict(self.manifest)",待核对
+BRANCH:nrc_platform/platform.py:528:true,code_branch,true,T11,nrc_platform/platform.py,528,FILE:nrc_platform/platform.py,not battle_id,待核对
+BRANCH:nrc_platform/platform.py:528:false,code_branch,false,T11,nrc_platform/platform.py,528,FILE:nrc_platform/platform.py,not battle_id,待核对
+BRANCH:nrc_platform/platform.py:542:true,code_branch,true,T11,nrc_platform/platform.py,542,FILE:nrc_platform/platform.py,"snapshot.get(""episode"") is not None",待核对
+BRANCH:nrc_platform/platform.py:542:false,code_branch,false,T11,nrc_platform/platform.py,542,FILE:nrc_platform/platform.py,"snapshot.get(""episode"") is not None",待核对
+BRANCH:nrc_platform/platform.py:559:true,code_branch,true,T11,nrc_platform/platform.py,559,FILE:nrc_platform/platform.py,"slot is None or slot >= len(view.get(""skills"", []))",待核对
+BRANCH:nrc_platform/platform.py:559:false,code_branch,false,T11,nrc_platform/platform.py,559,FILE:nrc_platform/platform.py,"slot is None or slot >= len(view.get(""skills"", []))",待核对
+BRANCH:nrc_platform/platform.py:577:true,code_branch,true,T11,nrc_platform/platform.py,577,FILE:nrc_platform/platform.py,not math.isfinite(float(damage_reduction)) or not 0 <= damage_reduction <= 1,待核对
+BRANCH:nrc_platform/platform.py:577:false,code_branch,false,T11,nrc_platform/platform.py,577,FILE:nrc_platform/platform.py,not math.isfinite(float(damage_reduction)) or not 0 <= damage_reduction <= 1,待核对
+BRANCH:nrc_platform/platform.py:582:true,code_branch,true,T11,nrc_platform/platform.py,582,FILE:nrc_platform/platform.py,slot is None,待核对
+BRANCH:nrc_platform/platform.py:582:false,code_branch,false,T11,nrc_platform/platform.py,582,FILE:nrc_platform/platform.py,slot is None,待核对
+BRANCH:nrc_platform/platform.py:593:true,code_branch,true,T11,nrc_platform/platform.py,593,FILE:nrc_platform/platform.py,damage_reduction >= 1,待核对
+BRANCH:nrc_platform/platform.py:593:false,code_branch,false,T11,nrc_platform/platform.py,593,FILE:nrc_platform/platform.py,damage_reduction >= 1,待核对
+BRANCH:nrc_platform/platform.py:629:body,code_branch,body,T11,nrc_platform/platform.py,629,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:629:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,629,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:641:true,code_branch,true,T11,nrc_platform/platform.py,641,FILE:nrc_platform/platform.py,battle.terminal,待核对
+BRANCH:nrc_platform/platform.py:641:false,code_branch,false,T11,nrc_platform/platform.py,641,FILE:nrc_platform/platform.py,battle.terminal,待核对
+BRANCH:nrc_platform/platform.py:645:true,code_branch,true,T11,nrc_platform/platform.py,645,FILE:nrc_platform/platform.py,battle.own_roster is None or battle.opponent_roster is None or battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:645:false,code_branch,false,T11,nrc_platform/platform.py,645,FILE:nrc_platform/platform.py,battle.own_roster is None or battle.opponent_roster is None or battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:647:true,code_branch,true,T11,nrc_platform/platform.py,647,FILE:nrc_platform/platform.py,"not battle.own_roster.get(""creatures"") or not battle.opponent_roster.get(""creatures"")",待核对
+BRANCH:nrc_platform/platform.py:647:false,code_branch,false,T11,nrc_platform/platform.py,647,FILE:nrc_platform/platform.py,"not battle.own_roster.get(""creatures"") or not battle.opponent_roster.get(""creatures"")",待核对
+BRANCH:nrc_platform/platform.py:661:true,code_branch,true,T11,nrc_platform/platform.py,661,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:661:false,code_branch,false,T11,nrc_platform/platform.py,661,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:665:body,code_branch,body,T11,nrc_platform/platform.py,665,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:665:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,665,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:674:true,code_branch,true,T11,nrc_platform/platform.py,674,FILE:nrc_platform/platform.py,direct,待核对
+BRANCH:nrc_platform/platform.py:674:false,code_branch,false,T11,nrc_platform/platform.py,674,FILE:nrc_platform/platform.py,direct,待核对
+BRANCH:nrc_platform/platform.py:680:true,code_branch,true,T11,nrc_platform/platform.py,680,FILE:nrc_platform/platform.py,"kind == ""charge""",待核对
+BRANCH:nrc_platform/platform.py:680:false,code_branch,false,T11,nrc_platform/platform.py,680,FILE:nrc_platform/platform.py,"kind == ""charge""",待核对
+BRANCH:nrc_platform/platform.py:698:true,code_branch,true,T11,nrc_platform/platform.py,698,FILE:nrc_platform/platform.py,"isinstance(resonance, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:698:false,code_branch,false,T11,nrc_platform/platform.py,698,FILE:nrc_platform/platform.py,"isinstance(resonance, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:700:true,code_branch,true,T11,nrc_platform/platform.py,700,FILE:nrc_platform/platform.py,resonance,待核对
+BRANCH:nrc_platform/platform.py:700:false,code_branch,false,T11,nrc_platform/platform.py,700,FILE:nrc_platform/platform.py,resonance,待核对
+BRANCH:nrc_platform/platform.py:704:true,code_branch,true,T11,nrc_platform/platform.py,704,FILE:nrc_platform/platform.py,base not in legal,待核对
+BRANCH:nrc_platform/platform.py:704:false,code_branch,false,T11,nrc_platform/platform.py,704,FILE:nrc_platform/platform.py,base not in legal,待核对
+BRANCH:nrc_platform/platform.py:709:true,code_branch,true,T11,nrc_platform/platform.py,709,FILE:nrc_platform/platform.py,"isinstance(state, BattleSession)",待核对
+BRANCH:nrc_platform/platform.py:709:false,code_branch,false,T11,nrc_platform/platform.py,709,FILE:nrc_platform/platform.py,"isinstance(state, BattleSession)",待核对
+BRANCH:nrc_platform/platform.py:711:true,code_branch,true,T11,nrc_platform/platform.py,711,FILE:nrc_platform/platform.py,"isinstance(state, str)",待核对
+BRANCH:nrc_platform/platform.py:711:false,code_branch,false,T11,nrc_platform/platform.py,711,FILE:nrc_platform/platform.py,"isinstance(state, str)",待核对
+BRANCH:nrc_platform/platform.py:729:body,code_branch,body,T11,nrc_platform/platform.py,729,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:729:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,729,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:735:true,code_branch,true,T11,nrc_platform/platform.py,735,FILE:nrc_platform/platform.py,not team,待核对
+BRANCH:nrc_platform/platform.py:735:false,code_branch,false,T11,nrc_platform/platform.py,735,FILE:nrc_platform/platform.py,not team,待核对
+BRANCH:nrc_platform/platform.py:739:true,code_branch,true,T11,nrc_platform/platform.py,739,FILE:nrc_platform/platform.py,not 0 <= active_index < len(creatures),待核对
+BRANCH:nrc_platform/platform.py:739:false,code_branch,false,T11,nrc_platform/platform.py,739,FILE:nrc_platform/platform.py,not 0 <= active_index < len(creatures),待核对
+BRANCH:nrc_platform/platform.py:742:body,code_branch,body,T11,nrc_platform/platform.py,742,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:742:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,742,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:796:true,code_branch,true,T11,nrc_platform/platform.py,796,FILE:nrc_platform/platform.py,"reference.get(""skill_slot"") is not None",待核对
+BRANCH:nrc_platform/platform.py:796:false,code_branch,false,T11,nrc_platform/platform.py,796,FILE:nrc_platform/platform.py,"reference.get(""skill_slot"") is not None",待核对
+BRANCH:nrc_platform/platform.py:805:true,code_branch,true,T11,nrc_platform/platform.py,805,FILE:nrc_platform/platform.py,"text in {str(skill.name), str(getattr(skill, ""skill_id"", """"))}",待核对
+BRANCH:nrc_platform/platform.py:805:false,code_branch,false,T11,nrc_platform/platform.py,805,FILE:nrc_platform/platform.py,"text in {str(skill.name), str(getattr(skill, ""skill_id"", """"))}",待核对
+BRANCH:nrc_platform/platform.py:822:exception,code_branch,exception,T11,nrc_platform/platform.py,822,FILE:nrc_platform/platform.py,ExceptHandler,待核对
+BRANCH:nrc_platform/platform.py:54:exception,code_branch,exception,T11,nrc_platform/platform.py,54,FILE:nrc_platform/platform.py,ExceptHandler,待核对
+BRANCH:nrc_platform/platform.py:79:true,code_branch,true,T11,nrc_platform/platform.py,79,FILE:nrc_platform/platform.py,self.episode,待核对
+BRANCH:nrc_platform/platform.py:79:false,code_branch,false,T11,nrc_platform/platform.py,79,FILE:nrc_platform/platform.py,self.episode,待核对
+BRANCH:nrc_platform/platform.py:84:true,code_branch,true,T11,nrc_platform/platform.py,84,FILE:nrc_platform/platform.py,self.episode,待核对
+BRANCH:nrc_platform/platform.py:84:false,code_branch,false,T11,nrc_platform/platform.py,84,FILE:nrc_platform/platform.py,self.episode,待核对
+BRANCH:nrc_platform/platform.py:94:true,code_branch,true,T11,nrc_platform/platform.py,94,FILE:nrc_platform/platform.py,self.episode,待核对
+BRANCH:nrc_platform/platform.py:94:false,code_branch,false,T11,nrc_platform/platform.py,94,FILE:nrc_platform/platform.py,self.episode,待核对
+BRANCH:nrc_platform/platform.py:129:true,code_branch,true,T11,nrc_platform/platform.py,129,FILE:nrc_platform/platform.py,"isinstance(raw, Sequence) and not isinstance(raw, (str, bytes, bytearray))",待核对
+BRANCH:nrc_platform/platform.py:129:false,code_branch,false,T11,nrc_platform/platform.py,129,FILE:nrc_platform/platform.py,"isinstance(raw, Sequence) and not isinstance(raw, (str, bytes, bytearray))",待核对
+BRANCH:nrc_platform/platform.py:136:true,code_branch,true,T11,nrc_platform/platform.py,136,FILE:nrc_platform/platform.py,creature is None,待核对
+BRANCH:nrc_platform/platform.py:136:false,code_branch,false,T11,nrc_platform/platform.py,136,FILE:nrc_platform/platform.py,creature is None,待核对
+BRANCH:nrc_platform/platform.py:148:true,code_branch,true,T11,nrc_platform/platform.py,148,FILE:nrc_platform/platform.py,not allow_unknown,待核对
+BRANCH:nrc_platform/platform.py:148:false,code_branch,false,T11,nrc_platform/platform.py,148,FILE:nrc_platform/platform.py,not allow_unknown,待核对
+BRANCH:nrc_platform/platform.py:153:true,code_branch,true,T11,nrc_platform/platform.py,153,FILE:nrc_platform/platform.py,not allow_unknown,待核对
+BRANCH:nrc_platform/platform.py:153:false,code_branch,false,T11,nrc_platform/platform.py,153,FILE:nrc_platform/platform.py,not allow_unknown,待核对
+BRANCH:nrc_platform/platform.py:180:true,code_branch,true,T11,nrc_platform/platform.py,180,FILE:nrc_platform/platform.py,mutable,待核对
+BRANCH:nrc_platform/platform.py:180:false,code_branch,false,T11,nrc_platform/platform.py,180,FILE:nrc_platform/platform.py,mutable,待核对
+BRANCH:nrc_platform/platform.py:286:true,code_branch,true,T11,nrc_platform/platform.py,286,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:286:false,code_branch,false,T11,nrc_platform/platform.py,286,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:287:true,code_branch,true,T11,nrc_platform/platform.py,287,FILE:nrc_platform/platform.py,"isinstance(selection, str)",待核对
+BRANCH:nrc_platform/platform.py:287:false,code_branch,false,T11,nrc_platform/platform.py,287,FILE:nrc_platform/platform.py,"isinstance(selection, str)",待核对
+BRANCH:nrc_platform/platform.py:366:true,code_branch,true,T11,nrc_platform/platform.py,366,FILE:nrc_platform/platform.py,not include_damage_preview,待核对
+BRANCH:nrc_platform/platform.py:366:false,code_branch,false,T11,nrc_platform/platform.py,366,FILE:nrc_platform/platform.py,not include_damage_preview,待核对
+BRANCH:nrc_platform/platform.py:392:body,code_branch,body,T11,nrc_platform/platform.py,392,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:392:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,392,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:468:true,code_branch,true,T11,nrc_platform/platform.py,468,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:468:false,code_branch,false,T11,nrc_platform/platform.py,468,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:486:true,code_branch,true,T11,nrc_platform/platform.py,486,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:486:false,code_branch,false,T11,nrc_platform/platform.py,486,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:636:exception,code_branch,exception,T11,nrc_platform/platform.py,636,FILE:nrc_platform/platform.py,ExceptHandler,待核对
+BRANCH:nrc_platform/platform.py:656:exception,code_branch,exception,T11,nrc_platform/platform.py,656,FILE:nrc_platform/platform.py,ExceptHandler,待核对
+BRANCH:nrc_platform/platform.py:667:true,code_branch,true,T11,nrc_platform/platform.py,667,FILE:nrc_platform/platform.py,"player not in required or pending.get(""action_key"") is not None",待核对
+BRANCH:nrc_platform/platform.py:667:false,code_branch,false,T11,nrc_platform/platform.py,667,FILE:nrc_platform/platform.py,"player not in required or pending.get(""action_key"") is not None",待核对
+BRANCH:nrc_platform/platform.py:675:true,code_branch,true,T11,nrc_platform/platform.py,675,FILE:nrc_platform/platform.py,direct not in legal,待核对
+BRANCH:nrc_platform/platform.py:675:false,code_branch,false,T11,nrc_platform/platform.py,675,FILE:nrc_platform/platform.py,direct not in legal,待核对
+BRANCH:nrc_platform/platform.py:682:true,code_branch,true,T11,nrc_platform/platform.py,682,FILE:nrc_platform/platform.py,"kind == ""switch""",待核对
+BRANCH:nrc_platform/platform.py:682:false,code_branch,false,T11,nrc_platform/platform.py,682,FILE:nrc_platform/platform.py,"kind == ""switch""",待核对
+BRANCH:nrc_platform/platform.py:702:true,code_branch,true,T11,nrc_platform/platform.py,702,FILE:nrc_platform/platform.py,match,待核对
+BRANCH:nrc_platform/platform.py:702:false,code_branch,false,T11,nrc_platform/platform.py,702,FILE:nrc_platform/platform.py,match,待核对
+BRANCH:nrc_platform/platform.py:713:true,code_branch,true,T11,nrc_platform/platform.py,713,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:713:false,code_branch,false,T11,nrc_platform/platform.py,713,FILE:nrc_platform/platform.py,battle.episode is None,待核对
+BRANCH:nrc_platform/platform.py:720:true,code_branch,true,T11,nrc_platform/platform.py,720,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:720:false,code_branch,false,T11,nrc_platform/platform.py,720,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:725:true,code_branch,true,T11,nrc_platform/platform.py,725,FILE:nrc_platform/platform.py,turns,待核对
+BRANCH:nrc_platform/platform.py:725:false,code_branch,false,T11,nrc_platform/platform.py,725,FILE:nrc_platform/platform.py,turns,待核对
+BRANCH:nrc_platform/platform.py:730:true,code_branch,true,T11,nrc_platform/platform.py,730,FILE:nrc_platform/platform.py,"event.get(""type"") == ""display_power""",待核对
+BRANCH:nrc_platform/platform.py:730:false,code_branch,false,T11,nrc_platform/platform.py,730,FILE:nrc_platform/platform.py,"event.get(""type"") == ""display_power""",待核对
+BRANCH:nrc_platform/platform.py:744:true,code_branch,true,T11,nrc_platform/platform.py,744,FILE:nrc_platform/platform.py,not name,待核对
+BRANCH:nrc_platform/platform.py:744:false,code_branch,false,T11,nrc_platform/platform.py,744,FILE:nrc_platform/platform.py,not name,待核对
+BRANCH:nrc_platform/platform.py:764:true,code_branch,true,T11,nrc_platform/platform.py,764,FILE:nrc_platform/platform.py,"value.get(""known"") and value.get(""exists"", True)",待核对
+BRANCH:nrc_platform/platform.py:764:false,code_branch,false,T11,nrc_platform/platform.py,764,FILE:nrc_platform/platform.py,"value.get(""known"") and value.get(""exists"", True)",待核对
+BRANCH:nrc_platform/platform.py:135:true,code_branch,true,T11,nrc_platform/platform.py,135,FILE:nrc_platform/platform.py,"isinstance(item, str)",待核对
+BRANCH:nrc_platform/platform.py:135:false,code_branch,false,T11,nrc_platform/platform.py,135,FILE:nrc_platform/platform.py,"isinstance(item, str)",待核对
+BRANCH:nrc_platform/platform.py:185:exception,code_branch,exception,T11,nrc_platform/platform.py,185,FILE:nrc_platform/platform.py,ExceptHandler,待核对
+BRANCH:nrc_platform/platform.py:226:true,code_branch,true,T11,nrc_platform/platform.py,226,FILE:nrc_platform/platform.py,seed is not None,待核对
+BRANCH:nrc_platform/platform.py:226:false,code_branch,false,T11,nrc_platform/platform.py,226,FILE:nrc_platform/platform.py,seed is not None,待核对
+BRANCH:nrc_platform/platform.py:292:true,code_branch,true,T11,nrc_platform/platform.py,292,FILE:nrc_platform/platform.py,item == 0,待核对
+BRANCH:nrc_platform/platform.py:292:false,code_branch,false,T11,nrc_platform/platform.py,292,FILE:nrc_platform/platform.py,item == 0,待核对
+BRANCH:nrc_platform/platform.py:350:true,code_branch,true,T11,nrc_platform/platform.py,350,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:350:false,code_branch,false,T11,nrc_platform/platform.py,350,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:361:true,code_branch,true,T11,nrc_platform/platform.py,361,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:361:false,code_branch,false,T11,nrc_platform/platform.py,361,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:393:true,code_branch,true,T11,nrc_platform/platform.py,393,FILE:nrc_platform/platform.py,skill.category not in DAMAGE_CATEGORIES or skill.power <= 0,待核对
+BRANCH:nrc_platform/platform.py:393:false,code_branch,false,T11,nrc_platform/platform.py,393,FILE:nrc_platform/platform.py,skill.category not in DAMAGE_CATEGORIES or skill.power <= 0,待核对
+BRANCH:nrc_platform/platform.py:397:true,code_branch,true,T11,nrc_platform/platform.py,397,FILE:nrc_platform/platform.py,"best is None or RELATION_RANK.get(indicator, 0) > RELATION_RANK.get(best[""indicator""], 0)",待核对
+BRANCH:nrc_platform/platform.py:397:false,code_branch,false,T11,nrc_platform/platform.py,397,FILE:nrc_platform/platform.py,"best is None or RELATION_RANK.get(indicator, 0) > RELATION_RANK.get(best[""indicator""], 0)",待核对
+BRANCH:nrc_platform/platform.py:557:true,code_branch,true,T11,nrc_platform/platform.py,557,FILE:nrc_platform/platform.py,"code == ""a""",待核对
+BRANCH:nrc_platform/platform.py:557:false,code_branch,false,T11,nrc_platform/platform.py,557,FILE:nrc_platform/platform.py,"code == ""a""",待核对
+BRANCH:nrc_platform/platform.py:666:true,code_branch,true,T11,nrc_platform/platform.py,666,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:666:false,code_branch,false,T11,nrc_platform/platform.py,666,FILE:nrc_platform/platform.py,"side == ""own""",待核对
+BRANCH:nrc_platform/platform.py:684:true,code_branch,true,T11,nrc_platform/platform.py,684,FILE:nrc_platform/platform.py,"kind == ""skill""",待核对
+BRANCH:nrc_platform/platform.py:684:false,code_branch,false,T11,nrc_platform/platform.py,684,FILE:nrc_platform/platform.py,"kind == ""skill""",待核对
+BRANCH:nrc_platform/platform.py:699:true,code_branch,true,T11,nrc_platform/platform.py,699,FILE:nrc_platform/platform.py,"resonance.get(""enabled"", True)",待核对
+BRANCH:nrc_platform/platform.py:699:false,code_branch,false,T11,nrc_platform/platform.py,699,FILE:nrc_platform/platform.py,"resonance.get(""enabled"", True)",待核对
+BRANCH:nrc_platform/platform.py:743:true,code_branch,true,T11,nrc_platform/platform.py,743,FILE:nrc_platform/platform.py,"isinstance(raw, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:743:false,code_branch,false,T11,nrc_platform/platform.py,743,FILE:nrc_platform/platform.py,"isinstance(raw, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:135:true,code_branch,true,T11,nrc_platform/platform.py,135,FILE:nrc_platform/platform.py,"isinstance(item, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:135:false,code_branch,false,T11,nrc_platform/platform.py,135,FILE:nrc_platform/platform.py,"isinstance(item, Mapping)",待核对
+BRANCH:nrc_platform/platform.py:182:true,code_branch,true,T11,nrc_platform/platform.py,182,FILE:nrc_platform/platform.py,battle.episode,待核对
+BRANCH:nrc_platform/platform.py:182:false,code_branch,false,T11,nrc_platform/platform.py,182,FILE:nrc_platform/platform.py,battle.episode,待核对
+BRANCH:nrc_platform/platform.py:186:true,code_branch,true,T11,nrc_platform/platform.py,186,FILE:nrc_platform/platform.py,before is not None,待核对
+BRANCH:nrc_platform/platform.py:186:false,code_branch,false,T11,nrc_platform/platform.py,186,FILE:nrc_platform/platform.py,before is not None,待核对
+BRANCH:nrc_platform/platform.py:262:true,code_branch,true,T11,nrc_platform/platform.py,262,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:262:false,code_branch,false,T11,nrc_platform/platform.py,262,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:265:true,code_branch,true,T11,nrc_platform/platform.py,265,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:265:false,code_branch,false,T11,nrc_platform/platform.py,265,FILE:nrc_platform/platform.py,battle.episode is not None,待核对
+BRANCH:nrc_platform/platform.py:450:true,code_branch,true,T11,nrc_platform/platform.py,450,FILE:nrc_platform/platform.py,nature_known or not stats_input,待核对
+BRANCH:nrc_platform/platform.py:450:false,code_branch,false,T11,nrc_platform/platform.py,450,FILE:nrc_platform/platform.py,nature_known or not stats_input,待核对
+BRANCH:nrc_platform/platform.py:451:true,code_branch,true,T11,nrc_platform/platform.py,451,FILE:nrc_platform/platform.py,individual_values_known,待核对
+BRANCH:nrc_platform/platform.py:451:false,code_branch,false,T11,nrc_platform/platform.py,451,FILE:nrc_platform/platform.py,individual_values_known,待核对
+BRANCH:nrc_platform/platform.py:686:true,code_branch,true,T11,nrc_platform/platform.py,686,FILE:nrc_platform/platform.py,slot is None,待核对
+BRANCH:nrc_platform/platform.py:686:false,code_branch,false,T11,nrc_platform/platform.py,686,FILE:nrc_platform/platform.py,slot is None,待核对
+BRANCH:nrc_platform/platform.py:689:true,code_branch,true,T11,nrc_platform/platform.py,689,FILE:nrc_platform/platform.py,slot is None,待核对
+BRANCH:nrc_platform/platform.py:689:false,code_branch,false,T11,nrc_platform/platform.py,689,FILE:nrc_platform/platform.py,slot is None,待核对
+BRANCH:nrc_platform/platform.py:693:true,code_branch,true,T11,nrc_platform/platform.py,693,FILE:nrc_platform/platform.py,choice is not None,待核对
+BRANCH:nrc_platform/platform.py:693:false,code_branch,false,T11,nrc_platform/platform.py,693,FILE:nrc_platform/platform.py,choice is not None,待核对
+BRANCH:nrc_platform/platform.py:187:body,code_branch,body,T11,nrc_platform/platform.py,187,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:187:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/platform.py,187,FILE:nrc_platform/platform.py,For,待核对
+BRANCH:nrc_platform/platform.py:308:true,code_branch,true,T11,nrc_platform/platform.py,308,FILE:nrc_platform/platform.py,player == 0,待核对
+BRANCH:nrc_platform/platform.py:308:false,code_branch,false,T11,nrc_platform/platform.py,308,FILE:nrc_platform/platform.py,player == 0,待核对
+BRANCH:nrc_platform/platform.py:336:true,code_branch,true,T11,nrc_platform/platform.py,336,FILE:nrc_platform/platform.py,item == 0,待核对
+BRANCH:nrc_platform/platform.py:336:false,code_branch,false,T11,nrc_platform/platform.py,336,FILE:nrc_platform/platform.py,item == 0,待核对
+BRANCH:nrc_platform/platform.py:449:true,code_branch,true,T11,nrc_platform/platform.py,449,FILE:nrc_platform/platform.py,single_hp_input,待核对
+BRANCH:nrc_platform/platform.py:449:false,code_branch,false,T11,nrc_platform/platform.py,449,FILE:nrc_platform/platform.py,single_hp_input,待核对
+BRANCH:nrc_platform/platform.py:449:true,code_branch,true,T11,nrc_platform/platform.py,449,FILE:nrc_platform/platform.py,stats_input,待核对
+BRANCH:nrc_platform/platform.py:449:false,code_branch,false,T11,nrc_platform/platform.py,449,FILE:nrc_platform/platform.py,stats_input,待核对
+BRANCH:nrc_platform/platform.py:688:true,code_branch,true,T11,nrc_platform/platform.py,688,FILE:nrc_platform/platform.py,player == 0,待核对
+BRANCH:nrc_platform/platform.py:688:false,code_branch,false,T11,nrc_platform/platform.py,688,FILE:nrc_platform/platform.py,player == 0,待核对
+FILE:nrc_platform/README.md,file,nrc_platform/README.md,T11,nrc_platform/README.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_platform/rooms.py,file,nrc_platform/rooms.py,T11,nrc_platform/rooms.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_platform/rooms.py:19:_swap_team_code,code_object,_swap_team_code,T11,nrc_platform/rooms.py,19,FILE:nrc_platform/rooms.py,把核心队伍编号转换为当前玩家视角。,待核对
+CODE:nrc_platform/rooms.py:40:_visible_events,code_object,_visible_events,T11,nrc_platform/rooms.py,40,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:73:_visible_event_count,code_object,_visible_event_count,T11,nrc_platform/rooms.py,73,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:76:_selection_event,code_object,_selection_event,T11,nrc_platform/rooms.py,76,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:95:_public_summary,code_object,_public_summary,T11,nrc_platform/rooms.py,95,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:118:_base_name,code_object,_base_name,T11,nrc_platform/rooms.py,118,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:121:_pinyin,code_object,_pinyin,T11,nrc_platform/rooms.py,121,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:125:_distribution_options,code_object,_distribution_options,T11,nrc_platform/rooms.py,125,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:129:_customization_options,code_object,_customization_options,T11,nrc_platform/rooms.py,129,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:150:_catalog_index,code_object,_catalog_index,T11,nrc_platform/rooms.py,150,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:163:_resolve_record,code_object,_resolve_record,T11,nrc_platform/rooms.py,163,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:179:_creature_preview,code_object,_creature_preview,T11,nrc_platform/rooms.py,179,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:185:_normalize_roster,code_object,_normalize_roster,T11,nrc_platform/rooms.py,185,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+CODE:nrc_platform/rooms.py:210:_room_operation,code_object,_room_operation,T11,nrc_platform/rooms.py,210,FILE:nrc_platform/rooms.py,让房间准备、核心推进和展示事件共用同一事务锁。,待核对
+CODE:nrc_platform/rooms.py:233:RoomService,code_object,RoomService,T11,nrc_platform/rooms.py,233,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+BRANCH:nrc_platform/rooms.py:21:true,code_branch,true,T11,nrc_platform/rooms.py,21,FILE:nrc_platform/rooms.py,side != 'opponent',待核对
+BRANCH:nrc_platform/rooms.py:21:false,code_branch,false,T11,nrc_platform/rooms.py,21,FILE:nrc_platform/rooms.py,side != 'opponent',待核对
+BRANCH:nrc_platform/rooms.py:23:true,code_branch,true,T11,nrc_platform/rooms.py,23,FILE:nrc_platform/rooms.py,"event.get('team') in {'a', 'b'}",待核对
+BRANCH:nrc_platform/rooms.py:23:false,code_branch,false,T11,nrc_platform/rooms.py,23,FILE:nrc_platform/rooms.py,"event.get('team') in {'a', 'b'}",待核对
+BRANCH:nrc_platform/rooms.py:25:body,code_branch,body,T11,nrc_platform/rooms.py,25,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:25:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,25,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:28:body,code_branch,body,T11,nrc_platform/rooms.py,28,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:28:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,28,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:31:body,code_branch,body,T11,nrc_platform/rooms.py,31,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:31:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,31,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:35:body,code_branch,body,T11,nrc_platform/rooms.py,35,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:35:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,35,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:42:body,code_branch,body,T11,nrc_platform/rooms.py,42,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:42:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,42,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:104:true,code_branch,true,T11,nrc_platform/rooms.py,104,FILE:nrc_platform/rooms.py,own_side and winner is not None,待核对
+BRANCH:nrc_platform/rooms.py:104:false,code_branch,false,T11,nrc_platform/rooms.py,104,FILE:nrc_platform/rooms.py,own_side and winner is not None,待核对
+BRANCH:nrc_platform/rooms.py:106:true,code_branch,true,T11,nrc_platform/rooms.py,106,FILE:nrc_platform/rooms.py,session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:106:false,code_branch,false,T11,nrc_platform/rooms.py,106,FILE:nrc_platform/rooms.py,session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:133:true,code_branch,true,T11,nrc_platform/rooms.py,133,FILE:nrc_platform/rooms.py,not nature_rows,待核对
+BRANCH:nrc_platform/rooms.py:133:false,code_branch,false,T11,nrc_platform/rooms.py,133,FILE:nrc_platform/rooms.py,not nature_rows,待核对
+BRANCH:nrc_platform/rooms.py:135:true,code_branch,true,T11,nrc_platform/rooms.py,135,FILE:nrc_platform/rooms.py,not bloodline_rows,待核对
+BRANCH:nrc_platform/rooms.py:135:false,code_branch,false,T11,nrc_platform/rooms.py,135,FILE:nrc_platform/rooms.py,not bloodline_rows,待核对
+CODE:nrc_platform/rooms.py:140:enrich,code_object,enrich,T11,nrc_platform/rooms.py,140,FILE:nrc_platform/rooms.py,无描述字符串,待核对
+BRANCH:nrc_platform/rooms.py:153:body,code_branch,body,T11,nrc_platform/rooms.py,153,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:153:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,153,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:158:body,code_branch,body,T11,nrc_platform/rooms.py,158,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:158:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,158,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:166:true,code_branch,true,T11,nrc_platform/rooms.py,166,FILE:nrc_platform/rooms.py,direct,待核对
+BRANCH:nrc_platform/rooms.py:166:false,code_branch,false,T11,nrc_platform/rooms.py,166,FILE:nrc_platform/rooms.py,direct,待核对
+BRANCH:nrc_platform/rooms.py:170:true,code_branch,true,T11,nrc_platform/rooms.py,170,FILE:nrc_platform/rooms.py,direct,待核对
+BRANCH:nrc_platform/rooms.py:170:false,code_branch,false,T11,nrc_platform/rooms.py,170,FILE:nrc_platform/rooms.py,direct,待核对
+BRANCH:nrc_platform/rooms.py:174:true,code_branch,true,T11,nrc_platform/rooms.py,174,FILE:nrc_platform/rooms.py,direct,待核对
+BRANCH:nrc_platform/rooms.py:174:false,code_branch,false,T11,nrc_platform/rooms.py,174,FILE:nrc_platform/rooms.py,direct,待核对
+BRANCH:nrc_platform/rooms.py:186:true,code_branch,true,T11,nrc_platform/rooms.py,186,FILE:nrc_platform/rooms.py,"not isinstance(raw, list)",待核对
+BRANCH:nrc_platform/rooms.py:186:false,code_branch,false,T11,nrc_platform/rooms.py,186,FILE:nrc_platform/rooms.py,"not isinstance(raw, list)",待核对
+BRANCH:nrc_platform/rooms.py:189:body,code_branch,body,T11,nrc_platform/rooms.py,189,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:189:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,189,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:206:true,code_branch,true,T11,nrc_platform/rooms.py,206,FILE:nrc_platform/rooms.py,not result and (not allow_empty),待核对
+BRANCH:nrc_platform/rooms.py:206:false,code_branch,false,T11,nrc_platform/rooms.py,206,FILE:nrc_platform/rooms.py,not result and (not allow_empty),待核对
+CODE:nrc_platform/rooms.py:214:call,code_object,call,T11,nrc_platform/rooms.py,214,FILE:nrc_platform/rooms.py,执行操作并在写入失败时恢复整场状态。,待核对
+CODE:nrc_platform/rooms.py:236:__init__,code_object,__init__,T11,nrc_platform/rooms.py,236,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:242:_room,code_object,_room,T11,nrc_platform/rooms.py,242,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:253:_member,code_object,_member,T11,nrc_platform/rooms.py,253,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:260:catalog_index,code_object,catalog_index,T11,nrc_platform/rooms.py,260,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:266:catalog,code_object,catalog,T11,nrc_platform/rooms.py,266,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:275:pokemon_detail,code_object,pokemon_detail,T11,nrc_platform/rooms.py,275,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:282:pokemon_preview,code_object,pokemon_preview,T11,nrc_platform/rooms.py,282,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:294:create_battle,code_object,create_battle,T11,nrc_platform/rooms.py,294,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:305:join_battle,code_object,join_battle,T11,nrc_platform/rooms.py,305,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:320:battle_summary,code_object,battle_summary,T11,nrc_platform/rooms.py,320,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:327:opponent_roster,code_object,opponent_roster,T11,nrc_platform/rooms.py,327,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:343:set_rosters,code_object,set_rosters,T11,nrc_platform/rooms.py,343,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:373:display,code_object,display,T11,nrc_platform/rooms.py,373,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:387:matchups,code_object,matchups,T11,nrc_platform/rooms.py,387,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:395:actions,code_object,actions,T11,nrc_platform/rooms.py,395,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:403:public_state,code_object,public_state,T11,nrc_platform/rooms.py,403,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:412:operation,code_object,operation,T11,nrc_platform/rooms.py,412,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:425:battle_events,code_object,battle_events,T11,nrc_platform/rooms.py,425,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+CODE:nrc_platform/rooms.py:436:select_action,code_object,select_action,T11,nrc_platform/rooms.py,436,FILE:nrc_platform/rooms.py,双人房间管理与展示适配。,待核对
+BRANCH:nrc_platform/rooms.py:26:true,code_branch,true,T11,nrc_platform/rooms.py,26,FILE:nrc_platform/rooms.py,"event.get(key) in {'a', 'b'}",待核对
+BRANCH:nrc_platform/rooms.py:26:false,code_branch,false,T11,nrc_platform/rooms.py,26,FILE:nrc_platform/rooms.py,"event.get(key) in {'a', 'b'}",待核对
+BRANCH:nrc_platform/rooms.py:29:true,code_branch,true,T11,nrc_platform/rooms.py,29,FILE:nrc_platform/rooms.py,"change.get('team') in {'a', 'b'}",待核对
+BRANCH:nrc_platform/rooms.py:29:false,code_branch,false,T11,nrc_platform/rooms.py,29,FILE:nrc_platform/rooms.py,"change.get('team') in {'a', 'b'}",待核对
+BRANCH:nrc_platform/rooms.py:33:true,code_branch,true,T11,nrc_platform/rooms.py,33,FILE:nrc_platform/rooms.py,"isinstance(value, dict) and 'a' in value and ('b' in value)",待核对
+BRANCH:nrc_platform/rooms.py:33:false,code_branch,false,T11,nrc_platform/rooms.py,33,FILE:nrc_platform/rooms.py,"isinstance(value, dict) and 'a' in value and ('b' in value)",待核对
+BRANCH:nrc_platform/rooms.py:36:true,code_branch,true,T11,nrc_platform/rooms.py,36,FILE:nrc_platform/rooms.py,"isinstance(event.get(key), dict)",待核对
+BRANCH:nrc_platform/rooms.py:36:false,code_branch,false,T11,nrc_platform/rooms.py,36,FILE:nrc_platform/rooms.py,"isinstance(event.get(key), dict)",待核对
+BRANCH:nrc_platform/rooms.py:44:body,code_branch,body,T11,nrc_platform/rooms.py,44,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:44:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,44,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:83:true,code_branch,true,T11,nrc_platform/rooms.py,83,FILE:nrc_platform/rooms.py,primary.get('skill_name'),待核对
+BRANCH:nrc_platform/rooms.py:83:false,code_branch,false,T11,nrc_platform/rooms.py,83,FILE:nrc_platform/rooms.py,primary.get('skill_name'),待核对
+BRANCH:nrc_platform/rooms.py:85:true,code_branch,true,T11,nrc_platform/rooms.py,85,FILE:nrc_platform/rooms.py,primary.get('switch_index') is not None,待核对
+BRANCH:nrc_platform/rooms.py:85:false,code_branch,false,T11,nrc_platform/rooms.py,85,FILE:nrc_platform/rooms.py,primary.get('switch_index') is not None,待核对
+BRANCH:nrc_platform/rooms.py:89:true,code_branch,true,T11,nrc_platform/rooms.py,89,FILE:nrc_platform/rooms.py,'|resonance=' in action_key,待核对
+BRANCH:nrc_platform/rooms.py:89:false,code_branch,false,T11,nrc_platform/rooms.py,89,FILE:nrc_platform/rooms.py,'|resonance=' in action_key,待核对
+BRANCH:nrc_platform/rooms.py:91:exception,code_branch,exception,T11,nrc_platform/rooms.py,91,FILE:nrc_platform/rooms.py,ExceptHandler,待核对
+BRANCH:nrc_platform/rooms.py:102:true,code_branch,true,T11,nrc_platform/rooms.py,102,FILE:nrc_platform/rooms.py,"side in {'own', 'opponent'}",待核对
+BRANCH:nrc_platform/rooms.py:102:false,code_branch,false,T11,nrc_platform/rooms.py,102,FILE:nrc_platform/rooms.py,"side in {'own', 'opponent'}",待核对
+BRANCH:nrc_platform/rooms.py:108:true,code_branch,true,T11,nrc_platform/rooms.py,108,FILE:nrc_platform/rooms.py,len(players) < 2,待核对
+BRANCH:nrc_platform/rooms.py:108:false,code_branch,false,T11,nrc_platform/rooms.py,108,FILE:nrc_platform/rooms.py,len(players) < 2,待核对
+BRANCH:nrc_platform/rooms.py:142:body,code_branch,body,T11,nrc_platform/rooms.py,142,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:142:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,142,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:190:true,code_branch,true,T11,nrc_platform/rooms.py,190,FILE:nrc_platform/rooms.py,"isinstance(item, str)",待核对
+BRANCH:nrc_platform/rooms.py:190:false,code_branch,false,T11,nrc_platform/rooms.py,190,FILE:nrc_platform/rooms.py,"isinstance(item, str)",待核对
+BRANCH:nrc_platform/rooms.py:192:true,code_branch,true,T11,nrc_platform/rooms.py,192,FILE:nrc_platform/rooms.py,"not isinstance(item, dict)",待核对
+BRANCH:nrc_platform/rooms.py:192:false,code_branch,false,T11,nrc_platform/rooms.py,192,FILE:nrc_platform/rooms.py,"not isinstance(item, dict)",待核对
+BRANCH:nrc_platform/rooms.py:196:true,code_branch,true,T11,nrc_platform/rooms.py,196,FILE:nrc_platform/rooms.py,record is None,待核对
+BRANCH:nrc_platform/rooms.py:196:false,code_branch,false,T11,nrc_platform/rooms.py,196,FILE:nrc_platform/rooms.py,record is None,待核对
+BRANCH:nrc_platform/rooms.py:201:true,code_branch,true,T11,nrc_platform/rooms.py,201,FILE:nrc_platform/rooms.py,len(skill_names) < 4,待核对
+BRANCH:nrc_platform/rooms.py:201:false,code_branch,false,T11,nrc_platform/rooms.py,201,FILE:nrc_platform/rooms.py,len(skill_names) < 4,待核对
+BRANCH:nrc_platform/rooms.py:244:true,code_branch,true,T11,nrc_platform/rooms.py,244,FILE:nrc_platform/rooms.py,battle_id not in self.rooms,待核对
+BRANCH:nrc_platform/rooms.py:244:false,code_branch,false,T11,nrc_platform/rooms.py,244,FILE:nrc_platform/rooms.py,battle_id not in self.rooms,待核对
+BRANCH:nrc_platform/rooms.py:249:true,code_branch,true,T11,nrc_platform/rooms.py,249,FILE:nrc_platform/rooms.py,not room['initialized'] and any(room['roster_submitted'].values()),待核对
+BRANCH:nrc_platform/rooms.py:249:false,code_branch,false,T11,nrc_platform/rooms.py,249,FILE:nrc_platform/rooms.py,not room['initialized'] and any(room['roster_submitted'].values()),待核对
+BRANCH:nrc_platform/rooms.py:256:true,code_branch,true,T11,nrc_platform/rooms.py,256,FILE:nrc_platform/rooms.py,side is None,待核对
+BRANCH:nrc_platform/rooms.py:256:false,code_branch,false,T11,nrc_platform/rooms.py,256,FILE:nrc_platform/rooms.py,side is None,待核对
+BRANCH:nrc_platform/rooms.py:262:true,code_branch,true,T11,nrc_platform/rooms.py,262,FILE:nrc_platform/rooms.py,self.catalog_cache is None,待核对
+BRANCH:nrc_platform/rooms.py:262:false,code_branch,false,T11,nrc_platform/rooms.py,262,FILE:nrc_platform/rooms.py,self.catalog_cache is None,待核对
+BRANCH:nrc_platform/rooms.py:271:true,code_branch,true,T11,nrc_platform/rooms.py,271,FILE:nrc_platform/rooms.py,not text,待核对
+BRANCH:nrc_platform/rooms.py:271:false,code_branch,false,T11,nrc_platform/rooms.py,271,FILE:nrc_platform/rooms.py,not text,待核对
+BRANCH:nrc_platform/rooms.py:278:true,code_branch,true,T11,nrc_platform/rooms.py,278,FILE:nrc_platform/rooms.py,record is None,待核对
+BRANCH:nrc_platform/rooms.py:278:false,code_branch,false,T11,nrc_platform/rooms.py,278,FILE:nrc_platform/rooms.py,record is None,待核对
+BRANCH:nrc_platform/rooms.py:286:true,code_branch,true,T11,nrc_platform/rooms.py,286,FILE:nrc_platform/rooms.py,record is None,待核对
+BRANCH:nrc_platform/rooms.py:286:false,code_branch,false,T11,nrc_platform/rooms.py,286,FILE:nrc_platform/rooms.py,record is None,待核对
+BRANCH:nrc_platform/rooms.py:309:true,code_branch,true,T11,nrc_platform/rooms.py,309,FILE:nrc_platform/rooms.py,current,待核对
+BRANCH:nrc_platform/rooms.py:309:false,code_branch,false,T11,nrc_platform/rooms.py,309,FILE:nrc_platform/rooms.py,current,待核对
+BRANCH:nrc_platform/rooms.py:313:true,code_branch,true,T11,nrc_platform/rooms.py,313,FILE:nrc_platform/rooms.py,len(players) >= 2,待核对
+BRANCH:nrc_platform/rooms.py:313:false,code_branch,false,T11,nrc_platform/rooms.py,313,FILE:nrc_platform/rooms.py,len(players) >= 2,待核对
+BRANCH:nrc_platform/rooms.py:331:true,code_branch,true,T11,nrc_platform/rooms.py,331,FILE:nrc_platform/rooms.py,not current,待核对
+BRANCH:nrc_platform/rooms.py:331:false,code_branch,false,T11,nrc_platform/rooms.py,331,FILE:nrc_platform/rooms.py,not current,待核对
+BRANCH:nrc_platform/rooms.py:337:true,code_branch,true,T11,nrc_platform/rooms.py,337,FILE:nrc_platform/rooms.py,not session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:337:false,code_branch,false,T11,nrc_platform/rooms.py,337,FILE:nrc_platform/rooms.py,not session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:347:true,code_branch,true,T11,nrc_platform/rooms.py,347,FILE:nrc_platform/rooms.py,'teams' in payload or 'side' in payload,待核对
+BRANCH:nrc_platform/rooms.py:347:false,code_branch,false,T11,nrc_platform/rooms.py,347,FILE:nrc_platform/rooms.py,'teams' in payload or 'side' in payload,待核对
+BRANCH:nrc_platform/rooms.py:349:true,code_branch,true,T11,nrc_platform/rooms.py,349,FILE:nrc_platform/rooms.py,session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:349:false,code_branch,false,T11,nrc_platform/rooms.py,349,FILE:nrc_platform/rooms.py,session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:355:true,code_branch,true,T11,nrc_platform/rooms.py,355,FILE:nrc_platform/rooms.py,active_index < 0 or active_index >= len(roster),待核对
+BRANCH:nrc_platform/rooms.py:355:false,code_branch,false,T11,nrc_platform/rooms.py,355,FILE:nrc_platform/rooms.py,active_index < 0 or active_index >= len(roster),待核对
+BRANCH:nrc_platform/rooms.py:362:true,code_branch,true,T11,nrc_platform/rooms.py,362,FILE:nrc_platform/rooms.py,all(session['confirmed'].values()) and all(session['teams'].values()),待核对
+BRANCH:nrc_platform/rooms.py:362:false,code_branch,false,T11,nrc_platform/rooms.py,362,FILE:nrc_platform/rooms.py,all(session['confirmed'].values()) and all(session['teams'].values()),待核对
+BRANCH:nrc_platform/rooms.py:379:body,code_branch,body,T11,nrc_platform/rooms.py,379,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:379:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,379,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:416:true,code_branch,true,T11,nrc_platform/rooms.py,416,FILE:nrc_platform/rooms.py,not current,待核对
+BRANCH:nrc_platform/rooms.py:416:false,code_branch,false,T11,nrc_platform/rooms.py,416,FILE:nrc_platform/rooms.py,not current,待核对
+BRANCH:nrc_platform/rooms.py:429:true,code_branch,true,T11,nrc_platform/rooms.py,429,FILE:nrc_platform/rooms.py,not current,待核对
+BRANCH:nrc_platform/rooms.py:429:false,code_branch,false,T11,nrc_platform/rooms.py,429,FILE:nrc_platform/rooms.py,not current,待核对
+BRANCH:nrc_platform/rooms.py:441:true,code_branch,true,T11,nrc_platform/rooms.py,441,FILE:nrc_platform/rooms.py,not key,待核对
+BRANCH:nrc_platform/rooms.py:441:false,code_branch,false,T11,nrc_platform/rooms.py,441,FILE:nrc_platform/rooms.py,not key,待核对
+BRANCH:nrc_platform/rooms.py:446:true,code_branch,true,T11,nrc_platform/rooms.py,446,FILE:nrc_platform/rooms.py,response_key in battle.requests,待核对
+BRANCH:nrc_platform/rooms.py:446:false,code_branch,false,T11,nrc_platform/rooms.py,446,FILE:nrc_platform/rooms.py,response_key in battle.requests,待核对
+BRANCH:nrc_platform/rooms.py:451:true,code_branch,true,T11,nrc_platform/rooms.py,451,FILE:nrc_platform/rooms.py,not replay,待核对
+BRANCH:nrc_platform/rooms.py:451:false,code_branch,false,T11,nrc_platform/rooms.py,451,FILE:nrc_platform/rooms.py,not replay,待核对
+BRANCH:nrc_platform/rooms.py:463:true,code_branch,true,T11,nrc_platform/rooms.py,463,FILE:nrc_platform/rooms.py,response.get('result'),待核对
+BRANCH:nrc_platform/rooms.py:463:false,code_branch,false,T11,nrc_platform/rooms.py,463,FILE:nrc_platform/rooms.py,response.get('result'),待核对
+BRANCH:nrc_platform/rooms.py:467:true,code_branch,true,T11,nrc_platform/rooms.py,467,FILE:nrc_platform/rooms.py,response.get('winner') is not None and side == 'opponent',待核对
+BRANCH:nrc_platform/rooms.py:467:false,code_branch,false,T11,nrc_platform/rooms.py,467,FILE:nrc_platform/rooms.py,response.get('winner') is not None and side == 'opponent',待核对
+BRANCH:nrc_platform/rooms.py:24:true,code_branch,true,T11,nrc_platform/rooms.py,24,FILE:nrc_platform/rooms.py,event['team'] == 'a',待核对
+BRANCH:nrc_platform/rooms.py:24:false,code_branch,false,T11,nrc_platform/rooms.py,24,FILE:nrc_platform/rooms.py,event['team'] == 'a',待核对
+BRANCH:nrc_platform/rooms.py:45:true,code_branch,true,T11,nrc_platform/rooms.py,45,FILE:nrc_platform/rooms.py,raw.get('type') in HIDDEN_EVENT_TYPES,待核对
+BRANCH:nrc_platform/rooms.py:45:false,code_branch,false,T11,nrc_platform/rooms.py,45,FILE:nrc_platform/rooms.py,raw.get('type') in HIDDEN_EVENT_TYPES,待核对
+BRANCH:nrc_platform/rooms.py:49:true,code_branch,true,T11,nrc_platform/rooms.py,49,FILE:nrc_platform/rooms.py,"event.get('private') and event.get('owner_team', event.get('team')) != 'a'",待核对
+BRANCH:nrc_platform/rooms.py:49:false,code_branch,false,T11,nrc_platform/rooms.py,49,FILE:nrc_platform/rooms.py,"event.get('private') and event.get('owner_team', event.get('team')) != 'a'",待核对
+BRANCH:nrc_platform/rooms.py:51:true,code_branch,true,T11,nrc_platform/rooms.py,51,FILE:nrc_platform/rooms.py,event.get('type') == 'selection',待核对
+BRANCH:nrc_platform/rooms.py:51:false,code_branch,false,T11,nrc_platform/rooms.py,51,FILE:nrc_platform/rooms.py,event.get('type') == 'selection',待核对
+BRANCH:nrc_platform/rooms.py:58:true,code_branch,true,T11,nrc_platform/rooms.py,58,FILE:nrc_platform/rooms.py,event.get('type') == 'state_change',待核对
+BRANCH:nrc_platform/rooms.py:58:false,code_branch,false,T11,nrc_platform/rooms.py,58,FILE:nrc_platform/rooms.py,event.get('type') == 'state_change',待核对
+BRANCH:nrc_platform/rooms.py:62:true,code_branch,true,T11,nrc_platform/rooms.py,62,FILE:nrc_platform/rooms.py,event.get('type') == 'turn',待核对
+BRANCH:nrc_platform/rooms.py:62:false,code_branch,false,T11,nrc_platform/rooms.py,62,FILE:nrc_platform/rooms.py,event.get('type') == 'turn',待核对
+BRANCH:nrc_platform/rooms.py:77:true,code_branch,true,T11,nrc_platform/rooms.py,77,FILE:nrc_platform/rooms.py,side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:77:false,code_branch,false,T11,nrc_platform/rooms.py,77,FILE:nrc_platform/rooms.py,side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:105:true,code_branch,true,T11,nrc_platform/rooms.py,105,FILE:nrc_platform/rooms.py,own_side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:105:false,code_branch,false,T11,nrc_platform/rooms.py,105,FILE:nrc_platform/rooms.py,own_side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:110:true,code_branch,true,T11,nrc_platform/rooms.py,110,FILE:nrc_platform/rooms.py,own_side and (not submitted.get(own_side)),待核对
+BRANCH:nrc_platform/rooms.py:110:false,code_branch,false,T11,nrc_platform/rooms.py,110,FILE:nrc_platform/rooms.py,own_side and (not submitted.get(own_side)),待核对
+BRANCH:nrc_platform/rooms.py:116:true,code_branch,true,T11,nrc_platform/rooms.py,116,FILE:nrc_platform/rooms.py,session.get('terminal'),待核对
+BRANCH:nrc_platform/rooms.py:116:false,code_branch,false,T11,nrc_platform/rooms.py,116,FILE:nrc_platform/rooms.py,session.get('terminal'),待核对
+BRANCH:nrc_platform/rooms.py:116:true,code_branch,true,T11,nrc_platform/rooms.py,116,FILE:nrc_platform/rooms.py,own_side,待核对
+BRANCH:nrc_platform/rooms.py:116:false,code_branch,false,T11,nrc_platform/rooms.py,116,FILE:nrc_platform/rooms.py,own_side,待核对
+BRANCH:nrc_platform/rooms.py:219:true,code_branch,true,T11,nrc_platform/rooms.py,219,FILE:nrc_platform/rooms.py,mutable,待核对
+BRANCH:nrc_platform/rooms.py:219:false,code_branch,false,T11,nrc_platform/rooms.py,219,FILE:nrc_platform/rooms.py,mutable,待核对
+BRANCH:nrc_platform/rooms.py:308:true,code_branch,true,T11,nrc_platform/rooms.py,308,FILE:nrc_platform/rooms.py,identity in session['players'],待核对
+BRANCH:nrc_platform/rooms.py:308:false,code_branch,false,T11,nrc_platform/rooms.py,308,FILE:nrc_platform/rooms.py,identity in session['players'],待核对
+BRANCH:nrc_platform/rooms.py:334:true,code_branch,true,T11,nrc_platform/rooms.py,334,FILE:nrc_platform/rooms.py,side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:334:false,code_branch,false,T11,nrc_platform/rooms.py,334,FILE:nrc_platform/rooms.py,side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:366:true,code_branch,true,T11,nrc_platform/rooms.py,366,FILE:nrc_platform/rooms.py,initialized,待核对
+BRANCH:nrc_platform/rooms.py:366:false,code_branch,false,T11,nrc_platform/rooms.py,366,FILE:nrc_platform/rooms.py,initialized,待核对
+BRANCH:nrc_platform/rooms.py:419:true,code_branch,true,T11,nrc_platform/rooms.py,419,FILE:nrc_platform/rooms.py,side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:419:false,code_branch,false,T11,nrc_platform/rooms.py,419,FILE:nrc_platform/rooms.py,side == 'own',待核对
+BRANCH:nrc_platform/rooms.py:449:true,code_branch,true,T11,nrc_platform/rooms.py,449,FILE:nrc_platform/rooms.py,replay,待核对
+BRANCH:nrc_platform/rooms.py:449:false,code_branch,false,T11,nrc_platform/rooms.py,449,FILE:nrc_platform/rooms.py,replay,待核对
+BRANCH:nrc_platform/rooms.py:453:true,code_branch,true,T11,nrc_platform/rooms.py,453,FILE:nrc_platform/rooms.py,result.resolved,待核对
+BRANCH:nrc_platform/rooms.py:453:false,code_branch,false,T11,nrc_platform/rooms.py,453,FILE:nrc_platform/rooms.py,result.resolved,待核对
+BRANCH:nrc_platform/rooms.py:27:true,code_branch,true,T11,nrc_platform/rooms.py,27,FILE:nrc_platform/rooms.py,event[key] == 'a',待核对
+BRANCH:nrc_platform/rooms.py:27:false,code_branch,false,T11,nrc_platform/rooms.py,27,FILE:nrc_platform/rooms.py,event[key] == 'a',待核对
+BRANCH:nrc_platform/rooms.py:30:true,code_branch,true,T11,nrc_platform/rooms.py,30,FILE:nrc_platform/rooms.py,change['team'] == 'a',待核对
+BRANCH:nrc_platform/rooms.py:30:false,code_branch,false,T11,nrc_platform/rooms.py,30,FILE:nrc_platform/rooms.py,change['team'] == 'a',待核对
+BRANCH:nrc_platform/rooms.py:52:true,code_branch,true,T11,nrc_platform/rooms.py,52,FILE:nrc_platform/rooms.py,event.get('team') == 'b',待核对
+BRANCH:nrc_platform/rooms.py:52:false,code_branch,false,T11,nrc_platform/rooms.py,52,FILE:nrc_platform/rooms.py,event.get('team') == 'b',待核对
+BRANCH:nrc_platform/rooms.py:60:true,code_branch,true,T11,nrc_platform/rooms.py,60,FILE:nrc_platform/rooms.py,not event['changes'],待核对
+BRANCH:nrc_platform/rooms.py:60:false,code_branch,false,T11,nrc_platform/rooms.py,60,FILE:nrc_platform/rooms.py,not event['changes'],待核对
+BRANCH:nrc_platform/rooms.py:63:body,code_branch,body,T11,nrc_platform/rooms.py,63,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:63:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,63,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:112:true,code_branch,true,T11,nrc_platform/rooms.py,112,FILE:nrc_platform/rooms.py,own_side and (not confirmed.get(own_side)),待核对
+BRANCH:nrc_platform/rooms.py:112:false,code_branch,false,T11,nrc_platform/rooms.py,112,FILE:nrc_platform/rooms.py,own_side and (not confirmed.get(own_side)),待核对
+BRANCH:nrc_platform/rooms.py:116:true,code_branch,true,T11,nrc_platform/rooms.py,116,FILE:nrc_platform/rooms.py,session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:116:false,code_branch,false,T11,nrc_platform/rooms.py,116,FILE:nrc_platform/rooms.py,session.get('initialized'),待核对
+BRANCH:nrc_platform/rooms.py:200:true,code_branch,true,T11,nrc_platform/rooms.py,200,FILE:nrc_platform/rooms.py,"isinstance(skill, dict)",待核对
+BRANCH:nrc_platform/rooms.py:200:false,code_branch,false,T11,nrc_platform/rooms.py,200,FILE:nrc_platform/rooms.py,"isinstance(skill, dict)",待核对
+BRANCH:nrc_platform/rooms.py:225:exception,code_branch,exception,T11,nrc_platform/rooms.py,225,FILE:nrc_platform/rooms.py,ExceptHandler,待核对
+BRANCH:nrc_platform/rooms.py:269:true,code_branch,true,T11,nrc_platform/rooms.py,269,FILE:nrc_platform/rooms.py,kind == 'pokemon',待核对
+BRANCH:nrc_platform/rooms.py:269:false,code_branch,false,T11,nrc_platform/rooms.py,269,FILE:nrc_platform/rooms.py,kind == 'pokemon',待核对
+BRANCH:nrc_platform/rooms.py:324:true,code_branch,true,T11,nrc_platform/rooms.py,324,FILE:nrc_platform/rooms.py,current,待核对
+BRANCH:nrc_platform/rooms.py:324:false,code_branch,false,T11,nrc_platform/rooms.py,324,FILE:nrc_platform/rooms.py,current,待核对
+BRANCH:nrc_platform/rooms.py:456:true,code_branch,true,T11,nrc_platform/rooms.py,456,FILE:nrc_platform/rooms.py,not status['terminal'],待核对
+BRANCH:nrc_platform/rooms.py:456:false,code_branch,false,T11,nrc_platform/rooms.py,456,FILE:nrc_platform/rooms.py,not status['terminal'],待核对
+BRANCH:nrc_platform/rooms.py:54:body,code_branch,body,T11,nrc_platform/rooms.py,54,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:54:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,54,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:65:true,code_branch,true,T11,nrc_platform/rooms.py,65,FILE:nrc_platform/rooms.py,"isinstance(state, dict)",待核对
+BRANCH:nrc_platform/rooms.py:65:false,code_branch,false,T11,nrc_platform/rooms.py,65,FILE:nrc_platform/rooms.py,"isinstance(state, dict)",待核对
+BRANCH:nrc_platform/rooms.py:155:true,code_branch,true,T11,nrc_platform/rooms.py,155,FILE:nrc_platform/rooms.py,_pinyin(_base_name(name))[1].casefold() == 'bbh',待核对
+BRANCH:nrc_platform/rooms.py:155:false,code_branch,false,T11,nrc_platform/rooms.py,155,FILE:nrc_platform/rooms.py,_pinyin(_base_name(name))[1].casefold() == 'bbh',待核对
+BRANCH:nrc_platform/rooms.py:222:true,code_branch,true,T11,nrc_platform/rooms.py,222,FILE:nrc_platform/rooms.py,battle.episode,待核对
+BRANCH:nrc_platform/rooms.py:222:false,code_branch,false,T11,nrc_platform/rooms.py,222,FILE:nrc_platform/rooms.py,battle.episode,待核对
+BRANCH:nrc_platform/rooms.py:226:true,code_branch,true,T11,nrc_platform/rooms.py,226,FILE:nrc_platform/rooms.py,mutable,待核对
+BRANCH:nrc_platform/rooms.py:226:false,code_branch,false,T11,nrc_platform/rooms.py,226,FILE:nrc_platform/rooms.py,mutable,待核对
+BRANCH:nrc_platform/rooms.py:67:true,code_branch,true,T11,nrc_platform/rooms.py,67,FILE:nrc_platform/rooms.py,"isinstance(actions, dict) and 'b' in actions",待核对
+BRANCH:nrc_platform/rooms.py:67:false,code_branch,false,T11,nrc_platform/rooms.py,67,FILE:nrc_platform/rooms.py,"isinstance(actions, dict) and 'b' in actions",待核对
+BRANCH:nrc_platform/rooms.py:115:true,code_branch,true,T11,nrc_platform/rooms.py,115,FILE:nrc_platform/rooms.py,not all(confirmed.values()),待核对
+BRANCH:nrc_platform/rooms.py:115:false,code_branch,false,T11,nrc_platform/rooms.py,115,FILE:nrc_platform/rooms.py,not all(confirmed.values()),待核对
+BRANCH:nrc_platform/rooms.py:228:body,code_branch,body,T11,nrc_platform/rooms.py,228,FILE:nrc_platform/rooms.py,For,待核对
+BRANCH:nrc_platform/rooms.py:228:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/rooms.py,228,FILE:nrc_platform/rooms.py,For,待核对
+FILE:nrc_platform/STATE.md,file,nrc_platform/STATE.md,T11,nrc_platform/STATE.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_platform/state.py,file,nrc_platform/state.py,T11,nrc_platform/state.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_platform/state.py:42:creature_effects,code_object,creature_effects,T11,nrc_platform/state.py,42,FILE:nrc_platform/state.py,无描述字符串,待核对
+CODE:nrc_platform/state.py:93:normalize_observation,code_object,normalize_observation,T11,nrc_platform/state.py,93,FILE:nrc_platform/state.py,Expose public effects while preserving private loadout information.,待核对
+BRANCH:nrc_platform/state.py:45:body,code_branch,body,T11,nrc_platform/state.py,45,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:45:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,45,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:50:body,code_branch,body,T11,nrc_platform/state.py,50,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:50:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,50,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:69:body,code_branch,body,T11,nrc_platform/state.py,69,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:69:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,69,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:73:body,code_branch,body,T11,nrc_platform/state.py,73,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:73:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,73,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:82:true,code_branch,true,T11,nrc_platform/state.py,82,FILE:nrc_platform/state.py,"status not in {""normal"", ""正常"", ""fainted"", ""力竭""} and not any(s[""name""] == status for s in statuses)",待核对
+BRANCH:nrc_platform/state.py:82:false,code_branch,false,T11,nrc_platform/state.py,82,FILE:nrc_platform/state.py,"status not in {""normal"", ""正常"", ""fainted"", ""力竭""} and not any(s[""name""] == status for s in statuses)",待核对
+BRANCH:nrc_platform/state.py:84:body,code_branch,body,T11,nrc_platform/state.py,84,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:84:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,84,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:99:body,code_branch,body,T11,nrc_platform/state.py,99,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:99:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,99,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:46:body,code_branch,body,T11,nrc_platform/state.py,46,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:46:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,46,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:62:true,code_branch,true,T11,nrc_platform/state.py,62,FILE:nrc_platform/state.py,value,待核对
+BRANCH:nrc_platform/state.py:62:false,code_branch,false,T11,nrc_platform/state.py,62,FILE:nrc_platform/state.py,value,待核对
+BRANCH:nrc_platform/state.py:70:true,code_branch,true,T11,nrc_platform/state.py,70,FILE:nrc_platform/state.py,field in _PUBLIC_SKILL_MODIFIERS and value,待核对
+BRANCH:nrc_platform/state.py:70:false,code_branch,false,T11,nrc_platform/state.py,70,FILE:nrc_platform/state.py,field in _PUBLIC_SKILL_MODIFIERS and value,待核对
+BRANCH:nrc_platform/state.py:74:true,code_branch,true,T11,nrc_platform/state.py,74,FILE:nrc_platform/state.py,"mod.get(""filter"", ""all"") == ""all"" and mod.get(""amount"")",待核对
+BRANCH:nrc_platform/state.py:74:false,code_branch,false,T11,nrc_platform/state.py,74,FILE:nrc_platform/state.py,"mod.get(""filter"", ""all"") == ""all"" and mod.get(""amount"")",待核对
+BRANCH:nrc_platform/state.py:86:true,code_branch,true,T11,nrc_platform/state.py,86,FILE:nrc_platform/state.py,"isinstance(value, (int, float)) and value",待核对
+BRANCH:nrc_platform/state.py:86:false,code_branch,false,T11,nrc_platform/state.py,86,FILE:nrc_platform/state.py,"isinstance(value, (int, float)) and value",待核对
+BRANCH:nrc_platform/state.py:100:body,code_branch,body,T11,nrc_platform/state.py,100,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:100:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,100,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:151:true,code_branch,true,T11,nrc_platform/state.py,151,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:151:false,code_branch,false,T11,nrc_platform/state.py,151,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:152:true,code_branch,true,T11,nrc_platform/state.py,152,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:152:false,code_branch,false,T11,nrc_platform/state.py,152,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:48:true,code_branch,true,T11,nrc_platform/state.py,48,FILE:nrc_platform/state.py,value,待核对
+BRANCH:nrc_platform/state.py:48:false,code_branch,false,T11,nrc_platform/state.py,48,FILE:nrc_platform/state.py,value,待核对
+BRANCH:nrc_platform/state.py:76:true,code_branch,true,T11,nrc_platform/state.py,76,FILE:nrc_platform/state.py,"pokemon.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_platform/state.py:76:false,code_branch,false,T11,nrc_platform/state.py,76,FILE:nrc_platform/state.py,"pokemon.ability_state.get(""cost_invert"")",待核对
+BRANCH:nrc_platform/state.py:78:true,code_branch,true,T11,nrc_platform/state.py,78,FILE:nrc_platform/state.py,"pokemon.ability_state.get(""cost_change_double"")",待核对
+BRANCH:nrc_platform/state.py:78:false,code_branch,false,T11,nrc_platform/state.py,78,FILE:nrc_platform/state.py,"pokemon.ability_state.get(""cost_change_double"")",待核对
+BRANCH:nrc_platform/state.py:102:true,code_branch,true,T11,nrc_platform/state.py,102,FILE:nrc_platform/state.py,not known,待核对
+BRANCH:nrc_platform/state.py:102:false,code_branch,false,T11,nrc_platform/state.py,102,FILE:nrc_platform/state.py,not known,待核对
+BRANCH:nrc_platform/state.py:110:body,code_branch,body,T11,nrc_platform/state.py,110,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:110:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,110,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:116:body,code_branch,body,T11,nrc_platform/state.py,116,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:116:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,116,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:121:body,code_branch,body,T11,nrc_platform/state.py,121,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:121:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,121,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:130:true,code_branch,true,T11,nrc_platform/state.py,130,FILE:nrc_platform/state.py,not private,待核对
+BRANCH:nrc_platform/state.py:130:false,code_branch,false,T11,nrc_platform/state.py,130,FILE:nrc_platform/state.py,not private,待核对
+BRANCH:nrc_platform/state.py:133:true,code_branch,true,T11,nrc_platform/state.py,133,FILE:nrc_platform/state.py,private,待核对
+BRANCH:nrc_platform/state.py:133:false,code_branch,false,T11,nrc_platform/state.py,133,FILE:nrc_platform/state.py,private,待核对
+BRANCH:nrc_platform/state.py:97:true,code_branch,true,T11,nrc_platform/state.py,97,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:97:false,code_branch,false,T11,nrc_platform/state.py,97,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:98:true,code_branch,true,T11,nrc_platform/state.py,98,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:98:false,code_branch,false,T11,nrc_platform/state.py,98,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:111:true,code_branch,true,T11,nrc_platform/state.py,111,FILE:nrc_platform/state.py,field in metadata,待核对
+BRANCH:nrc_platform/state.py:111:false,code_branch,false,T11,nrc_platform/state.py,111,FILE:nrc_platform/state.py,field in metadata,待核对
+BRANCH:nrc_platform/state.py:114:true,code_branch,true,T11,nrc_platform/state.py,114,FILE:nrc_platform/state.py,pokemon.hp,待核对
+BRANCH:nrc_platform/state.py:114:false,code_branch,false,T11,nrc_platform/state.py,114,FILE:nrc_platform/state.py,pokemon.hp,待核对
+BRANCH:nrc_platform/state.py:124:true,code_branch,true,T11,nrc_platform/state.py,124,FILE:nrc_platform/state.py,key in _ABILITY_STATUSES or key in compound_names,待核对
+BRANCH:nrc_platform/state.py:124:false,code_branch,false,T11,nrc_platform/state.py,124,FILE:nrc_platform/state.py,key in _ABILITY_STATUSES or key in compound_names,待核对
+BRANCH:nrc_platform/state.py:131:body,code_branch,body,T11,nrc_platform/state.py,131,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:131:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,131,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:134:body,code_branch,body,T11,nrc_platform/state.py,134,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:134:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,134,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:148:true,code_branch,true,T11,nrc_platform/state.py,148,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:148:false,code_branch,false,T11,nrc_platform/state.py,148,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:149:true,code_branch,true,T11,nrc_platform/state.py,149,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:149:false,code_branch,false,T11,nrc_platform/state.py,149,FILE:nrc_platform/state.py,own_a,待核对
+BRANCH:nrc_platform/state.py:139:true,code_branch,true,T11,nrc_platform/state.py,139,FILE:nrc_platform/state.py,base is not None,待核对
+BRANCH:nrc_platform/state.py:139:false,code_branch,false,T11,nrc_platform/state.py,139,FILE:nrc_platform/state.py,base is not None,待核对
+BRANCH:nrc_platform/state.py:88:true,code_branch,true,T11,nrc_platform/state.py,88,FILE:nrc_platform/state.py,value > 0,待核对
+BRANCH:nrc_platform/state.py:88:false,code_branch,false,T11,nrc_platform/state.py,88,FILE:nrc_platform/state.py,value > 0,待核对
+BRANCH:nrc_platform/state.py:126:true,code_branch,true,T11,nrc_platform/state.py,126,FILE:nrc_platform/state.py,compound,待核对
+BRANCH:nrc_platform/state.py:126:false,code_branch,false,T11,nrc_platform/state.py,126,FILE:nrc_platform/state.py,compound,待核对
+BRANCH:nrc_platform/state.py:142:body,code_branch,body,T11,nrc_platform/state.py,142,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:142:zero_or_exit,code_branch,zero_or_exit,T11,nrc_platform/state.py,142,FILE:nrc_platform/state.py,For,待核对
+BRANCH:nrc_platform/state.py:141:true,code_branch,true,T11,nrc_platform/state.py,141,FILE:nrc_platform/state.py,slot < len(public_deltas),待核对
+BRANCH:nrc_platform/state.py:141:false,code_branch,false,T11,nrc_platform/state.py,141,FILE:nrc_platform/state.py,slot < len(public_deltas),待核对

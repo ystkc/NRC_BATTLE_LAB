@@ -1,0 +1,1218 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:data/nrc_wiki.db,file,data/nrc_wiki.db,T01,data/nrc_wiki.db,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/pokemon_stats.xlsx,file,data/pokemon_stats.xlsx,T01,data/pokemon_stats.xlsx,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/skills.xlsx,file,data/skills.xlsx,T01,data/skills.xlsx,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/blood.csv,file,data/wiki/blood.csv,T01,data/wiki/blood.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/evolutions.csv,file,data/wiki/evolutions.csv,T01,data/wiki/evolutions.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/game_descriptions.csv,file,data/wiki/game_descriptions.csv,T01,data/wiki/game_descriptions.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/nature.csv,file,data/wiki/nature.csv,T01,data/wiki/nature.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/skill.csv,file,data/wiki/skill.csv,T01,data/wiki/skill.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/skills.csv,file,data/wiki/skills.csv,T01,data/wiki/skills.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/spirit_skills.csv,file,data/wiki/spirit_skills.csv,T01,data/wiki/spirit_skills.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/spirits.csv,file,data/wiki/spirits.csv,T01,data/wiki/spirits.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki/talent.csv,file,data/wiki/talent.csv,T01,data/wiki/talent.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/blood.csv,file,data/wiki_staging/blood.csv,T01,data/wiki_staging/blood.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/evolutions.csv,file,data/wiki_staging/evolutions.csv,T01,data/wiki_staging/evolutions.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/game_descriptions.csv,file,data/wiki_staging/game_descriptions.csv,T01,data/wiki_staging/game_descriptions.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/nature.csv,file,data/wiki_staging/nature.csv,T01,data/wiki_staging/nature.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/skill.csv,file,data/wiki_staging/skill.csv,T01,data/wiki_staging/skill.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/skills.csv,file,data/wiki_staging/skills.csv,T01,data/wiki_staging/skills.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/spirit_skills.csv,file,data/wiki_staging/spirit_skills.csv,T01,data/wiki_staging/spirit_skills.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/spirits.csv,file,data/wiki_staging/spirits.csv,T01,data/wiki_staging/spirits.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/wiki_staging/talent.csv,file,data/wiki_staging/talent.csv,T01,data/wiki_staging/talent.csv,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:wiki_crawler/__init__.py,file,wiki_crawler/__init__.py,T01,wiki_crawler/__init__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:wiki_crawler/__main__.py,file,wiki_crawler/__main__.py,T01,wiki_crawler/__main__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+BRANCH:wiki_crawler/__main__.py:4:true,code_branch,true,T01,wiki_crawler/__main__.py,4,FILE:wiki_crawler/__main__.py,"__name__ == ""__main__""",待核对
+BRANCH:wiki_crawler/__main__.py:4:false,code_branch,false,T01,wiki_crawler/__main__.py,4,FILE:wiki_crawler/__main__.py,"__name__ == ""__main__""",待核对
+FILE:wiki_crawler/database.py,file,wiki_crawler/database.py,T01,wiki_crawler/database.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:wiki_crawler/database.py:164:_text,code_object,_text,T01,wiki_crawler/database.py,164,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:168:spirit_key,code_object,spirit_key,T01,wiki_crawler/database.py,168,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:172:spirit_base_name,code_object,spirit_base_name,T01,wiki_crawler/database.py,172,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:176:evolution_key,code_object,evolution_key,T01,wiki_crawler/database.py,176,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:180:_base_chain_text,code_object,_base_chain_text,T01,wiki_crawler/database.py,180,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:184:normalize_record,code_object,normalize_record,T01,wiki_crawler/database.py,184,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:199:_optional_int,code_object,_optional_int,T01,wiki_crawler/database.py,199,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:206:_optional_float,code_object,_optional_float,T01,wiki_crawler/database.py,206,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:213:_optional_bool,code_object,_optional_bool,T01,wiki_crawler/database.py,213,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:217:_stage,code_object,_stage,T01,wiki_crawler/database.py,217,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:221:_parts,code_object,_parts,T01,wiki_crawler/database.py,221,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:225:_upsert,code_object,_upsert,T01,wiki_crawler/database.py,225,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:238:_retain_keys,code_object,_retain_keys,T01,wiki_crawler/database.py,238,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:245:_element,code_object,_element,T01,wiki_crawler/database.py,245,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:253:_asset,code_object,_asset,T01,wiki_crawler/database.py,253,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:269:_named_row,code_object,_named_row,T01,wiki_crawler/database.py,269,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:274:_resolve_relations,code_object,_resolve_relations,T01,wiki_crawler/database.py,274,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:286:_write_skills,code_object,_write_skills,T01,wiki_crawler/database.py,286,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:305:_write_spirits,code_object,_write_spirits,T01,wiki_crawler/database.py,305,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:362:_write_rules,code_object,_write_rules,T01,wiki_crawler/database.py,362,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:376:_evolution_values,code_object,_evolution_values,T01,wiki_crawler/database.py,376,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:390:_write_evolutions,code_object,_write_evolutions,T01,wiki_crawler/database.py,390,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:397:_relation_key,code_object,_relation_key,T01,wiki_crawler/database.py,397,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:401:_write_distributions,code_object,_write_distributions,T01,wiki_crawler/database.py,401,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:409:_write_spirit_skills,code_object,_write_spirit_skills,T01,wiki_crawler/database.py,409,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:421:sync_log_directory,code_object,sync_log_directory,T01,wiki_crawler/database.py,421,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:425:_write_json_log,code_object,_write_json_log,T01,wiki_crawler/database.py,425,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:432:write_database,code_object,write_database,T01,wiki_crawler/database.py,432,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:484:read_committed_rows,code_object,read_committed_rows,T01,wiki_crawler/database.py,484,FILE:wiki_crawler/database.py,无描述字符串,待核对
+CODE:wiki_crawler/database.py:502:read_evolution_neighbors,code_object,read_evolution_neighbors,T01,wiki_crawler/database.py,502,FILE:wiki_crawler/database.py,无描述字符串,待核对
+BRANCH:wiki_crawler/database.py:186:true,code_branch,true,T01,wiki_crawler/database.py,186,FILE:wiki_crawler/database.py,"kind == ""spirits""",待核对
+BRANCH:wiki_crawler/database.py:186:false,code_branch,false,T01,wiki_crawler/database.py,186,FILE:wiki_crawler/database.py,"kind == ""spirits""",待核对
+BRANCH:wiki_crawler/database.py:247:true,code_branch,true,T01,wiki_crawler/database.py,247,FILE:wiki_crawler/database.py,not value,待核对
+BRANCH:wiki_crawler/database.py:247:false,code_branch,false,T01,wiki_crawler/database.py,247,FILE:wiki_crawler/database.py,not value,待核对
+BRANCH:wiki_crawler/database.py:255:true,code_branch,true,T01,wiki_crawler/database.py,255,FILE:wiki_crawler/database.py,not value,待核对
+BRANCH:wiki_crawler/database.py:255:false,code_branch,false,T01,wiki_crawler/database.py,255,FILE:wiki_crawler/database.py,not value,待核对
+BRANCH:wiki_crawler/database.py:276:body,code_branch,body,T01,wiki_crawler/database.py,276,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:276:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,276,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:282:true,code_branch,true,T01,wiki_crawler/database.py,282,FILE:wiki_crawler/database.py,pending,待核对
+BRANCH:wiki_crawler/database.py:282:false,code_branch,false,T01,wiki_crawler/database.py,282,FILE:wiki_crawler/database.py,pending,待核对
+BRANCH:wiki_crawler/database.py:287:body,code_branch,body,T01,wiki_crawler/database.py,287,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:287:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,287,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:307:true,code_branch,true,T01,wiki_crawler/database.py,307,FILE:wiki_crawler/database.py,len(names) != len(set(names)),待核对
+BRANCH:wiki_crawler/database.py:307:false,code_branch,false,T01,wiki_crawler/database.py,307,FILE:wiki_crawler/database.py,len(names) != len(set(names)),待核对
+BRANCH:wiki_crawler/database.py:310:body,code_branch,body,T01,wiki_crawler/database.py,310,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:310:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,310,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:315:body,code_branch,body,T01,wiki_crawler/database.py,315,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:315:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,315,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:328:body,code_branch,body,T01,wiki_crawler/database.py,328,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:328:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,328,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:363:body,code_branch,body,T01,wiki_crawler/database.py,363,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:363:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,363,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:379:true,code_branch,true,T01,wiki_crawler/database.py,379,FILE:wiki_crawler/database.py,not source or not target or source == target,待核对
+BRANCH:wiki_crawler/database.py:379:false,code_branch,false,T01,wiki_crawler/database.py,379,FILE:wiki_crawler/database.py,not source or not target or source == target,待核对
+BRANCH:wiki_crawler/database.py:392:body,code_branch,body,T01,wiki_crawler/database.py,392,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:392:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,392,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:402:body,code_branch,body,T01,wiki_crawler/database.py,402,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:402:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,402,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:410:body,code_branch,body,T01,wiki_crawler/database.py,410,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:410:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,410,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:434:true,code_branch,true,T01,wiki_crawler/database.py,434,FILE:wiki_crawler/database.py,unknown,待核对
+BRANCH:wiki_crawler/database.py:434:false,code_branch,false,T01,wiki_crawler/database.py,434,FILE:wiki_crawler/database.py,unknown,待核对
+BRANCH:wiki_crawler/database.py:486:true,code_branch,true,T01,wiki_crawler/database.py,486,FILE:wiki_crawler/database.py,not database.exists() or not directory.exists(),待核对
+BRANCH:wiki_crawler/database.py:486:false,code_branch,false,T01,wiki_crawler/database.py,486,FILE:wiki_crawler/database.py,not database.exists() or not directory.exists(),待核对
+BRANCH:wiki_crawler/database.py:489:body,code_branch,body,T01,wiki_crawler/database.py,489,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:489:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,489,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:496:true,code_branch,true,T01,wiki_crawler/database.py,496,FILE:wiki_crawler/database.py,not logs,待核对
+BRANCH:wiki_crawler/database.py:496:false,code_branch,false,T01,wiki_crawler/database.py,496,FILE:wiki_crawler/database.py,not logs,待核对
+BRANCH:wiki_crawler/database.py:504:true,code_branch,true,T01,wiki_crawler/database.py,504,FILE:wiki_crawler/database.py,not database.exists(),待核对
+BRANCH:wiki_crawler/database.py:504:false,code_branch,false,T01,wiki_crawler/database.py,504,FILE:wiki_crawler/database.py,not database.exists(),待核对
+BRANCH:wiki_crawler/database.py:165:true,code_branch,true,T01,wiki_crawler/database.py,165,FILE:wiki_crawler/database.py,value is None,待核对
+BRANCH:wiki_crawler/database.py:165:false,code_branch,false,T01,wiki_crawler/database.py,165,FILE:wiki_crawler/database.py,value is None,待核对
+BRANCH:wiki_crawler/database.py:188:body,code_branch,body,T01,wiki_crawler/database.py,188,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:188:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,188,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:191:true,code_branch,true,T01,wiki_crawler/database.py,191,FILE:wiki_crawler/database.py,"kind == ""evolutions""",待核对
+BRANCH:wiki_crawler/database.py:191:false,code_branch,false,T01,wiki_crawler/database.py,191,FILE:wiki_crawler/database.py,"kind == ""evolutions""",待核对
+BRANCH:wiki_crawler/database.py:202:exception,code_branch,exception,T01,wiki_crawler/database.py,202,FILE:wiki_crawler/database.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/database.py:209:exception,code_branch,exception,T01,wiki_crawler/database.py,209,FILE:wiki_crawler/database.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/database.py:227:true,code_branch,true,T01,wiki_crawler/database.py,227,FILE:wiki_crawler/database.py,"isinstance(key, str)",待核对
+BRANCH:wiki_crawler/database.py:227:false,code_branch,false,T01,wiki_crawler/database.py,227,FILE:wiki_crawler/database.py,"isinstance(key, str)",待核对
+BRANCH:wiki_crawler/database.py:271:true,code_branch,true,T01,wiki_crawler/database.py,271,FILE:wiki_crawler/database.py,row,待核对
+BRANCH:wiki_crawler/database.py:271:false,code_branch,false,T01,wiki_crawler/database.py,271,FILE:wiki_crawler/database.py,row,待核对
+BRANCH:wiki_crawler/database.py:289:true,code_branch,true,T01,wiki_crawler/database.py,289,FILE:wiki_crawler/database.py,not name,待核对
+BRANCH:wiki_crawler/database.py:289:false,code_branch,false,T01,wiki_crawler/database.py,289,FILE:wiki_crawler/database.py,not name,待核对
+BRANCH:wiki_crawler/database.py:312:true,code_branch,true,T01,wiki_crawler/database.py,312,FILE:wiki_crawler/database.py,ability_name,待核对
+BRANCH:wiki_crawler/database.py:312:false,code_branch,false,T01,wiki_crawler/database.py,312,FILE:wiki_crawler/database.py,ability_name,待核对
+BRANCH:wiki_crawler/database.py:326:true,code_branch,true,T01,wiki_crawler/database.py,326,FILE:wiki_crawler/database.py,conflict,待核对
+BRANCH:wiki_crawler/database.py:326:false,code_branch,false,T01,wiki_crawler/database.py,326,FILE:wiki_crawler/database.py,conflict,待核对
+BRANCH:wiki_crawler/database.py:330:true,code_branch,true,T01,wiki_crawler/database.py,330,FILE:wiki_crawler/database.py,not name,待核对
+BRANCH:wiki_crawler/database.py:330:false,code_branch,false,T01,wiki_crawler/database.py,330,FILE:wiki_crawler/database.py,not name,待核对
+BRANCH:wiki_crawler/database.py:354:body,code_branch,body,T01,wiki_crawler/database.py,354,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:354:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,354,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:357:body,code_branch,body,T01,wiki_crawler/database.py,357,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:357:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,357,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:365:true,code_branch,true,T01,wiki_crawler/database.py,365,FILE:wiki_crawler/database.py,not name,待核对
+BRANCH:wiki_crawler/database.py:365:false,code_branch,false,T01,wiki_crawler/database.py,365,FILE:wiki_crawler/database.py,not name,待核对
+BRANCH:wiki_crawler/database.py:411:true,code_branch,true,T01,wiki_crawler/database.py,411,FILE:wiki_crawler/database.py,"not _text(row.get(""精灵"")) or not _text(row.get(""技能""))",待核对
+BRANCH:wiki_crawler/database.py:411:false,code_branch,false,T01,wiki_crawler/database.py,411,FILE:wiki_crawler/database.py,"not _text(row.get(""精灵"")) or not _text(row.get(""技能""))",待核对
+BRANCH:wiki_crawler/database.py:447:true,code_branch,true,T01,wiki_crawler/database.py,447,FILE:wiki_crawler/database.py,"{""skill"", ""pokemon"", ""pokemon_skill""} & existing",待核对
+BRANCH:wiki_crawler/database.py:447:false,code_branch,false,T01,wiki_crawler/database.py,447,FILE:wiki_crawler/database.py,"{""skill"", ""pokemon"", ""pokemon_skill""} & existing",待核对
+BRANCH:wiki_crawler/database.py:450:true,code_branch,true,T01,wiki_crawler/database.py,450,FILE:wiki_crawler/database.py,"version not in (0, 2, SCHEMA_VERSION)",待核对
+BRANCH:wiki_crawler/database.py:450:false,code_branch,false,T01,wiki_crawler/database.py,450,FILE:wiki_crawler/database.py,"version not in (0, 2, SCHEMA_VERSION)",待核对
+BRANCH:wiki_crawler/database.py:452:true,code_branch,true,T01,wiki_crawler/database.py,452,FILE:wiki_crawler/database.py,version == 0 and existing,待核对
+BRANCH:wiki_crawler/database.py:452:false,code_branch,false,T01,wiki_crawler/database.py,452,FILE:wiki_crawler/database.py,version == 0 and existing,待核对
+BRANCH:wiki_crawler/database.py:479:exception,code_branch,exception,T01,wiki_crawler/database.py,479,FILE:wiki_crawler/database.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/database.py:507:body,code_branch,body,T01,wiki_crawler/database.py,507,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:507:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,507,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:189:true,code_branch,true,T01,wiki_crawler/database.py,189,FILE:wiki_crawler/database.py,field in result,待核对
+BRANCH:wiki_crawler/database.py:189:false,code_branch,false,T01,wiki_crawler/database.py,189,FILE:wiki_crawler/database.py,field in result,待核对
+BRANCH:wiki_crawler/database.py:194:true,code_branch,true,T01,wiki_crawler/database.py,194,FILE:wiki_crawler/database.py,"""chain_text"" in result",待核对
+BRANCH:wiki_crawler/database.py:194:false,code_branch,false,T01,wiki_crawler/database.py,194,FILE:wiki_crawler/database.py,"""chain_text"" in result",待核对
+BRANCH:wiki_crawler/database.py:279:true,code_branch,true,T01,wiki_crawler/database.py,279,FILE:wiki_crawler/database.py,"spirit_status == skill_status == ""resolved""",待核对
+BRANCH:wiki_crawler/database.py:279:false,code_branch,false,T01,wiki_crawler/database.py,279,FILE:wiki_crawler/database.py,"spirit_status == skill_status == ""resolved""",待核对
+BRANCH:wiki_crawler/database.py:456:body,code_branch,body,T01,wiki_crawler/database.py,456,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:456:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,456,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:459:true,code_branch,true,T01,wiki_crawler/database.py,459,FILE:wiki_crawler/database.py,"""skills"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:459:false,code_branch,false,T01,wiki_crawler/database.py,459,FILE:wiki_crawler/database.py,"""skills"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:461:true,code_branch,true,T01,wiki_crawler/database.py,461,FILE:wiki_crawler/database.py,"""spirits"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:461:false,code_branch,false,T01,wiki_crawler/database.py,461,FILE:wiki_crawler/database.py,"""spirits"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:463:true,code_branch,true,T01,wiki_crawler/database.py,463,FILE:wiki_crawler/database.py,"""game_descriptions"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:463:false,code_branch,false,T01,wiki_crawler/database.py,463,FILE:wiki_crawler/database.py,"""game_descriptions"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:465:true,code_branch,true,T01,wiki_crawler/database.py,465,FILE:wiki_crawler/database.py,"""evolutions"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:465:false,code_branch,false,T01,wiki_crawler/database.py,465,FILE:wiki_crawler/database.py,"""evolutions"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:467:true,code_branch,true,T01,wiki_crawler/database.py,467,FILE:wiki_crawler/database.py,"""spirit_skills"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:467:false,code_branch,false,T01,wiki_crawler/database.py,467,FILE:wiki_crawler/database.py,"""spirit_skills"" in rows_by_kind",待核对
+BRANCH:wiki_crawler/database.py:469:body,code_branch,body,T01,wiki_crawler/database.py,469,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:469:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/database.py,469,FILE:wiki_crawler/database.py,For,待核对
+BRANCH:wiki_crawler/database.py:474:true,code_branch,true,T01,wiki_crawler/database.py,474,FILE:wiki_crawler/database.py,violations,待核对
+BRANCH:wiki_crawler/database.py:474:false,code_branch,false,T01,wiki_crawler/database.py,474,FILE:wiki_crawler/database.py,violations,待核对
+BRANCH:wiki_crawler/database.py:492:true,code_branch,true,T01,wiki_crawler/database.py,492,FILE:wiki_crawler/database.py,"kind in payload.get(""counts"", {})",待核对
+BRANCH:wiki_crawler/database.py:492:false,code_branch,false,T01,wiki_crawler/database.py,492,FILE:wiki_crawler/database.py,"kind in payload.get(""counts"", {})",待核对
+BRANCH:wiki_crawler/database.py:494:exception,code_branch,exception,T01,wiki_crawler/database.py,494,FILE:wiki_crawler/database.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/database.py:470:true,code_branch,true,T01,wiki_crawler/database.py,470,FILE:wiki_crawler/database.py,distribution_kind in rows_by_kind,待核对
+BRANCH:wiki_crawler/database.py:470:false,code_branch,false,T01,wiki_crawler/database.py,470,FILE:wiki_crawler/database.py,distribution_kind in rows_by_kind,待核对
+BRANCH:wiki_crawler/database.py:321:true,code_branch,true,T01,wiki_crawler/database.py,321,FILE:wiki_crawler/database.py,len(descriptions) == 1,待核对
+BRANCH:wiki_crawler/database.py:321:false,code_branch,false,T01,wiki_crawler/database.py,321,FILE:wiki_crawler/database.py,len(descriptions) == 1,待核对
+BRANCH:wiki_crawler/database.py:324:true,code_branch,true,T01,wiki_crawler/database.py,324,FILE:wiki_crawler/database.py,source_urls,待核对
+BRANCH:wiki_crawler/database.py:324:false,code_branch,false,T01,wiki_crawler/database.py,324,FILE:wiki_crawler/database.py,source_urls,待核对
+BRANCH:wiki_crawler/database.py:323:true,code_branch,true,T01,wiki_crawler/database.py,323,FILE:wiki_crawler/database.py,icon_paths,待核对
+BRANCH:wiki_crawler/database.py:323:false,code_branch,false,T01,wiki_crawler/database.py,323,FILE:wiki_crawler/database.py,icon_paths,待核对
+FILE:wiki_crawler/manual_data.yaml,file,wiki_crawler/manual_data.yaml,T01,wiki_crawler/manual_data.yaml,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:wiki_crawler/README.md,file,wiki_crawler/README.md,T01,wiki_crawler/README.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:wiki_crawler/sync.py,file,wiki_crawler/sync.py,T01,wiki_crawler/sync.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:wiki_crawler/sync.py:101:FetchError,code_object,FetchError,T01,wiki_crawler/sync.py,101,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:106:WikiFetcher,code_object,WikiFetcher,T01,wiki_crawler/sync.py,106,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:165:safe_name,code_object,safe_name,T01,wiki_crawler/sync.py,165,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:169:full_image_url,code_object,full_image_url,T01,wiki_crawler/sync.py,169,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:178:extension,code_object,extension,T01,wiki_crawler/sync.py,178,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:183:_unique_records,code_object,_unique_records,T01,wiki_crawler/sync.py,183,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:199:normalize_url,code_object,normalize_url,T01,wiki_crawler/sync.py,199,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:207:clean_text,code_object,clean_text,T01,wiki_crawler/sync.py,207,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:212:_soup,code_object,_soup,T01,wiki_crawler/sync.py,212,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:216:_strict_img_urls,code_object,_strict_img_urls,T01,wiki_crawler/sync.py,216,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:229:_strict_link,code_object,_strict_link,T01,wiki_crawler/sync.py,229,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:238:_strict_columns,code_object,_strict_columns,T01,wiki_crawler/sync.py,238,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:245:_strict_cell,code_object,_strict_cell,T01,wiki_crawler/sync.py,245,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:253:_strict_text,code_object,_strict_text,T01,wiki_crawler/sync.py,253,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:258:_strict_attr,code_object,_strict_attr,T01,wiki_crawler/sync.py,258,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:263:parse_skill_list,code_object,parse_skill_list,T01,wiki_crawler/sync.py,263,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:294:_strict_spirit_tables,code_object,_strict_spirit_tables,T01,wiki_crawler/sync.py,294,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:343:_strict_spirit_cards,code_object,_strict_spirit_cards,T01,wiki_crawler/sync.py,343,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:371:parse_spirit_list,code_object,parse_spirit_list,T01,wiki_crawler/sync.py,371,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:383:parse_game_description_list,code_object,parse_game_description_list,T01,wiki_crawler/sync.py,383,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:406:load_manifest,code_object,load_manifest,T01,wiki_crawler/sync.py,406,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:418:save_manifest,code_object,save_manifest,T01,wiki_crawler/sync.py,418,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:423:store_asset,code_object,store_asset,T01,wiki_crawler/sync.py,423,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:453:_public_record,code_object,_public_record,T01,wiki_crawler/sync.py,453,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:457:_log_first_record,code_object,_log_first_record,T01,wiki_crawler/sync.py,457,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:468:_row_key,code_object,_row_key,T01,wiki_crawler/sync.py,468,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:480:_stage_number,code_object,_stage_number,T01,wiki_crawler/sync.py,480,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:487:_rebuild_spirit_evolution,code_object,_rebuild_spirit_evolution,T01,wiki_crawler/sync.py,487,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:544:_skill_snapshot,code_object,_skill_snapshot,T01,wiki_crawler/sync.py,544,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:579:parse_skill_pet_cards,code_object,parse_skill_pet_cards,T01,wiki_crawler/sync.py,579,FILE:wiki_crawler/sync.py,Read skill-to-spirit cards from one skill detail page.,待核对
+CODE:wiki_crawler/sync.py:607:_skill_relation_snapshot,code_object,_skill_relation_snapshot,T01,wiki_crawler/sync.py,607,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:629:parse_spirit_distributions,code_object,parse_spirit_distributions,T01,wiki_crawler/sync.py,629,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:643:_spirit_snapshot,code_object,_spirit_snapshot,T01,wiki_crawler/sync.py,643,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:732:_game_description_snapshot,code_object,_game_description_snapshot,T01,wiki_crawler/sync.py,732,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:761:write_snapshot,code_object,write_snapshot,T01,wiki_crawler/sync.py,761,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:773:read_csv,code_object,read_csv,T01,wiki_crawler/sync.py,773,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:780:current_rows,code_object,current_rows,T01,wiki_crawler/sync.py,780,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:787:_comparison_values,code_object,_comparison_values,T01,wiki_crawler/sync.py,787,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:792:diff_rows,code_object,diff_rows,T01,wiki_crawler/sync.py,792,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:805:merge_rows,code_object,merge_rows,T01,wiki_crawler/sync.py,805,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:815:load_manual_data,code_object,load_manual_data,T01,wiki_crawler/sync.py,815,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:892:merge_manual_rows,code_object,merge_manual_rows,T01,wiki_crawler/sync.py,892,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:907:apply_manual_data,code_object,apply_manual_data,T01,wiki_crawler/sync.py,907,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:920:write_canonical,code_object,write_canonical,T01,wiki_crawler/sync.py,920,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:934:apply_database,code_object,apply_database,T01,wiki_crawler/sync.py,934,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:938:print_diff,code_object,print_diff,T01,wiki_crawler/sync.py,938,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:949:configure_logging,code_object,configure_logging,T01,wiki_crawler/sync.py,949,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:961:ask_yes_no,code_object,ask_yes_no,T01,wiki_crawler/sync.py,961,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:967:run,code_object,run,T01,wiki_crawler/sync.py,967,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:1071:build_parser,code_object,build_parser,T01,wiki_crawler/sync.py,1071,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:1092:main,code_object,main,T01,wiki_crawler/sync.py,1092,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+BRANCH:wiki_crawler/sync.py:1096:true,code_branch,true,T01,wiki_crawler/sync.py,1096,FILE:wiki_crawler/sync.py,"__name__ == ""__main__""",待核对
+BRANCH:wiki_crawler/sync.py:1096:false,code_branch,false,T01,wiki_crawler/sync.py,1096,FILE:wiki_crawler/sync.py,"__name__ == ""__main__""",待核对
+BRANCH:wiki_crawler/sync.py:38:exception,code_branch,exception,T01,wiki_crawler/sync.py,38,FILE:wiki_crawler/sync.py,ExceptHandler,待核对
+CODE:wiki_crawler/sync.py:107:__init__,code_object,__init__,T01,wiki_crawler/sync.py,107,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:112:get_bytes,code_object,get_bytes,T01,wiki_crawler/sync.py,112,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:155:get_text,code_object,get_text,T01,wiki_crawler/sync.py,155,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+BRANCH:wiki_crawler/sync.py:170:true,code_branch,true,T01,wiki_crawler/sync.py,170,FILE:wiki_crawler/sync.py,"""/thumb/"" in image_url",待核对
+BRANCH:wiki_crawler/sync.py:170:false,code_branch,false,T01,wiki_crawler/sync.py,170,FILE:wiki_crawler/sync.py,"""/thumb/"" in image_url",待核对
+BRANCH:wiki_crawler/sync.py:186:body,code_branch,body,T01,wiki_crawler/sync.py,186,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:186:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,186,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:219:body,code_branch,body,T01,wiki_crawler/sync.py,219,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:219:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,219,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:230:true,code_branch,true,T01,wiki_crawler/sync.py,230,FILE:wiki_crawler/sync.py,not cell,待核对
+BRANCH:wiki_crawler/sync.py:230:false,code_branch,false,T01,wiki_crawler/sync.py,230,FILE:wiki_crawler/sync.py,not cell,待核对
+BRANCH:wiki_crawler/sync.py:233:true,code_branch,true,T01,wiki_crawler/sync.py,233,FILE:wiki_crawler/sync.py,not link,待核对
+BRANCH:wiki_crawler/sync.py:233:false,code_branch,false,T01,wiki_crawler/sync.py,233,FILE:wiki_crawler/sync.py,not link,待核对
+BRANCH:wiki_crawler/sync.py:240:true,code_branch,true,T01,wiki_crawler/sync.py,240,FILE:wiki_crawler/sync.py,not header,待核对
+BRANCH:wiki_crawler/sync.py:240:false,code_branch,false,T01,wiki_crawler/sync.py,240,FILE:wiki_crawler/sync.py,not header,待核对
+BRANCH:wiki_crawler/sync.py:246:true,code_branch,true,T01,wiki_crawler/sync.py,246,FILE:wiki_crawler/sync.py,column not in columns,待核对
+BRANCH:wiki_crawler/sync.py:246:false,code_branch,false,T01,wiki_crawler/sync.py,246,FILE:wiki_crawler/sync.py,column not in columns,待核对
+BRANCH:wiki_crawler/sync.py:266:body,code_branch,body,T01,wiki_crawler/sync.py,266,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:266:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,266,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:289:true,code_branch,true,T01,wiki_crawler/sync.py,289,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:289:false,code_branch,false,T01,wiki_crawler/sync.py,289,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:297:body,code_branch,body,T01,wiki_crawler/sync.py,297,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:297:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,297,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:346:body,code_branch,body,T01,wiki_crawler/sync.py,346,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:346:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,346,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:373:true,code_branch,true,T01,wiki_crawler/sync.py,373,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:373:false,code_branch,false,T01,wiki_crawler/sync.py,373,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:375:true,code_branch,true,T01,wiki_crawler/sync.py,375,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:375:false,code_branch,false,T01,wiki_crawler/sync.py,375,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:378:body,code_branch,body,T01,wiki_crawler/sync.py,378,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:378:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,378,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:386:body,code_branch,body,T01,wiki_crawler/sync.py,386,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:386:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,386,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:401:true,code_branch,true,T01,wiki_crawler/sync.py,401,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:401:false,code_branch,false,T01,wiki_crawler/sync.py,401,FILE:wiki_crawler/sync.py,not records,待核对
+BRANCH:wiki_crawler/sync.py:407:true,code_branch,true,T01,wiki_crawler/sync.py,407,FILE:wiki_crawler/sync.py,not MANIFEST_PATH.exists(),待核对
+BRANCH:wiki_crawler/sync.py:407:false,code_branch,false,T01,wiki_crawler/sync.py,407,FILE:wiki_crawler/sync.py,not MANIFEST_PATH.exists(),待核对
+BRANCH:wiki_crawler/sync.py:424:true,code_branch,true,T01,wiki_crawler/sync.py,424,FILE:wiki_crawler/sync.py,not url,待核对
+BRANCH:wiki_crawler/sync.py:424:false,code_branch,false,T01,wiki_crawler/sync.py,424,FILE:wiki_crawler/sync.py,not url,待核对
+BRANCH:wiki_crawler/sync.py:431:true,code_branch,true,T01,wiki_crawler/sync.py,431,FILE:wiki_crawler/sync.py,"destination.exists() and old.get(""url"") == url",待核对
+BRANCH:wiki_crawler/sync.py:431:false,code_branch,false,T01,wiki_crawler/sync.py,431,FILE:wiki_crawler/sync.py,"destination.exists() and old.get(""url"") == url",待核对
+BRANCH:wiki_crawler/sync.py:438:true,code_branch,true,T01,wiki_crawler/sync.py,438,FILE:wiki_crawler/sync.py,not content,待核对
+BRANCH:wiki_crawler/sync.py:438:false,code_branch,false,T01,wiki_crawler/sync.py,438,FILE:wiki_crawler/sync.py,not content,待核对
+BRANCH:wiki_crawler/sync.py:458:true,code_branch,true,T01,wiki_crawler/sync.py,458,FILE:wiki_crawler/sync.py,not rows,待核对
+BRANCH:wiki_crawler/sync.py:458:false,code_branch,false,T01,wiki_crawler/sync.py,458,FILE:wiki_crawler/sync.py,not rows,待核对
+BRANCH:wiki_crawler/sync.py:469:true,code_branch,true,T01,wiki_crawler/sync.py,469,FILE:wiki_crawler/sync.py,"kind == ""evolutions""",待核对
+BRANCH:wiki_crawler/sync.py:469:false,code_branch,false,T01,wiki_crawler/sync.py,469,FILE:wiki_crawler/sync.py,"kind == ""evolutions""",待核对
+BRANCH:wiki_crawler/sync.py:471:true,code_branch,true,T01,wiki_crawler/sync.py,471,FILE:wiki_crawler/sync.py,"kind == ""spirit_skills""",待核对
+BRANCH:wiki_crawler/sync.py:471:false,code_branch,false,T01,wiki_crawler/sync.py,471,FILE:wiki_crawler/sync.py,"kind == ""spirit_skills""",待核对
+BRANCH:wiki_crawler/sync.py:473:true,code_branch,true,T01,wiki_crawler/sync.py,473,FILE:wiki_crawler/sync.py,kind in REFERENCE_KINDS.values(),待核对
+BRANCH:wiki_crawler/sync.py:473:false,code_branch,false,T01,wiki_crawler/sync.py,473,FILE:wiki_crawler/sync.py,kind in REFERENCE_KINDS.values(),待核对
+BRANCH:wiki_crawler/sync.py:475:true,code_branch,true,T01,wiki_crawler/sync.py,475,FILE:wiki_crawler/sync.py,"kind == ""spirits""",待核对
+BRANCH:wiki_crawler/sync.py:475:false,code_branch,false,T01,wiki_crawler/sync.py,475,FILE:wiki_crawler/sync.py,"kind == ""spirits""",待核对
+BRANCH:wiki_crawler/sync.py:482:true,code_branch,true,T01,wiki_crawler/sync.py,482,FILE:wiki_crawler/sync.py,text.isdigit(),待核对
+BRANCH:wiki_crawler/sync.py:482:false,code_branch,false,T01,wiki_crawler/sync.py,482,FILE:wiki_crawler/sync.py,text.isdigit(),待核对
+BRANCH:wiki_crawler/sync.py:489:body,code_branch,body,T01,wiki_crawler/sync.py,489,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:489:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,489,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:506:body,code_branch,body,T01,wiki_crawler/sync.py,506,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:506:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,506,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:547:true,code_branch,true,T01,wiki_crawler/sync.py,547,FILE:wiki_crawler/sync.py,not list_html,待核对
+BRANCH:wiki_crawler/sync.py:547:false,code_branch,false,T01,wiki_crawler/sync.py,547,FILE:wiki_crawler/sync.py,not list_html,待核对
+BRANCH:wiki_crawler/sync.py:552:true,code_branch,true,T01,wiki_crawler/sync.py,552,FILE:wiki_crawler/sync.py,limit,待核对
+BRANCH:wiki_crawler/sync.py:552:false,code_branch,false,T01,wiki_crawler/sync.py,552,FILE:wiki_crawler/sync.py,limit,待核对
+BRANCH:wiki_crawler/sync.py:556:body,code_branch,body,T01,wiki_crawler/sync.py,556,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:556:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,556,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:583:body,code_branch,body,T01,wiki_crawler/sync.py,583,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:583:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,583,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:610:body,code_branch,body,T01,wiki_crawler/sync.py,610,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:610:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,610,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:632:body,code_branch,body,T01,wiki_crawler/sync.py,632,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:632:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,632,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:648:true,code_branch,true,T01,wiki_crawler/sync.py,648,FILE:wiki_crawler/sync.py,not list_html and not atlas_html,待核对
+BRANCH:wiki_crawler/sync.py:648:false,code_branch,false,T01,wiki_crawler/sync.py,648,FILE:wiki_crawler/sync.py,not list_html and not atlas_html,待核对
+BRANCH:wiki_crawler/sync.py:658:body,code_branch,body,T01,wiki_crawler/sync.py,658,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:658:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,658,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:671:true,code_branch,true,T01,wiki_crawler/sync.py,671,FILE:wiki_crawler/sync.py,limit,待核对
+BRANCH:wiki_crawler/sync.py:671:false,code_branch,false,T01,wiki_crawler/sync.py,671,FILE:wiki_crawler/sync.py,limit,待核对
+BRANCH:wiki_crawler/sync.py:676:body,code_branch,body,T01,wiki_crawler/sync.py,676,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:676:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,676,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:724:body,code_branch,body,T01,wiki_crawler/sync.py,724,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:724:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,724,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:735:true,code_branch,true,T01,wiki_crawler/sync.py,735,FILE:wiki_crawler/sync.py,not list_html,待核对
+BRANCH:wiki_crawler/sync.py:735:false,code_branch,false,T01,wiki_crawler/sync.py,735,FILE:wiki_crawler/sync.py,not list_html,待核对
+BRANCH:wiki_crawler/sync.py:740:true,code_branch,true,T01,wiki_crawler/sync.py,740,FILE:wiki_crawler/sync.py,limit,待核对
+BRANCH:wiki_crawler/sync.py:740:false,code_branch,false,T01,wiki_crawler/sync.py,740,FILE:wiki_crawler/sync.py,limit,待核对
+BRANCH:wiki_crawler/sync.py:744:body,code_branch,body,T01,wiki_crawler/sync.py,744,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:744:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,744,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:774:true,code_branch,true,T01,wiki_crawler/sync.py,774,FILE:wiki_crawler/sync.py,not path.exists(),待核对
+BRANCH:wiki_crawler/sync.py:774:false,code_branch,false,T01,wiki_crawler/sync.py,774,FILE:wiki_crawler/sync.py,not path.exists(),待核对
+BRANCH:wiki_crawler/sync.py:782:true,code_branch,true,T01,wiki_crawler/sync.py,782,FILE:wiki_crawler/sync.py,canonical.exists(),待核对
+BRANCH:wiki_crawler/sync.py:782:false,code_branch,false,T01,wiki_crawler/sync.py,782,FILE:wiki_crawler/sync.py,canonical.exists(),待核对
+BRANCH:wiki_crawler/sync.py:809:true,code_branch,true,T01,wiki_crawler/sync.py,809,FILE:wiki_crawler/sync.py,not remove_missing,待核对
+BRANCH:wiki_crawler/sync.py:809:false,code_branch,false,T01,wiki_crawler/sync.py,809,FILE:wiki_crawler/sync.py,not remove_missing,待核对
+CODE:wiki_crawler/sync.py:821:UniqueKeyLoader,code_object,UniqueKeyLoader,T01,wiki_crawler/sync.py,821,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+CODE:wiki_crawler/sync.py:824:unique_mapping,code_object,unique_mapping,T01,wiki_crawler/sync.py,824,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+BRANCH:wiki_crawler/sync.py:839:true,code_branch,true,T01,wiki_crawler/sync.py,839,FILE:wiki_crawler/sync.py,"not isinstance(payload, dict)",待核对
+BRANCH:wiki_crawler/sync.py:839:false,code_branch,false,T01,wiki_crawler/sync.py,839,FILE:wiki_crawler/sync.py,"not isinstance(payload, dict)",待核对
+BRANCH:wiki_crawler/sync.py:842:true,code_branch,true,T01,wiki_crawler/sync.py,842,FILE:wiki_crawler/sync.py,unknown,待核对
+BRANCH:wiki_crawler/sync.py:842:false,code_branch,false,T01,wiki_crawler/sync.py,842,FILE:wiki_crawler/sync.py,unknown,待核对
+BRANCH:wiki_crawler/sync.py:844:true,code_branch,true,T01,wiki_crawler/sync.py,844,FILE:wiki_crawler/sync.py,"type(payload.get(""version"", 1)) is not int or payload.get(""version"", 1) != 1",待核对
+BRANCH:wiki_crawler/sync.py:844:false,code_branch,false,T01,wiki_crawler/sync.py,844,FILE:wiki_crawler/sync.py,"type(payload.get(""version"", 1)) is not int or payload.get(""version"", 1) != 1",待核对
+BRANCH:wiki_crawler/sync.py:852:body,code_branch,body,T01,wiki_crawler/sync.py,852,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:852:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,852,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:893:true,code_branch,true,T01,wiki_crawler/sync.py,893,FILE:wiki_crawler/sync.py,not manual_rows,待核对
+BRANCH:wiki_crawler/sync.py:893:false,code_branch,false,T01,wiki_crawler/sync.py,893,FILE:wiki_crawler/sync.py,not manual_rows,待核对
+BRANCH:wiki_crawler/sync.py:897:body,code_branch,body,T01,wiki_crawler/sync.py,897,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:897:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,897,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:909:true,code_branch,true,T01,wiki_crawler/sync.py,909,FILE:wiki_crawler/sync.py,"""spirits"" in selected and manual.get(""spirits"")",待核对
+BRANCH:wiki_crawler/sync.py:909:false,code_branch,false,T01,wiki_crawler/sync.py,909,FILE:wiki_crawler/sync.py,"""spirits"" in selected and manual.get(""spirits"")",待核对
+BRANCH:wiki_crawler/sync.py:913:true,code_branch,true,T01,wiki_crawler/sync.py,913,FILE:wiki_crawler/sync.py,"""spirits"" in selected or ""skills"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:913:false,code_branch,false,T01,wiki_crawler/sync.py,913,FILE:wiki_crawler/sync.py,"""spirits"" in selected or ""skills"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:916:body,code_branch,body,T01,wiki_crawler/sync.py,916,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:916:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,916,FILE:wiki_crawler/sync.py,For,待核对
+CODE:wiki_crawler/sync.py:939:display,code_object,display,T01,wiki_crawler/sync.py,939,FILE:wiki_crawler/sync.py,无描述字符串,待核对
+BRANCH:wiki_crawler/sync.py:943:true,code_branch,true,T01,wiki_crawler/sync.py,943,FILE:wiki_crawler/sync.py,"summary[""new""]",待核对
+BRANCH:wiki_crawler/sync.py:943:false,code_branch,false,T01,wiki_crawler/sync.py,943,FILE:wiki_crawler/sync.py,"summary[""new""]",待核对
+BRANCH:wiki_crawler/sync.py:945:true,code_branch,true,T01,wiki_crawler/sync.py,945,FILE:wiki_crawler/sync.py,"summary[""missing""]",待核对
+BRANCH:wiki_crawler/sync.py:945:false,code_branch,false,T01,wiki_crawler/sync.py,945,FILE:wiki_crawler/sync.py,"summary[""missing""]",待核对
+BRANCH:wiki_crawler/sync.py:950:true,code_branch,true,T01,wiki_crawler/sync.py,950,FILE:wiki_crawler/sync.py,quiet,待核对
+BRANCH:wiki_crawler/sync.py:950:false,code_branch,false,T01,wiki_crawler/sync.py,950,FILE:wiki_crawler/sync.py,quiet,待核对
+BRANCH:wiki_crawler/sync.py:977:true,code_branch,true,T01,wiki_crawler/sync.py,977,FILE:wiki_crawler/sync.py,"getattr(args, ""crawl_skill_relations"", False) and ""skills"" not in selected",待核对
+BRANCH:wiki_crawler/sync.py:977:false,code_branch,false,T01,wiki_crawler/sync.py,977,FILE:wiki_crawler/sync.py,"getattr(args, ""crawl_skill_relations"", False) and ""skills"" not in selected",待核对
+BRANCH:wiki_crawler/sync.py:988:true,code_branch,true,T01,wiki_crawler/sync.py,988,FILE:wiki_crawler/sync.py,"""skills"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:988:false,code_branch,false,T01,wiki_crawler/sync.py,988,FILE:wiki_crawler/sync.py,"""skills"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:993:true,code_branch,true,T01,wiki_crawler/sync.py,993,FILE:wiki_crawler/sync.py,"""spirits"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:993:false,code_branch,false,T01,wiki_crawler/sync.py,993,FILE:wiki_crawler/sync.py,"""spirits"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:999:true,code_branch,true,T01,wiki_crawler/sync.py,999,FILE:wiki_crawler/sync.py,"""game_descriptions"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:999:false,code_branch,false,T01,wiki_crawler/sync.py,999,FILE:wiki_crawler/sync.py,"""game_descriptions"" in selected",待核对
+BRANCH:wiki_crawler/sync.py:1002:true,code_branch,true,T01,wiki_crawler/sync.py,1002,FILE:wiki_crawler/sync.py,not rows_by_kind,待核对
+BRANCH:wiki_crawler/sync.py:1002:false,code_branch,false,T01,wiki_crawler/sync.py,1002,FILE:wiki_crawler/sync.py,not rows_by_kind,待核对
+BRANCH:wiki_crawler/sync.py:1008:body,code_branch,body,T01,wiki_crawler/sync.py,1008,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:1008:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,1008,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:1024:body,code_branch,body,T01,wiki_crawler/sync.py,1024,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:1024:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,1024,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:1030:true,code_branch,true,T01,wiki_crawler/sync.py,1030,FILE:wiki_crawler/sync.py,fetcher.errors,待核对
+BRANCH:wiki_crawler/sync.py:1030:false,code_branch,false,T01,wiki_crawler/sync.py,1030,FILE:wiki_crawler/sync.py,fetcher.errors,待核对
+BRANCH:wiki_crawler/sync.py:1032:true,code_branch,true,T01,wiki_crawler/sync.py,1032,FILE:wiki_crawler/sync.py,args.stage_only,待核对
+BRANCH:wiki_crawler/sync.py:1032:false,code_branch,false,T01,wiki_crawler/sync.py,1032,FILE:wiki_crawler/sync.py,args.stage_only,待核对
+BRANCH:wiki_crawler/sync.py:1037:true,code_branch,true,T01,wiki_crawler/sync.py,1037,FILE:wiki_crawler/sync.py,empty_kinds,待核对
+BRANCH:wiki_crawler/sync.py:1037:false,code_branch,false,T01,wiki_crawler/sync.py,1037,FILE:wiki_crawler/sync.py,empty_kinds,待核对
+BRANCH:wiki_crawler/sync.py:1042:true,code_branch,true,T01,wiki_crawler/sync.py,1042,FILE:wiki_crawler/sync.py,args.remove_missing,待核对
+BRANCH:wiki_crawler/sync.py:1042:false,code_branch,false,T01,wiki_crawler/sync.py,1042,FILE:wiki_crawler/sync.py,args.remove_missing,待核对
+BRANCH:wiki_crawler/sync.py:1050:true,code_branch,true,T01,wiki_crawler/sync.py,1050,FILE:wiki_crawler/sync.py,args.yes,待核对
+BRANCH:wiki_crawler/sync.py:1050:false,code_branch,false,T01,wiki_crawler/sync.py,1050,FILE:wiki_crawler/sync.py,args.yes,待核对
+BRANCH:wiki_crawler/sync.py:1057:true,code_branch,true,T01,wiki_crawler/sync.py,1057,FILE:wiki_crawler/sync.py,not confirm_write,待核对
+BRANCH:wiki_crawler/sync.py:1057:false,code_branch,false,T01,wiki_crawler/sync.py,1057,FILE:wiki_crawler/sync.py,not confirm_write,待核对
+BRANCH:wiki_crawler/sync.py:1062:body,code_branch,body,T01,wiki_crawler/sync.py,1062,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:1062:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,1062,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:1065:body,code_branch,body,T01,wiki_crawler/sync.py,1065,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:1065:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,1065,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:114:body,code_branch,body,T01,wiki_crawler/sync.py,114,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:114:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,114,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:173:true,code_branch,true,T01,wiki_crawler/sync.py,173,FILE:wiki_crawler/sync.py,len(parts) == 2,待核对
+BRANCH:wiki_crawler/sync.py:173:false,code_branch,false,T01,wiki_crawler/sync.py,173,FILE:wiki_crawler/sync.py,len(parts) == 2,待核对
+BRANCH:wiki_crawler/sync.py:180:true,code_branch,true,T01,wiki_crawler/sync.py,180,FILE:wiki_crawler/sync.py,"suffix in {"".png"", "".jpg"", "".jpeg"", "".webp"", "".gif""}",待核对
+BRANCH:wiki_crawler/sync.py:180:false,code_branch,false,T01,wiki_crawler/sync.py,180,FILE:wiki_crawler/sync.py,"suffix in {"".png"", "".jpg"", "".jpeg"", "".webp"", "".gif""}",待核对
+BRANCH:wiki_crawler/sync.py:188:true,code_branch,true,T01,wiki_crawler/sync.py,188,FILE:wiki_crawler/sync.py,not value,待核对
+BRANCH:wiki_crawler/sync.py:188:false,code_branch,false,T01,wiki_crawler/sync.py,188,FILE:wiki_crawler/sync.py,not value,待核对
+BRANCH:wiki_crawler/sync.py:190:true,code_branch,true,T01,wiki_crawler/sync.py,190,FILE:wiki_crawler/sync.py,value in positions,待核对
+BRANCH:wiki_crawler/sync.py:190:false,code_branch,false,T01,wiki_crawler/sync.py,190,FILE:wiki_crawler/sync.py,value in positions,待核对
+BRANCH:wiki_crawler/sync.py:208:true,code_branch,true,T01,wiki_crawler/sync.py,208,FILE:wiki_crawler/sync.py,"isinstance(fragment, Tag)",待核对
+BRANCH:wiki_crawler/sync.py:208:false,code_branch,false,T01,wiki_crawler/sync.py,208,FILE:wiki_crawler/sync.py,"isinstance(fragment, Tag)",待核对
+BRANCH:wiki_crawler/sync.py:213:true,code_branch,true,T01,wiki_crawler/sync.py,213,FILE:wiki_crawler/sync.py,"isinstance(fragment, Tag)",待核对
+BRANCH:wiki_crawler/sync.py:213:false,code_branch,false,T01,wiki_crawler/sync.py,213,FILE:wiki_crawler/sync.py,"isinstance(fragment, Tag)",待核对
+BRANCH:wiki_crawler/sync.py:221:true,code_branch,true,T01,wiki_crawler/sync.py,221,FILE:wiki_crawler/sync.py,"not source or str(source).startswith(""data:"")",待核对
+BRANCH:wiki_crawler/sync.py:221:false,code_branch,false,T01,wiki_crawler/sync.py,221,FILE:wiki_crawler/sync.py,"not source or str(source).startswith(""data:"")",待核对
+BRANCH:wiki_crawler/sync.py:224:true,code_branch,true,T01,wiki_crawler/sync.py,224,FILE:wiki_crawler/sync.py,absolute not in result,待核对
+BRANCH:wiki_crawler/sync.py:224:false,code_branch,false,T01,wiki_crawler/sync.py,224,FILE:wiki_crawler/sync.py,absolute not in result,待核对
+BRANCH:wiki_crawler/sync.py:242:true,code_branch,true,T01,wiki_crawler/sync.py,242,FILE:wiki_crawler/sync.py,header,待核对
+BRANCH:wiki_crawler/sync.py:242:false,code_branch,false,T01,wiki_crawler/sync.py,242,FILE:wiki_crawler/sync.py,header,待核对
+BRANCH:wiki_crawler/sync.py:250:true,code_branch,true,T01,wiki_crawler/sync.py,250,FILE:wiki_crawler/sync.py,index < len(cells),待核对
+BRANCH:wiki_crawler/sync.py:250:false,code_branch,false,T01,wiki_crawler/sync.py,250,FILE:wiki_crawler/sync.py,index < len(cells),待核对
+BRANCH:wiki_crawler/sync.py:255:true,code_branch,true,T01,wiki_crawler/sync.py,255,FILE:wiki_crawler/sync.py,cell,待核对
+BRANCH:wiki_crawler/sync.py:255:false,code_branch,false,T01,wiki_crawler/sync.py,255,FILE:wiki_crawler/sync.py,cell,待核对
+BRANCH:wiki_crawler/sync.py:260:true,code_branch,true,T01,wiki_crawler/sync.py,260,FILE:wiki_crawler/sync.py,cell,待核对
+BRANCH:wiki_crawler/sync.py:260:false,code_branch,false,T01,wiki_crawler/sync.py,260,FILE:wiki_crawler/sync.py,cell,待核对
+BRANCH:wiki_crawler/sync.py:268:true,code_branch,true,T01,wiki_crawler/sync.py,268,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:268:false,code_branch,false,T01,wiki_crawler/sync.py,268,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:299:true,code_branch,true,T01,wiki_crawler/sync.py,299,FILE:wiki_crawler/sync.py,not columns,待核对
+BRANCH:wiki_crawler/sync.py:299:false,code_branch,false,T01,wiki_crawler/sync.py,299,FILE:wiki_crawler/sync.py,not columns,待核对
+BRANCH:wiki_crawler/sync.py:301:body,code_branch,body,T01,wiki_crawler/sync.py,301,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:301:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,301,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:350:true,code_branch,true,T01,wiki_crawler/sync.py,350,FILE:wiki_crawler/sync.py,not name or not number,待核对
+BRANCH:wiki_crawler/sync.py:350:false,code_branch,false,T01,wiki_crawler/sync.py,350,FILE:wiki_crawler/sync.py,not name or not number,待核对
+BRANCH:wiki_crawler/sync.py:389:true,code_branch,true,T01,wiki_crawler/sync.py,389,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:389:false,code_branch,false,T01,wiki_crawler/sync.py,389,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:414:exception,code_branch,exception,T01,wiki_crawler/sync.py,414,FILE:wiki_crawler/sync.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/sync.py:500:true,code_branch,true,T01,wiki_crawler/sync.py,500,FILE:wiki_crawler/sync.py,"is_lord or not number_text.isdigit() or stage not in {1, 2, 3} or not name",待核对
+BRANCH:wiki_crawler/sync.py:500:false,code_branch,false,T01,wiki_crawler/sync.py,500,FILE:wiki_crawler/sync.py,"is_lord or not number_text.isdigit() or stage not in {1, 2, 3} or not name",待核对
+BRANCH:wiki_crawler/sync.py:507:true,code_branch,true,T01,wiki_crawler/sync.py,507,FILE:wiki_crawler/sync.py,stage != 1,待核对
+BRANCH:wiki_crawler/sync.py:507:false,code_branch,false,T01,wiki_crawler/sync.py,507,FILE:wiki_crawler/sync.py,stage != 1,待核对
+BRANCH:wiki_crawler/sync.py:510:body,code_branch,body,T01,wiki_crawler/sync.py,510,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:510:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,510,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:515:true,code_branch,true,T01,wiki_crawler/sync.py,515,FILE:wiki_crawler/sync.py,len(stage_groups) < 2,待核对
+BRANCH:wiki_crawler/sync.py:515:false,code_branch,false,T01,wiki_crawler/sync.py,515,FILE:wiki_crawler/sync.py,len(stage_groups) < 2,待核对
+BRANCH:wiki_crawler/sync.py:517:true,code_branch,true,T01,wiki_crawler/sync.py,517,FILE:wiki_crawler/sync.py,any(len(group) != 1 for group in stage_groups.values()),待核对
+BRANCH:wiki_crawler/sync.py:517:false,code_branch,false,T01,wiki_crawler/sync.py,517,FILE:wiki_crawler/sync.py,any(len(group) != 1 for group in stage_groups.values()),待核对
+BRANCH:wiki_crawler/sync.py:522:body,code_branch,body,T01,wiki_crawler/sync.py,522,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:522:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,522,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:529:body,code_branch,body,T01,wiki_crawler/sync.py,529,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:529:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,529,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:565:true,code_branch,true,T01,wiki_crawler/sync.py,565,FILE:wiki_crawler/sync.py,index % 100 == 0,待核对
+BRANCH:wiki_crawler/sync.py:565:false,code_branch,false,T01,wiki_crawler/sync.py,565,FILE:wiki_crawler/sync.py,index % 100 == 0,待核对
+BRANCH:wiki_crawler/sync.py:585:true,code_branch,true,T01,wiki_crawler/sync.py,585,FILE:wiki_crawler/sync.py,"raw_source.endswith(""-skill"")",待核对
+BRANCH:wiki_crawler/sync.py:585:false,code_branch,false,T01,wiki_crawler/sync.py,585,FILE:wiki_crawler/sync.py,"raw_source.endswith(""-skill"")",待核对
+BRANCH:wiki_crawler/sync.py:588:true,code_branch,true,T01,wiki_crawler/sync.py,588,FILE:wiki_crawler/sync.py,not skill_source,待核对
+BRANCH:wiki_crawler/sync.py:588:false,code_branch,false,T01,wiki_crawler/sync.py,588,FILE:wiki_crawler/sync.py,not skill_source,待核对
+BRANCH:wiki_crawler/sync.py:593:true,code_branch,true,T01,wiki_crawler/sync.py,593,FILE:wiki_crawler/sync.py,not spirit_name,待核对
+BRANCH:wiki_crawler/sync.py:593:false,code_branch,false,T01,wiki_crawler/sync.py,593,FILE:wiki_crawler/sync.py,not spirit_name,待核对
+BRANCH:wiki_crawler/sync.py:612:true,code_branch,true,T01,wiki_crawler/sync.py,612,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:612:false,code_branch,false,T01,wiki_crawler/sync.py,612,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:634:true,code_branch,true,T01,wiki_crawler/sync.py,634,FILE:wiki_crawler/sync.py,not chart,待核对
+BRANCH:wiki_crawler/sync.py:634:false,code_branch,false,T01,wiki_crawler/sync.py,634,FILE:wiki_crawler/sync.py,not chart,待核对
+BRANCH:wiki_crawler/sync.py:636:body,code_branch,body,T01,wiki_crawler/sync.py,636,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:636:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,636,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:652:true,code_branch,true,T01,wiki_crawler/sync.py,652,FILE:wiki_crawler/sync.py,list_html,待核对
+BRANCH:wiki_crawler/sync.py:652:false,code_branch,false,T01,wiki_crawler/sync.py,652,FILE:wiki_crawler/sync.py,list_html,待核对
+BRANCH:wiki_crawler/sync.py:653:true,code_branch,true,T01,wiki_crawler/sync.py,653,FILE:wiki_crawler/sync.py,atlas_html,待核对
+BRANCH:wiki_crawler/sync.py:653:false,code_branch,false,T01,wiki_crawler/sync.py,653,FILE:wiki_crawler/sync.py,atlas_html,待核对
+BRANCH:wiki_crawler/sync.py:660:true,code_branch,true,T01,wiki_crawler/sync.py,660,FILE:wiki_crawler/sync.py,key in by_key,待核对
+BRANCH:wiki_crawler/sync.py:660:false,code_branch,false,T01,wiki_crawler/sync.py,660,FILE:wiki_crawler/sync.py,key in by_key,待核对
+BRANCH:wiki_crawler/sync.py:693:body,code_branch,body,T01,wiki_crawler/sync.py,693,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:693:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,693,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:707:true,code_branch,true,T01,wiki_crawler/sync.py,707,FILE:wiki_crawler/sync.py,"ability_path and not merged.get(""特性"")",待核对
+BRANCH:wiki_crawler/sync.py:707:false,code_branch,false,T01,wiki_crawler/sync.py,707,FILE:wiki_crawler/sync.py,"ability_path and not merged.get(""特性"")",待核对
+BRANCH:wiki_crawler/sync.py:713:true,code_branch,true,T01,wiki_crawler/sync.py,713,FILE:wiki_crawler/sync.py,include_detail and detail_url,待核对
+BRANCH:wiki_crawler/sync.py:713:false,code_branch,false,T01,wiki_crawler/sync.py,713,FILE:wiki_crawler/sync.py,include_detail and detail_url,待核对
+BRANCH:wiki_crawler/sync.py:720:true,code_branch,true,T01,wiki_crawler/sync.py,720,FILE:wiki_crawler/sync.py,index % 100 == 0,待核对
+BRANCH:wiki_crawler/sync.py:720:false,code_branch,false,T01,wiki_crawler/sync.py,720,FILE:wiki_crawler/sync.py,index % 100 == 0,待核对
+BRANCH:wiki_crawler/sync.py:754:true,code_branch,true,T01,wiki_crawler/sync.py,754,FILE:wiki_crawler/sync.py,index % 100 == 0,待核对
+BRANCH:wiki_crawler/sync.py:754:false,code_branch,false,T01,wiki_crawler/sync.py,754,FILE:wiki_crawler/sync.py,index % 100 == 0,待核对
+BRANCH:wiki_crawler/sync.py:810:body,code_branch,body,T01,wiki_crawler/sync.py,810,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:810:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,810,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:818:exception,code_branch,exception,T01,wiki_crawler/sync.py,818,FILE:wiki_crawler/sync.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/sync.py:827:body,code_branch,body,T01,wiki_crawler/sync.py,827,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:827:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,827,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:837:exception,code_branch,exception,T01,wiki_crawler/sync.py,837,FILE:wiki_crawler/sync.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/sync.py:854:true,code_branch,true,T01,wiki_crawler/sync.py,854,FILE:wiki_crawler/sync.py,"not isinstance(entries, list)",待核对
+BRANCH:wiki_crawler/sync.py:854:false,code_branch,false,T01,wiki_crawler/sync.py,854,FILE:wiki_crawler/sync.py,"not isinstance(entries, list)",待核对
+BRANCH:wiki_crawler/sync.py:858:body,code_branch,body,T01,wiki_crawler/sync.py,858,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:858:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,858,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:901:true,code_branch,true,T01,wiki_crawler/sync.py,901,FILE:wiki_crawler/sync.py,"""来源URL"" in CSV_FIELDS[kind] and not row.get(""来源URL"")",待核对
+BRANCH:wiki_crawler/sync.py:901:false,code_branch,false,T01,wiki_crawler/sync.py,901,FILE:wiki_crawler/sync.py,"""来源URL"" in CSV_FIELDS[kind] and not row.get(""来源URL"")",待核对
+BRANCH:wiki_crawler/sync.py:914:true,code_branch,true,T01,wiki_crawler/sync.py,914,FILE:wiki_crawler/sync.py,"manual.get(""spirit_skills"") and ""spirit_skills"" not in rows_by_kind",待核对
+BRANCH:wiki_crawler/sync.py:914:false,code_branch,false,T01,wiki_crawler/sync.py,914,FILE:wiki_crawler/sync.py,"manual.get(""spirit_skills"") and ""spirit_skills"" not in rows_by_kind",待核对
+BRANCH:wiki_crawler/sync.py:962:true,code_branch,true,T01,wiki_crawler/sync.py,962,FILE:wiki_crawler/sync.py,default,待核对
+BRANCH:wiki_crawler/sync.py:962:false,code_branch,false,T01,wiki_crawler/sync.py,962,FILE:wiki_crawler/sync.py,default,待核对
+BRANCH:wiki_crawler/sync.py:964:true,code_branch,true,T01,wiki_crawler/sync.py,964,FILE:wiki_crawler/sync.py,not answer,待核对
+BRANCH:wiki_crawler/sync.py:964:false,code_branch,false,T01,wiki_crawler/sync.py,964,FILE:wiki_crawler/sync.py,not answer,待核对
+BRANCH:wiki_crawler/sync.py:974:true,code_branch,true,T01,wiki_crawler/sync.py,974,FILE:wiki_crawler/sync.py,"args.kind == ""all""",待核对
+BRANCH:wiki_crawler/sync.py:974:false,code_branch,false,T01,wiki_crawler/sync.py,974,FILE:wiki_crawler/sync.py,"args.kind == ""all""",待核对
+BRANCH:wiki_crawler/sync.py:980:true,code_branch,true,T01,wiki_crawler/sync.py,980,FILE:wiki_crawler/sync.py,"getattr(args, ""no_manual_data"", False)",待核对
+BRANCH:wiki_crawler/sync.py:980:false,code_branch,false,T01,wiki_crawler/sync.py,980,FILE:wiki_crawler/sync.py,"getattr(args, ""no_manual_data"", False)",待核对
+BRANCH:wiki_crawler/sync.py:983:exception,code_branch,exception,T01,wiki_crawler/sync.py,983,FILE:wiki_crawler/sync.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/sync.py:991:true,code_branch,true,T01,wiki_crawler/sync.py,991,FILE:wiki_crawler/sync.py,"getattr(args, ""crawl_skill_relations"", False)",待核对
+BRANCH:wiki_crawler/sync.py:991:false,code_branch,false,T01,wiki_crawler/sync.py,991,FILE:wiki_crawler/sync.py,"getattr(args, ""crawl_skill_relations"", False)",待核对
+BRANCH:wiki_crawler/sync.py:1025:true,code_branch,true,T01,wiki_crawler/sync.py,1025,FILE:wiki_crawler/sync.py,"kind == ""evolutions"" and ""spirits"" not in selected",待核对
+BRANCH:wiki_crawler/sync.py:1025:false,code_branch,false,T01,wiki_crawler/sync.py,1025,FILE:wiki_crawler/sync.py,"kind == ""evolutions"" and ""spirits"" not in selected",待核对
+BRANCH:wiki_crawler/sync.py:1044:true,code_branch,true,T01,wiki_crawler/sync.py,1044,FILE:wiki_crawler/sync.py,args.keep_missing,待核对
+BRANCH:wiki_crawler/sync.py:1044:false,code_branch,false,T01,wiki_crawler/sync.py,1044,FILE:wiki_crawler/sync.py,args.keep_missing,待核对
+BRANCH:wiki_crawler/sync.py:1052:true,code_branch,true,T01,wiki_crawler/sync.py,1052,FILE:wiki_crawler/sync.py,not sys.stdin.isatty(),待核对
+BRANCH:wiki_crawler/sync.py:1052:false,code_branch,false,T01,wiki_crawler/sync.py,1052,FILE:wiki_crawler/sync.py,not sys.stdin.isatty(),待核对
+BRANCH:wiki_crawler/sync.py:272:true,code_branch,true,T01,wiki_crawler/sync.py,272,FILE:wiki_crawler/sync.py,len(number_cells) > 0,待核对
+BRANCH:wiki_crawler/sync.py:272:false,code_branch,false,T01,wiki_crawler/sync.py,272,FILE:wiki_crawler/sync.py,len(number_cells) > 0,待核对
+BRANCH:wiki_crawler/sync.py:273:true,code_branch,true,T01,wiki_crawler/sync.py,273,FILE:wiki_crawler/sync.py,len(number_cells) > 1,待核对
+BRANCH:wiki_crawler/sync.py:273:false,code_branch,false,T01,wiki_crawler/sync.py,273,FILE:wiki_crawler/sync.py,len(number_cells) > 1,待核对
+BRANCH:wiki_crawler/sync.py:303:true,code_branch,true,T01,wiki_crawler/sync.py,303,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:303:false,code_branch,false,T01,wiki_crawler/sync.py,303,FILE:wiki_crawler/sync.py,not name,待核对
+BRANCH:wiki_crawler/sync.py:512:true,code_branch,true,T01,wiki_crawler/sync.py,512,FILE:wiki_crawler/sync.py,not next_group,待核对
+BRANCH:wiki_crawler/sync.py:512:false,code_branch,false,T01,wiki_crawler/sync.py,512,FILE:wiki_crawler/sync.py,not next_group,待核对
+BRANCH:wiki_crawler/sync.py:523:body,code_branch,body,T01,wiki_crawler/sync.py,523,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:523:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,523,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:639:true,code_branch,true,T01,wiki_crawler/sync.py,639,FILE:wiki_crawler/sync.py,name and percentage,待核对
+BRANCH:wiki_crawler/sync.py:639:false,code_branch,false,T01,wiki_crawler/sync.py,639,FILE:wiki_crawler/sync.py,name and percentage,待核对
+BRANCH:wiki_crawler/sync.py:662:body,code_branch,body,T01,wiki_crawler/sync.py,662,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:662:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,662,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:699:true,code_branch,true,T01,wiki_crawler/sync.py,699,FILE:wiki_crawler/sync.py,path,待核对
+BRANCH:wiki_crawler/sync.py:699:false,code_branch,false,T01,wiki_crawler/sync.py,699,FILE:wiki_crawler/sync.py,path,待核对
+BRANCH:wiki_crawler/sync.py:716:body,code_branch,body,T01,wiki_crawler/sync.py,716,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:716:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,716,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:748:true,code_branch,true,T01,wiki_crawler/sync.py,748,FILE:wiki_crawler/sync.py,"record.get(""系别"")",待核对
+BRANCH:wiki_crawler/sync.py:748:false,code_branch,false,T01,wiki_crawler/sync.py,748,FILE:wiki_crawler/sync.py,"record.get(""系别"")",待核对
+BRANCH:wiki_crawler/sync.py:829:true,code_branch,true,T01,wiki_crawler/sync.py,829,FILE:wiki_crawler/sync.py,"not isinstance(key, str) or key in result",待核对
+BRANCH:wiki_crawler/sync.py:829:false,code_branch,false,T01,wiki_crawler/sync.py,829,FILE:wiki_crawler/sync.py,"not isinstance(key, str) or key in result",待核对
+BRANCH:wiki_crawler/sync.py:860:true,code_branch,true,T01,wiki_crawler/sync.py,860,FILE:wiki_crawler/sync.py,"not isinstance(entry, dict) or set(entry) - set(fields)",待核对
+BRANCH:wiki_crawler/sync.py:860:false,code_branch,false,T01,wiki_crawler/sync.py,860,FILE:wiki_crawler/sync.py,"not isinstance(entry, dict) or set(entry) - set(fields)",待核对
+BRANCH:wiki_crawler/sync.py:863:body,code_branch,body,T01,wiki_crawler/sync.py,863,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:863:zero_or_exit,code_branch,zero_or_exit,T01,wiki_crawler/sync.py,863,FILE:wiki_crawler/sync.py,For,待核对
+BRANCH:wiki_crawler/sync.py:876:true,code_branch,true,T01,wiki_crawler/sync.py,876,FILE:wiki_crawler/sync.py,"kind == ""evolutions""",待核对
+BRANCH:wiki_crawler/sync.py:876:false,code_branch,false,T01,wiki_crawler/sync.py,876,FILE:wiki_crawler/sync.py,"kind == ""evolutions""",待核对
+BRANCH:wiki_crawler/sync.py:879:true,code_branch,true,T01,wiki_crawler/sync.py,879,FILE:wiki_crawler/sync.py,any(not row.get(field) for field in required_fields[kind]),待核对
+BRANCH:wiki_crawler/sync.py:879:false,code_branch,false,T01,wiki_crawler/sync.py,879,FILE:wiki_crawler/sync.py,any(not row.get(field) for field in required_fields[kind]),待核对
+BRANCH:wiki_crawler/sync.py:881:true,code_branch,true,T01,wiki_crawler/sync.py,881,FILE:wiki_crawler/sync.py,"kind == ""spirit_skills"" and row[""技能类别""] not in {""default-skill"", ""blood-skill"", ""stone-skill""}",待核对
+BRANCH:wiki_crawler/sync.py:881:false,code_branch,false,T01,wiki_crawler/sync.py,881,FILE:wiki_crawler/sync.py,"kind == ""spirit_skills"" and row[""技能类别""] not in {""default-skill"", ""blood-skill"", ""stone-skill""}",待核对
+BRANCH:wiki_crawler/sync.py:884:true,code_branch,true,T01,wiki_crawler/sync.py,884,FILE:wiki_crawler/sync.py,key in seen,待核对
+BRANCH:wiki_crawler/sync.py:884:false,code_branch,false,T01,wiki_crawler/sync.py,884,FILE:wiki_crawler/sync.py,key in seen,待核对
+BRANCH:wiki_crawler/sync.py:971:true,code_branch,true,T01,wiki_crawler/sync.py,971,FILE:wiki_crawler/sync.py,"getattr(args, ""verbose"", False)",待核对
+BRANCH:wiki_crawler/sync.py:971:false,code_branch,false,T01,wiki_crawler/sync.py,971,FILE:wiki_crawler/sync.py,"getattr(args, ""verbose"", False)",待核对
+BRANCH:wiki_crawler/sync.py:982:true,code_branch,true,T01,wiki_crawler/sync.py,982,FILE:wiki_crawler/sync.py,manual_path,待核对
+BRANCH:wiki_crawler/sync.py:982:false,code_branch,false,T01,wiki_crawler/sync.py,982,FILE:wiki_crawler/sync.py,manual_path,待核对
+BRANCH:wiki_crawler/sync.py:1007:true,code_branch,true,T01,wiki_crawler/sync.py,1007,FILE:wiki_crawler/sync.py,manual_path,待核对
+BRANCH:wiki_crawler/sync.py:1007:false,code_branch,false,T01,wiki_crawler/sync.py,1007,FILE:wiki_crawler/sync.py,manual_path,待核对
+BRANCH:wiki_crawler/sync.py:1046:true,code_branch,true,T01,wiki_crawler/sync.py,1046,FILE:wiki_crawler/sync.py,missing_exists,待核对
+BRANCH:wiki_crawler/sync.py:1046:false,code_branch,false,T01,wiki_crawler/sync.py,1046,FILE:wiki_crawler/sync.py,missing_exists,待核对
+BRANCH:wiki_crawler/sync.py:132:true,code_branch,true,T01,wiki_crawler/sync.py,132,FILE:wiki_crawler/sync.py,self.delay,待核对
+BRANCH:wiki_crawler/sync.py:132:false,code_branch,false,T01,wiki_crawler/sync.py,132,FILE:wiki_crawler/sync.py,self.delay,待核对
+BRANCH:wiki_crawler/sync.py:136:exception,code_branch,exception,T01,wiki_crawler/sync.py,136,FILE:wiki_crawler/sync.py,ExceptHandler,待核对
+BRANCH:wiki_crawler/sync.py:560:true,code_branch,true,T01,wiki_crawler/sync.py,560,FILE:wiki_crawler/sync.py,icon_urls,待核对
+BRANCH:wiki_crawler/sync.py:560:false,code_branch,false,T01,wiki_crawler/sync.py,560,FILE:wiki_crawler/sync.py,icon_urls,待核对
+BRANCH:wiki_crawler/sync.py:561:true,code_branch,true,T01,wiki_crawler/sync.py,561,FILE:wiki_crawler/sync.py,icon_urls,待核对
+BRANCH:wiki_crawler/sync.py:561:false,code_branch,false,T01,wiki_crawler/sync.py,561,FILE:wiki_crawler/sync.py,icon_urls,待核对
+BRANCH:wiki_crawler/sync.py:663:true,code_branch,true,T01,wiki_crawler/sync.py,663,FILE:wiki_crawler/sync.py,"field.startswith(""_"") or value in ("""", [], None)",待核对
+BRANCH:wiki_crawler/sync.py:663:false,code_branch,false,T01,wiki_crawler/sync.py,663,FILE:wiki_crawler/sync.py,"field.startswith(""_"") or value in ("""", [], None)",待核对
+BRANCH:wiki_crawler/sync.py:665:true,code_branch,true,T01,wiki_crawler/sync.py,665,FILE:wiki_crawler/sync.py,"by_key[key].get(field) in ("""", [], None)",待核对
+BRANCH:wiki_crawler/sync.py:665:false,code_branch,false,T01,wiki_crawler/sync.py,665,FILE:wiki_crawler/sync.py,"by_key[key].get(field) in ("""", [], None)",待核对
+BRANCH:wiki_crawler/sync.py:688:true,code_branch,true,T01,wiki_crawler/sync.py,688,FILE:wiki_crawler/sync.py,avatar_urls,待核对
+BRANCH:wiki_crawler/sync.py:688:false,code_branch,false,T01,wiki_crawler/sync.py,688,FILE:wiki_crawler/sync.py,avatar_urls,待核对
+BRANCH:wiki_crawler/sync.py:689:true,code_branch,true,T01,wiki_crawler/sync.py,689,FILE:wiki_crawler/sync.py,avatar_urls,待核对
+BRANCH:wiki_crawler/sync.py:689:false,code_branch,false,T01,wiki_crawler/sync.py,689,FILE:wiki_crawler/sync.py,avatar_urls,待核对
+BRANCH:wiki_crawler/sync.py:703:true,code_branch,true,T01,wiki_crawler/sync.py,703,FILE:wiki_crawler/sync.py,ability_urls,待核对
+BRANCH:wiki_crawler/sync.py:703:false,code_branch,false,T01,wiki_crawler/sync.py,703,FILE:wiki_crawler/sync.py,ability_urls,待核对
+BRANCH:wiki_crawler/sync.py:704:true,code_branch,true,T01,wiki_crawler/sync.py,704,FILE:wiki_crawler/sync.py,ability_urls,待核对
+BRANCH:wiki_crawler/sync.py:704:false,code_branch,false,T01,wiki_crawler/sync.py,704,FILE:wiki_crawler/sync.py,ability_urls,待核对
+BRANCH:wiki_crawler/sync.py:750:true,code_branch,true,T01,wiki_crawler/sync.py,750,FILE:wiki_crawler/sync.py,rule_urls,待核对
+BRANCH:wiki_crawler/sync.py:750:false,code_branch,false,T01,wiki_crawler/sync.py,750,FILE:wiki_crawler/sync.py,rule_urls,待核对
+BRANCH:wiki_crawler/sync.py:751:true,code_branch,true,T01,wiki_crawler/sync.py,751,FILE:wiki_crawler/sync.py,rule_urls,待核对
+BRANCH:wiki_crawler/sync.py:751:false,code_branch,false,T01,wiki_crawler/sync.py,751,FILE:wiki_crawler/sync.py,rule_urls,待核对
+BRANCH:wiki_crawler/sync.py:789:true,code_branch,true,T01,wiki_crawler/sync.py,789,FILE:wiki_crawler/sync.py,record.get(field) is None,待核对
+BRANCH:wiki_crawler/sync.py:789:false,code_branch,false,T01,wiki_crawler/sync.py,789,FILE:wiki_crawler/sync.py,record.get(field) is None,待核对
+BRANCH:wiki_crawler/sync.py:864:true,code_branch,true,T01,wiki_crawler/sync.py,864,FILE:wiki_crawler/sync.py,"isinstance(value, list) and (field in list_fields or (kind == ""spirits"" and field == ""属性""))",待核对
+BRANCH:wiki_crawler/sync.py:864:false,code_branch,false,T01,wiki_crawler/sync.py,864,FILE:wiki_crawler/sync.py,"isinstance(value, list) and (field in list_fields or (kind == ""spirits"" and field == ""属性""))",待核对
+BRANCH:wiki_crawler/sync.py:975:true,code_branch,true,T01,wiki_crawler/sync.py,975,FILE:wiki_crawler/sync.py,"args.kind == ""game-descriptions""",待核对
+BRANCH:wiki_crawler/sync.py:975:false,code_branch,false,T01,wiki_crawler/sync.py,975,FILE:wiki_crawler/sync.py,"args.kind == ""game-descriptions""",待核对
+BRANCH:wiki_crawler/sync.py:1016:true,code_branch,true,T01,wiki_crawler/sync.py,1016,FILE:wiki_crawler/sync.py,manual_path,待核对
+BRANCH:wiki_crawler/sync.py:1016:false,code_branch,false,T01,wiki_crawler/sync.py,1016,FILE:wiki_crawler/sync.py,manual_path,待核对
+BRANCH:wiki_crawler/sync.py:147:true,code_branch,true,T01,wiki_crawler/sync.py,147,FILE:wiki_crawler/sync.py,attempt + 1 < self.retries,待核对
+BRANCH:wiki_crawler/sync.py:147:false,code_branch,false,T01,wiki_crawler/sync.py,147,FILE:wiki_crawler/sync.py,attempt + 1 < self.retries,待核对
+BRANCH:wiki_crawler/sync.py:278:true,code_branch,true,T01,wiki_crawler/sync.py,278,FILE:wiki_crawler/sync.py,energy,待核对
+BRANCH:wiki_crawler/sync.py:278:false,code_branch,false,T01,wiki_crawler/sync.py,278,FILE:wiki_crawler/sync.py,energy,待核对
+BRANCH:wiki_crawler/sync.py:279:true,code_branch,true,T01,wiki_crawler/sync.py,279,FILE:wiki_crawler/sync.py,power,待核对
+BRANCH:wiki_crawler/sync.py:279:false,code_branch,false,T01,wiki_crawler/sync.py,279,FILE:wiki_crawler/sync.py,power,待核对
+BRANCH:wiki_crawler/sync.py:359:true,code_branch,true,T01,wiki_crawler/sync.py,359,FILE:wiki_crawler/sync.py,"""lord"" in str(card.get(""data-form"", """")).casefold().split(""|"")",待核对
+BRANCH:wiki_crawler/sync.py:359:false,code_branch,false,T01,wiki_crawler/sync.py,359,FILE:wiki_crawler/sync.py,"""lord"" in str(card.get(""data-form"", """")).casefold().split(""|"")",待核对
+BRANCH:wiki_crawler/sync.py:363:true,code_branch,true,T01,wiki_crawler/sync.py,363,FILE:wiki_crawler/sync.py,link,待核对
+BRANCH:wiki_crawler/sync.py:363:false,code_branch,false,T01,wiki_crawler/sync.py,363,FILE:wiki_crawler/sync.py,link,待核对
+BRANCH:wiki_crawler/sync.py:365:true,code_branch,true,T01,wiki_crawler/sync.py,365,FILE:wiki_crawler/sync.py,"image_role == ""portrait""",待核对
+BRANCH:wiki_crawler/sync.py:365:false,code_branch,false,T01,wiki_crawler/sync.py,365,FILE:wiki_crawler/sync.py,"image_role == ""portrait""",待核对
+BRANCH:wiki_crawler/sync.py:397:true,code_branch,true,T01,wiki_crawler/sync.py,397,FILE:wiki_crawler/sync.py,title_link,待核对
+BRANCH:wiki_crawler/sync.py:397:false,code_branch,false,T01,wiki_crawler/sync.py,397,FILE:wiki_crawler/sync.py,title_link,待核对
+BRANCH:wiki_crawler/sync.py:865:true,code_branch,true,T01,wiki_crawler/sync.py,865,FILE:wiki_crawler/sync.py,"not all(isinstance(item, str) for item in value)",待核对
+BRANCH:wiki_crawler/sync.py:865:false,code_branch,false,T01,wiki_crawler/sync.py,865,FILE:wiki_crawler/sync.py,"not all(isinstance(item, str) for item in value)",待核对
+BRANCH:wiki_crawler/sync.py:868:true,code_branch,true,T01,wiki_crawler/sync.py,868,FILE:wiki_crawler/sync.py,value is None,待核对
+BRANCH:wiki_crawler/sync.py:868:false,code_branch,false,T01,wiki_crawler/sync.py,868,FILE:wiki_crawler/sync.py,value is None,待核对
+BRANCH:wiki_crawler/sync.py:944:true,code_branch,true,T01,wiki_crawler/sync.py,944,FILE:wiki_crawler/sync.py,"len(summary[""new""]) > 20",待核对
+BRANCH:wiki_crawler/sync.py:944:false,code_branch,false,T01,wiki_crawler/sync.py,944,FILE:wiki_crawler/sync.py,"len(summary[""new""]) > 20",待核对
+BRANCH:wiki_crawler/sync.py:946:true,code_branch,true,T01,wiki_crawler/sync.py,946,FILE:wiki_crawler/sync.py,"len(summary[""missing""]) > 20",待核对
+BRANCH:wiki_crawler/sync.py:946:false,code_branch,false,T01,wiki_crawler/sync.py,946,FILE:wiki_crawler/sync.py,"len(summary[""missing""]) > 20",待核对
+BRANCH:wiki_crawler/sync.py:313:true,code_branch,true,T01,wiki_crawler/sync.py,313,FILE:wiki_crawler/sync.py,"""lord"" in str(row.get(""data-form"", """")).casefold().split(""|"")",待核对
+BRANCH:wiki_crawler/sync.py:313:false,code_branch,false,T01,wiki_crawler/sync.py,313,FILE:wiki_crawler/sync.py,"""lord"" in str(row.get(""data-form"", """")).casefold().split(""|"")",待核对
+BRANCH:wiki_crawler/sync.py:336:true,code_branch,true,T01,wiki_crawler/sync.py,336,FILE:wiki_crawler/sync.py,"image_role == ""portrait""",待核对
+BRANCH:wiki_crawler/sync.py:336:false,code_branch,false,T01,wiki_crawler/sync.py,336,FILE:wiki_crawler/sync.py,"image_role == ""portrait""",待核对
+BRANCH:wiki_crawler/sync.py:870:true,code_branch,true,T01,wiki_crawler/sync.py,870,FILE:wiki_crawler/sync.py,"isinstance(value, bool)",待核对
+BRANCH:wiki_crawler/sync.py:870:false,code_branch,false,T01,wiki_crawler/sync.py,870,FILE:wiki_crawler/sync.py,"isinstance(value, bool)",待核对
+BRANCH:wiki_crawler/sync.py:395:true,code_branch,true,T01,wiki_crawler/sync.py,395,FILE:wiki_crawler/sync.py,type_chip,待核对
+BRANCH:wiki_crawler/sync.py:395:false,code_branch,false,T01,wiki_crawler/sync.py,395,FILE:wiki_crawler/sync.py,type_chip,待核对
+BRANCH:wiki_crawler/sync.py:872:true,code_branch,true,T01,wiki_crawler/sync.py,872,FILE:wiki_crawler/sync.py,"isinstance(value, (str, int, float))",待核对
+BRANCH:wiki_crawler/sync.py:872:false,code_branch,false,T01,wiki_crawler/sync.py,872,FILE:wiki_crawler/sync.py,"isinstance(value, (str, int, float))",待核对
+BRANCH:wiki_crawler/sync.py:871:true,code_branch,true,T01,wiki_crawler/sync.py,871,FILE:wiki_crawler/sync.py,value,待核对
+BRANCH:wiki_crawler/sync.py:871:false,code_branch,false,T01,wiki_crawler/sync.py,871,FILE:wiki_crawler/sync.py,value,待核对
+FORM:0001,form,一窝蜂,T01,data/nrc_wiki.db:spirit_forms,1,,悬浮着的蜂巢就像身体的一部分一样灵活运动。可能是受某种信息素或者魔法影响，总会默契地做出协同的动作。,待核对
+FORM:0002,form,上岸蛙,T01,data/nrc_wiki.db:spirit_forms,2,,布娃娃诞生了意识之后，因为想要快快奔向小洛克的身边为它们带来好运，所以演化出了擅长弹跳的双腿，跳跃着冲向魔法学院。有传闻说，如果小洛克在考试前听100遍上岸蛙们的“呱呱”声，就可以心想事成，逢考必过。,待核对
+FORM:0003,form,不咕钟,T01,data/nrc_wiki.db:spirit_forms,3,,曾因机械禁令而被囚禁，胆怯已经刻进了这个种群的本能。遇到危险时它们会加速或减慢表盘指针转动，副作用是局部时间流速短暂错乱。曾有守卫追赶一只不咕钟，自觉只跑了十几秒，抬头发现已经是黄昏。,待核对
+FORM:0004,form,丢丢（沙地附近的样子）,T01,data/nrc_wiki.db:spirit_forms,4,,沙地生活的丢丢，它们更加谨慎，通过舌尖带回的信息判断风中同类留下的痕迹，嘴里偶尔会被带入细沙。,待核对
+FORM:0005,form,丢丢（火山附近的样子）,T01,data/nrc_wiki.db:spirit_forms,5,,火山地区的丢丢保留了什么都要舔一下的习惯，最喜欢舔岩壁上析出的矿物结晶。长期摄入火山矿物后，原本的体色逐渐被铁质色素染成暗红。,待核对
+FORM:0006,form,丢丢（草地附近的样子）,T01,data/nrc_wiki.db:spirit_forms,6,,有看到什么都会去舔一下试试看的习惯，经常忘记把舌头收回去。双眼对强光非常敏感，白天会老老实实躲在室内或者阴凉的地方。,待核对
+FORM:0007,form,丢丢（雪山附近的样子）,T01,data/nrc_wiki.db:spirit_forms,7,,雪山生活的丢丢，它们会用舌尖短促地舔一下霜层或新雪，补充水分，动作很短很快，以免舌头被冻伤。体表的温度下降很快，需要不停地移动和进食来维持体温。,待核对
+FORM:0008,form,乌拉塔（极夜的样子）,T01,data/nrc_wiki.db:spirit_forms,8,,天冷的时候是它们最喜欢的恶作剧时刻，偷偷用冰冷的爪子塞进小洛克的脖子里。当能量满溢之后，同伴之间会互相投掷蕴含冰系魔法的冷笑话，看上去就像在打雪仗。,待核对
+FORM:0009,form,乌拉塔（极昼的样子）,T01,data/nrc_wiki.db:spirit_forms,9,,在对决中常常使用夸张的姿态让对手退却，体内另一股意志会让它在关键时刻保持一条底线——它并不以伤害为乐，只汲取自己必要的尖叫。尊重对手，十分有礼貌。,待核对
+FORM:0010,form,乌达（极夜的样子）,T01,data/nrc_wiki.db:spirit_forms,10,,尖叫声不再是它们唯一的力量来源，于是不止专注于吓唬人。笑声也会成为他们的力量来源，因此演化出了讲冷笑话的能力。,待核对
+FORM:0011,form,乌达（极昼的样子）,T01,data/nrc_wiki.db:spirit_forms,11,,喜欢藏在头盔里吓唬人，是因为需要吸收尖叫来维持自己的能量。实际上胆子很小，遇到危险会倒地装晕。,待核对
+FORM:0012,form,乖乖鹄,T01,data/nrc_wiki.db:spirit_forms,12,,羽毛有很好的疏水性，可以毫不费力地浮在水面上，浮着的时候怔怔地看着水面，并不是在发呆，而是在检查自己的美丽，小小的乖乖鹄很早就已经意识到了美丽与优雅的重要性。,待核对
+FORM:0013,form,九尾狐,T01,data/nrc_wiki.db:spirit_forms,13,,尾巴里储存着强大的魔力，能够释放一种特殊的雪魔法，保护越冬作物免受冻害、消灭土壤中害虫，如果在冬天的农田里看到九尾狐出现，就知道明年一定会丰收。,待核对
+FORM:0014,form,九幽菇,T01,data/nrc_wiki.db:spirit_forms,14,,“在古老的遗迹中发现了九幽菇的石雕，当时的洛克对九幽菇充满了崇拜，它们会在仪式上围着九幽菇唱歌，并在祭祀的指导下服用其孢子，进入幻觉，企图沟通神明，然而也存在接触它的孢子太久而神志不清的情况，等等，难道我也……”,待核对
+FORM:0015,form,书卷守护,T01,data/nrc_wiki.db:spirit_forms,15,,身上带着书本和油墨的味道，看起来小小的，其实比想象中重很多。常与同伴交换藏书，偶尔遇到疑惑的地方，会用书使劲砸自己的头，希望用这种办法让知识快点进入身体。,待核对
+FORM:0016,form,书魔虫,T01,data/nrc_wiki.db:spirit_forms,16,,沉迷于阅读，其力量来源于书本的知识。走路和睡觉时都手不释卷，读的书越多体型变得越大，隔一段时间就要调整绑书带的长度，不然会阻碍它学习新知识。,待核对
+FORM:0017,form,仪使者,T01,data/nrc_wiki.db:spirit_forms,17,,在很久很久前被洛克族在遗迹的深处发现，可能已经有上千年的历史了。它的身体由宝石和贵重的金属组成，是被追求财富的人争抢的对象。,待核对
+FORM:0018,form,仪式之星,T01,data/nrc_wiki.db:spirit_forms,18,,曾被误认为是雕像，但却有意识和情绪。传说它的身体上镶嵌的宝石象征三种元素。被认为是完美平衡的象征，有研究证明它能够感知或预测时间的流动。,待核对
+FORM:0019,form,仪式巨像,T01,data/nrc_wiki.db:spirit_forms,19,,经过时间的洗礼，有些残缺的痕迹，是谜一般的存在，与其相关的研究记录十分少。但相反，这个种族似乎对洛克族十分了解和亲近。 “也许生命会消失，从人们的记忆中淡忘，但文明的传承不会断绝。”,待核对
+FORM:0020,form,伊兰亚龙,T01,data/nrc_wiki.db:spirit_forms,20,,修长的尾鳍在空气中划过会留下水雾的痕迹，水雾持续存在形成云朵。观测显示，伊兰亚龙停留超过半小时的区域，降雨概率提升67%。干旱季节时，它们会主动迁往缺水的农田上空。,待核对
+FORM:0021,form,伊兰龙,T01,data/nrc_wiki.db:spirit_forms,21,,当它舒展躯体时，水流沿鳞片纹路均匀铺展，使其外形兼具威慑力与神圣感，威严而不可侵犯。“在龙系精灵的历史中起到了关键的作用，一直默默地付出，很少有人知道它的存在。”,待核对
+FORM:0022,form,伊贝儿,T01,data/nrc_wiki.db:spirit_forms,22,,它头顶长着一团蓬松的绿色苔藓，压低身体时能很好地融入草丛，几乎难以分辨。苔藓本身不疏水，一旦沾到水就会迅速吸收并变得沉重，让它行动迟缓甚至走不动，只能停在原地等待自然风干。它的身体像果冻一样具有弹性，可拉伸变形。,待核对
+FORM:0023,form,伊贝粉粉,T01,data/nrc_wiki.db:spirit_forms,23,,苔藓常把眼睛遮住，因此它对细微动作的反应显得迟钝。若有洛克替它把苔藓梳理开，它会明显变得开心。进食后体型会短暂膨大一圈，随后再慢慢恢复原状。,待核对
+FORM:0024,form,伊雷龙,T01,data/nrc_wiki.db:spirit_forms,24,,幼年的小龙喜欢在雨天调皮捣蛋，充满水分的环境令它们十分活跃，在水里游得飞快，小洛克抓也抓不住它们。,待核对
+FORM:0025,form,伏地兽,T01,data/nrc_wiki.db:spirit_forms,25,,柔韧的吻部十分有弹性，没有牙齿，用舌头和吻部配合嘬取食物。每天吃几十只蚂蚁就可以存活，能量消耗很小，多数时间在睡觉。,待核对
+FORM:0026,form,优优,T01,data/nrc_wiki.db:spirit_forms,26,,白天，它们竖起蓬松的尾巴，在沙地上蹦跳活动。夜里守在洞口放哨，尾尖亮起柔和的暖黄光，并用尾巴轻点地面，把消息无声地传给同伴。,待核对
+FORM:0027,form,光纤兽,T01,data/nrc_wiki.db:spirit_forms,27,,毛发柔软但有韧性，结构特殊，似乎每一根毛发都能接收和发射光能量。它们可以分辨来自四面八方所有光束的到达时间，比较每个光束抵达的时间，计算其距离和能量。,待核对
+FORM:0028,form,克莱因龙,T01,data/nrc_wiki.db:spirit_forms,28,,变大之后逐渐能控制身体中能量的循环，像推动一条流动的河，没有源头也没有尽头，它只是慢慢地看生命循环往复。,待核对
+FORM:0029,form,公平鸽,T01,data/nrc_wiki.db:spirit_forms,29,,第一、绝对不放过任何争执！第二、绝对不能因为睡过头晚到现场！第三、绝对要公正裁判！第四、绝对要在被双方驱逐之前做出判决。——《公平鸽的守则》,待核对
+FORM:0030,form,公平鸽（称量的样子）,T01,data/nrc_wiki.db:spirit_forms,30,,第一、绝对不允许任何一筐果实缺斤少两！ 第二、绝对不能把布兜里的标准砝码偷偷吃掉！ 第三、绝对要在被果实堵住嘴之前做出判决！——《公平鸽的秋收守则》,待核对
+FORM:0031,form,兽花蕾,T01,data/nrc_wiki.db:spirit_forms,31,,稀兽花种的幼年形态，非常轻，会随风而动，身后有像翅膀一样的苞片，苞片上有特殊的薄膜，可以起到防风防水的效果，保护它们健康成长。,待核对
+FORM:0032,form,冬羽雀,T01,data/nrc_wiki.db:spirit_forms,32,,体型又小又圆，眼睛周围生长着一层柔软绒毛。羽绒非常厚，为了抵御寒冷的冬夜，常与同伴挤在一起栖息。,待核对
+FORM:0033,form,冬羽雀（夏天的样子）,T01,data/nrc_wiki.db:spirit_forms,33,,它看起来像一枚会飘的热气球，似乎吸一口气就可以轻松飘起来，不用费力扇动翅膀就可以乘着风飘出去很远。,待核对
+FORM:0034,form,冬羽雀（春天的样子）,T01,data/nrc_wiki.db:spirit_forms,34,,演化出适合春季的伪装色羽毛，换羽期掉下的灰白羽常被孩子捡去做小玩具。它自己则借着风，在田野里蹦跶，能借风力在草甸上滑浪。,待核对
+FORM:0035,form,冬羽雀（秋天的样子）,T01,data/nrc_wiki.db:spirit_forms,35,,这段时期它们的食量明显上升，精力异常旺盛，因为摄入了足够的营养而长出有光泽的硬羽，常与同伴展开追逐游戏，以此锻炼长途飞行所需的耐力。,待核对
+FORM:0036,form,冰封怨灵,T01,data/nrc_wiki.db:spirit_forms,36,,缔结契约的向往更明显，甚至会主动靠近潜在契约者，似乎由冰元素和某种尚不清楚的物质构成，推测该物质来自强烈的信念与精神力，使它们的契约更稳定、也更难被外力改变。,待核对
+FORM:0037,form,冰钻布鲁斯,T01,data/nrc_wiki.db:spirit_forms,37,,会拾取断落的枝桠，并在枝桠表面喷覆与头部成分相似的晶体化物质，使其变得坚硬冰冷，作为武器使用。,待核对
+FORM:0038,form,凡雀,T01,data/nrc_wiki.db:spirit_forms,38,,和普通的鸟精灵看起来差不多，小小的，连叫声都不怎么响亮，只是独自站在崖石上，每天扑扇几下翅膀，比昨天多飞出一点点距离。 “走自己最平凡的路，按照自己的意志行动，追逐自己最真实的梦想”。,待核对
+FORM:0039,form,凡鹰,T01,data/nrc_wiki.db:spirit_forms,39,,身形变成了梭形，修长的尾羽薄而宽，能把横着吹来的山风悄悄转成向上的托力。研究院测过它的风阻系数，低得离谱，但凡鹰自己好像并不在意这些数据。它飞得很稳，不快不慢，从平凡到非凡，它从没停过，也从没急过。,待核对
+FORM:0040,form,利灯鱼,T01,data/nrc_wiki.db:spirit_forms,40,,独居生物，个体之间保持距离，互不侵犯。常常自言自语，狂笑乱跳。据研究它们头顶的灯内有百万只以上的发光菌，肉眼很难观察。每只菌似乎都有独立意识，能够和本体进行沟通，甚至还有可能侵蚀本体的脑。,待核对
+FORM:0041,form,刺电环,T01,data/nrc_wiki.db:spirit_forms,41,,经常三三两两聚集在一起互相充电。情绪也会随着电力在同伴之间传播，群聚在一起容易变得更不开心，靠近后能听到此起彼伏的电流杂音，偶尔还有“呜呜”的声音。,待核对
+FORM:0042,form,刺盔虫,T01,data/nrc_wiki.db:spirit_forms,42,,刺上会卡着贝壳，木片，海藻。长长的棘刺有大量感光细胞，对光线非常敏感，具有负趋光性，为了逃避光线会在日间抓着各种东西为自己遮挡光线。食物充足时移动距离也会稍微变大。,待核对
+FORM:0043,form,刺盔虫（磨损的样子）,T01,data/nrc_wiki.db:spirit_forms,43,,在水中，普通的刺盔虫因为棘刺太长，容易被海草缠住，而被磨损了的刺盔虫，它们的短刺既能保护自己，又能减少移动阻力。它们被惊扰时收缩成一团，然后用坚硬的刺铠防御伤害。,待核对
+FORM:0044,form,刺轮砣（上弦的样子）,T01,data/nrc_wiki.db:spirit_forms,44,,这种形态的刺轮砣皮肤虽然柔软脆弱，但是已经蕴含着强烈的毒系魔法，即使没有足够强壮的身体，也有办法保护自己。,待核对
+FORM:0045,form,刺轮砣（下弦的样子）,T01,data/nrc_wiki.db:spirit_forms,45,,皮肤柔软脆弱还有轻微黏性，表面有纤细的棘刺，一定程度上能够提供保护作用，小小的刺轮砣还没有足够的勇气和战斗力，只能依靠这些小刺来保护自己。,待核对
+FORM:0046,form,加尔,T01,data/nrc_wiki.db:spirit_forms,46,,传说能够实现愿望，其实是每天只会吃东西打瞌睡的小小精灵。偶尔转转悠悠，如果没人看着可能会走去很远的地方，凭借着直觉和本能生活了很久很久。什么是直觉的来源呢？是许愿的声音吗？,待核对
+FORM:0047,form,加油海葵,T01,data/nrc_wiki.db:spirit_forms,47,,身体柔软，会随着水流轻轻摇摆，安静无害，常被误认为普通的装饰，似乎并不想进化。曾有洛克研究员研究这一物种后感概：生命自有出路。,待核对
+FORM:0048,form,加油蟹（两只海葵的样子）,T01,data/nrc_wiki.db:spirit_forms,48,,加油海葵放弃了锤炼自己变得更强这一进化手段，它们和加油蟹一起构建出特殊的共生关系。这个世界足够宽容，小小精灵不必努力变得更强大，只要健康快乐就好。,待核对
+FORM:0049,form,加油蟹（单只海葵的样子）,T01,data/nrc_wiki.db:spirit_forms,49,,丢失了一只海葵的加油蟹，会埋伏在同伴出没的路上，偷走对方的海葵，而被偷的那只又会去偷下一只。就这样循环往复乐在其中，总有加油蟹缺少一个海葵……,待核对
+FORM:0050,form,加灵,T01,data/nrc_wiki.db:spirit_forms,50,,圆滚滚的身体可以吃掉很多可可果也藏着很多神秘的魔法，据说它能实现人心底的愿望，但它自己却不太清楚。喜欢跟在洛克周围转悠，湿漉漉的大眼睛似乎盯着洛克书包里的可可果，又似乎是别的什么东西。,待核对
+FORM:0051,form,加益,T01,data/nrc_wiki.db:spirit_forms,51,,似乎能分辨愿望的颜色，开心的愿望是香香的粉黄色，难过的愿望是苦苦的紫黑色。它总是涂一些谁都看不懂的线条，不止在纸上涂。曾因为四处涂鸦被保洁阿姨警告过，后诚恳道歉，并在阿姨门前摆放整整十个可可果表达歉意。,待核对
+FORM:0052,form,动力猿,T01,data/nrc_wiki.db:spirit_forms,52,,有一半的时间在睡觉，极少保持清醒，清醒时精力极其旺盛。会使劲捶打胸口努力让自己变得清醒，但是卖力地运动过后睡得更沉了。,待核对
+FORM:0053,form,化蝶（喵喵的样子）,T01,data/nrc_wiki.db:spirit_forms,53,,极其聪慧的种族，大脑占去整个身体的三分之二。翅膀有力，充满魔力的鳞粉形成了翅膀上的花纹，看起来似乎是喵喵的样子。,待核对
+FORM:0054,form,化蝶（奇丽花的样子）,T01,data/nrc_wiki.db:spirit_forms,54,,极其聪慧的种族，大脑占去整个身体的三分之二。翅膀有力，充满魔力的鳞粉形成了翅膀上的花纹，看起来似乎是奇丽花的样子。,待核对
+FORM:0055,form,化蝶（平常的样子）,T01,data/nrc_wiki.db:spirit_forms,55,,极其聪慧的种族，大脑占去整个身体的三分之二。翅膀有力，充满魔力的鳞粉形成了翅膀上的花纹，用以迷惑其他精灵。,待核对
+FORM:0056,form,化蝶（幽冥眼的样子）,T01,data/nrc_wiki.db:spirit_forms,56,,极其聪慧的种族，大脑占去整个身体的三分之二。翅膀有力，充满魔力的鳞粉形成了翅膀上的花纹，看起来似乎是幽冥眼的样子。,待核对
+FORM:0057,form,十字蛙,T01,data/nrc_wiki.db:spirit_forms,57,,从深渊底层一层一层地闯上来，会向一切挡路的精灵宣战，不管对方多大。额头的十字纹变得清晰有力，像一枚代表荣耀的徽章刻在身上。,待核对
+FORM:0058,form,十字蝌蚪,T01,data/nrc_wiki.db:spirit_forms,58,,传说它们出生在连光都沉不到的深渊底部，身上有一道还不太清晰的十字纹路，体型很小，这里的水压大到同类精灵根本待不住，但它不觉得苦，每天都在拼命往上游一点点。,待核对
+FORM:0059,form,千棘海针,T01,data/nrc_wiki.db:spirit_forms,59,,有少量报告称见到过如此奇异的精灵。似乎看一眼都会感觉到刺痛。 身形大过鸟类，尖刺利过刀刃。已经无法找到虫体本身。它们再也不用担心保护自己的问题了，反而是别的生物需要担心这个。,待核对
+FORM:0060,form,千棘海针（磨损的样子）,T01,data/nrc_wiki.db:spirit_forms,60,,有少量报告称见到过如此奇异的精灵。似乎看一眼都会感觉到刺痛。身形大过铠甲，尖刺利过刀刃。已经无法找到虫体本身。它们再也不用担心保护自己的问题了，反而是别的生物需要担心这个。,待核对
+FORM:0061,form,千棘盔,T01,data/nrc_wiki.db:spirit_forms,61,,平时它仍行动迟缓，但遇险时能短暂加速，脱离光照与威胁区域。受到轻微触碰时，棘刺会迅速聚合，并指向接触点，棘端的毒囊能造成刺痛与轻微麻木。,待核对
+FORM:0062,form,千棘盔（磨损的样子）,T01,data/nrc_wiki.db:spirit_forms,62,,短棘虽然短，但更粗壮，呼吸效率比其他千棘盔更高——它们能快速吞吐海水中的氧气，即使在浑浊水域也能保持稳定呼吸。部分个体的短棘尖端含有毒囊，但毒素更加微弱，通常只会让接触者感到轻微麻木。,待核对
+FORM:0063,form,半朽蜜果灵,T01,data/nrc_wiki.db:spirit_forms,63,,“洛克洛克，告诉我， 我还甜吗？” “比从前更甜，比糖更黏。” “那我还圆吗？” “比从前更圆，比月更满。” “洛克洛克，告诉我， 腐朽的果还有人摘吗？”,待核对
+FORM:0064,form,卡卡虫（沙地附近的样子）,T01,data/nrc_wiki.db:spirit_forms,64,,锁定气味后会贴着沙面短促冲刺，并在奔跑间不断吐舌更新，顺着风向与沙面追踪。尾巴卷着的枝条能敲击沙地，这种清脆节奏是它们发出的威吓。,待核对
+FORM:0065,form,卡卡虫（火山附近的样子）,T01,data/nrc_wiki.db:spirit_forms,65,,吸盘能牢牢贴住滚烫的岩面而毫无不适，唾液在长期接触高温矿物后发生了变化，变得粘稠且带有腐蚀性，舔过的岩面会留下明显的溶蚀痕迹，在昏暗的洞穴中格外显眼。,待核对
+FORM:0066,form,卡卡虫（草地附近的样子）,T01,data/nrc_wiki.db:spirit_forms,66,,用四只吸盘在任何地形快速地移动，静止不动的时候很难分辨。尾巴牢牢抓着植物的茎，没事就会拿下来舔，它的唾液似乎会让果实越变越硬。,待核对
+FORM:0067,form,卡卡虫（雪山附近的样子）,T01,data/nrc_wiki.db:spirit_forms,67,,脚上的吸盘可以有力地吸附在雪山岩壁上，雪面反光强，它们经常在日照较好的岩壁上短暂晒暖，提高体温后再迅速外出觅食。,待核对
+FORM:0068,form,卡拉波斯,T01,data/nrc_wiki.db:spirit_forms,68,,据传说卡拉波斯曾经是一个仙子，因为误会诅咒过一位公主，被诅咒反噬后变为纺锤的模样。一次最多能够拉出7000米纺线。当体内的蛋白质耗尽的时候，它们就不会再进行任何活动陷入长久的昏睡中。,待核对
+FORM:0069,form,卡波,T01,data/nrc_wiki.db:spirit_forms,69,,能够生产出纺线的精灵，纺线主要由卡波体内的蛋白质和唾液构成。卡波的唾液中带有某种未知诅咒，即使是同类触碰到的话也会中毒陷入昏睡。,待核对
+FORM:0070,form,卡洛儿,T01,data/nrc_wiki.db:spirit_forms,70,,有些呆，不论交给它们什么东西，都会用心地放进自己的壳里。如果能找到办法和它们交流的话，它可能会从螺壳里拿出意想不到的东西作为礼物。,待核对
+FORM:0071,form,卡瓦重（沙地附近的样子）,T01,data/nrc_wiki.db:spirit_forms,71,,能从被热沙扰乱的气味里读出想要的信息，它的追击更难被甩脱。手上的枝条能敲出更复杂的节拍，不同节奏代表不同追击策略，如果节奏突然变得更密、更短，那意味着它要开始收网了。,待核对
+FORM:0072,form,卡瓦重（火山附近的样子）,T01,data/nrc_wiki.db:spirit_forms,72,,皮肤下沉积的矿物层越来越厚，能短暂隔绝极端高温，唾液的腐蚀性强到能溶解部分数矿石，溅落的唾液会在地面嗞嗞冒烟。它们趴在温热的岩面上就能维持体温，比其他地区的同类懒散得多。,待核对
+FORM:0073,form,卡瓦重（草地附近的样子）,T01,data/nrc_wiki.db:spirit_forms,73,,手里拿的是生长着果实的枝条，既是武器也是乐器，需要时还能解解嘴馋。战斗像舞蹈一样，用细长灵活的舌头和尾巴表演，让人眼花缭乱。,待核对
+FORM:0074,form,卡瓦重（雪山附近的样子）,T01,data/nrc_wiki.db:spirit_forms,74,,进化后，它们可以在最短时间内把体温抬升到正常水平，维持每天的必要活动。当天气转冷或日照不足时，它们会显著降低活动，进入近似蛰伏的节能状态，把热量留给下一次必要的出动。,待核对
+FORM:0075,form,卷毛鸭,T01,data/nrc_wiki.db:spirit_forms,75,,身形与洛克近似，空洞的目光仿佛若有所思。头顶的毛发十分柔软，自然卷曲，这在鸭精灵中十分少见。,待核对
+FORM:0076,form,卷胡巨獭,T01,data/nrc_wiki.db:spirit_forms,76,,对外表有很高的追求，除了磨牙的习惯之外，体内分泌的油脂会被用来保养胡须。蓬松的胡须和锋利的牙齿代表其在族群中的地位，部分獭会去寻找枯草装作假胡子戴着。普遍不喜欢和洛克亲近。,待核对
+FORM:0077,form,厉毒修萝,T01,data/nrc_wiki.db:spirit_forms,77,,翼上的棘刺带有能够分泌剧毒的腺体，狩猎时常在暗处蹲守观察许久，找到时机后从棘刺中射出毒液使猎物昏迷，再飞速捕获。,待核对
+FORM:0078,form,厉毒小萝,T01,data/nrc_wiki.db:spirit_forms,78,,体味清香，翼下藏有数个腺体，能够发射致洛克晕厥的毒雾。受惊时将双翼展为扇形，倾泻毒雾后迅速逃离。,待核对
+FORM:0079,form,友爱天天,T01,data/nrc_wiki.db:spirit_forms,79,,对它来说世界上没有陌生的洛克，只有还没认识的朋友。只要对它微笑一下，它头顶的光圈就会闪一闪，然后它会非常认真地记住这个小洛克。,待核对
+FORM:0080,form,友爱星飞,T01,data/nrc_wiki.db:spirit_forms,80,,它们相信友谊不会消失，而会变成星星。积攒了足够多的友谊之后，这些关于友谊的愿力汇聚成了它尾部的一颗星。洛克触碰它们的星星后，能想起彼此陪伴中开心的事情。,待核对
+FORM:0081,form,双灯鱼,T01,data/nrc_wiki.db:spirit_forms,81,,头顶的光似乎并不是光系魔法，而是来自于某种寄生在其身上的会发光的细菌，目前不清楚发光细菌的其他特性，即使在水中也必须把头顶的灯伸到水面上。,待核对
+FORM:0082,form,古卷匣魔像,T01,data/nrc_wiki.db:spirit_forms,82,,“盗贼撬开了书库的大门，随后就被黑暗中什么沉重的打击在空中划出了一道抛物线。然后落荒而逃，并且拒绝再次到访这里，并且嘴里一直嘟囔着：知识就是力量”——某冒险者叙述他们在魔法学院遭到古卷匣魔像攻击的故事。,待核对
+FORM:0083,form,古卷执政官,T01,data/nrc_wiki.db:spirit_forms,83,,期末时期的图书馆，每当古卷执政官从书架间缓缓现身，它周围的位置总被围得水泄不通，它的古卷如臂膀般展开，书页无声翻动，精准停在学生们最需要的章节上。“不要抗拒，作业是你和知识之间的契约。”,待核对
+FORM:0084,form,古啦多,T01,data/nrc_wiki.db:spirit_forms,84,,头部突起越复杂代表着年龄越大，突起内部充斥剧毒毒液，被一层外套膜包裹起来。遇到危险时，会释放更为强大的致幻毒素，但是并不致命。因此，部分洛克因为想要致幻体验，而专门寻找它们。,待核对
+FORM:0085,form,古钟蛇,T01,data/nrc_wiki.db:spirit_forms,85,,通常低伏身体，隐藏在草丛中，只露出尾巴发出咚咚咚的轻响，吸引好奇的精灵过来。其尾部的结构可以在摇晃时发出咚咚的鼓声，据说玄玉岛的洛克以此为灵感，制作出了某种广受欢迎的玩具。,待核对
+FORM:0086,form,叮叮卯,T01,data/nrc_wiki.db:spirit_forms,86,,每一只叮叮卯都对应古堡中的某一扇门。想打开那扇门？先抓住它。但它飞行轨迹极其刁钻。好奇心很重，有时候反而会主动凑近你观察，一伸手就飞走了，留下一串叮叮的嘲笑声。,待核对
+FORM:0087,form,叮叮恶魔,T01,data/nrc_wiki.db:spirit_forms,87,,一直在思考如何恶作剧，还会每天进行吓人的练习。总是歪嘴笑着，一副玩世不恭的样子，其实非常害怕失去别人的注意力。非常重视诺言，会坚定地完成自己的约定。,待核对
+FORM:0088,form,可爱猿,T01,data/nrc_wiki.db:spirit_forms,88,,头顶着活跃的微型火山，就连睡觉时也会冒出小烟圈。可别因为体型而小看了它，可爱猿头上流出的熔岩就连钢铁也能融化。,待核对
+FORM:0089,form,可立鸡,T01,data/nrc_wiki.db:spirit_forms,89,,鸡冠有特殊腺体分泌可燃气体，情绪激动时，鸡冠会熊熊燃烧。为了便于警戒，可立鸡会排成一队，由鸡冠火焰最旺盛的个体来带领。,待核对
+FORM:0090,form,叶冕魔力猫,T01,data/nrc_wiki.db:spirit_forms,90,,“每天尽情地吃可可果，和喜欢的小洛克一起冒险，是很开心的生活。”,待核对
+FORM:0091,form,叶眼魔,T01,data/nrc_wiki.db:spirit_forms,91,,如果你不幸走进了叶眼魔的领地，你会注意到空气中有一种异样的压迫感，好像被很多眼睛同时审视着，从不同角度同时锁定你。,待核对
+FORM:0092,form,号儿鱼,T01,data/nrc_wiki.db:spirit_forms,92,,拥有中空结构的尾巴，空气和水流过的时候会发出小号一样响亮的声音。非常喜欢社交的生物，经常举办盛大的音乐会，不同的小号精灵会轮流展示自己的音乐才华，创造出令人惊叹的合奏。,待核对
+FORM:0093,form,吸泥鸥,T01,data/nrc_wiki.db:spirit_forms,93,,骨骼天生比较脆，需要经常吸食淤泥，泥巴里面含有它们骨骼所需的物质。如果摄入不足，它们的关节会发炎，走起路来可能容易摔倒。吻部尚未完全发育，偶尔会被泥巴噎住,待核对
+FORM:0094,form,呆小路,T01,data/nrc_wiki.db:spirit_forms,94,,幼年期较长，主要靠嗅闻、聆听和头上叶子的触觉来获取信息。头顶毛发会散发出爆米花的香味，偶尔引来其他精灵。它们之间用互闻头顶代表问候。,待核对
+FORM:0095,form,呼呼猪,T01,data/nrc_wiki.db:spirit_forms,95,,得益于能够分泌疏水性油脂的皮脂腺，皮毛紧实而油亮，既防水又防寒。四肢短而粗壮，跑起来很快，奔跑时偶尔轻微摆动尾巴用来保持平衡。,待核对
+FORM:0096,form,咔咔壳,T01,data/nrc_wiki.db:spirit_forms,96,,很少再缩进壳里，即使遇到危险也会勇敢面对。甲壳内一部分是空气，一部分是水，通过喷嘴来调节重量从而在水中下潜和上浮。,待核对
+FORM:0097,form,咔咔壳（蜕皮时的样子）,T01,data/nrc_wiki.db:spirit_forms,97,,很少再缩进壳里，即使遇到危险也会勇敢面对。甲壳内一部分是空气，一部分是水，通过喷嘴来调节重量从而在水中下潜和上浮。,待核对
+FORM:0098,form,咔咔羽毛,T01,data/nrc_wiki.db:spirit_forms,98,,跑得很快，手短且柔软，一般用尾巴来代替手的作用。尝试助跑之后短暂地浮空，但似乎一直没能学会飞翔。,待核对
+FORM:0099,form,咔咔雀,T01,data/nrc_wiki.db:spirit_forms,99,,仿照洛克号的帆进化出了大尾巴，曾经尝试练习滑翔，大尾巴让它们能够短暂浮空，也可以用来吓唬和拍打敌人。,待核对
+FORM:0100,form,咔咔鸟,T01,data/nrc_wiki.db:spirit_forms,100,,拥有两条漂亮的大尾巴，虽然无法飞翔，但是抓着大尾巴可以滑翔一段距离，滑翔时身体散发出香香的味道，是因为这个种族普遍有些恐高，紧张的时候会释放舒缓神经的信息素，为自己壮胆。,待核对
+FORM:0101,form,咕咕帽,T01,data/nrc_wiki.db:spirit_forms,101,,看到洛克就想展示刚学的魔法。可惜魔力还不够，变得不太好，偶尔还有可能失败，表演失败之后它会钻进帽子里面反思，过一会儿又探出脑袋继续尝试。,待核对
+FORM:0102,form,咕德帽帽,T01,data/nrc_wiki.db:spirit_forms,102,,认为变出东西的魔法很厉害，于是想要传授给其他精灵这项技术，可惜其他精灵都不是很感兴趣，只有咕咕帽不厌其烦地每天请教，它很开心，于是更加殷切地陪练。,待核对
+FORM:0103,form,咬咬小子,T01,data/nrc_wiki.db:spirit_forms,103,,古老的童话故事里面写道：如果战胜了一千只鼠精灵，就可以得到咬咬小子家族的认可。咬咬小子们似乎没听过这个故事，它们经常在路口站岗、巡逻，鼠精灵也在他们的保护范围内。,待核对
+FORM:0104,form,哭哭菇,T01,data/nrc_wiki.db:spirit_forms,104,,成群地栖息在潮湿少光的地域，分泌出来的黏液具有独特的气味，引诱旅人深入密林，吸入过多这种气体便会不停流泪。,待核对
+FORM:0105,form,喵呜,T01,data/nrc_wiki.db:spirit_forms,105,,爱在泉水边嬉戏，是喵喵的进化型，芭蕉叶状的尾巴变成了两条。胆量变大了，会经常吐舌头挑衅对手。,待核对
+FORM:0106,form,喵喵,T01,data/nrc_wiki.db:spirit_forms,106,,喜欢阳光，喜欢新鲜的空气，会摇晃尾巴，受到惊吓会快速逃跑。虽然很胆小，但有时候也很调皮。,待核对
+FORM:0107,form,嗜光嗡嗡,T01,data/nrc_wiki.db:spirit_forms,107,,“经实验发现，其腹部含有特殊的器官，只对光系能量产生反应。因此，存放光水晶时需派遣光系精灵巡逻，混淆它们的感应。”“光系精灵一同发出抗议，要求王国打击嗜光嗡嗡的狂热跟踪和过分亲近行为。”,待核对
+FORM:0108,form,嗜波螺,T01,data/nrc_wiki.db:spirit_forms,108,,在海浪冲击下，演化出坚韧的矿物质石柱外壳，是一种非常稳定的消波结构，能把浪涌的力量层层化解。声音在石柱间隙中不断反射产生共鸣，能发出类似海浪的声音。,待核对
+FORM:0109,form,嗜波螺（被污染的样子）,T01,data/nrc_wiki.db:spirit_forms,109,,常生活在恶水林地附近，光滑的表面能更有效地抵抗污染水源的侵蚀。后来有研究证实，曾经有一支波波螺家族被海浪冲到这里，就这样在原地留下来，逐渐演化成了现在的样子。,待核对
+FORM:0110,form,嘟嘟煲,T01,data/nrc_wiki.db:spirit_forms,110,,体内的粘液有毒性，总是黏糊糊的，一旦沾上很难洗掉，粘液的沸点十分低，常处于沸腾状态。,待核对
+FORM:0111,form,嘟嘟锅,T01,data/nrc_wiki.db:spirit_forms,111,,一直在咕嘟咕嘟，分不清是因为沸腾导致，还是在喋喋不休。似乎有意四处散播谣言，说自己是炼金教室里大炼金锅的嫡系子嗣，研究人员在进行研究观测的时候每天要听五十遍它们讲的辉煌家史。,待核对
+FORM:0112,form,噼啪鸟,T01,data/nrc_wiki.db:spirit_forms,112,,“你知道洛克的头发什么时候会竖起来吗？”“是你妈妈突然闯入你房间的时候？”“是进入了噼啪鸟的电场！我还听到它的吼叫声！幸好我跑得快，差点就被电击了！”“……不过这个发型还挺帅的，下次再试试。”,待核对
+FORM:0113,form,圆号鱼,T01,data/nrc_wiki.db:spirit_forms,113,,会专门去矿物质丰富的水域，通过吸收矿物质来调整背部结构，达到调音的目的。群居，每天早上起来一齐练声，巨大的合奏声能唤醒周围水域的所有生物，喜欢安静的精灵们不愿意住在它们旁边。,待核对
+FORM:0114,form,圆眼蜘蛛,T01,data/nrc_wiki.db:spirit_forms,114,,幼体的圆眼蜘蛛并不太能织网捕食，多以青草，树果为食。复眼获取信息范围极大，速度极快，即便是独眼，圆眼蜘蛛获取信息速度远超过洛克族100倍。,待核对
+FORM:0115,form,圣代甜甜（杨桃巧克力口味）,T01,data/nrc_wiki.db:spirit_forms,115,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，杨桃和巧克力的香气能防止过度兴奋，清爽又提神。,待核对
+FORM:0116,form,圣代甜甜（杨桃抹茶口味）,T01,data/nrc_wiki.db:spirit_forms,116,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，杨桃和抹茶的香气能调节过度用脑的后遗症。,待核对
+FORM:0117,form,圣代甜甜（杨桃草莓口味）,T01,data/nrc_wiki.db:spirit_forms,117,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，杨桃和草莓的香气能让洛克暂时忘记烦恼。,待核对
+FORM:0118,form,圣代甜甜（樱桃巧克力口味）,T01,data/nrc_wiki.db:spirit_forms,118,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。,待核对
+FORM:0119,form,圣代甜甜（樱桃抹茶口味）,T01,data/nrc_wiki.db:spirit_forms,119,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，抹茶和樱桃的香气能提升洛克的专注力，适合复习的时候辅助洛克。,待核对
+FORM:0120,form,圣代甜甜（樱桃草莓口味）,T01,data/nrc_wiki.db:spirit_forms,120,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，樱桃和草莓的香气能减缓洛克的情绪波动，降低魔法失控风险。,待核对
+FORM:0121,form,圣代甜甜（蓝莓巧克力口味）,T01,data/nrc_wiki.db:spirit_forms,121,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，蓝莓和巧克力的香气能让洛克快速恢复体力。,待核对
+FORM:0122,form,圣代甜甜（蓝莓抹茶口味）,T01,data/nrc_wiki.db:spirit_forms,122,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，蓝莓和抹茶的香气能让洛克保持平和状态。,待核对
+FORM:0123,form,圣代甜甜（蓝莓草莓口味）,T01,data/nrc_wiki.db:spirit_forms,123,,喜欢群居的团结者，圣代甜甜诞生时就生有两颗冰淇淋球，相生相伴，两颗冰淇淋球口味性格不同却能一直融洽相处。据说，蓝莓和草莓的香气能增强洛克对环境变化的适应力。,待核对
+FORM:0124,form,圣光迪莫,T01,data/nrc_wiki.db:spirit_forms,124,,身体中蕴含着光之魔法的力量。有着光一般的勇气，无论什么情况下都会守护同伴。 “这一次，带着光明回来”。,待核对
+FORM:0125,form,圣凯布米龙,T01,data/nrc_wiki.db:spirit_forms,125,,传说最早的村镇都挨着圣凯布米龙每天路过的路线建起来，洛克们沿着它留下的温热痕迹耕种、修路。地图上的路，最初就是这么画下来的。如今大部分洛克都不记得这些路是从哪来的，只知道这条路一直比别处暖和。,待核对
+FORM:0126,form,圣剑-X,T01,data/nrc_wiki.db:spirit_forms,126,,制造者把牺牲和奉献作为圣剑的使命，接下来它的一切行为都是为了实现这个目的，无数十号圣剑就这样留在了从前的时代里。现在黄金时代的风早已停息，暗夜过后也迎来了新生。,待核对
+FORM:0127,form,圣剑侍从,T01,data/nrc_wiki.db:spirit_forms,127,,黄金时代的工匠们曾将占星与炼金并列为同一门学问的两种语言。于是他们以风为芯，以力量和律法为骨，铸成了圣剑。现在只有极少量留存下来。,待核对
+FORM:0128,form,圣剑骑士,T01,data/nrc_wiki.db:spirit_forms,128,,永远不会停下的机械，被发现的时候伤痕累累，曾经被修复过很多次，修复后的身体仍然能发出的超过5000度的光焰。其身体内部刻着古代文字意为：熄灭不是终结，等待新生到来，它将重铸工匠的意志。,待核对
+FORM:0129,form,圣水守护,T01,data/nrc_wiki.db:spirit_forms,129,,“无论是云中落下的一滴水，还是湖面中微风吹起的一道涟漪，都有她的身影。”,待核对
+FORM:0130,form,圣水迪莫,T01,data/nrc_wiki.db:spirit_forms,130,,身体中蕴含着水之魔法的力量。有着水一样的澎湃，无论什么情况下都会守护同伴。 “这一次，带着智慧回来”。,待核对
+FORM:0131,form,圣火迪莫,T01,data/nrc_wiki.db:spirit_forms,131,,身体中蕴含着火之魔法的力量。有着火一样的热情，无论什么情况下都会守护同伴。 “这一次，带着荣耀回来”。,待核对
+FORM:0132,form,圣羽翼王,T01,data/nrc_wiki.db:spirit_forms,132,,庇佑这片纯粹的净土，是拥有强大力量之后背负的使命。从上古壁画中得知尘封的过往，它寻求力量，发自内心地想要保护现在的一切。“张开圣洁的羽翼，为同伴抵挡风雨，便是它心中的圣歌。”,待核对
+FORM:0133,form,圣草迪莫,T01,data/nrc_wiki.db:spirit_forms,133,,身体中蕴含着草之魔法的力量。有着草一般的坚韧，无论什么情况下都会守护同伴。 “这一次，带着梦想回来”。,待核对
+FORM:0134,form,地鼠（储水时的样子）,T01,data/nrc_wiki.db:spirit_forms,134,,生活在干旱地区，演化出了可以储藏水分的特殊耳朵结构。它们呼吸时，在鼻腔和口腔中凝结出水珠，再将水珠输送到耳朵里储存起来。,待核对
+FORM:0135,form,地鼠（枯水期的样子）,T01,data/nrc_wiki.db:spirit_forms,135,,有着小巧的身体，敏感的尾巴是它最大的弱点。族群数量庞大，生命力极强，几乎不需要喝水。,待核对
+FORM:0136,form,墨鱿士,T01,data/nrc_wiki.db:spirit_forms,136,,不同于章鱼精灵，它们因为蕴含幽系能量，皮肤已经褪成苍白的颜色，头足里面藏着墨囊，装着它们收集来的颜料。经常藏在厚厚的画纸中间休息。,待核对
+FORM:0137,form,声波缇塔,T01,data/nrc_wiki.db:spirit_forms,137,,长长的机械触手可以更方便地抓取物品，遵守着古老的机器守则，然而其需要寻找的物品，似乎早已消逝在历史中。 “更加强大的功能，见到机械，它们会毫不留情的抓过来。见到洛克，也会毫不留情地抓过来。”,待核对
+FORM:0138,form,壳乙螺,T01,data/nrc_wiki.db:spirit_forms,138,,生活在螺壳里，似乎对壳外面的世界不太关心，多数时间都躲在壳内睡觉，对食物的香味比较敏感，可以用食物引诱出来。,待核对
+FORM:0139,form,壳栗丝鼠,T01,data/nrc_wiki.db:spirit_forms,139,,会嗅来嗅去寻找花蜜，吃的花蜜越多，鼻子分泌的粘液越香甜，并且带着花香的味道。会用鼻子把身上的毒刺都涂满香甜粘液。毛毛舔过它们却不会中毒，真奇怪。,待核对
+FORM:0140,form,多啦多,T01,data/nrc_wiki.db:spirit_forms,140,,头部的粘液组织十分不稳定，情绪激动时甚至会掉落一部分。受到刺激后粘液会挥发到空气中，释放致幻毒素。,待核对
+FORM:0141,form,多多,T01,data/nrc_wiki.db:spirit_forms,141,,头部帽子一样的组织触感舒适，冰凉弹软。受到惊吓的话，会从头部喷射出大量毒液，之后迅速缩起陷入昏厥状态。,待核对
+FORM:0142,form,多彩方方,T01,data/nrc_wiki.db:spirit_forms,142,,似乎是一种非常古老的机械系造物，用处不详。热爱社交，尤其喜欢和其他种族的幼体玩耍。喜欢歌唱和舞蹈，但普遍不擅长舞蹈，容易摔倒。,待核对
+FORM:0143,form,多菇丁,T01,data/nrc_wiki.db:spirit_forms,143,,“又有了新的发现，多菇丁埋地时，是在通过菌丝体往地下传播信号，向其他菇精灵发出指令，它们信号的语言结构和古文字非常相似，也许它们的历史远比洛克以为的要早得多。”,待核对
+FORM:0144,form,多西,T01,data/nrc_wiki.db:spirit_forms,144,,可以通过磁性来悬浮在空中，对影响磁场稳定的东西异常敏感，偶尔会因为磁力吸来一些莫名其妙的小零件。可以通过操纵磁力来造成巨大的破坏，常是电力故障的罪魁祸首。,待核对
+FORM:0145,form,夜宿颅,T01,data/nrc_wiki.db:spirit_forms,145,,吓退其他精灵以取乐，有人说它们以恐惧为食，但没人考证过真假。长出双爪后，行动更加自如，有了保护自己的能力。,待核对
+FORM:0146,form,夜枭,T01,data/nrc_wiki.db:spirit_forms,146,,充盈着魔力的巨爪十分有力，曾经被夜枭吞下过的生命，虽然躯体看似无碍，灵魂却缺失了一部分。,待核对
+FORM:0147,form,夜游魔,T01,data/nrc_wiki.db:spirit_forms,147,,一到天黑就集体出动，在夜空中无声地滑翔游荡。声波探测让它们在纯黑环境中如鱼得水。附近居民吓唬小小洛克说天黑不回家的话会被夜游魔吃掉。某些个体对此表示不赞同。,待核对
+FORM:0148,form,大头骨龙,T01,data/nrc_wiki.db:spirit_forms,148,,首次被人发现时，大头骨龙在地下岩层中沉睡，并且对现在的世界和精灵社会一无所知。骨架不仅坚硬，而且具有再生能力。即使骨头被打断，也可以在短时间内重新长出。骨质翅膀虽然看起来脆弱，但实际上非常坚韧。,待核对
+FORM:0149,form,大耳帽兜,T01,data/nrc_wiki.db:spirit_forms,149,,全身覆满白色绒毛，能抵御寒冷，仔细观察它们的毛毛分为两种，一种是顺滑纤细的针毛，另一种是又软又密的绒毛。虽然体型小，但却不畏惧寒冷，小小的手爪柔软又温暖。似乎喜欢抱抱。,待核对
+FORM:0150,form,奇丽叶,T01,data/nrc_wiki.db:spirit_forms,150,,头顶的花苞十分巨大，花苞成长速度已经超过身体，头部上方是视野盲区，由身体下面五个足状的突起维持平衡。,待核对
+FORM:0151,form,奇丽果,T01,data/nrc_wiki.db:spirit_forms,151,,头顶结出了橙红色的果实，散发出甜腻的香味，小鸟精灵可能会被吸引。但贸然接近是得不到好果子吃的，它分泌的糖胶不仅黏还有毒，无声拒绝着每一个不速之客。,待核对
+FORM:0152,form,奇丽花,T01,data/nrc_wiki.db:spirit_forms,152,,巨大的花朵盛开了，花瓣像是一顶遮阳帽，粗大的花蕊像触角一样，花朵很好闻，有类似柑橘的香甜气味，对小型精灵有强烈吸引力。,待核对
+FORM:0153,form,奇丽草,T01,data/nrc_wiki.db:spirit_forms,153,,头顶着花苞爬着前进，总会朝着太阳光的方向。花苞里面似乎孕育着什么，要是长期照不到太阳，花苞就会萎缩。,待核对
+FORM:0154,form,奇梦咪,T01,data/nrc_wiki.db:spirit_forms,154,,负责的喵老师为了让学生好好学习，想到了一种更直接的教学管理方式：只要有学生想溜出教室探头逃课，下一秒就会被它软乎乎却弹性十足的肚皮弹回座位。,待核对
+FORM:0155,form,奔乐鹿,T01,data/nrc_wiki.db:spirit_forms,155,,非常喜欢被抚摸，但要避开头、脚和尾巴。夜间视力很差，通常会睡眠；若必须夜间行动，会消耗能量点亮头顶电球照明，而电球的明暗也会随听见的节拍起伏。,待核对
+FORM:0156,form,奔波鼠,T01,data/nrc_wiki.db:spirit_forms,156,,毛色杂乱且粗糙，像是融合了泥土、枯叶的颜色，黑色的眼睛透露出机灵的光。它们背着自己的全部家当，在野外长期流浪，一直在路上，从未到达旅途的终点。有着健壮的身躯，但进攻意愿低，只对闪闪发光的东西兴趣浓厚。,待核对
+FORM:0157,form,女王蜂,T01,data/nrc_wiki.db:spirit_forms,157,,只有最尊贵的蜂后能得到加冕，穿着金色的华美虫衣，有淡淡的花香味，女王蜂以信息素的方式向周围的蜂群传递自己的命令。,待核对
+FORM:0158,form,学院呱呱,T01,data/nrc_wiki.db:spirit_forms,158,,心中怀揣着对魔法的强烈渴望和对广阔知识世界的向往，呱呱从玄玉岛来到魔法学院。咒语对它们来说就像绕口令，因此需要花费更多的时间来学习，在魔法学院的走廊，经常能看到它们带着歪歪扭扭的自学笔记飞奔的身影。,待核对
+FORM:0159,form,守夜烛,T01,data/nrc_wiki.db:spirit_forms,159,,据说它曾经是城堡里一位小骑士，或者至少它自己是这么认为的。不知道是谁的魔法让它变成了一截蜡烛的模样，但它好像并不太在意，依然坚守骑士的职责，在城堡巡逻，用两只小手护住火焰。,待核对
+FORM:0160,form,宝藏小狐,T01,data/nrc_wiki.db:spirit_forms,160,,宝藏小狐是一种从容的精灵，即使被其他精灵咬到，也可以保持冷静。它大大的眼睛中，蕴含着深邃的平静。,待核对
+FORM:0161,form,宝藏沙狐,T01,data/nrc_wiki.db:spirit_forms,161,,只有看到虫系精灵的时候会双眼放光，经常出现在虫群附近，爪子摩挲着没见过的虫，嘴巴里嘟嘟囔囔说着什么。实习研究员遇到不认识的虫都会去给它看看。直到学院反复重申：野外考察作业务必独立完成。,待核对
+FORM:0162,form,寂灭骨龙,T01,data/nrc_wiki.db:spirit_forms,162,,当被从土层里挖出来的时候，它们正在一无所知地睡觉。别看它们脆弱得好像一脚会散架，但埋了亿万年的矿物硬度堪比钻石。“它总是对着镜子思考，幻想自己当年活着时候的样子。”,待核对
+FORM:0163,form,寒音蛇,T01,data/nrc_wiki.db:spirit_forms,163,,拥有能分泌毒液的特殊腺体，能够通过背部空心管状的骨棘发射毒液，致使猎物晕厥。毒液会散发出腐臭的气味，有精灵或洛克靠近查看味道来源时，会猛然跃起扑击。,待核对
+FORM:0164,form,小丑兔,T01,data/nrc_wiki.db:spirit_forms,164,,仍然有些闲不住，但它正在学着克制，想蹦的时候就抛球，把冲动转化到了抛球中。不过偶尔还是会忍不住，球抛着抛着身体就跟着飞了出去。,待核对
+FORM:0165,form,小丑公爵,T01,data/nrc_wiki.db:spirit_forms,165,,依然爱动，所有躁动化作指尖球技，它的迈步从容而有节奏，抛球的轨迹优雅得像一门艺术。它的耳朵随着每一次弹跳有规律地颤动，就像洛克喜欢抖腿，这是它唯一泄露出来的小破绽。,待核对
+FORM:0166,form,小丑豆豆,T01,data/nrc_wiki.db:spirit_forms,166,,在人群中偶尔觉得焦虑的小朋友，看起来有些多动，总是晃悠身体，实际上是在缓解焦虑给自己勇气，不太善于表达。,待核对
+FORM:0167,form,小勇狮,T01,data/nrc_wiki.db:spirit_forms,167,,喉咙处有容纳火系魔法的身体结构，在小勇狮身上还不太明显，偶尔能发现它打喷嚏的时候会喷出小火花。,待核对
+FORM:0168,form,小夜,T01,data/nrc_wiki.db:spirit_forms,168,,身手敏捷的小猫，擅长在雾气中隐藏身形，也可以幻化成其他物体。常常以惊讶和恐惧为食，消化后会散发出一种奇怪的味道。,待核对
+FORM:0169,form,小帕尔,T01,data/nrc_wiki.db:spirit_forms,169,,探索欲很强的精灵，会通过摇尾巴的方式表达亲近，尾尖会散发出魔法，但并不能很好的控制，时常伤到自己。,待核对
+FORM:0170,form,小怂猫,T01,data/nrc_wiki.db:spirit_forms,170,,胆量极小的精灵，曾因极少被观测记录，被王国记录为已灭绝的物种。翼膜上的眼状图案可以吓退大多数天敌，遇到敌人会张开双臂一动不动地站着，一直到对方离开或者自己昏厥。,待核对
+FORM:0171,form,小星光（星光能量的样子）,T01,data/nrc_wiki.db:spirit_forms,171,,草原晴天的微风里，常传来细碎噼啪——那是小星光在甩鬃毛，它们似乎总是处于炸毛的状态，其实 是毛发里的电流导致的。它们从来不怕打雷，长长的尾巴能起到导电的作用，被雷劈中也不会受伤。,待核对
+FORM:0172,form,小星光（月光能量的样子）,T01,data/nrc_wiki.db:spirit_forms,172,,月光下诞生的小星光，储存的雷电能量转化为银白色月光，看起来像光在云层中多次散射所形成的月晕。,待核对
+FORM:0173,form,小浣蛋,T01,data/nrc_wiki.db:spirit_forms,173,,洛克大道上打翻的垃圾桶、面包店里少了一半的糕点、驻地里凭空消失的徽章，十有八九是这些小家伙干的。它们从不单独行动，三两成群蹲在街角盯梢，看见落单的精灵和洛克便一拥而上。,待核对
+FORM:0174,form,小灵菇,T01,data/nrc_wiki.db:spirit_forms,174,,可能在任何潮湿的阴冷角落出现，看到蓝色荧光不要贸然接近。吸食其他生物的情绪作为养分，吃饱后会发出轻轻的叹气声。,待核对
+FORM:0175,form,小灵面,T01,data/nrc_wiki.db:spirit_forms,175,,面具似乎可以摘下，进食的时候会避开所有生物。一层闪着荧光的神秘物质覆盖着身体，内部可能是液体。,待核对
+FORM:0176,form,小独角兽,T01,data/nrc_wiki.db:spirit_forms,176,,漂亮柔软的绿色鬃毛，让谁看了都想抚摸一下。不知是不是它散发出的魔力的缘故，在它的身边会感觉心灵也变得纯净了。,待核对
+FORM:0177,form,小狮鹫（崖间地的样子）,T01,data/nrc_wiki.db:spirit_forms,177,,只能勉强顶破头部的壳，剩余的蛋壳会陪伴小狮鹫度过幼年时期，能够保护尚且脆弱的羽毛。流线型的蛋壳构造还能减小风阻，丝毫不会影响行动。,待核对
+FORM:0178,form,小狮鹫（高山地的样子）,T01,data/nrc_wiki.db:spirit_forms,178,,只能勉强顶破头部的壳，剩余的蛋壳会陪伴小狮鹫度过幼年时期，能够抵御高山的严寒。皮肤表面覆盖嫩黄的绒毛，有保温发热的作用。,待核对
+FORM:0179,form,小甲虫,T01,data/nrc_wiki.db:spirit_forms,179,,头盔顶部和双手上都有黄色的尖角，锋利而坚硬。听说在它们的世界里，坚硬且粗壮的角是身份地位的象征。,待核对
+FORM:0180,form,小电企鹅,T01,data/nrc_wiki.db:spirit_forms,180,,它们生活在寒冷的水域，会用头顶的晶体吸收空气里的电能量。当能量充足时，晶体表面会浮现细碎的亮纹和电光。偏爱暴雪与打雷的天气，风雪越大、雷声越近，它们越活跃。,待核对
+FORM:0181,form,小皮球,T01,data/nrc_wiki.db:spirit_forms,181,,浑身散发着紫色的微光，有时会在夜晚拿出珍藏的星星，为迷途的旅人照亮归途。得益于柔软的身体结构，能够将不稳定的星光能量储存在体内，据说星星的亮度代表着存储能量的强度。,待核对
+FORM:0182,form,小箱怪,T01,data/nrc_wiki.db:spirit_forms,182,,被当作具有自我意识的宝箱，又因为与宝箱形似，变成了象征宝箱的吉祥物精灵。有些洛克会对着小箱怪祈祷好运，甚至向它投掷洛克贝许愿。,待核对
+FORM:0183,form,小绒茧,T01,data/nrc_wiki.db:spirit_forms,183,,体表的短绒进化为蓬松且带有黏性的长绒，能够吸附并储存更多星光粉末，直接触摸的话，会感到轻微刺痛。它们吸附的粉末最终在体内融合，驱动体内组织发生解离和重塑，当能量饱和时，绒毛能爆发出强劲的冲击力。,待核对
+FORM:0184,form,小翼龙,T01,data/nrc_wiki.db:spirit_forms,184,,身形圆润可爱，翼膜十分柔软，只能在陆地上漂浮。植食性，最爱啃蕨类与低矮灌木，进食的时候总是呛到，猜测是因为呼吸系统还没有发育完全，需要用嘴巴呼吸。,待核对
+FORM:0185,form,小草虫,T01,data/nrc_wiki.db:spirit_forms,185,,果树分叉越多的地方，越容易找到它们，常常被误认为是未熟的青葡萄。肤表黏糊糊的，睡觉时缩成一团挂在树上。常观察到许多只挤在一起，目前推测是畏寒的原因。,待核对
+FORM:0186,form,小雪人,T01,data/nrc_wiki.db:spirit_forms,186,,头顶的眼是精致的拟态结构，而真正的眼部和头部在腹部，都还很脆弱。魔法师们发现，它的腹部有厚厚的抗冻组织，能在极寒环境中保护核心器官。,待核对
+FORM:0187,form,小鹬,T01,data/nrc_wiki.db:spirit_forms,187,,小鹬有着灰白色的羽毛，孱弱的双翼还无法驾驭风的力量，但可以依靠尚为柔软的皮甲结构进行短暂的滑翔。虽然幼小却已经懂得在划过水面时溅起水花，吸引鱼虾露头，有时能收获比自己体型还大的战利品。,待核对
+FORM:0188,form,小黑猫,T01,data/nrc_wiki.db:spirit_forms,188,,在白天，小黑猫们经常闭上眼睛，揣着手休息，如果冒昧地扒开它们的眼皮，会发现很多时候并没有在睡觉，有一种说法：小黑猫闭眼就是在思考。,待核对
+FORM:0189,form,小鼓象,T01,data/nrc_wiki.db:spirit_forms,189,,鼻子和尾巴末端有个圆圆的结，走路时摇摇摆摆，肚子被敲出奇妙的鼓点，其他精灵们听到后不由自主地被吸引，跟着它的鼓点巡游。,待核对
+FORM:0190,form,小鼠獭,T01,data/nrc_wiki.db:spirit_forms,190,,总是在啃着什么，包括自己的手和尾巴。扒开小鼠獭的嘴巴仔细观察也找不到牙，牙床嫩嫩的，还没有牙的痕迹。,待核对
+FORM:0191,form,尖嘴狐仙,T01,data/nrc_wiki.db:spirit_forms,191,,尖嘴狐仙能通过感知大地的温度变化来预测农时。当它摇着尾巴经过农田时，尾巴扇动的气流会形成特殊的暖湿环流，让田地在寒冷的初春也能保持适宜作物生长的温度。,待核对
+FORM:0192,form,尖角蜘蛛,T01,data/nrc_wiki.db:spirit_forms,192,,各关节都覆盖着绒毛，绒毛可以疏水和保暖。在湿滑的雨天也可以自由行走，世界的动态在它们眼里显得很慢，所以大部份尖角蜘蛛都是急性子。,待核对
+FORM:0193,form,岚鸟,T01,data/nrc_wiki.db:spirit_forms,193,,眼神锐利，有着绅士般冷静而又端庄的非凡气质，让它在贵族当中颇有人气。胸腹绒羽形成稳定的隔热层，能在强风中维持体温，拥有较强的耐力。,待核对
+FORM:0194,form,岚鸟（夏天的样子）,T01,data/nrc_wiki.db:spirit_forms,194,,羽毛出现火红渐变，吸热更快、升空更容易。在夏雷与烈日交替的午后，它常沿固定路线巡查领地。翅缘与体表容易积累静电与热感，让它在驱离入侵者时更具压迫感,待核对
+FORM:0195,form,岚鸟（春天的样子）,T01,data/nrc_wiki.db:spirit_forms,195,,它在春天迁徙而来时，出现的时间常与播种期接近，因此被视作开耕的信号。它的喉羽呈嫩黄，鸣声清脆婉转。播种后，它会在田埂与水渠边玩耍，用歌声和行动提醒：春天正在到来。,待核对
+FORM:0196,form,岚鸟（秋天的样子）,T01,data/nrc_wiki.db:spirit_forms,196,,羽片边缘被秋风磨出细锯齿，既利于稳定滑翔，也像一片会飞的枫叶。进入大迁徙时，它会担任领航者，它的尾羽扫过枯枝时能留下整齐的断痕，当洛克看到一排排整齐的枯枝剪影，就知道它们刚飞过。,待核对
+FORM:0197,form,巨噬针鼹,T01,data/nrc_wiki.db:spirit_forms,197,,体表坚硬的鬃毛能够防御风吹日晒和敌人的攻击。长舌灵活而柔韧，能够绊倒猎物或者缠绕颈部使其窒息，吻部如同长矛一般刺穿猎物的要害，甚至可以击穿岩石。,待核对
+FORM:0198,form,巨灵石,T01,data/nrc_wiki.db:spirit_forms,198,,从大地获取强大的能量，可以使用地系魔法操纵土壤石头。常常收集一些土壤、石块作为零食，喜欢边讲故事边嚼石头，洛克族的孩子们偶尔会躲在旁边偷偷听它们讲故事。,待核对
+FORM:0199,form,巨鼓象,T01,data/nrc_wiki.db:spirit_forms,199,,经常把听到过的旋律一段一段地敲出来，但是它的记忆力不太好，经常把好几首曲子混在一起敲，发出谁也听不懂的节奏，只有巨鼓象自己敲得很起劲。有评论家说，虽然听不懂，但别有一番风味。,待核对
+FORM:0200,form,布克棱岩,T01,data/nrc_wiki.db:spirit_forms,200,,颇具威慑力的精灵，身形巨大，不经常远离驻地。看上去很重，但其实身体的主要重量都集中在头和手上的岩石部分。,待核对
+FORM:0201,form,布是岩,T01,data/nrc_wiki.db:spirit_forms,201,,脑袋部分的坚硬度接近基岩，普通的岩石对它来说就像泥土一样柔软。它的头好像完全感觉不到疼，受到击打很久之后才能明白刚才发生了什么。,待核对
+FORM:0202,form,布是石,T01,data/nrc_wiki.db:spirit_forms,202,,如果感觉岩石的缝隙中有目光注视着你，那很可能就是布是石。身体非常坚硬，喜欢成群结队地从斜坡上滚下来，也许只有它们能感受这种快乐吧。,待核对
+FORM:0203,form,布灵,T01,data/nrc_wiki.db:spirit_forms,203,,布灵的样子是一只手工缝的小熊，真正的它其实是从熊头顶露出来的那一小团黄色能量，布偶只是它给自己找的一个不那么显眼的壳。据说它的家乡是一片被黑暗吃掉过的星空，所以它到现在都怕黑。,待核对
+FORM:0204,form,布灵布灵,T01,data/nrc_wiki.db:spirit_forms,204,,布灵布灵对太阳和月亮没什么感觉，它们家乡的星空曾经比这里的更亮更大，可惜后来都熄灭了。它们真正着迷的是洛造光源，天一黑，它们会从街角、屋檐下、井盖缝里一个个悄悄冒出来，围着灯柱看很久很久。,待核对
+FORM:0205,form,布瓜蝌,T01,data/nrc_wiki.db:spirit_forms,205,,这本来是一只布瓜形状的娃娃，缝制它的老洛克以“不挂科”的谐音为它取了名字，希望它能给魔法学院的小洛克们带来好运。没想到布娃娃因为被赋予非常多爱与希望的力量，竟然诞生了生命和意识。,待核对
+FORM:0206,form,布鲁斯,T01,data/nrc_wiki.db:spirit_forms,206,,头部开始晶体化，触感冰凉，能缓慢吸收周围热量，使自身温度维持在较低水平。头顶的白色绒球对温度变化很敏锐，能帮助它判断环境冷热。,待核对
+FORM:0207,form,帅帅魔偶,T01,data/nrc_wiki.db:spirit_forms,207,,非常偶然的情况下发现它们殴打自己身上闪烁着的微光的提线。提线中流动着强大魔力，以此来操纵结构精巧的木质结构身体，看似十分脆弱，但在幻系魔力的支撑下，有着令人意想不到的破坏力。,待核对
+FORM:0208,form,帕尔萨斯,T01,data/nrc_wiki.db:spirit_forms,208,,头顶的独角锋利又坚硬，但不蕴含魔法，脱落下来的独角最早被洛克用来制作匕首。“他眼中看到的都是黑白的，他的世界没有色彩，单一的世界却让他有了执著的信念和忠诚的心。”,待核对
+FORM:0209,form,帕帕斯卡,T01,data/nrc_wiki.db:spirit_forms,209,,在机械系精灵中非常有声望。曾经制造出帕帕斯卡的洛克许下一个愿望，希望能让机械系精灵有尊严地活着。于是帕帕斯卡整个种族一直在想办法让机械系精灵过上更体面更开心的生活。,待核对
+FORM:0210,form,帽兜娃娃,T01,data/nrc_wiki.db:spirit_forms,210,,头部浓密柔软的绒毛负责锁住热量，形成高效的保暖屏障，减少温度流失，兜帽形态的头部结构也可以有效防风。同种族喜欢聚集在一起，贴着脑袋，发热保暖。可能因为这种习性，它们产生了一些社会性。,待核对
+FORM:0211,form,幻影灵菇,T01,data/nrc_wiki.db:spirit_forms,211,,仅仅看到它触角上闪烁的荧光就会头痛难耐，对其研究很难有进展。没有生命迹象但是可以自如活动，无法判定是植物还是动物，唯独颈间圆环中似乎蕴含强大生命力。,待核对
+FORM:0212,form,幻影荆棘,T01,data/nrc_wiki.db:spirit_forms,212,,拥有族群特有的魔法诱导型次生生长手臂，左臂与右臂化作两根巨大的带刺藤蔓，可以自主做出抓取、摆动等动作。远远看去，像三棵高低不同的枯树一起挪动。,待核对
+FORM:0213,form,幻灵菇,T01,data/nrc_wiki.db:spirit_forms,213,,头顶的触角比隐藏在伞盖下的面目更能够表达出心情，悄无声息地飘来飘去，通常出现在后半夜。在森林深处大量聚集，散发着淡淡荧光，会吸收周围植物和小型动物的情绪。,待核对
+FORM:0214,form,幻雪兽,T01,data/nrc_wiki.db:spirit_forms,214,,体型长大了一些，白毛更浓密，它依然允许洛克靠近，但是已经学会了要保持一点距离。它有时候会突然停下来，抬头嗅着风中的气息，眼睛里掠过一丝野性。,待核对
+FORM:0215,form,幽冥眼（睁眼的样子）,T01,data/nrc_wiki.db:spirit_forms,215,,传说幽冥眼一族在生命终结的时候能窥见生命与宇宙的奥秘。对灵魂与星辰抱有极其虔诚的信仰，面具上刻着的眼睛形状图腾似乎象征着种族的信仰。,待核对
+FORM:0216,form,幽冥眼（闭眼的样子）,T01,data/nrc_wiki.db:spirit_forms,216,,面具上刻着的闭眼图腾是它们族群的信仰符号，闭眼代表守戒与克制。传说它们能看见灵魂与秘密，却从不干涉现在发生的事情。,待核对
+FORM:0217,form,幽影树,T01,data/nrc_wiki.db:spirit_forms,217,,左手和右手似乎有各自的想法，在黑暗中看起来就像三只精灵。虽然伪装拙劣到谁都能看穿的程度，但依旧喜欢伪装成普通树木的样子，跟在洛克身后，但是对洛克并没有恶意。,待核对
+FORM:0218,form,幽星光,T01,data/nrc_wiki.db:spirit_forms,218,,无数幽星光家族的精灵们花费了几千年时间仰望星空，并持续观察和记录，星星的轨迹被它们编成旋律，一代代传唱。,待核对
+FORM:0219,form,幽铃,T01,data/nrc_wiki.db:spirit_forms,219,,洛克走过废弃的旧宅，忽然听到铃声在耳边响起，回头却什么也看不见，大多是幽铃藏在墙角恶作剧。它们并不真的想吓着谁，只是喜欢看洛克东张西望找不着的样子。,待核对
+FORM:0220,form,库多西,T01,data/nrc_wiki.db:spirit_forms,220,,兼具岩石的稳固与钢铁的坚韧，身上带有厚重的泥土气味，推测是因为习惯在地底休眠所致。能够利用磁场的力量发动攻击，但也会在特殊磁场的影响下动弹不得，因此总是在人烟稀少的地方栖息。,待核对
+FORM:0221,form,彩虹独角兽,T01,data/nrc_wiki.db:spirit_forms,221,,彩虹独角兽的毛发可以随环境光线改变反射的波长，在不同角度呈现出彩虹般的绚丽色彩。它也是精灵种群中最为了解洛克的存在，友谊的力量会在彼此心中唤醒新的希望。,待核对
+FORM:0222,form,彩蝶鲨,T01,data/nrc_wiki.db:spirit_forms,222,,常被目击从水面贴风飞过，轻盈得几乎不留波纹，它飞行时会借气流而动，并且发出清亮的声音。危险逼近时，它会迅速褪淡体色，降低存在感，再沿风向逃跑。,待核对
+FORM:0223,form,影狸,T01,data/nrc_wiki.db:spirit_forms,223,,总是弓着身子，脊椎特化为毒刺弹射装置，用来发射尾巴上的尖刺。体内另外储存了几十根可再生的空心毒刺，通过弹射加压能以每秒10发的速度喷射。,待核对
+FORM:0224,form,徘徊爪爪,T01,data/nrc_wiki.db:spirit_forms,224,,某些地区真正的统治者，修长的身影在夜色中几乎无声，它不再需要去偷任何东西，崇拜者主动献上闪亮的礼物。爪爪大人如果遇见认可的洛克，也愿意慷慨地给点赏赐。,待核对
+FORM:0225,form,快鳍鱼,T01,data/nrc_wiki.db:spirit_forms,225,,额部鼓起突出，中空有气囊，可以自由改变前额的形状，推测可能是借着移动内部空气来产生形状上的变化，潜水能力相当强，甚至可以一边在水下灵活旋转一边发出多变的叫声，呼唤着同伴，吟唱着记忆深处关于化龙的古老歌谣。,待核对
+FORM:0226,form,忽幽狸,T01,data/nrc_wiki.db:spirit_forms,226,,忽幽狸的尾巴覆盖着剧毒尖刺，静止时会伪装成灌木枝条。当感知到危险，尾巴会瞬间硬化成防御姿态，刺尖分泌的神经毒素能使猎物肌肉僵直。检测显示，其毒素对草系精灵效果加倍。,待核对
+FORM:0227,form,怒目怂猫,T01,data/nrc_wiki.db:spirit_forms,227,,胸脯处长着结构独特的气囊，能够迅速膨起至数倍大，形状像是血盆大口，可以吓退敌人。想回到正常姿势需要排出胸脯中的气体，排气的时候会发出非常可爱的声音，一般会在没有其他生物看到的时候偷偷排气。,待核对
+FORM:0228,form,怖哭菇,T01,data/nrc_wiki.db:spirit_forms,228,,长期在暗处生存，双目视觉逐渐退化，演化出了胸前能够探测、储存幻系能量的触手。幻系能量凝聚在菌柄中，赋予了其极强的再生能力，即便是经过火焰的炙烤，依旧能迅速生出饱满的躯体。,待核对
+FORM:0229,form,怖须菇,T01,data/nrc_wiki.db:spirit_forms,229,,会将身体埋入土壤中，依靠独特的腺体将吸收的水分转化为带有毒性的黏液，干燥与炎热时，散发的气味微微发酸，闻到会想起悲伤的事情。,待核对
+FORM:0230,form,恶魔叮,T01,data/nrc_wiki.db:spirit_forms,230,,身体里似乎装满了坏心思，很轻松就能从试图抓住它的洛克手中挣脱。会三五成群地从洛克手上抢走东西，把东西丢下之后嘻嘻哈哈地飞走。如果惹怒它们的话，会气呼呼地撞向洛克。,待核对
+FORM:0231,form,恶魔狼,T01,data/nrc_wiki.db:spirit_forms,231,,胸前的毛发非常粗糙，似乎能够起到保护作用。能够在战场上高速地移动，迅猛的前爪攻击十分有力。,待核对
+FORM:0232,form,恶魔狼王,T01,data/nrc_wiki.db:spirit_forms,232,,恶魔狼王是由族群内的强者通过决斗产生，胜者会以舔舐败者额头的仪式，宣告新统治的建立，当族群遭遇强敌时，恶魔狼王会断后掩护，即便身负重伤也绝不退缩。,待核对
+FORM:0233,form,恶魔男爵,T01,data/nrc_wiki.db:spirit_forms,233,,统领所有恶魔叮和叮叮恶魔，幼年时害怕失去注意力的特质进化成了强烈的支配欲，它的领地内不允许有比它更显眼的存在。继承了族群重视诺言的传统，一旦认定效忠对象就绝不背叛，但它的忠诚只给被它认可的主人。,待核对
+FORM:0234,form,恶魔红钻,T01,data/nrc_wiki.db:spirit_forms,234,,喜欢在洞穴的暗处歇息，会提前布好精细且带有剧毒的网守株待兔。步足末端布满危险的剧毒，尖锐而坚硬的触足既能用作进攻的矛，也能用作防御的盾。,待核对
+FORM:0235,form,护主犬,T01,data/nrc_wiki.db:spirit_forms,235,,时刻保持着警觉，任何危险都无法逃过它的眼睛。虽然身形小巧，但面对无论多么凶猛庞大的敌人都会勇敢地燃起斗志。,待核对
+FORM:0236,form,护主犬（看守麦田的样子）,T01,data/nrc_wiki.db:spirit_forms,236,,戴着暖暖的格纹围巾，整日在麦田与果园之间巡逻。风吹麦浪、果实落地，任何一点动静都逃不过它的耳朵。狗狗精灵个头不大，却拥有强烈的责任心，不允许大家辛苦一年的收获被打扰。,待核对
+FORM:0237,form,抱枕松鼠,T01,data/nrc_wiki.db:spirit_forms,237,,骑着自己的尾巴，已经不需要靠双脚走路。偶尔把头埋进身体，看上去像一颗巨大的果实。,待核对
+FORM:0238,form,抹茶布丁,T01,data/nrc_wiki.db:spirit_forms,238,,抹茶布丁负责舒缓与修复，它会释放带草本气息的挥发物，闻到这种气味，周围的生物会更容易安定下来。它们对同伴与洛克都很亲近，会抱住洛克身上的细小伤口，通过触碰治愈创伤。,待核对
+FORM:0239,form,拉特,T01,data/nrc_wiki.db:spirit_forms,239,,同伴之间经常会打架，用头或者用拳头对撞，每撞一下都会闪着电光。大多数拉特沉默寡言，但正义感十足，拉特们会出手帮助遇到麻烦的洛克和精灵。,待核对
+FORM:0240,form,捕尘长绒,T01,data/nrc_wiki.db:spirit_forms,240,,绒毛长而纤细，每个洛克小时候都曾把家里打扫清洁的捕尘长绒当作魔法扫帚骑着玩，然后被家长揍一顿，而家长顺手拿起的武器也是捕尘长绒，但是它们喜欢被洛克需要。,待核对
+FORM:0241,form,摇铃魔偶,T01,data/nrc_wiki.db:spirit_forms,241,,成长后恶作剧也升了级，它会招呼一群幽铃埋伏在旧宅子的各个角落，等洛克推门进来，就四处发出声音，把洛克吵得团团转，自己却都不露面。被吓的洛克若是不生气，它们便会觉得有点没意思，悻悻地散去。,待核对
+FORM:0242,form,斑斑,T01,data/nrc_wiki.db:spirit_forms,242,,和噜噜家族是远亲，但几乎从不联系，即使是同种族的斑斑们互相之间也并不亲近。从蛋里孵出来之后就非常独立了，经常迈着毛茸茸的小腿，挥着小小的翅膀巡视领地，十分高傲。,待核对
+FORM:0243,form,斑枭,T01,data/nrc_wiki.db:spirit_forms,243,,和洛克相交甚少的种族，拥有比较强的野性和攻击性。如果在领地内看到生面孔，可能俯冲下来攻击对方，拥有出色的深度感知能力和夜视能力，即使藏在阴影处也难以逃过它的双眼。,待核对
+FORM:0244,form,新月狼灵,T01,data/nrc_wiki.db:spirit_forms,244,,在有月亮的夜里，光芒会顺着它们胸前毛发的边缘缓缓流淌。它开始学会踏着月光潜行，落地几乎无声。仍是独来独往，很少与其他精灵哪怕是同族并肩行动，即便在同一片林子里遇见，也只是遥遥对望一眼便各自离开。,待核对
+FORM:0245,form,新月鹭,T01,data/nrc_wiki.db:spirit_forms,245,,月光下很难看到新月鹭，它们会融入月光在水面的倒影里，啄水里的月光。月亮躲进云里时，才发现岸边一直站着一只缩着脖子的新月鹭，好像刚才什么都没发生。,待核对
+FORM:0246,form,旋叶虫（枯叶的样子）,T01,data/nrc_wiki.db:spirit_forms,246,,主要栖息于恶水泛滥的湿地环境，因长期被恶水侵蚀，其体表发生了不可逆的变化——受到杂质的侵蚀，体表褪去明黄，变得像一片干枯的树叶，再也无法恢复如初。,待核对
+FORM:0247,form,旋叶虫（金黄的样子）,T01,data/nrc_wiki.db:spirit_forms,247,,常挂在树上栖息，不仔细观察的话很难发现它们的踪迹。以类似树叶而闻名，颜色、形状，叶脉、叶梗，甚至是破损处也都非常相似。白天多保持静止，风起时会轻微摇晃，让自己更像一片真的叶子。,待核对
+FORM:0248,form,星云旅者,T01,data/nrc_wiki.db:spirit_forms,248,,没有人知道这个种群从哪里来。它们总是独自出现在山顶或旷野中，对着夜空静坐。有幻系学者推测它们是在接收星云中某种信息，也有洛克认为，它们是很久以前被许愿召唤下来的，只是忘记了回去的路。,待核对
+FORM:0249,form,星光狮（星光能量的样子）,T01,data/nrc_wiki.db:spirit_forms,249,,头顶的晶体是身体的一部分，里面似乎蕴含着无尽的能量。从晶体中发射能量攻击对手，吃饱睡好的情况下发射的能量炮能炸掉整个聆风塔地。,待核对
+FORM:0250,form,星光狮（月光能量的样子）,T01,data/nrc_wiki.db:spirit_forms,250,,它头部鬃毛由大量半透明、有导光能力的角蛋白丝构成，能高效传导月光中的能量，能量充沛时，尾巴的鬃毛呈持续流动的银雾状视觉效果。,待核对
+FORM:0251,form,星尘虫,T01,data/nrc_wiki.db:spirit_forms,251,,洛克与精灵开始缔结契约的时候诞生的物种。以精灵契约为食，是极其稀少的物种。囫囵吞下咕噜球后，先整个保存在身体里一段时间，非常久之后才能完全消化掉。虽然也能吃其他食物，但很难从中获取养分。,待核对
+FORM:0252,form,星星眼,T01,data/nrc_wiki.db:spirit_forms,252,,传说它是远古时期坠入卡洛西亚大陆的陨石，被充满魔力的土地赋予了生命。在它身边能测到一片明显异常的引力场，随手扔出的石子也会不由自主地朝它靠拢，所幸大多个体性格温和，是学者们研究地外星体的重要来源。,待核对
+FORM:0253,form,春兔,T01,data/nrc_wiki.db:spirit_forms,253,,耳朵的皮肤呈透明玻璃状，触感柔软，内部可以储藏更多的露水。总是细心地做着准备，可以把自己和身边的同伴都照顾得很好，经常用手中的四叶草为其他精灵同伴遮雨。,待核对
+FORM:0254,form,春团,T01,data/nrc_wiki.db:spirit_forms,254,,春天草原上出生的小兔，成群出现，以露水为食。吸收的露水储存在耳囊中，因此散发出浆果和青草的香味。,待核对
+FORM:0255,form,春花兔,T01,data/nrc_wiki.db:spirit_forms,255,,即使找不到水源，也可以吸收耳朵里储存的大量露水。手中的四叶草变为双枪，能够汲取自然中逸散的草系能量，也能作为媒介释放魔法。经常帮助其他精灵，在某些地方被称为勇者兔兔。,待核对
+FORM:0256,form,晕晕鸡,T01,data/nrc_wiki.db:spirit_forms,256,,成长后学会了控制情绪，维持着绅士风度，为了追求优雅和游刃有余，逐渐更能控制火焰释放。偶尔会因为忍耐过度，大脑变得晕乎乎的。,待核对
+FORM:0257,form,晶尾蝎,T01,data/nrc_wiki.db:spirit_forms,257,,不停锤炼自己，以获得更强的力量。它开始主动挑战占据优质矿脉的对手，被它占领过的矿脉上都留着深深的钳痕，就像是它们的签名。,待核对
+FORM:0258,form,晶石蜗（星彩榴石的样子）,T01,data/nrc_wiki.db:spirit_forms,258,,罕见的矿石精灵之一，外壳酷似星彩榴石。有研究员专门研究它的晶体中生物发光现象与星光魔法的关联，其星芒纹在矿灯光束下清晰可辨，常被老矿工们当作夜班巡逻搭档。,待核对
+FORM:0259,form,晶石蜗（火山琉璃的样子）,T01,data/nrc_wiki.db:spirit_forms,259,,罕见的矿石精灵之一，外壳酷似火山琉璃。因它们的晶体硬度较高，常被洛克称为活砂纸，它们蹭过的岩壁表面会从粗糙变得平滑，在矿区，它们会帮忙协助打磨洛克的挖掘装备。,待核对
+FORM:0260,form,晶石蜗（烧蓝黄金的样子）,T01,data/nrc_wiki.db:spirit_forms,260,,罕见的矿石精灵之一，外壳酷似烧蓝黄金。硫磺味重、容易腐蚀工具的矿段里，烧蓝黄金蜗是少数愿意常驻的精灵，采矿队也会把废弃的金属零件丢给它们，它们会帮忙咬掉表层锈斑。,待核对
+FORM:0261,form,晶石蜗（莲花刚玉的样子）,T01,data/nrc_wiki.db:spirit_forms,261,,罕见的矿石精灵之一，外壳酷似莲花刚玉。常出没于矿层复杂的交界区域，其绚烂如花的晶体，常让初来乍到的矿工误以为矿脉开花了，而对熟练的矿工来说，这代表此处可能有多种不同矿脉，值得进一步勘察。,待核对
+FORM:0262,form,晶石蜗（蓝锥矿的样子）,T01,data/nrc_wiki.db:spirit_forms,262,,罕见的矿石精灵之一，外壳酷似蓝锥矿。晶石蜗爬行时留下的矿质黏液，干燥后会形成纤细的蓝锥矿晶丝，在暗处持续发出微弱磷光，形成短暂的痕迹，可用于导航，但路径会随空气氧化逐渐失去光泽。,待核对
+FORM:0263,form,晶石蜗（西瓜碧玺的样子）,T01,data/nrc_wiki.db:spirit_forms,263,,在资源丰富的矿洞中能遇见的罕见蜗类，周身的矿石与斑纹会因摄入矿物类型的不同，而呈现出不同的色彩。进食时，它会直接吞下成块矿石，并通过特殊的消化结构，将其转化并沉积为自身躯体的一部分。,待核对
+FORM:0264,form,智辉章脑,T01,data/nrc_wiki.db:spirit_forms,264,,极聪明的精灵，无数光点从四周向智辉章脑汇聚，又从它这里散回四周，族群里所有的所见所感，最终都汇入它的脑中。它们偏爱有洛克生活的水域，能理解洛克说话的语气。,待核对
+FORM:0265,form,暗夜颅主,T01,data/nrc_wiki.db:spirit_forms,265,,头部的骨角是经年累月吞噬灵魂后凝聚而成的，角越多、越长，说明它夺取过的灵魂越多。曾有幽系研究员试图记录，但靠近后总是不受控制地产生强烈恐惧，难以继续观察。,待核对
+FORM:0266,form,暗影灵面（睁眼的样子）,T01,data/nrc_wiki.db:spirit_forms,266,,被两团冷火环绕着，从头到脚都充满了谜团。进食之后重量也毫不增加，被它面具下的嘴吞下的食物仿佛消失了一样。,待核对
+FORM:0267,form,暗影灵面（闭眼的样子）,T01,data/nrc_wiki.db:spirit_forms,267,,常在空中徘徊，来去几乎无声，靠近它时会明显感觉变冷，像是体表的温度不断地被抽走。它们不进食也不说话，面具上闭着的眼睛图案似乎代表着什么。,待核对
+FORM:0268,form,暮星辰,T01,data/nrc_wiki.db:spirit_forms,268,,当知识积累到一定程度，曜星光便会和星辰共鸣，化身暮星辰。一颗星辰寂灭，一颗星辰升起。涌起的黑洞已然吞噬了它的心灵。无穷无尽的冰冷与空洞啊——但是它依然在等待，等待新的行星诞生。,待核对
+FORM:0269,form,暮风隐者（枯叶的样子）,T01,data/nrc_wiki.db:spirit_forms,269,,活了足够久的风滚暮虫，叶片会逐渐失去所有色素，变得像风干的白纸。它们有着最高的拟态造诣，身体极轻极薄，落地没有声响，没有任何精灵会对一片“枯死的叶子”产生警觉。,待核对
+FORM:0270,form,暮风隐者（金黄的样子）,T01,data/nrc_wiki.db:spirit_forms,270,,活了足够久的风滚暮虫，叶片会逐渐失去所有色素，变得像风干的白纸。它们有着最高的拟态造诣，身体极轻极薄，落地没有声响，没有任何精灵会对一片“枯死的叶子”产生警觉。,待核对
+FORM:0271,form,曜星光,T01,data/nrc_wiki.db:spirit_forms,271,,越来越多的星星汇聚在它身侧，应和它的歌声。它们能从星星的光芒中读取漫长岁月的信息，并通过拨动星环预知未来星星们前行的方向。,待核对
+FORM:0272,form,月亮砣（上弦的样子）,T01,data/nrc_wiki.db:spirit_forms,272,,皮肤比矿石还要坚硬，经常在有太阳的时候里浮在水面上，晒过太阳之后皮肤表面能够分泌出一种蕴含毒系魔法的物质，但对某些精灵有治愈作用，大约是一种以毒攻毒的手段。,待核对
+FORM:0273,form,月亮砣（下弦的样子）,T01,data/nrc_wiki.db:spirit_forms,273,,经常在有太阳的时候里浮在水面上，晒过太阳之后皮肤表面能够分泌出一种充满芳香味道的物质，有促进伤口愈合的作用。生命力十分顽强，即使受了严重的外伤也能迅速愈合。,待核对
+FORM:0274,form,月使鹭纳,T01,data/nrc_wiki.db:spirit_forms,274,,月使鹭纳出没的地方，天上的月亮只剩一道细弧。月光全在它们身上，它们是这片湖区最亮的夜晚光源。等到它们换羽的日子，羽毛上的月光会跟着脱落，洒回天上，月亮又会重新变圆。,待核对
+FORM:0275,form,月牙雪熊,T01,data/nrc_wiki.db:spirit_forms,275,,额前的星星质地不明，触感温热，能够从其中检测到异常的魔力波动。如果星星离开身体太远的话，身体会进入沉睡状态。“虽然它从不去看，但是魔法丢得很准。”,待核对
+FORM:0276,form,月辉鹭,T01,data/nrc_wiki.db:spirit_forms,276,,月辉鹭蹲在水面的月亮倒影上，一动不动，就像在孵月亮。有的洛克相信月亮发光不是因为月亮自己会发光，是因为有月辉鹭蹲着把光芒传输给月亮，也有洛克持相反态度。,待核对
+FORM:0277,form,朔夜伊芙,T01,data/nrc_wiki.db:spirit_forms,277,,喜欢在远处观察其他精灵的活动，有时会故意制造幻象来测试目标的反应。几乎不与同类接触，有些排斥社交，意外的是，被亲近的洛克抚摸的话耳朵尖会发光。,待核对
+FORM:0278,form,未完虫,T01,data/nrc_wiki.db:spirit_forms,278,,"皇家研究院的旧标本室里，有一只已经风干很久的虫。某天夜里，值班研究员听见木架上传来一声轻轻的""嗒""，回头看时，标本针孔里空空如也。从那以后，未完虫学会了绕开所有尖锐的东西走路，遇到危险就地一躺，装作标本。",待核对
+FORM:0279,form,机幕方舟,T01,data/nrc_wiki.db:spirit_forms,279,,努力观察着所有洛克，曾经因为什么而变得快乐。它默默地把这些瞬间记录下来，尝试动手改造自己，用机械系的魔法制作成「心脏」，希望能够模拟感受到洛克从心底感受到的快乐。,待核对
+FORM:0280,form,机械方方,T01,data/nrc_wiki.db:spirit_forms,280,,似乎是一种非常古老的机械系造物，用处不详。身体结构精巧，拨弄它头顶的天线，会让它变得十分愉快，甚至能断断续续地播放音乐。“方方正正，顶天立地，做人亦该如此。”,待核对
+FORM:0281,form,权杖-V,T01,data/nrc_wiki.db:spirit_forms,281,,在充满斗争与冲突的时代中诞生的精灵，背负着工匠们的意志、行动与他们所点燃的第一把火。在诞生之初能向周围的机械精灵发出统一指令，它们能协调队列、分配任务，让贵族看到了机械系精灵无限的可能性。,待核对
+FORM:0282,form,权杖-Ⅱ,T01,data/nrc_wiki.db:spirit_forms,282,,黄金时代的工匠们曾将占星与炼金并列为同一门学问的两种语言。于是他们以火焰为芯，以螺纹为骨，铸成了权杖。现在只有极少量留存下来。,待核对
+FORM:0283,form,松仔,T01,data/nrc_wiki.db:spirit_forms,283,,如果察觉到小洛克踏入森林，它们会把角塞在树杈中间伪装松果，诱使小洛克靠近观察。被林间露水打湿的话它们会结伴去晒太阳，晒太阳的时候会散发香香的味道。,待核对
+FORM:0284,form,松叶羊,T01,data/nrc_wiki.db:spirit_forms,284,,刚刚经历换角，松果模样的角脱落，身上的针叶变得锋利，逐渐觉醒领地意识。换角的过程中不要贸然靠近，不然会被踢出几米远。被踢的时候可以闻到它们身上带着森林中泥土和青草的香味。,待核对
+FORM:0285,form,板板壳,T01,data/nrc_wiki.db:spirit_forms,285,,平时看似懒懒的，感到危险时，柔软的身体会迅速缩回壳里。柔韧的尾巴看起来像海草，偶尔会被饥饿的水生精灵咬一口。,待核对
+FORM:0286,form,板板壳（蜕皮时的样子）,T01,data/nrc_wiki.db:spirit_forms,286,,平时看似懒懒的，感到危险时，柔软的身体会迅速缩回壳里。柔韧的尾巴看起来像海草，偶尔会被饥饿的水生精灵咬一口。,待核对
+FORM:0287,form,果冻,T01,data/nrc_wiki.db:spirit_forms,287,,透明而不起眼的精灵，经常在干净的水源被发现。研究发现，果冻精灵可以维护森林、湖泊和山脉的生态平衡，似乎是因为它们能让水变得清澈。,待核对
+FORM:0288,form,果实立方人,T01,data/nrc_wiki.db:spirit_forms,288,,身上带着淡淡的果实香气，做事依然一板一眼。秋收的时节，它会帮着把作物一筐筐搬进粮仓，清点码齐，摘果实的时候会把歪斜的树枝一根根修剪整齐，如果小洛克在秋天里看到方方的的树冠，那大多出自果实立方人之手。,待核对
+FORM:0289,form,柴渣虫,T01,data/nrc_wiki.db:spirit_forms,289,,“请避免在秋季携带柴渣虫进入山林，若因未采取防火措施而促成险情，洛克将承担所有责任。”——一则来自魔法部的公告,待核对
+FORM:0290,form,栗鼠,T01,data/nrc_wiki.db:spirit_forms,290,,身体会散发烤栗子一样的香甜气味，同行的另一名研究员舔过之后中毒几日没有好转。有洛克曾研究过不同天气和环境里其粘液的味道变化，立志写出《栗鼠粘液美味大全》。,待核对
+FORM:0291,form,格兰球,T01,data/nrc_wiki.db:spirit_forms,291,,格兰球的花瓣持续生长与更替，老化花瓣会化作鳞片般的护甲。护甲上黏附诸多致痒花粉，它们热衷于边笑边蹭其他精灵。但洛克研究学者经观察其表情和动作发现，它们坏笑时鳞片般的护甲会微微张开，让它们更好地传粉。,待核对
+FORM:0292,form,格兰种子,T01,data/nrc_wiki.db:spirit_forms,292,,格兰种子可以借助微风悬于空中，总是呆呆地望着对方，其实脑袋里盘算着许多鬼点子。体内花粉不停生长，使它躁动不安，总是忍不住捉弄其他精灵。,待核对
+FORM:0293,form,格兰花,T01,data/nrc_wiki.db:spirit_forms,293,,格兰花头顶可喷射出具有不同功效的花粉，花粉沾身会致痒。它总是带着些许挑衅的眼神看着对方，似乎有意识地引诱对方来打自己，被打能帮它挠痒痒，而击打它时还会传播其花粉。,待核对
+FORM:0294,form,梦悠悠（穿旧睡衣的样子）,T01,data/nrc_wiki.db:spirit_forms,294,,被遗忘的旧睡衣，因为孤单和思念而死，死后变成了幽灵。明明是毛绒绒的，但是体表温度极低，摸起来很凉，即使一直抱着它，它也很难变暖。,待核对
+FORM:0295,form,梦悠悠（穿星星睡衣的样子）,T01,data/nrc_wiki.db:spirit_forms,295,,梦悠悠也学会了去爱别人，喜欢和毛茸茸的伙伴们挤作一团，让大家靠着它打盹，不那么毛茸茸的小洛克也可以一起。尾尖的星星整夜亮着，是守护安眠的小夜灯。,待核对
+FORM:0296,form,梦想三三,T01,data/nrc_wiki.db:spirit_forms,296,,咻咻咻！听到“喵呜”一声的小洛克们请立刻拿出课本做好，魔法学院开课了！请牢记以下守则：请勿在课堂上投喂助教，请勿拉扯助教的尾巴，请勿对助教发出“嘬嘬嘬”等不尊敬的声音！,待核对
+FORM:0297,form,梦游（穿旧睡衣的样子）,T01,data/nrc_wiki.db:spirit_forms,297,,不吃不喝，大部分时间都在睡觉的奇怪生物，常呆在旧衣服堆里。喜欢群居生活，如果太长时间没有感受到其他生物的活动痕迹，会变得非常怨恨和暴躁。,待核对
+FORM:0298,form,梦游（穿星星睡衣的样子）,T01,data/nrc_wiki.db:spirit_forms,298,,旧睡衣曾经的样子，主人把夜晚缝了进来，每一针、每一线都是对它的美好祝愿。它们收到了很多的爱，抱着自己时，能感受到属于主人的温暖，那是存在的全部理由。,待核对
+FORM:0299,form,棋契陛下（白棋棋祈督分支）,T01,data/nrc_wiki.db:spirit_forms,299,,在棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行“对局”而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0300,form,棋契陛下（白棋棋绮后分支）,T01,data/nrc_wiki.db:spirit_forms,300,,在棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行“对局”而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0301,form,棋契陛下（白棋棋骑士分支）,T01,data/nrc_wiki.db:spirit_forms,301,,棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行对局而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0302,form,棋契陛下（白棋棋齐垒分支）,T01,data/nrc_wiki.db:spirit_forms,302,,在棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行“对局”而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0303,form,棋契陛下（黑棋棋祈督分支）,T01,data/nrc_wiki.db:spirit_forms,303,,在棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行“对局”而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0304,form,棋契陛下（黑棋棋绮后分支）,T01,data/nrc_wiki.db:spirit_forms,304,,在棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行“对局”而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0305,form,棋契陛下（黑棋棋骑士分支）,T01,data/nrc_wiki.db:spirit_forms,305,,在棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行“对局”而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0306,form,棋契陛下（黑棋棋齐垒分支）,T01,data/nrc_wiki.db:spirit_forms,306,,在棋盘最中央的格子是为它预留的王座，棋契陛下并非被雕刻，而是由黑白两色棋子在万夜轮转中自行“对局”而生，它不移动，却可以传令所有棋子。“当王棋离座，棋盘即终局；终局之时，所有棋子将回归石质，世界将再无边界可言。”,待核对
+FORM:0307,form,棋棋（白子）,T01,data/nrc_wiki.db:spirit_forms,307,,“黄金时代地系部族大多无法运用魔力，但他们有着独特的智慧和精湛的技艺。地系精灵王教他们使用建造之术，地系部族用黑色矿物做出了棋子精灵，用以娱乐”——《黄金时代的地系工匠们·二》,待核对
+FORM:0308,form,棋棋（黑子）,T01,data/nrc_wiki.db:spirit_forms,308,,“从黄金时代至今，黑色棋子在月光下仍呈现乌金般幽深的纹路，它们存在本身就是黄金时代工艺的证明。传言每当乌云遮月，所有黑子便会同时转向月亮的方向，据研究可能和守夜指令有关。”——《黄金时代的地系工匠们·九》,待核对
+FORM:0309,form,棋祈督（白子）,T01,data/nrc_wiki.db:spirit_forms,309,,“黄金时代过去后，棋棋开始了流浪，保护族人的遗痕行为一直在影响着它们，它们会主动寻找人文聚落，试图融入洛克的社会。也有部分出现在野外，这些野生的棋棋手感不如家养棋棋温润，干巴巴的有些粗糙”——《黄金时代的地系工匠们·八》,待核对
+FORM:0310,form,棋祈督（黑子）,T01,data/nrc_wiki.db:spirit_forms,310,,“曾经有洛克试图用黑子的外壳打造行军的铠甲，却在淬火瞬间听见棋子内部传来低沉的声音，黑暗中工匠们的影子被炉火吞噬，所有想要拆解棋子的工匠都遭遇了不幸。”——《黄金时代的地系工匠们·十六》,待核对
+FORM:0311,form,棋绮后（白子）,T01,data/nrc_wiki.db:spirit_forms,311,,“最初只有黑色棋子，后来地系工匠意外发现了光之水晶，打造了白色的棋子。黑白子交替轮班，互不相见，却共同守护地系部族。它们换班对峙时，不同棋子有各自的行走规则，逐渐发展成象棋游戏规则的雏形”——《黄金时代的地系工匠们·四》,待核对
+FORM:0312,form,棋绮后（黑子）,T01,data/nrc_wiki.db:spirit_forms,312,,“黄金时代崩解后不知多久，黑子开始失眠。它们不再在日出时准点沉睡，而是继续在废土上继续巡逻。没有族人可守，它们便去围着倒塌的遗迹转圈，被认为是一种刻板行为。”——《黄金时代的地系工匠们·十三》,待核对
+FORM:0313,form,棋骑士（白子）,T01,data/nrc_wiki.db:spirit_forms,313,,“棋棋的祖先们曾与地系族人相伴而生，地系部族周围多蛮兽。白天棋棋们陷入沉睡，被当作孩子的玩具，在聚落里四处滚动。夜晚则遵循着古老的指令，纷纷醒来守护着部族，替人们守夜巡逻”——《黄金时代的地系工匠们·三》,待核对
+FORM:0314,form,棋骑士（黑子）,T01,data/nrc_wiki.db:spirit_forms,314,,“在深夜，黑色棋子会跟在洛克身后排着队列，跟着移动。因此，在民间有洛克传言，深夜千万别碰黑色棋子，它们会把影子吃掉。实际上，那只是它们守护族人的本能而已。”——《黄金时代的地系工匠们·十》,待核对
+FORM:0315,form,棋齐垒（白子）,T01,data/nrc_wiki.db:spirit_forms,315,,“黑白棋子们有类似铠甲一样的外形，民间传闻中白银骑士团的盔甲就是模仿它们建造的，但也有另外一种说法是地系部族的族人参与了白银骑士团的盔甲制造，真实性都已不可考”——《黄金时代的地系工匠们·五》,待核对
+FORM:0316,form,棋齐垒（黑子）,T01,data/nrc_wiki.db:spirit_forms,316,,“黑子从不主动寻找白子，但是却总会在转向的时候留下一排空位，学者推测这是黑子对换班记忆的折射，即便时代更迭，它们仍在试图完成那场和白子的交接。”——《黄金时代的地系工匠们·十四》,待核对
+FORM:0317,form,森巨人,T01,data/nrc_wiki.db:spirit_forms,317,,“此地曾为荒石。有巨型精灵驻足，■■■■。” “草本同春，荣枯有时。三者相依，■■广袤；各自孤生，沦为■■。” ——一处比较新的草系氏族笔触刻凿痕迹,待核对
+FORM:0318,form,森蛮人,T01,data/nrc_wiki.db:spirit_forms,318,,“伤者愈，周遭同绿。” “连枝者参天。” “行过之处，枝连枝，根连根。” ——拓自巨人裂谷断崖,待核对
+FORM:0319,form,森豆丁,T01,data/nrc_wiki.db:spirit_forms,319,,“■■过处。■■生芽。” “不知■■。只觉世间常有新绿。” “■■，飘零。尚不知此言何意。” ——拓自巨人裂谷苔壁,待核对
+FORM:0320,form,椰浆布丁,T01,data/nrc_wiki.db:spirit_forms,320,,椰浆布丁负责降温与保鲜，它能在体表形成一层很薄的冷凝膜，使自身在温暖环境中不易软化变形。它常出现在有人维护的洁净水源附近，并更愿意与洛克共存，阴凉的室内能提高它们的舒适度。,待核对
+FORM:0321,form,武斗酷猫,T01,data/nrc_wiki.db:spirit_forms,321,,叶脉——可有一个开端？ 枝桠——是否不断新生？ 一切关于生命的力量不断疯长，草的精灵以另一种身份与洛克重逢。,待核对
+FORM:0322,form,武者鸡,T01,data/nrc_wiki.db:spirit_forms,322,,极其发达健壮的双臂是它们的标志性特征，手部演变为锋利的钙化物质。这一分支舍弃了种族遗传下来的火焰魔法，堂堂正正地用双手和踢腿打败敌人。,待核对
+FORM:0323,form,毛头小蛛,T01,data/nrc_wiki.db:spirit_forms,323,,身上的绒毛柔软且密集，表面有微小的鳞片结构来吸附灰尘，喜欢从灰尘中吸食各种魔法粉尘，会追逐星星魔法，并吸食炸开的粉末。遇到洛克时容易惊慌失措，全身颤抖，在刺激下炸毛，身上的灰尘也被抖落，让洛克忍不住打喷嚏。,待核对
+FORM:0324,form,毛毛,T01,data/nrc_wiki.db:spirit_forms,324,,喜欢藏在地下，靠形似耳朵的触角感知周围环境。几乎观察不到它们进食行为，吃很少的东西就能存活很久。,待核对
+FORM:0325,form,气球猫,T01,data/nrc_wiki.db:spirit_forms,325,,外表看起来软萌，但身体其实很结实——长期保持平衡姿态，练出了稳定身体的核心肌肉。暴风雨的时候气球猫们都会紧紧抓着树或灌木，一旦松手便很可能被风吹走。,待核对
+FORM:0326,form,水泡壳,T01,data/nrc_wiki.db:spirit_forms,326,,进化之后体重增长到原来的数倍，前肢的力量也变得十分发达。前面有坚硬的尖角，背后有甲壳和水炮的泵口，是像堡垒一样可靠的存在。,待核对
+FORM:0327,form,水泡壳（蜕皮时的样子）,T01,data/nrc_wiki.db:spirit_forms,327,,进化之后体重增长到原来的数倍，前肢的力量也变得十分发达。前面有坚硬的尖角，背后有甲壳和水炮的泵口，是像堡垒一样可靠的存在。,待核对
+FORM:0328,form,水滴蛇,T01,data/nrc_wiki.db:spirit_forms,328,,和水滴蛇对上眼神的时候，最好保持礼貌并尝试解答它们留下的难题，如果拒绝回答或敷衍，往往会招来恶作剧，让你在不知不觉中迷路或错过冒险的宝藏。,待核对
+FORM:0329,form,水灵,T01,data/nrc_wiki.db:spirit_forms,329,,将刚刚孕育的胚胎顶在头上，胚胎由特殊水元素包裹着。能将身边的水元素汇集在一起喷射出去，产生强大的冲击力。“无论是云中落下的一滴水，还是湖面中微风吹起的一道涟漪，都有她的身影”。,待核对
+FORM:0330,form,水蓝蓝,T01,data/nrc_wiki.db:spirit_forms,330,,漂浮在水面上的精灵，没事吐个泡泡，头顶有一个红色的蝴蝶结。不在水中的时候，身体上也覆盖了一层液体薄膜。,待核对
+FORM:0331,form,水蛇锁,T01,data/nrc_wiki.db:spirit_forms,331,,水蛇锁经常悄悄靠近洛克，没有半点声响。它们不以贪婪著称，也不说谎。它们的目的是汲取你的知识。试试用最珍贵的知识与它交换，或许就能平安离开。,待核对
+FORM:0332,form,治愈兔,T01,data/nrc_wiki.db:spirit_forms,332,,平时生活在灌木丛中，看到洛克的话会因为好奇而主动靠近。据说如果感冒了的小洛克摸摸它的小脚，就会很快康复。,待核对
+FORM:0333,form,波多西,T01,data/nrc_wiki.db:spirit_forms,333,,能将钢铁之力积蓄于双爪中，使出蓄力重击，威力十足。以地底的粗矿为食，精炼过的钢铁对它而言似乎有着不同寻常的风味。在它出没的地方，常有铁锅失窃。,待核对
+FORM:0334,form,波普鹿,T01,data/nrc_wiki.db:spirit_forms,334,,每当它听见动感的旋律，体内电流便会随着节奏起伏变化，头顶电球忽闪忽闪照亮回家的路。波普鹿用尾巴打出轻缓的节拍，是它在表达愉快的心情。,待核对
+FORM:0335,form,波波拉,T01,data/nrc_wiki.db:spirit_forms,335,,在水中自如地游动，头上的触角可以感受水中的变化，总是带着一颗球一样的东西。身旁环绕着特殊的水元素，水元素凝结体中蕴含魔法能量的波动。,待核对
+FORM:0336,form,波波螺,T01,data/nrc_wiki.db:spirit_forms,336,,经常频繁抖动身体，推测是缓解外壳生长带来的不适感。它们常集体排成一列迎向海浪，借助外壳的结构消解冲击。浪头拍来时会张口吸入送上门的食物，连很硬的东西也能消化。,待核对
+FORM:0337,form,波波螺（被污染的样子）,T01,data/nrc_wiki.db:spirit_forms,337,,经常栖息于浅水中，不太拥有应对海浪冲击的能力，它的外壳在水流长年累月的打磨中逐渐变得光滑，移动时更不易被水流与碎石卡住，能在浅水中灵活穿行。,待核对
+FORM:0338,form,泥吼牙,T01,data/nrc_wiki.db:spirit_forms,338,,一口就能吞下比自己还重的淤泥，皮肤表面也有了吸收淤泥的能力，淤泥硬壳能有效保护它们脆弱的骨骼。有的时候不小心把小体型的精灵邻居吸到嘴巴里，会赶紧吐出来，连连道歉。偶尔也会用嘴巴载着小型精灵度过泥潭。,待核对
+FORM:0339,form,流明坎德拉,T01,data/nrc_wiki.db:spirit_forms,339,,蜡泪在身上层层叠叠凝固成了铠甲的形状，火焰也不再随时会灭，而是稳定明亮的光柱，足以照亮整条长廊。作为蜡烛精灵，它们能在最黑的夜里给出最亮的光，这让它们非常满足。,待核对
+FORM:0340,form,流浪鼠,T01,data/nrc_wiki.db:spirit_forms,340,,背后鼓鼓的行囊里是更多捡来的收藏品，闪闪发光的物体对它们有着无与伦比的吸引力。不论是亮晶晶的小石子，闪着微光的菌类，还是洛克不小心遗落的饰品。在劳累之后，它们也会静静地在波光粼粼的水面望着月亮。,待核对
+FORM:0341,form,测风蝉,T01,data/nrc_wiki.db:spirit_forms,341,,测风蝉知道风要从哪边来，也知道风要停多久。研究院早就换上了新一代的电子测风仪，那些造它们的老工程师大多也已经退休了。它们每天照旧停在山口和楼顶，等待着风来，像是在等一个再也不会来的洛克下班。,待核对
+FORM:0342,form,海枝枝（杏黄百合）,T01,data/nrc_wiki.db:spirit_forms,342,,喜欢用金黄褐色的共生藻打扮自己，是海枝枝界的珠宝设计师，尖端的胶质花朵被称为百合玉，脱落时会被洛克捡走做成耳坠，据说戴着能听见水流的回声，会用闪亮的花朵吸引豆丁鱼当保镖。,待核对
+FORM:0343,form,海枝枝（洋红沙丁）,T01,data/nrc_wiki.db:spirit_forms,343,,生活在没有共生藻的深水区，自身分泌出了美丽的洋红色骨骼，其艳丽的颜色吸引了更多的敌人，因此长出了更有攻击性的红色珊瑚触手分叉，上面的有毒刺胞能割伤入侵的生物，它们会悄悄收集闪亮的碎片，用来装点自己的尾端。,待核对
+FORM:0344,form,海枝枝（碧蓝珊瑚）,T01,data/nrc_wiki.db:spirit_forms,344,,以海水中的微小生物为食，捕食时会发出“啵啵”声，身体分泌出美丽的树枝状骨骼，呈现美丽的苍青色。喜欢用不同颜色的海藻打扮自己，代谢时能给海藻提供养分，彼此互利共生。,待核对
+FORM:0345,form,海枝枝（翠绿纶布）,T01,data/nrc_wiki.db:spirit_forms,345,,喜欢用绿色的共生藻打扮自己，光合色素和粘液让珊瑚枝呈现百变的造型。它对光照与水质非常敏感，需要在浅水、光线充足的地方晒足日光浴，获得维持活力所需的能量，否则，可能会凋谢成灰白色。,待核对
+FORM:0346,form,海盔虫,T01,data/nrc_wiki.db:spirit_forms,346,,它静止时像不起眼的礁石，让人很难判断这是不是生物。它以底栖方式缓慢移动，活动量与食物多少直接相关，食物少时一天可能只挪动一点点。棘刺间分布感光细胞，使它对强光十分敏感，常本能地躲向阴影。,待核对
+FORM:0347,form,海盔虫（磨损的样子）,T01,data/nrc_wiki.db:spirit_forms,347,,如果看到水域里冒出许多体表有短刺的精灵，那是海盔虫在呼吸。它们不会主动攻击，刺又短又圆润，如果用手摸它们的刺，会感觉到被轻轻扎了一下，并不会很疼。,待核对
+FORM:0348,form,海豹战士,T01,data/nrc_wiki.db:spirit_forms,348,,圆润的身躯游得飞快，皮肤非常滑溜，十次抓捕中九次都要被它溜走。喜欢被紧挨着或被挤压着的感觉，经常成群结队地出没，迷路的时候，也会一整群一起迷路。,待核对
+FORM:0349,form,海豹船长,T01,data/nrc_wiki.db:spirit_forms,349,,由聪慧且经验丰富的海豹战士进化而来，拥有极强的领地意识。这一物种对征服有极端的渴望，认为其他精灵都要臣服于它们。会指挥手下的海豹战士战斗。,待核对
+FORM:0350,form,消波螺,T01,data/nrc_wiki.db:spirit_forms,350,,进化后，外壳生长速度更快，更需要精心维护——它们会定期在岩石上打磨外壳。个体之间还会互相叠在一起摩擦打磨，发出“砰砰”的声响。若较长时间没有打磨，行动会明显变慢。,待核对
+FORM:0351,form,消波螺（被污染的样子）,T01,data/nrc_wiki.db:spirit_forms,351,,外壳光泽度进一步提高，热爱一切有光泽的表面，它会在礁石上打磨抛光外壳，也会主动打磨同伴，让壳面更光滑。高光滑度的外壳能减少杂质的附着，维持行动效率，也会让它们更开心。,待核对
+FORM:0352,form,淤泥乌泽,T01,data/nrc_wiki.db:spirit_forms,352,,它是这片泥地里体型最大、吃得最多、活得最久的个体，是整片泥地的管理者。摄取了大量的矿物后，骨骼密度是同族的数倍，干裂的泥甲覆盖全身像一层天然盔甲。,待核对
+FORM:0353,form,深渊罗隐,T01,data/nrc_wiki.db:spirit_forms,353,,吃下稀有的矿石后，极少部分个体能进化成这样。长得更加凶狠，头顶的斧状骨冠非常锋利，用于劈开坚硬的岩层寻找稀有矿石，任何靠近的入侵者都会被它那副凶狠的模样吓退。,待核对
+FORM:0354,form,深渊蛙,T01,data/nrc_wiki.db:spirit_forms,354,,它们终于站在阳光下了。身上的十字纹被光照得发亮，那是从深渊底部一直带上来的印记。不再需要向谁证明什么，也不需要任何帮助，它们骨子里的斗志永远不会消失。,待核对
+FORM:0355,form,深蓝鲸,T01,data/nrc_wiki.db:spirit_forms,355,,深蓝鲸们喜欢贴着水面游泳，会跳出水面，和来往船只嬉戏，遇到危险时，可以把头部冰柱发射出去。种群之间通过歌声和口哨声交流，不论距离多远，互相之间的声音都能传达到。,待核对
+FORM:0356,form,混乱鱿彩,T01,data/nrc_wiki.db:spirit_forms,356,,体型暴涨，皮肤化作流动的红、蓝、黄三色漩涡，情绪高涨时随时像泼墨般炸开。它用触手当画笔，在空中乱甩墨汁，留下大片狂野的色块。,待核对
+FORM:0357,form,游蛇魔使,T01,data/nrc_wiki.db:spirit_forms,357,,真理的引路人，传闻它们最初的使命早已失败，但仍在守望，守望古老预言的验证，或是等待一段新的契约。它们拥有修长柔软的尾巴，据说尾巴尖端可以打开远古的知识之门。“真理从不主动现身——你愿意推开这扇门吗？”,待核对
+FORM:0358,form,溯源钟,T01,data/nrc_wiki.db:spirit_forms,358,,飞起来时摇摇晃晃的，翅膀会发出“嘎吱”声，像是旧手工造物，实际拥有少量扭转时间的能量，会边发出“布谷”的声音，能短暂扭曲周围的小范围时间，让追逐者的动作变迟缓。,待核对
+FORM:0359,form,满月砣（上弦的样子）,T01,data/nrc_wiki.db:spirit_forms,359,,白色的鳞片柔软而有韧性，平时安静地浮在水面上，满月的那夜它会出来加班，皮肤表面分泌出银色的物质，附近带伤的精灵会悄悄游近，天亮之前伤都好了大半。,待核对
+FORM:0360,form,满月砣（下弦的样子）,T01,data/nrc_wiki.db:spirit_forms,360,,白色的鳞片柔软而有韧性，平时安静地浮在水面上，满月的那夜它会出来加班，皮肤表面分泌出银色的物质，附近带伤的精灵会悄悄游近，天亮之前伤都好了大半。,待核对
+FORM:0361,form,火尾战士,T01,data/nrc_wiki.db:spirit_forms,361,,经常看到它在磨爪子，磨得发烫了才会停下。在战斗前会加热自己的身体以提升力量，有时甚至会让整个头顶的毛发燃烧起来。,待核对
+FORM:0362,form,火尾瓦特,T01,data/nrc_wiki.db:spirit_forms,362,,全身被毛又干燥又粗糙，容易产生静电现象，甚至偶尔冒出火星。它的利爪有可能是打火石，连续抓挠树木的话可能会将树木点燃。,待核对
+FORM:0363,form,火巨人,T01,data/nrc_wiki.db:spirit_forms,363,,躯体中流淌着不灭的岩浆，是巨人裂谷中破坏力最强的种群，实际整座山体的热源都来自于它们，不论是山下的温泉，还是热流，都源于它们无意间溢出的热量。,待核对
+FORM:0364,form,火焰猿,T01,data/nrc_wiki.db:spirit_forms,364,,哪怕是休息的时候，也像沉睡的火山一样危险。岩浆涌动的身体需要经常添加燃料，偶尔会把吃不完的食物丢到头顶的火山口里燃尽。,待核对
+FORM:0365,form,火神,T01,data/nrc_wiki.db:spirit_forms,365,,强大的火焰之灵，只是靠近它就能够感受到温度的急剧变化。如果没有脖子上的项圈，它的火焰可能会暴走。“在磨练中成长，在烈火中重生，用意志在战斗，用生命在燃烧，永远的火神”。,待核对
+FORM:0366,form,火红尾,T01,data/nrc_wiki.db:spirit_forms,366,,午为烈火之马，丙在天为阳——当二者相遇，火红尾从赤云中探出，它来自东方，额前的火纹像初升之阳，鬃毛如飞天的飘带。东方的洛克会在春节把绘有火红尾纹样的灯笼挂于檐角，灯火随风一晃，便似驹影掠过，寓意为火马开岁，光明满堂。,待核对
+FORM:0367,form,火羽,T01,data/nrc_wiki.db:spirit_forms,367,,整个种群中最罕见的形态，全身的火焰从未真正熄灭过。当生命走到新的阶段，它会主动飞向高空中最炽烈的那团火，将自己一同烧尽，而落在地面的那撮灰烬里，会诞生一枚新的蛋。,待核对
+FORM:0368,form,火花,T01,data/nrc_wiki.db:spirit_forms,368,,像一团迸发的小火花，坦诚炙热，生性勇敢无畏。能熟练运用火元素，偶尔有点冒失，是值得信赖的伙伴。,待核对
+FORM:0369,form,火蛮人,T01,data/nrc_wiki.db:spirit_forms,369,,群体活动时，方圆百米内都会火星四溅。它们觉得这很热闹，完全不理解附近的精灵为什么会逃走。它们偶尔会把熔岩块扔向其他部族当打招呼，三族争斗大多是这么挑起的。,待核对
+FORM:0370,form,火豆丁,T01,data/nrc_wiki.db:spirit_forms,370,,滚烫的岩石对这个种群而言就是皮球，它们会把熔岩抱着、滚着、互相砸着玩。它们不明白为什么其他精灵和洛克看到它们就跑。想跟外族打招呼时会双拳碰击，但这个动作至今被误读为宣战——因此火系部族的“社交”几乎全部以战斗收场。,待核对
+FORM:0371,form,灵狐,T01,data/nrc_wiki.db:spirit_forms,371,,鼻子呼出热热的气可能会灼伤小洛克的手，如果在雪山不小心被冻伤，去拜托灵狐帮忙吹一口热气，冻伤瞬间就会痊愈了。,待核对
+FORM:0372,form,灵羽勇士,T01,data/nrc_wiki.db:spirit_forms,372,,弱小的家伙为了伙伴却愿意勇敢向前！光羽圣殿的门扉悄然开启，沐浴在圣光之力的启迪中，澎湃的力量汹涌而来。“它的思绪已沉醉在无垠的天际中，这片蓝天便是它魂牵梦绕的地方。”,待核对
+FORM:0373,form,炫光迪迪,T01,data/nrc_wiki.db:spirit_forms,373,,自己不能发光，但背部覆盖着镜面般的鳞片，蜷缩成球就可以把微小的光芒反射成绚烂的闪光。拥有很多的爱，常常兴奋地滚向最近的洛克！想在闪光中跳跃，想一起共舞一辈子！,待核对
+FORM:0374,form,炮米花,T01,data/nrc_wiki.db:spirit_forms,374,,田野里最吵的精灵，噼里啪啦的爆裂声是它们的开场白，能自行生成高温玉米粒，枪口永远冒着热气。它的信条是：先开枪，再打招呼。打完招呼，再开一枪。,待核对
+FORM:0375,form,点点,T01,data/nrc_wiki.db:spirit_forms,375,,它天生看不得任何脏东西，会忍不住吐出小泡泡去擦，但力道和数量都控制不好，经常把别人的窝弄得到处是泡沫，对每一个角落都要检查一遍，被赶走的话会露出十分委屈的表情。,待核对
+FORM:0376,form,炽心勇狮,T01,data/nrc_wiki.db:spirit_forms,376,,不休的守护者，甚至能将无私守护的意志凌驾于一般契约之上。虽然性格高傲，但对认可的伙伴极为忠诚。拥有永不熄灭的火焰心脏，绝对的正义是支持烈焰的力量源泉。 “让我见识看看吧，你的正义之心！”,待核对
+FORM:0377,form,炽热猿,T01,data/nrc_wiki.db:spirit_forms,377,,会从头上喷出烟来彰显气势，普遍好斗。打喷嚏的时候，背上也会跟着喷出巨大的浓烟，还会洒出一些岩浆。,待核对
+FORM:0378,form,炽焰狮,T01,data/nrc_wiki.db:spirit_forms,378,,只是咆哮就能点燃空气，附着火系魔法的利爪能撕裂岩石。喉咙处的火囊发育成熟，可以喷吐高温火球，但偶尔会因能量过载而引发小型爆炸。,待核对
+FORM:0379,form,烈火守护,T01,data/nrc_wiki.db:spirit_forms,379,,在草原上全速奔跑的时候时常引发火灾。毛发蓬松且疏水，毛发内部均能发现未燃尽的火星。被驯服后性情极其温顺。,待核对
+FORM:0380,form,烈火战神,T01,data/nrc_wiki.db:spirit_forms,380,,“在磨练中成长，在烈火中重生，用意志在战斗，用生命在燃烧，永远的火神。”,待核对
+FORM:0381,form,烈焰狂战士,T01,data/nrc_wiki.db:spirit_forms,381,,烈焰狂战士的毛发深处藏着一整片没烧完的火星，它受伤的那一刻，那些火星就一齐点着，越烧越猛，别的火系精灵在它身边战斗时，它体内的火星也会跟着一同点起来。就算被驯服后也不会变得温顺。,待核对
+FORM:0382,form,烈钻鸟,T01,data/nrc_wiki.db:spirit_forms,382,,喙部末端附着一层极硬的角质结构，快速啄击树干时能摩擦产生火星。经常能在林中看到它们一排排地啄树，似乎还没学会控制力度。被啄焦的树干是辨认这个种群栖息地的最好标志。,待核对
+FORM:0383,form,烟花伯爵,T01,data/nrc_wiki.db:spirit_forms,383,,进化后社交圈更广了，走在城镇街道上，即使遇到不认识的精灵也能停下来聊两句。它们主动承担了一些王国业务，负责节日庆典的烟花表演，几只烟花伯爵就能组成一个专业团队。,待核对
+FORM:0384,form,烟花团,T01,data/nrc_wiki.db:spirit_forms,384,,爱扎堆聊天的小话痨，走到哪聊到哪，头顶的烟花就是它们的聊天气泡，聊得越开心，烟花崩得越热闹。脑袋上噼里啪啦闪个不停，如果看到落单的烟花团一整天头上都没有冒出烟花，请多关心它的心理健康。,待核对
+FORM:0385,form,热团团,T01,data/nrc_wiki.db:spirit_forms,385,,洛克走过湿地时，会让热团团带路。只有热团团走过的路面踩上去暖和，别的精灵也会沿着这条路暖身子，久而久之就形成了新的路线。热团团不知道这些，缩一团歇着呢。,待核对
+FORM:0386,form,焰火,T01,data/nrc_wiki.db:spirit_forms,386,,长出了一对大翅膀，但似乎并不是用来飞行的。能用双手释放出更加强力的火焰，但不太熟练。,待核对
+FORM:0387,form,焰米龙,T01,data/nrc_wiki.db:spirit_forms,387,,牧民说只要焰米龙飞过的地方草就长得快，露水干得早，播种能提前半个月，沿线的牧民从小就知道，踩温热地面走夜路不冻脚。焰米龙不知道这些，它们心里只有自己的球。,待核对
+FORM:0388,form,熔岩布丁,T01,data/nrc_wiki.db:spirit_forms,388,,熔岩布丁负责增温与成熟，它体内的活性物质能促进糖分增多，在丰收季节，洛克常带着它们在可可果林区活动，帮助可可果形成更明显的甜香气味，洛克也常把它们的活跃视作可可果林健康的信号之一。,待核对
+FORM:0389,form,燃薪虫,T01,data/nrc_wiki.db:spirit_forms,389,,木头已经失去了生命迹象，没有实体的火焰精灵在死去木头的身体里栖息。往往喜欢热闹，洛克族的亲近和合作关系会让它们非常自豪。,待核对
+FORM:0390,form,燕尾獭,T01,data/nrc_wiki.db:spirit_forms,390,,牙齿锋利，非常喜欢啃一些坚硬的木头。手掌心非常坚硬粗糙，常看到它们用手在脸上搓来搓去，并不是在洗脸，而是在用掌心磨牙齿。,待核对
+FORM:0391,form,爆焰仔,T01,data/nrc_wiki.db:spirit_forms,391,,肚子里有一个小小的爆焰囊，当蓄满火焰时，肚子会鼓成圆滚滚的球状。如果看到它突然捂住肚子，最好赶紧躲开——那是爆焰囊过载的警告！,待核对
+FORM:0392,form,爆焰喷喷,T01,data/nrc_wiki.db:spirit_forms,392,,腹部的爆焰囊扩张了三倍，蓄能时会使整个躯体膨胀如热气球，火焰甚至会从鳞片间隙逸散。古代文献记载，曾有爆焰喷喷在火山口蓄能三天三夜，最终喷射的龙焰照亮了整个夜空。,待核对
+FORM:0393,form,爬爬,T01,data/nrc_wiki.db:spirit_forms,393,,外壳硬化，缩腹在各种物体的表面爬行。背面艳丽的斑点看似有毒，实际上是鳞翅根。,待核对
+FORM:0394,form,爵士鹿,T01,data/nrc_wiki.db:spirit_forms,394,,即使在野外遇到也不会贸然攻击，目光对视时会礼貌鞠躬。它能更精细地调整头顶电球的电流强度：既可用于攻击与照明，也可配合节奏稳定输出，进行电疗治疗伤病。,待核对
+FORM:0395,form,牵线木偶,T01,data/nrc_wiki.db:spirit_forms,395,,总是一副亲切愉悦的样子，备受小洛克们的喜欢，但似乎在没人的时候它们不会展现出一丁点生气。曾经不分昼夜持续观测一年，且让样本知道自己被观测，期间样本呈现愉悦的状态。停止观测一小时后样本所有生命体征均消失。,待核对
+FORM:0396,form,犀角鸟,T01,data/nrc_wiki.db:spirit_forms,396,,足部又软又嫩，相当虚弱无力。双眼的视觉暂未发育完全，偶尔被毛发遮挡视野。研究推测其毛发承担了主要感官的功能，在看不清的时候也可以通过毛发的感光功能，早早隐藏好自己。,待核对
+FORM:0397,form,猴麦仔,T01,data/nrc_wiki.db:spirit_forms,397,,经常抓着尾巴不停讲话，通过奇妙的头部和尾部结构将自己的声音放大，这是在向周围散播“和我一起玩吧”的信号。如果观察到猴麦仔这样做，可以去和它玩耍试试，它会很开心自己的声音被洛克所听到。,待核对
+FORM:0398,form,獠牙猪,T01,data/nrc_wiki.db:spirit_forms,398,,身躯看似圆润，但其实十分健壮灵活，拥有令人意想不到的爆发力，即使在冰天雪地里，也非常有活力。,待核对
+FORM:0399,form,玳塔,T01,data/nrc_wiki.db:spirit_forms,399,,研究员检测玳塔胸腔中层层嵌套的幻系能量时，往内每深入一层，能量结构就更复杂，直到探测器承受不住而中断记录。而那本书记载乌龟塔理论的书从此被移出寓言分类，重新归档为待验证的世界模型。,待核对
+FORM:0400,form,玳龟,T01,data/nrc_wiki.db:spirit_forms,400,,玳龟自己也搞不懂头骨里的球体是什么，魔法学院图书馆里有本旧书写过一句话：这世界被一只很大的龟驮着，那只龟又被更大的龟驮着，一路往下，数不到头。玳龟不识字，它只是每天慢慢地驮着自己的小球晃悠。,待核对
+FORM:0401,form,珀尔鼬,T01,data/nrc_wiki.db:spirit_forms,401,,从慌慌张张的小学徒长成了真正的大管家，举手投足都透着从容，泡泡会落在需要清洁的地方，它对自己负责的空间有极强的领地意识，不许其他精灵把打扫好的地方弄乱。,待核对
+FORM:0402,form,琉璃水母,T01,data/nrc_wiki.db:spirit_forms,402,,身体的触手花纹会随心情变化，游动时非常漂亮。是海边生活的洛克的艺术灵感来源。然而它长长的触手可以释放多种效果的攻击，被它的美丽吸引注意时，可能会陷入危险哦。,待核对
+FORM:0403,form,瑰眼仔,T01,data/nrc_wiki.db:spirit_forms,403,,总是缩在某个角落里不知道在想些什么，看似脑袋空空双眼无神，一副呆呆的样子。额头上第三只眼睛不是用来作为视觉器官，而是用来探测魔法能量的痕迹，使用时需要放空所有杂念。,待核对
+FORM:0404,form,甜田螺,T01,data/nrc_wiki.db:spirit_forms,404,,它们进食较少，通过经常睡觉来维持体内养分的平衡。只有在海水退潮时才偶尔会出现在沙滩上，在醒着的时候才会立起来，每天大概只有五分之一的时间是醒着的。,待核对
+FORM:0405,form,电企鹅,T01,data/nrc_wiki.db:spirit_forms,405,,常成群扎堆出现来汲取更充沛的电能量，在寒冷区域居民的传说里，电企鹅大量聚集往往预示极端天气将至，当地还有个习俗——如果遇到雷暴天气，就把电企鹅放在房顶上，可以避免雷电损坏房屋。,待核对
+FORM:0406,form,电动长颈鹿,T01,data/nrc_wiki.db:spirit_forms,406,,平时几乎不带电，通过尾巴放电，贸然摸尾巴可能会被电晕。听到节拍时，它体表的细微电感会跟着节奏一跳一跳，像在悄悄打拍子。,待核对
+FORM:0407,form,电咩咩,T01,data/nrc_wiki.db:spirit_forms,407,,整个咩咩非常蓬松，每一根蓬松的毛都带电，稍微靠近它就要被静电“哔哩”一下。释放能量之后会进入低电量状态，低电量时会没精打采并吃很多。,待核对
+FORM:0408,form,电球咩咩,T01,data/nrc_wiki.db:spirit_forms,408,,头顶的毛团会定期脱落并瞬间萌发出新的一团，当遇到危险的时候，电球咩咩会快速脱落掉头顶毛团，以达到吸引敌人注意力的效果。,待核对
+FORM:0409,form,画像守护,T01,data/nrc_wiki.db:spirit_forms,409,,可以熟练地在画中与画外穿梭，十分热心肠，喜欢交朋友，经常为认识的画做保养，轻轻吹走灰尘，灰尘太多可能令他一直打喷嚏。但这并不会成为它们的阻碍。,待核对
+FORM:0410,form,画精灵,T01,data/nrc_wiki.db:spirit_forms,410,,画中世界诞生的精灵，活泼好动，对穿梭魔法的运用不是很熟练，偶尔会被画框卡住。曾经尝试少吃可可果来解决这个问题，后来发现并没有效果。,待核对
+FORM:0411,form,画间沉铁兽,T01,data/nrc_wiki.db:spirit_forms,411,,一种沉默寡言的分支形态，稍微有些粗鲁，比起结识更多的朋友，对他来说更重要的是保护现在朋友们的安全，可能在实施保护中不小心磕到朋友的头。确定了需要保护的对象之后，就不会再四处穿梭。,待核对
+FORM:0412,form,画间法师手,T01,data/nrc_wiki.db:spirit_forms,412,,能够通过画框跨越时间与空间，沉迷于收集更多的见闻，看见更广阔的世界。在长年累月的穿梭中，曾经认识的画已经褪色，但它从没有停下。,待核对
+FORM:0413,form,疾光千兽,T01,data/nrc_wiki.db:spirit_forms,413,,在月亮升起来之后活动，某些特定时间会散发出微弱光芒，与某些弱小的夜行生物存在共生关系。光能量在每根毛发中沿“之”字形向身体内部传输，可以完好无损地传输到体内，存储凝结成强大力量。,待核对
+FORM:0414,form,白发懒人,T01,data/nrc_wiki.db:spirit_forms,414,,一直闭着眼睛在睡觉，即使是醒了也看不出来。在它睡着的时候也能对听到的声音有所反应，仿佛是个熟练的梦游者。,待核对
+FORM:0415,form,白发路路,T01,data/nrc_wiki.db:spirit_forms,415,,白色的毛发覆盖手臂和身体，随身携带的蛋散发出爆米花的香味。能从随身携带的蛋中获得勇气和力量，暂时还不清楚是什么原理。,待核对
+FORM:0416,form,白金独角兽,T01,data/nrc_wiki.db:spirit_forms,416,,在黑暗中能够照亮周围，像神明一般圣洁而华丽。头顶的角除了穿刺敌人，还能施放出让人震撼的强大魔法冲击。,待核对
+FORM:0417,form,皇家狮鹫（崖间地的样子）,T01,data/nrc_wiki.db:spirit_forms,417,,为了适应强风阻演化出了流线型的面部长羽，微微压住瞳孔是为了在崖间穿梭时更好地视物。尾羽更加修长，能够有效引导风的流动方向，让飞行更加省力和稳定。,待核对
+FORM:0418,form,皇家狮鹫（高山地的样子）,T01,data/nrc_wiki.db:spirit_forms,418,,为了保证寒冷环境下头部温暖，头顶布满柔软的绒毛，偶尔依偎在一起取暖的时候，用喙梳理同伴的头毛，有一种猜测是为了取暖所以才会把喙伸进同伴的头毛里。,待核对
+FORM:0419,form,睡铃雪影娃娃,T01,data/nrc_wiki.db:spirit_forms,419,,天气暖和的时候，不由自主地犯困，常常在睡铃丛生的区域睡觉，柔软的绒毛吸附了睡铃的香气。入夜后香气越发浓郁，常常看到它身边也围着一圈睡得很沉的精灵。,待核对
+FORM:0420,form,瞌睡王,T01,data/nrc_wiki.db:spirit_forms,420,,比较难找到它的眼睛，主要靠鼾声来判断它是不是醒着。即使危险就在面前也能睡得香香的，或许是强大的体格给了它这样做的底气。,待核对
+FORM:0421,form,矮脚爬爬,T01,data/nrc_wiki.db:spirit_forms,421,,足较短，翻倒后很难再顺利站起来。野外发现的矮脚爬爬里面十个有八个正在努力翻身。因为可爱的外表而受到许多小洛克的喜爱，但受惊时会咬人，致使王国只能贴出告示，警告大家不要轻易触碰。,待核对
+FORM:0422,form,石冠王蜥,T01,data/nrc_wiki.db:spirit_forms,422,,普遍性情暴躁，攻击性强，会发射岩石来划清自己的地盘。它背上石头与身体融合的原理至今仍是研究协会重要的研究课题。,待核对
+FORM:0423,form,石冠王蜥（球球尾巴的样子）,T01,data/nrc_wiki.db:spirit_forms,423,,普遍性情暴躁，攻击性强，会发射岩石来划清自己的地盘。它背上石头与身体融合的原理至今仍是研究协会重要的研究课题。,待核对
+FORM:0424,form,石刺蜥,T01,data/nrc_wiki.db:spirit_forms,424,,背上的石头似乎会与身上的棘刺融为一体，成为自己的武器。石头会周期性脱落，脱落下来的石头苍白易碎，捏一下就会粉碎成细砂状。,待核对
+FORM:0425,form,石刺蜥（球球尾巴的样子）,T01,data/nrc_wiki.db:spirit_forms,425,,背上的石头似乎会与身上的棘刺融为一体，成为自己的武器。石头会周期性脱落，脱落下来的石头苍白易碎，捏一下就会粉碎成细砂状。,待核对
+FORM:0426,form,石石,T01,data/nrc_wiki.db:spirit_forms,426,,古老的种族，似乎和现在的精灵们很少交流，但对洛克族十分友好。地系部族掌握建造之术后的创造的第一个物种。在古代也被用作计量单位，一个石石约等于三十千克。,待核对
+FORM:0427,form,石肤蜥,T01,data/nrc_wiki.db:spirit_forms,427,,常在半山腰处被发现，独立生活，会收集细小的石头筑巢。背上的石头是体内生长出来的一种分泌物，喜欢钻到石头堆里蹭背，可以把背上的石头打磨得更锋利。,待核对
+FORM:0428,form,石肤蜥（球球尾巴的样子）,T01,data/nrc_wiki.db:spirit_forms,428,,常在半山腰处被发现，独立生活，会收集细小的石头筑巢。背上的石头是体内生长出来的一种分泌物，喜欢钻到石头堆里蹭背，可以把背上的石头打磨得更锋利。,待核对
+FORM:0429,form,矿晶虫,T01,data/nrc_wiki.db:spirit_forms,429,,喜欢攀附于潮湿的岩层，以土壤中的矿粒为食，常被用作衡量矿产资源丰富度的标志。身上的晶体可以将细小的光线通过折射放大数倍，四只矿晶虫便能照亮一整个矿洞，是备受矿工喜爱的精灵。,待核对
+FORM:0430,form,碎晶蝎,T01,data/nrc_wiki.db:spirit_forms,430,,钳子其实还很脆弱，夹不碎太硬的东西。尾巴尖上粘着几块它从地底矿脉上敲下来的水晶，这可是非常厉害的成果，它见谁都举着尾巴，以此显示自己厉害。,待核对
+FORM:0431,form,神圣狮鹫（崖间地的样子）,T01,data/nrc_wiki.db:spirit_forms,431,,悬崖间的风往往更加凶猛，崖间的狮鹫家族在这里锻炼出能抵抗风阻的飞行能力，身上的羽毛多为修长的硬羽而较少绒毛，在乱流里也稳住身形并快速调整航向。,待核对
+FORM:0432,form,神圣狮鹫（高山地的样子）,T01,data/nrc_wiki.db:spirit_forms,432,,高山地的环境更加寒冷，高山的狮鹫家族在这里演化出能抵抗寒冷的身体结构，身上的羽毛除了用于飞行的硬羽之外，还有大量绒毛，这种绒毛疏水抗风极其厚实，小洛克使劲吹都吹不开。,待核对
+FORM:0433,form,神谕鲨,T01,data/nrc_wiki.db:spirit_forms,433,,暴雨时，它将雨水储藏在身体中；干旱降至，它在半空挥舞翼膜，水分升空化作雾墙，再聚成雨云。“这一路上，跌跌撞撞，有时快乐，有时候感伤，可是它依然坚强，哪怕真的没有尽头，它都愿意继续前行。”,待核对
+FORM:0434,form,祭礼巨像,T01,data/nrc_wiki.db:spirit_forms,434,,它们是远古星象祭典的传承者，将观测到的星轨运行规律铭刻在体表，延续着文明的脉络，身上的古文字符号已超出当代洛克的认知范畴，无法被识别解读。,待核对
+FORM:0435,form,离心舞者,T01,data/nrc_wiki.db:spirit_forms,435,,在月光好的夜晚，成群的离心舞者聚在湖边旋转，远远看去像一场盛大的舞会——目击洛克说，离心舞者的舞蹈能跳出旋律，旋律像一场美梦，梦里讲述着，湖水、月光和一只银白色的鸟。,待核对
+FORM:0436,form,秩序鱿墨,T01,data/nrc_wiki.db:spirit_forms,436,,身体覆上整齐的黑白方格，触手末端变成细长的金属尺，能把漂浮的墨滴精确切割成等分方块。它从不越界，乐于将墨汁按深浅、冷暖、浓度排成矩阵，精准而冷静。,待核对
+FORM:0437,form,稻草人,T01,data/nrc_wiki.db:spirit_forms,437,,原本只是农场里普通的稻草人，因为被洛克们日复一日地打招呼、聊天、玩猜拳，某天清晨它动了动指头，发现自己可以从木架上走下来。最喜欢猜拳，因为这是它学会的第一件事。,待核对
+FORM:0438,form,稻草守护者,T01,data/nrc_wiki.db:spirit_forms,438,,在被洛克们陪伴了足够久之后，“想要保护这里”的心情终于强大到改变了它的身体。稻草变得紧实如肌肉，布裹的拳头沉重有力，现在没有任何飞禽敢靠近它守护的农场，但对洛克们，它永远温柔。据说猜拳会故意输给洛克。,待核对
+FORM:0439,form,空空颅,T01,data/nrc_wiki.db:spirit_forms,439,,夜晚很容易在破旧的空屋见到。力量弱小但长着骇人的面容，会恐吓其他精灵，以此来保护自己。它几乎不依赖视觉，通过感知热量来判断生物的位置与距离。,待核对
+FORM:0440,form,窃光蚊,T01,data/nrc_wiki.db:spirit_forms,440,,在微光沼泽，有不少因为长期触光水晶而琥珀化的精灵，这里面却没有恶名昭著的窃光蚊。这是因为窃光蚊会互相合作，一旦有个体吸收了过多光系能量，其他伙伴就会去吸收，帮助其减少体内的能量浓度。,待核对
+FORM:0441,form,立方人,T01,data/nrc_wiki.db:spirit_forms,441,,能够听懂和使用洛克族语言，了解洛克族的礼仪和社会结构，会模仿洛克族的行为，甚至会与其他个体组建家庭。 “勤奋的它，总是不停的前行，心中在默念：每个人努力过都不普通。”,待核对
+FORM:0442,form,章脑丸,T01,data/nrc_wiki.db:spirit_forms,442,,章脑丸思考的时候，半透明的身体里会有一小串光顺着神经一节一节亮过去，它们总是成群漂在近岸的浅水里，小脑袋一起明明灭灭，那是它们在聊天。,待核对
+FORM:0443,form,粉咩咩,T01,data/nrc_wiki.db:spirit_forms,443,,经常看到它们聚在一起胡乱放电，放电的时候会跳奇怪的舞蹈，十分开心的样子。如果埋进它们的毛里猛吸一口，被电很惨同时会闻到糊糊的怪味。,待核对
+FORM:0444,form,粉星仔,T01,data/nrc_wiki.db:spirit_forms,444,,习性和语言都与目前所知的任何精灵种族不同，身体轻盈，皮肤柔软但极其有韧性。研究学者偶然拾取到它星星飘下的碎屑，密度极高但质量非常轻，研究发现其材质也不属于卡洛西亚大陆的任何一种已知材质。,待核对
+FORM:0445,form,粉粉星,T01,data/nrc_wiki.db:spirit_forms,445,,身体里流淌着神秘的星光能量，打喷嚏的时候会下星星雨。喜欢聚在一起舞蹈，舞蹈时能看到漂亮的星光在它们周围环绕，推测这是粉粉星们交流的一种方式。,待核对
+FORM:0446,form,粉耳星兔,T01,data/nrc_wiki.db:spirit_forms,446,,踏着流星而来的信使，在洛克族里传闻对着它们说话有概率可以梦想成真。它们总是很着急，在夜幕下如同一道道银针般穿行，谁让这世间的许愿总是太多、太多了呢。,待核对
+FORM:0447,form,紫夜,T01,data/nrc_wiki.db:spirit_forms,447,,经常四处游历，偶尔幻化成其他精灵的样子之后偷偷潜入其他族群中，猜测是为了锻炼自己的幻化能力。通常情况下喜欢独自生活。,待核对
+FORM:0448,form,紫翎鹰,T01,data/nrc_wiki.db:spirit_forms,448,,"安静独立的精灵，在长期在高空迎风飞行后，翅膀尖端开始显出橘色的翎羽，它们一天一天地练习，一根羽毛一根羽毛地蜕变，翼系研究员管这个过程叫""凡羽蜕金""。",待核对
+FORM:0449,form,红丝绒,T01,data/nrc_wiki.db:spirit_forms,449,,绒毛里储存着温和的火系能量，抱在怀里就像一个小暖炉，身体散发出煎药的香味。它特别喜欢照顾受伤的精灵，会用温暖的鼻息轻轻吹拂伤口，伤口就不痛了。,待核对
+FORM:0450,form,红绒十字,T01,data/nrc_wiki.db:spirit_forms,450,,头顶的十字结构能释放出强效的治愈魔法，轻轻一碰就能缓解肌肉酸痛，伤口也会加速愈合。如果看到受伤的精灵但无法施救的话会流泪不止。,待核对
+FORM:0451,form,绅士鸡,T01,data/nrc_wiki.db:spirit_forms,451,,充满高尚气度的种群，常把一只手放在身后。手中的羽毛可以喷射火焰，制造独特而优雅的攻击。,待核对
+FORM:0452,form,绒仙子,T01,data/nrc_wiki.db:spirit_forms,452,,完全发育成型，翅脉中流动着体液，横脉与纵脉交汇处形成规整的星形花纹，蕴含强烈的星光能量。胸节与携粉足极度膨大，布满致密的长绒，能牢牢黏附超多光系魔法粉末——这些粉末正是体液代谢后的产物。,待核对
+FORM:0453,form,绒光优优,T01,data/nrc_wiki.db:spirit_forms,453,,进化后它们仍然毛绒绒、行动更显优雅敏捷，战斗时旋转腾挪如轻快战舞，发光的尾巴拖出一缕光丝带。它们警惕性极高，只需将尾巴贴地，便能感知远处的动静。,待核对
+FORM:0454,form,绒绒,T01,data/nrc_wiki.db:spirit_forms,454,,绒绒多在夜间活动，触角能感知星光，体表覆盖着细密的短绒，能吸附少量蕴含星光的细微粉末。偶尔主动靠近洛克，以柔软的身体轻蹭对方，习性黏人，是温顺的小型毛绒精灵。,待核对
+FORM:0455,form,绿翼鸟,T01,data/nrc_wiki.db:spirit_forms,455,,胆小谨慎的精灵，总是下意识地遮挡和隐藏自己。头部心型冠的原理不明，要小心对待，拉扯后，绿翼鸟的性格和样貌会大变，拉扯三次后变回本来的性格和样貌。,待核对
+FORM:0456,form,绿耳松鼠,T01,data/nrc_wiki.db:spirit_forms,456,,能靠有力的尾巴弹跳，如果摔倒了，要花一阵子才能重新靠尾巴站立，有研究猜测它们足部功能有所退化，尾部功能非常发达，部分取代了双脚的作用。,待核对
+FORM:0457,form,绿草精灵,T01,data/nrc_wiki.db:spirit_forms,457,,在森林里挥舞着手中的木棍，好像是在做施放巫术的练习。偶尔会和帽子交谈，晒太阳的时候可能会发出诡异的笑声。,待核对
+FORM:0458,form,缇塔,T01,data/nrc_wiki.db:spirit_forms,458,,总是扫描寻找着什么，明明对洛克抱有极大的好奇，但是因为其机器守则限制，只能和洛克保持在一个不远不近的距离。“既可靠又实用，深得洛克们青睐，是您寻物时的不二之选。”,待核对
+FORM:0459,form,罗隐,T01,data/nrc_wiki.db:spirit_forms,459,,身体中结晶脉络光滑透亮，十分坚硬，似乎是某种矿石。长着凶狠的样貌，揣着不知如何表达的善意，示好的时候会展示一下由石头构成的肌肉。,待核对
+FORM:0460,form,翠顶夫人,T01,data/nrc_wiki.db:spirit_forms,460,,柔弱温顺，羽毛软而蓬松。过于专注梳理羽毛可能会迷路，意识到迷路的时候通常已经游到了完全不认识的环境里。不过总能保持优雅淡定，似乎永远不会慌张惊恐。这或许是夫人为自己制定的礼仪规范。,待核对
+FORM:0461,form,翡翠水母,T01,data/nrc_wiki.db:spirit_forms,461,,柔软的精灵，通过收缩身体喷水在水中前进。会使用触手释放毒素，以此麻痹对手，然后将其拖入水中。,待核对
+FORM:0462,form,翻翻蝠,T01,data/nrc_wiki.db:spirit_forms,462,,声波探测的范围变大了，专门翻找被其他精灵丢弃的东西。它们的鼻子能穿透层层堆积物精确定位目标，找到好东西后会兴奋地跟同伴碰鼻分享消息。,待核对
+FORM:0463,form,翼龙,T01,data/nrc_wiki.db:spirit_forms,463,,拥有庞大的身躯，肚子总是鼓鼓的，充满发酵的食物。它有力的双翼和坚韧的躯体仿佛为长途飞行而生，在疾飞时仍能自由呼吸。,待核对
+FORM:0464,form,耳翎瑰魅,T01,data/nrc_wiki.db:spirit_forms,464,,耳边的翎毛可以隔绝大部分声音，听力很差很差。研究人员从翎毛的特征入手进行分析，发现其在越嘈杂的环境下眼中的魔力越强。,待核对
+FORM:0465,form,胆小鳗鱼,T01,data/nrc_wiki.db:spirit_forms,465,,以强力放电而闻名的精灵，种族中的鳗鱼们似乎对自己的知名度一无所知。常常畏首畏尾，即使是十分弱小的对手，也能令它们战战兢兢。曾有胆小鳗鱼假死晕倒在浅滩上，原因是一只爬爬路过。,待核对
+FORM:0466,form,胡桃王子,T01,data/nrc_wiki.db:spirit_forms,466,,胡桃王子喜欢巡逻，巡逻途中偶尔会顺手把迷路的小精灵护送回家，也会挡在受惊的洛克面前。即使没有任何契约关系，胡桃王子们自发地守护着整条街道。,待核对
+FORM:0467,form,脆筒甜甜,T01,data/nrc_wiki.db:spirit_forms,467,,使用淡奶油、蛋黄搅拌加热后，冷冻1000小时以上，有极小概率得到一只香草甜甜。以蛋筒底为支点蹦跶着前行，受到惊吓时会缩到自己的蛋筒里瑟瑟发抖。,待核对
+FORM:0468,form,舞动路路,T01,data/nrc_wiki.db:spirit_forms,468,,每只舞动路路都携带着一颗蛋，经常看到它们用头上的毛发擦拭蛋，那是它们最珍视的一部分。蓬松的毛发下看不到眼睛，主要靠头上的叶片来感受环境，身体非常灵活。,待核对
+FORM:0469,form,芋香巨角蛛,T01,data/nrc_wiki.db:spirit_forms,469,,颜色鲜艳美丽，尾部丝囊中的液体有剧毒，织出的蜘蛛网散发异香。依靠体毒和利刺能轻易捕获猎物，从不群居，个体之间都保持一定距离，互不侵犯。,待核对
+FORM:0470,form,花影羚羊,T01,data/nrc_wiki.db:spirit_forms,470,,进化后，分叉的角更为锋利，中间盛开一朵蓝色花朵，花瓣能体现它们的身体状态，疲劳时，花瓣会略微下垂。花朵在夜晚能发出怪异的微光，能够迷惑对手。,待核对
+FORM:0471,form,花怨鳗,T01,data/nrc_wiki.db:spirit_forms,471,,它们的身体具有趋触性，身躯底部会紧贴赖以生存的土地，这让它们有安全感，尤其喜欢湿润的泥土。三朵花常相互缠绕以保持接触，但也因此容易打结。当它们争执时，会发出连绵的铃声。,待核对
+FORM:0472,form,花衣蝶,T01,data/nrc_wiki.db:spirit_forms,472,,原本的尾巴脱落后变成手中的花朵，似乎蕴含着魔法能量，能当作魔杖使用。冬日寒冷的雨夜里，成千上万的花衣蝶聚集在枯树上休息，清晨又四散飞走，如同花开一夜的蜃景。,待核对
+FORM:0473,form,花魁蜂后,T01,data/nrc_wiki.db:spirit_forms,473,,穿着披风、戴着王冠的蜂后，总是带着它的两个小侍卫。高雅的女王形象令人印象深刻，它的外形曾经是许多服装设计的灵感。,待核对
+FORM:0474,form,芽眼魔,T01,data/nrc_wiki.db:spirit_forms,474,,该种群的幼体已经展现出极强的领地排他性。眼球还很脆弱，几乎全天处于睡眠状态，但头顶的芽始终保持警戒，它们通过头顶的芽感受和接收外界一切信息。,待核对
+FORM:0475,form,苞米仔,T01,data/nrc_wiki.db:spirit_forms,475,,体内积蓄着高压的热能，需要经历一次足够猛烈的高温才能进化。田野里偶尔传来的“砰”一声闷响，多半是哪只不走运的精灵踩到了它。村民们在收割季都互相提醒多看脚下，别踩鼓起来的苞米仔。,待核对
+FORM:0476,form,荆棘电环,T01,data/nrc_wiki.db:spirit_forms,476,,总是会发出意义不明的“哔哔”声，似乎使用这种声音诱敌。表情看起来更加痛苦了，仿佛电力在体内循环本身就是一种负担。,待核对
+FORM:0477,form,草头鸭,T01,data/nrc_wiki.db:spirit_forms,477,,眼睛长在两侧，不停地转动，不知道是不是在思考，很难解读它的行为规律。视觉范围有360度，从任何方向接近都会被它发现。,待核对
+FORM:0478,form,草衣虫,T01,data/nrc_wiki.db:spirit_forms,478,,与果树是互利共生关系，在果树之间采蜜的同时完成授粉。尾部的花朵是虹吸式进食器官，能够用来吸取和储存花粉，是访花昆虫中最重要的种群。,待核对
+FORM:0479,form,莫比乌乌,T01,data/nrc_wiki.db:spirit_forms,479,,透明的小身体里能看到水在不停地转啊转，它总是开心地扭来扭去。有时候睡一觉就长大了，再睡一觉又回到了小时候，它对此毫不困扰，哪里都可以是新的起点。,待核对
+FORM:0480,form,菇菇丁,T01,data/nrc_wiki.db:spirit_forms,480,,“你知道吗？菇菇丁早已建立了广阔的地下王国，它们的菌丝体蔓延到整片森林，链接着许多土壤，将沾染了星星魔法碎屑的砂土和木头转化为魔法力量，循环利用，它们才是这片森林的主人！”,待核对
+FORM:0481,form,菊花梨,T01,data/nrc_wiki.db:spirit_forms,481,,看起来像梨，闻起来像梨，尝起来味道也像梨。睡觉的时候会把身体藏在泥巴里，只把花朵留在地面上。小黄蜂想要来授粉的话它会非常苦恼。,待核对
+FORM:0482,form,落星虫,T01,data/nrc_wiki.db:spirit_forms,482,,与精灵缔结契约的形式发生变化，咕噜球的样子世代更替，这一种族的外表也渐渐发生了变化。有人曾经尝试使用特殊咕噜球喂食，虫的形态在数年后发生变化，但实验没有继续下来，猜测是因为资金不足。,待核对
+FORM:0483,form,落陨星兔,T01,data/nrc_wiki.db:spirit_forms,483,,“能够在流星上倾听许愿的家伙，总会被认为是善良的吧？嘻嘻，它们可从来没说过会以什么方式实现哦！扭曲的实现也是实现。不愿以他人的理想为自己一生的追求，却也无法逃脱命运的桎梏。那么来吧，向它们许愿吧”！,待核对
+FORM:0484,form,蒲公英,T01,data/nrc_wiki.db:spirit_forms,484,,喜欢阳光，可爱的圆形精灵，三只一起在草丛中随风飘动。风吹到哪就会飞到哪，总是无忧无虑的。,待核对
+FORM:0485,form,蒲公英娃娃,T01,data/nrc_wiki.db:spirit_forms,485,,三个可爱的小家伙簇拥着一团轻盈的绒球，绒球的内部构造不得而知。协同发力的话，能够随心所欲地借助风力飞往任何地方。,待核对
+FORM:0486,form,蓝珠天鹅,T01,data/nrc_wiki.db:spirit_forms,486,,有强烈美意识的种族，时常梳理羽毛，用珍珠来打扮自己。优雅的举止和良好的外表是向同伴传递自身健康强壮的信号，拥有的珍珠数量也决定了自身在种群中的地位。,待核对
+FORM:0487,form,蓝蝶鲨,T01,data/nrc_wiki.db:spirit_forms,487,,它的身体构造至今难以完全解释：体内几乎都是水，身体被一层透明的膜包裹住，里面的液体非常轻。飞行时，由于压力变化或者风势太大，液体有时会漏出来。,待核对
+FORM:0488,form,蓬叶虫（枯叶的样子）,T01,data/nrc_wiki.db:spirit_forms,488,,身体结构发生进一步退化，储水能力几乎退化到没有，皮肤质感像纸一样薄，像晒缩的果干一样皱。杂质污染让其他精灵不敢再靠近，这似乎意外地保护了它们的安全。,待核对
+FORM:0489,form,蓬叶虫（金黄的样子）,T01,data/nrc_wiki.db:spirit_forms,489,,必要时能借助鞘翅进行短暂滑行，从一处树冠滑到另一处枝丫。它经常在风力带动下被动迁移，偶尔被风刮走很远，落稳后呆住好一会才能意识到周围环境已经变了。,待核对
+FORM:0490,form,蜜果骸,T01,data/nrc_wiki.db:spirit_forms,490,,“洛克洛克，告诉我， 谁是林中最甜的果？” “是你，是你，比蜜更甜，比血更红， 比玛丽女王手心的那颗还要圆”。 “那为什么没洛克来摘我？” “别急，别急，会有风来摘。”,待核对
+FORM:0491,form,蝎子王,T01,data/nrc_wiki.db:spirit_forms,491,,头上的王冠是它从地底最硬的矿石上凿下来自己戴上的，非常霸道，会霸占矿脉最好最显眼的地段趴着晒太阳，太阳让他的钳子拥有更强的力量。,待核对
+FORM:0492,form,蝴蝶陶陶,T01,data/nrc_wiki.db:spirit_forms,492,,它们坚信自己是夜晚的国王，项圈是它的王冠。每天日落后就出门巡视领地，把沿途看到的硬币、纽扣、碎玻璃一切闪亮的东西都带回窝里，当作臣民的贡品。,待核对
+FORM:0493,form,螺旋帕帕,T01,data/nrc_wiki.db:spirit_forms,493,,它们立志成为机械系精灵维修专员，曾有大批战损的机械系精灵奇迹般地恢复健康，排着队回到原来生活的地方，这背后默默付出的正是不起眼的螺旋帕帕。,待核对
+FORM:0494,form,裘力,T01,data/nrc_wiki.db:spirit_forms,494,,即便在寒冷的冬天也是独来独往，从不聚在一起取暖，太冷的时候会把脚放在尾巴上。尾巴尖处有两个腺体，危险时能迅速喷射毒液，会用尾巴缠住对手，释放毒素的同时使其无法逃走。,待核对
+FORM:0495,form,裘卡,T01,data/nrc_wiki.db:spirit_forms,495,,独自活动，高傲而优雅的生物。一生中只选择一只伴侣。据研究表明裘卡的体液都有剧毒，紧张时脚垫会分泌汗液，在地面上留下有剧毒的梅花形汗渍。,待核对
+FORM:0496,form,裘洛,T01,data/nrc_wiki.db:spirit_forms,496,,胸口的星星状器官暖烘烘的，天冷的时候裘洛们都会把前爪揣在胸口取暖。曾经有洛克贸然地接触了裘洛的尾巴，皮肤变得红肿疼痛，足足半年之后才好转痊愈。,待核对
+FORM:0497,form,觅觅蝠,T01,data/nrc_wiki.db:spirit_forms,497,,常出现在垃圾堆和阴暗潮湿的洞穴里，常看到它们同类之间碰碰鼻子交流。看起来似乎是鼻子的部分用来放出声波探测周围信息，对味道的感知几近于零。,待核对
+FORM:0498,form,记忆石,T01,data/nrc_wiki.db:spirit_forms,498,,埋在土地里露出上半截，就像是石碑一样。通过扫描分析它所散发的波动，能窥见一点点王国百年前的历史。,待核对
+FORM:0499,form,诅咒狼灵,T01,data/nrc_wiki.db:spirit_forms,499,,迷雾森林曾经的原住民，如今已在卡洛西亚大陆几乎绝迹。胸口嵌着一颗黄色宝石，据说封着一股来历不明的力量。它们沉默寡言，独自穿行于林间的雾气之中，遇到别的精灵便远远绕开，一整个白天都说不上一句话。,待核对
+FORM:0500,form,豆丁鱼,T01,data/nrc_wiki.db:spirit_forms,500,,总是抿着嘴巴气鼓鼓的样子，实际上不是因为生气了，而是在努力练习游泳，传说它们一族有着龙的血脉，只要努力游泳就可以进化为龙，基于精灵遗传学理论推测是龙系混血的精灵。,待核对
+FORM:0501,form,贝加尔,T01,data/nrc_wiki.db:spirit_forms,501,,身体结构十分精巧，能够最高效地利用能源，是某些发热供暖装置的设计原型。但在氧气不足的地方身体会逐渐冷下来进入睡眠状态。“经过了岁月的磨练和沉淀，透露出时光的浑厚。”,待核对
+FORM:0502,form,贝古斯,T01,data/nrc_wiki.db:spirit_forms,502,,能够通过头顶的蒸汽猜出贝古斯的心情，对于它们而言，不同的心情需要消耗不同数量的矿石。 “它是安静的，像座山一样，守候在这里，亘古不变，然而它又是有生命的，内心之中迸发出无限的生机。”,待核对
+FORM:0503,form,贝瑟,T01,data/nrc_wiki.db:spirit_forms,503,,拥有坚硬而沉重的外壳，靠石头和木头补充能量，在能量短缺的时候会靠睡觉度过。 “它是坚硬的，它永远不会破碎。可当你狠心地对待它，它终究会伤心地沉睡。”,待核对
+FORM:0504,form,贪食鼹,T01,data/nrc_wiki.db:spirit_forms,504,,吻部变得坚硬，形状如同吸管，舌头又长又黏。没有嗅觉器官，通过舌头来感知气味，经常舔舐各种味道刺激的东西。,待核对
+FORM:0505,form,足尖元件,T01,data/nrc_wiki.db:spirit_forms,505,,古老的童话故事里面写道：有一种被施了魔法的鸟精灵，每个夜晚都必须在月光下起舞，不然家族会遭遇不幸。足尖元件们似乎在轮班排练，动作还稍显稚嫩笨拙，随着旋转发出叮咚叮咚的曲调。,待核对
+FORM:0506,form,蹦床松鼠,T01,data/nrc_wiki.db:spirit_forms,506,,尾巴的力量非常强，巨大的尾部并不是蓬松的，内部有着强健的肌肉，实心并且富有弹性。可以用尾巴把自己弹射到三层楼那么高的地方。,待核对
+FORM:0507,form,蹦蹦果（彩玉球形态）,T01,data/nrc_wiki.db:spirit_forms,507,,在阳光的持续倾泻下，它终于结出了鲜艳的果实，它把一生的光热封存在果实里，白天越长，果肉越甜，鳞片般的果皮微微翘起，像披了层带刺的轻甲。它还是爱蹦，但是每次起跳会让果肉里储存的清甜汁水溅出。,待核对
+FORM:0508,form,蹦蹦果（海神球形态）,T01,data/nrc_wiki.db:spirit_forms,508,,手中的果实能将吸收的光能转化为能量，因此日照时间越长，果实积累的能量就越高。据野外观察记录，在日光、月光或特定魔法光环境下成熟的蹦蹦果，会呈现出明显不同的果香味道。,待核对
+FORM:0509,form,蹦蹦果（短毛球形态）,T01,data/nrc_wiki.db:spirit_forms,509,,在阳光的持续倾泻下，它终于结出了鲜艳的果实，它把一生的光热封存在果实里，白天越长，果肉越甜，鳞片般的果皮微微翘起，像披了层带刺的轻甲。它还是爱蹦，但是每次起跳会让果肉里储存的清甜汁水溅出。,待核对
+FORM:0510,form,蹦蹦果（象牙球形态）,T01,data/nrc_wiki.db:spirit_forms,510,,在阳光的持续倾泻下，它终于结出了鲜艳的果实，它把一生的光热封存在果实里，白天越长，果肉越甜，鳞片般的果皮微微翘起，像披了层带刺的轻甲。它还是爱蹦，但是每次起跳会让果肉里储存的清甜汁水溅出。,待核对
+FORM:0511,form,蹦蹦种子（彩玉球形态）,T01,data/nrc_wiki.db:spirit_forms,511,,和其他蹦蹦种子相比，更加不耐旱。这可能和头顶的花朵会变成粉紫色有关，蹦蹦种子家族体内很难合成紫色色素，付出更多努力才能长出紫色花朵。,待核对
+FORM:0512,form,蹦蹦种子（海神球形态）,T01,data/nrc_wiki.db:spirit_forms,512,,总是蹦蹦跳跳的，会用滚动的方式攻击。对温度和湿度都很敏感，但就算冷得发抖也不抱团取暖。,待核对
+FORM:0513,form,蹦蹦种子（短毛球形态）,T01,data/nrc_wiki.db:spirit_forms,513,,体内90%都是储水组织，体表的蜡质层能高效转化光能，并将多余水分锁在体内。经过连续日晒后，身体会微微散发出清甜的瓜果香气，这种挥发性物质有一定抗菌和防晒的功能。,待核对
+FORM:0514,form,蹦蹦种子（象牙球形态）,T01,data/nrc_wiki.db:spirit_forms,514,,生长在干旱地区强烈的紫外线下，这种形态的蹦蹦种子演化出奶油白花朵。日间活动迟缓，主要依赖夜间温度下降时吸收空气中的微量水分。,待核对
+FORM:0515,form,蹦蹦花（彩玉球形态）,T01,data/nrc_wiki.db:spirit_forms,515,,头顶绽放出粉紫色花朵。研究证实，虫系精灵的复眼对紫色波段异常敏感，为了更好地吸引虫系精灵为蹦蹦种子家族传粉，这个种类的蹦蹦花努力了很久终于开出了紫色的花。,待核对
+FORM:0516,form,蹦蹦花（海神球形态）,T01,data/nrc_wiki.db:spirit_forms,516,,休息的时候会把脚插入地下一动不动，但似乎随时能够进入战斗状态。头上的花不允许任何人触碰，那似乎是它生命力量的来源。,待核对
+FORM:0517,form,蹦蹦花（短毛球形态）,T01,data/nrc_wiki.db:spirit_forms,517,,长出肉质的橘粉色花朵，短而厚的花瓣能储存身体水分，让它在干旱的地方也能大摇大摆地出现。花瓣中心储藏着香甜可口的露水，冒险的洛克会把它的花朵当作应急水源，清凉又解渴。,待核对
+FORM:0518,form,蹦蹦花（象牙球形态）,T01,data/nrc_wiki.db:spirit_forms,518,,巨大的白色花冠多在月光下绽放，它们喜欢夜间相对凉爽的环境，其花粉在夜间会释放微弱荧光，在月光下吸引夜行性精灵完成授粉。花瓣在日出前会闭合，规避日间的干旱与高温。,待核对
+FORM:0519,form,蹦蹦草（彩玉球形态）,T01,data/nrc_wiki.db:spirit_forms,519,,表皮变得更厚实，需要消耗大量的能量和水分来合成紫色色素。这种头上有粉紫色花苞的蹦蹦草们偶尔有群体聚集的行为倾向，这是为了减少个体受光面积，维持身体湿度。,待核对
+FORM:0520,form,蹦蹦草（海神球形态）,T01,data/nrc_wiki.db:spirit_forms,520,,挥舞着长满刺的双手跳来跳去，要小心地接近。在太阳光下变得格外兴奋，情绪波动时头顶的花苞有可能突然绽放。,待核对
+FORM:0521,form,蹦蹦草（短毛球形态）,T01,data/nrc_wiki.db:spirit_forms,521,,每到干旱的时候，身体内水分相对减少，而这时花瓣会凝结出少量花蜜，散发的瓜果香气更加浓郁，这是其光合作用达到巅峰的标志，能吸引到一些虫系精灵和馋嘴的小洛克。,待核对
+FORM:0522,form,蹦蹦草（象牙球形态）,T01,data/nrc_wiki.db:spirit_forms,522,,白色的花朵能有效反射午间过强的紫外线。花苞外瓣的蜡质层是高效的阳光反射板，内部花粉因此得到保护。仅在日落后，花苞才会微微打开。,待核对
+FORM:0523,form,辉光幕机,T01,data/nrc_wiki.db:spirit_forms,523,,经常对着空气练习，有洛克靠近时会立刻启动表演程序。有时显得笨拙不够善解人意，如果小洛克曾因为它的笑话而微笑，它可以不眠不休追着小洛克讲三天三夜的笑话，然后直接昏倒。,待核对
+FORM:0524,form,迪莫,T01,data/nrc_wiki.db:spirit_forms,524,,这是关于勇气的故事，他很脆弱却也不曾退缩；这是关于梦想的故事，梦很简单却也执着。这就是我，迪莫。,待核对
+FORM:0525,form,迷你乌（极夜的样子）,T01,data/nrc_wiki.db:spirit_forms,525,,收集笑声的方式更加熟练，它们会把冷笑话冻成冰沙随身携带，需要的时候变为冰魔法投掷使用，是一种对冰系魔法的巧妙运用。被冷笑话击中的小洛克们明明听不懂精灵说的话，但却理解了他们的冷笑话。,待核对
+FORM:0526,form,迷你乌（极昼的样子）,T01,data/nrc_wiki.db:spirit_forms,526,,吓唬人的能力越来越强。在族群当中，越是擅长吓唬人，就越容易受到同伴的尊重，如果气势弱于对方，就要趴在地上装晕认输。,待核对
+FORM:0527,form,迷嶂布莱克,T01,data/nrc_wiki.db:spirit_forms,527,,迷嶂布莱克的体型与山脉规模呈正相关，其骨骼密度可达普通岩石矿物的3倍以上，且骨骼内部存在类似蜂窝结构的减重设计——这种结构能在保持高承重能力的同时，减轻自身体重，迷嶂布莱克能承受的重量约为自身体重的100-150倍。,待核对
+FORM:0528,form,迷迷箱怪,T01,data/nrc_wiki.db:spirit_forms,528,,它们并不追逐也不恐吓，只是静静地埋伏，等待小洛克伸手想要开宝箱时，才会突然袭击。因此老练的魔法师们会说：“冒险不难，难的是抵达终点时敢不敢伸手。”,待核对
+FORM:0529,form,逗逗,T01,data/nrc_wiki.db:spirit_forms,529,,体内充满轻质气体，骨骼与肌肉结构都很轻，因此可以在空中漂浮活动。它通过换气调节气体量与分布，来控制自己上浮或下沉。,待核对
+FORM:0530,form,遁地鼠（储水时的样子）,T01,data/nrc_wiki.db:spirit_forms,530,,对干旱环境的适应性极强，耳朵里的储水囊容量巨大，需要摄入水分的时候，水分能够直接向身体内输送。一次蓄满水之后可以连续几个月不喝水。,待核对
+FORM:0531,form,遁地鼠（枯水期的样子）,T01,data/nrc_wiki.db:spirit_forms,531,,精力旺盛，时常在烈日下的沙漠里飞奔。能够四脚共用，在地下挖掘复杂的洞系，休息的时候常常躲在地下的洞里。,待核对
+FORM:0532,form,遁鼠（储水时的样子）,T01,data/nrc_wiki.db:spirit_forms,532,,饱满的大耳朵里都是水分，蓄满水的时候会膨大成球状，摸起来软软的，像水球一样充满弹力，行走间轻轻晃动，能听见细微的水声。,待核对
+FORM:0533,form,遁鼠（枯水期的样子）,T01,data/nrc_wiki.db:spirit_forms,533,,尾巴上有一层坚固的壳，所以挖洞的时候不必担心身后。耳朵的尖端粗糙而耐脏，把摄取的水分和养分都储存在饱满的大耳朵里。,待核对
+FORM:0534,form,邪眼巨魔,T01,data/nrc_wiki.db:spirit_forms,534,,原来它们一直在通过魔法感知高纬度能量，是十分谨慎的种族，甚至睡眠时间极短，常处于高度紧张的戒备状态。通过极短的间歇性闭目养神回复第三只眼睛中的魔力。,待核对
+FORM:0535,form,鄙目鹬,T01,data/nrc_wiki.db:spirit_forms,535,,栖息在水边的浅滩，橘色的长脚使得它们非常适合涉水行走，喜欢捕食昆虫和甲壳类动物，其眼神如同寒星般锐利冷峻，会左右轻轻扇动翅膀，溅起阵阵涟漪，模仿弱小生物游动，吸引鱼类前来。,待核对
+FORM:0536,form,酷拉,T01,data/nrc_wiki.db:spirit_forms,536,,能利用电能量高速移动，偶尔也会发生意外事故与同类相撞，交流时会发出“噼啪噼啪”的声音。,待核对
+FORM:0537,form,里奥,T01,data/nrc_wiki.db:spirit_forms,537,,有着圆滚滚的身躯，小小的翅膀还无法熟练飞翔，却能和愿力发生共鸣，从而获得力量。“和伙伴在一起的安全感连美食都不能替代。即使有时候像个小跟屁虫也无所谓。”,待核对
+FORM:0538,form,里拉鳐,T01,data/nrc_wiki.db:spirit_forms,538,,里拉鳐的体表能够分泌并牵连出细长的粘液，这些粘液对水流变化极其敏感，能帮助它判断水流方向。游动时，水流掠过粘液弦会引发持续振动，发出琴音。一般认为雄性的气孔粘液更少，形成的琴弦更细，因此琴声更清脆明亮。,待核对
+FORM:0539,form,量风碗,T01,data/nrc_wiki.db:spirit_forms,539,,"据说它们最早是地系研究院造出来测风用的，如今已经形成了自己的族群。它们的身体极轻，风一起头顶的杯子便""咔哒咔哒""地转起来，风一停又落回地面。",待核对
+FORM:0540,form,针叶巡林,T01,data/nrc_wiki.db:spirit_forms,540,,"丛林的向导，拥有修长的四肢与轻盈的骨骼结构，发育完全的角呈树枝状。“所谓的规则像是枝条，又好像荆棘。被缠上时使人烦躁，被刺伤时让人疼痛。但规则也有如树干，在支撑着森林的生命——所谓自由，亦是如此""。",待核对
+FORM:0541,form,钨丝贝贝,T01,data/nrc_wiki.db:spirit_forms,541,,被洛克制造并赋予美好的使命，它们的底层结构里面写着“去吧，去给孩子们带来快乐吧。”于是它们年复一年日复一日，用不太灵光的脑袋想，用有点笨的小手做，尝试制作出所有能让洛克感觉到快乐的事物。,待核对
+FORM:0542,form,钻石蜗（星彩榴石的样子）,T01,data/nrc_wiki.db:spirit_forms,542,,极其稀少且强大的精灵，见到它时，洛克的第一反应不是抓起来，而是先停手——它的壳太硬，硬到任何挖掘工具碰到它都会立刻坏掉。凡是矿区附近有钻石蜗出现，都需要先报告给魔法学院的研究员。,待核对
+FORM:0543,form,钻石蜗（火山琉璃的样子）,T01,data/nrc_wiki.db:spirit_forms,543,,极其稀少且强大的精灵，见到它时，洛克的第一反应不是抓起来，而是先停手——它的壳太硬，硬到任何挖掘工具碰到它都会立刻坏掉。凡是矿区附近有钻石蜗出现，都需要先报告给魔法学院的研究员。,待核对
+FORM:0544,form,钻石蜗（烧蓝黄金的样子）,T01,data/nrc_wiki.db:spirit_forms,544,,极其稀少且强大的精灵，见到它时，洛克的第一反应不是抓起来，而是先停手——它的壳太硬，硬到任何挖掘工具碰到它都会立刻坏掉。凡是矿区附近有钻石蜗出现，都需要先报告给魔法学院的研究员。,待核对
+FORM:0545,form,钻石蜗（莲花刚玉的样子）,T01,data/nrc_wiki.db:spirit_forms,545,,极其稀少且强大的精灵，见到它时，洛克的第一反应不是抓起来，而是先停手——它的壳太硬，硬到任何挖掘工具碰到它都会立刻坏掉。凡是矿区附近有钻石蜗出现，都需要先报告给魔法学院的研究员。,待核对
+FORM:0546,form,钻石蜗（蓝锥矿的样子）,T01,data/nrc_wiki.db:spirit_forms,546,,极其稀少且强大的精灵，见到它时，洛克的第一反应不是抓起来，而是先停手——它的壳太硬，硬到任何挖掘工具碰到它都会立刻坏掉。凡是矿区附近有钻石蜗出现，都需要先报告给魔法学院的研究员。,待核对
+FORM:0547,form,钻石蜗（西瓜碧玺的样子）,T01,data/nrc_wiki.db:spirit_forms,547,,极其稀少且强大的精灵，见到它时，洛克的第一反应不是抓起来，而是先停手——它的壳太硬，硬到任何挖掘工具碰到它都会立刻坏掉。凡是矿区附近有钻石蜗出现，都需要先报告给魔法学院的研究员。,待核对
+FORM:0548,form,铃兰羊,T01,data/nrc_wiki.db:spirit_forms,548,,白天会懒洋洋地趴在草原上休息，主要在早晨和黄昏行动，一般会脱离种群独自生活。跳跃力惊人，在山坡上如履平地，从100米的高度一跃而下也没事。,待核对
+FORM:0549,form,铆钉毛毛,T01,data/nrc_wiki.db:spirit_forms,549,,自封的国王现在有了配得上野心的武器：锋利的毒爪。它们夜间行动变得更加隐秘和高效，能在对方毫无察觉时把东西拿走，等对方发现时只剩爪印和一点残留的麻痹感。,待核对
+FORM:0550,form,铠甲虫,T01,data/nrc_wiki.db:spirit_forms,550,,全副武装没有破绽，头顶的巨钳令人生畏。甲壳有些沉重，依然可以飞行。但好处是，厚重的甲壳能够挡住敌人的攻击。,待核对
+FORM:0551,form,银月狼王,T01,data/nrc_wiki.db:spirit_forms,551,,独自行走的离群之狼，月缺时它力量最弱，只是安静地趴在某块山石上休息。月圆那一夜，它会从月光最亮的地方走出来。当你看见银月狼王的时候，它已经看了你很久了，如果挥手打招呼的话，它也只是远远的点头致意。,待核对
+FORM:0552,form,锤头鹳,T01,data/nrc_wiki.db:spirit_forms,552,,三三两两地站在建筑的高处，有些神秘，被认为是王国的守护者。洛克靠近时，会发出尖锐刺耳的声音，头部奇怪的形状为工具设计提供了设计灵感。,待核对
+FORM:0553,form,锥尾羊,T01,data/nrc_wiki.db:spirit_forms,553,,白色的毛十分蓬松，脚掌柔软，移动时悄无声息，因此很擅长藏身草原与坡地。它性格安静，同类之间常用轻轻顶犄角的方式交流。,待核对
+FORM:0554,form,长尾火鸟,T01,data/nrc_wiki.db:spirit_forms,554,,飞行时火焰席卷全身，在天空中拉出一道灼目的火痕。实际观测发现，它们的翅膀扇动频率远低于同体型鸟类，真正提供飞行推力的是尾部持续喷射的烈焰。,待核对
+FORM:0555,form,闪电环,T01,data/nrc_wiki.db:spirit_forms,555,,总是一副不开心的样子，面对对手的时候会使出全力攻击，不论所处环境有多么危险，只要没电就会立刻陷入昏睡。,待核对
+FORM:0556,form,闪电鳗鱼,T01,data/nrc_wiki.db:spirit_forms,556,,不会被自己或同类电到，那是因为电鳗体内的脂肪组织有很好的绝缘作用。几乎全身的肌肉组织都能放电，其生物电能与闪电产生强烈共鸣，某些个体能够定向引雷。身体所能承受的电能最高可达8600000伏。,待核对
+FORM:0557,form,阿米亚特,T01,data/nrc_wiki.db:spirit_forms,557,,全身都是岩石，但眼睛周围没有岩石保护，是十分脆弱的柔软皮肤。喜欢吃不同口味的矿石，总是静静呆着，没什么存在感。,待核对
+FORM:0558,form,阿米樱,T01,data/nrc_wiki.db:spirit_forms,558,,石头组成的上身和双臂异常粗壮，腿部短小，经常会腿痛。重重挥拳的时候会把构成手部的石头都打散，不过很快就会用岩石修补好。,待核对
+FORM:0559,form,陨星虫,T01,data/nrc_wiki.db:spirit_forms,559,,在这个虫族中存在着森严的等级制度，某些虫有资格吃到更稀有的咕噜球。咕噜球研究科曾经提出过一个实验课题《陨星虫与国王球的对撞实验》，后来课题被取消了，原因不明。,待核对
+FORM:0560,form,障眼魔,T01,data/nrc_wiki.db:spirit_forms,560,,小心了！被它们注视一分钟就会浑身起疹子！研究员如是说。遇到它们最明智的做法是缓慢后退，不要发出任何响声，直到缓慢退出它们的领地。,待核对
+FORM:0561,form,雅丹鬃,T01,data/nrc_wiki.db:spirit_forms,561,,岁首更替，丙午是天地通明的光明之年，传闻雅丹鬃是光明的使者，会在新年的子夜仰首长嘶，声如裂帛，鬃毛化作飞天的流火长带，照得千里沙海通明。此时，万盏红灯同时亮起，仿佛回应烈马奔腾——天地通明，光明永昼。,待核对
+FORM:0562,form,雪娃娃,T01,data/nrc_wiki.db:spirit_forms,562,,它对洛克族异常友好，面对温暖的抚摸与拥抱也从不抗拒。传说它们是最早与洛克建立契约的种族之一，耳朵的轮廓正像星之链在契约双方之间勾勒出的形状。,待核对
+FORM:0563,form,雪巨人,T01,data/nrc_wiki.db:spirit_forms,563,,雪巨人感官极其敏锐，能感受到天气和气温的微小变化，会在族群的幼崽沉睡时巡逻保护它们。双臂能够撑地进行超远距离跳跃，在雪山里飞速前进，跳跃时在岩石上留下后足形状。,待核对
+FORM:0564,form,雪影冰灵,T01,data/nrc_wiki.db:spirit_forms,564,,如果遇到了致命的危险，毛绒娃娃会变成巨大的兔精灵来保护主人。不要贸然靠近，不然它会非常生气。这时的它有明确的领地范围，喜欢用耳朵的香腺擦拭东西来划分地盘。如果它用耳朵蹭蹭你，代表你可以接近。,待核对
+FORM:0565,form,雪影娃娃,T01,data/nrc_wiki.db:spirit_forms,565,,进化后头部绒毛完全脱落，褪去的绒毛承载着进化前的回忆，被制作成一个毛绒娃娃。毛绒娃娃如果能抵御一个严冬就可以获得生命，过程中需要雪影娃娃的悉心养护。,待核对
+FORM:0566,form,雪怪,T01,data/nrc_wiki.db:spirit_forms,566,,吃掉足够多的暴风雪后就会进化成这个样子。手里永远攥着两个雪球，试图让自己看起来凶猛一些，但其实是个温柔的大家伙，经常偷偷帮迷路的精灵们搭建避风的小雪屋。,待核对
+FORM:0567,form,雪灵,T01,data/nrc_wiki.db:spirit_forms,567,,只有当契约者死亡的时候才会寻找下一位契约者。假如原契约者活着，但它们必须更换契约者的话，可能会自我了结生命。,待核对
+FORM:0568,form,雪灵兽,T01,data/nrc_wiki.db:spirit_forms,568,,白色绒毛软得像刚落的新雪，非常温顺，会安安静静地跟在洛克身后，偶尔用湿凉的鼻尖轻轻碰一下洛克的手，它很乐意被洛克抱着、被摸头、被带着散步。,待核对
+FORM:0569,form,雪绒鸟,T01,data/nrc_wiki.db:spirit_forms,569,,冬天诞生的小鸟精灵，常把身体缩成球状减少散热。喜欢用幼嫩的喙啄刚落地的新雪，既是食用也是玩耍。,待核对
+FORM:0570,form,雪绒鸟（夏天的样子）,T01,data/nrc_wiki.db:spirit_forms,570,,夏天诞生的小鸟精灵，热而潮湿的夏季风让它们更快学会飞行，飞羽更长更坚韧。正午热空气升腾的时候从高处跳下，瞬间就学会了滑翔。,待核对
+FORM:0571,form,雪绒鸟（春天的样子）,T01,data/nrc_wiki.db:spirit_forms,571,,春天诞生的小鸟精灵，圆滚滚的身子常沾着露水和草籽，没有太多御寒的绒毛，气温低时可能会钻进小洛克的种植园里取暖。,待核对
+FORM:0572,form,雪绒鸟（秋天的样子）,T01,data/nrc_wiki.db:spirit_forms,572,,秋天诞生的小鸟精灵，喜欢高糖分的可可果，吃饱后身体散发出类似焦糖的气味。糖分带来的高能量让它拥有更好的体力，即使和一窝蜂赛跑一整天也不会累。,待核对
+FORM:0573,form,雪蛮人,T01,data/nrc_wiki.db:spirit_forms,573,,上肢沉重却灵活，体表鬃毛格外厚重，兼具保暖与防护的功能。吸收的寒气能够压缩后储存在脊背和额头上，形成坚实有力的冰晶，用以保持平衡和击打对手。,待核对
+FORM:0574,form,雪豆丁,T01,data/nrc_wiki.db:spirit_forms,574,,出生后被父母放置在雪窝里，进食补充的能量会在冬眠时令身躯快速成长。大手大脚的雪豆丁习惯于翻滚着移动。思维直接，比较容易发脾气，可以抚摸脑袋令其冷静。,待核对
+FORM:0575,form,雪顶布鲁斯,T01,data/nrc_wiki.db:spirit_forms,575,,晶体化结构更稳定，修长的腕足变得更灵活，能细致地打理身体、调整伪装姿态，白色绒球对温差的感知也更敏锐。,待核对
+FORM:0576,form,雷神之子,T01,data/nrc_wiki.db:spirit_forms,576,,歌声与电能已经完全融为一体，群体齐唱时，对其他种族而言那是一场雷暴，对它们而言只是一次合唱，某位魔法学院爱音乐的老师曾经评价它们：曲子很好听，也很致命。,待核对
+FORM:0577,form,雷鸣小子,T01,data/nrc_wiki.db:spirit_forms,577,,在野外撞见它们时，总能听见断断续续的哼唱，谁也听不出是什么曲子，却莫名洗脑。它们其实是在用声音与旋律交谈，每一段哼唱里都藏着想要递给同伴的话。,待核对
+FORM:0578,form,霜翼领主,T01,data/nrc_wiki.db:spirit_forms,578,,传说霜翼领主会在冬季的末尾巡视领地，当它最后一次掠过雪线，天空便不再下雪——所有雪花都被它收进了冰蓝色的羽翼。只需一次振翅，零下五十度的寒潮便顺着羽脉倾泻，瞬间把战场变成镜面。,待核对
+FORM:0579,form,霜翼领主（夏天的样子）,T01,data/nrc_wiki.db:spirit_forms,579,,传说霜翼领主会在冬季的末尾巡视领地，当它最后一次掠过雪线，天空便不再下雪——所有雪花都被它收进了冰蓝色的羽翼。只需一次振翅，零下五十度的寒潮便顺着羽脉倾泻，瞬间把战场变成镜面。,待核对
+FORM:0580,form,霜翼领主（春天的样子）,T01,data/nrc_wiki.db:spirit_forms,580,,传说霜翼领主会在冬季的末尾巡视领地，当它最后一次掠过雪线，天空便不再下雪——所有雪花都被它收进了冰蓝色的羽翼。只需一次振翅，零下五十度的寒潮便顺着羽脉倾泻，瞬间把战场变成镜面。,待核对
+FORM:0581,form,霜翼领主（秋天的样子）,T01,data/nrc_wiki.db:spirit_forms,581,,传说霜翼领主会在冬季的末尾巡视领地，当它最后一次掠过雪线，天空便不再下雪——所有雪花都被它收进了冰蓝色的羽翼。只需一次振翅，零下五十度的寒潮便顺着羽脉倾泻，瞬间把战场变成镜面。,待核对
+FORM:0582,form,霹雳宝宝,T01,data/nrc_wiki.db:spirit_forms,582,,额前的闪电印记平时并不蕴含电能，可一旦周围响起音乐，便会迅速通体带电。常能看见三两只聚在一处，一边蹦跳一边迸出细小的电火花，这是它们正在彼此充电。,待核对
+FORM:0583,form,霹雳迪迪,T01,data/nrc_wiki.db:spirit_forms,583,,古老物种在漫长的时间里发生演化，曾经独自栖息在安静与黑暗里面，偶尔靠敲击山石的回音和其他个体沟通。这让它们对声音无比敏感和渴望，它们拥有坚定的心，一直等到可以在光里热烈地表达。,待核对
+FORM:0584,form,音碟吼,T01,data/nrc_wiki.db:spirit_forms,584,,进化后嗓门大得惊人，更加渴望被听到，想让所有洛克都听见自己的声音。同类碰面时会争抢谁先拿麦，双方轮流对着吼，谁的声音更大谁就赢。有研究员曾记录到两只音碟吼对峙了整整一周，最终以一方嗓子沙哑告终。,待核对
+FORM:0585,form,音速犬,T01,data/nrc_wiki.db:spirit_forms,585,,昂起斗志时，冠毛和尾巴会像熊熊燃烧的火焰一样摇曳。身上的围巾蕴含魔法能量，似乎有增强火元素的效果。,待核对
+FORM:0586,form,音速犬（看守麦田的样子）,T01,data/nrc_wiki.db:spirit_forms,586,,秋天的风把果实的香气吹起，音速犬在风里飞奔，许多气味快速的掠过它湿漉漉的小鼻子，这些气味传递着果实们都安好的信息。巡逻一天后，它满意地长叹一口气，在麦田的角落里缩成团睡去。,待核对
+FORM:0587,form,风暴战犬,T01,data/nrc_wiki.db:spirit_forms,587,,它的冠毛与尾巴像火焰一样摇曳，这代表它体内的火元素的热流外显。它的斗志一旦被点燃，会化作更强的火势与更可靠的压制力。,待核对
+FORM:0588,form,风暴战犬（看守麦田的样子）,T01,data/nrc_wiki.db:spirit_forms,588,,它的冠毛与尾巴像火焰一样摇曳，这代表它体内的火元素的热流外显。它的斗志一旦被点燃，会化作更强的火势与更可靠的压制力。,待核对
+FORM:0589,form,风暴酷拉,T01,data/nrc_wiki.db:spirit_forms,589,,常年栖息在雷暴云层内部，喜欢在高空活动，它不再需要与同伴对撞来产生电能，体内蓄积的电量足以自发形成风暴。族群遇到威胁时，它会无声地赶来，天降雷罚。,待核对
+FORM:0590,form,风滚暮虫（枯叶的样子）,T01,data/nrc_wiki.db:spirit_forms,590,,在恶劣的环境中，它们形成了低能耗、高防御的行为逻辑，整天处于倦怠状态，其躯体收缩与舒展时，会有细微的气流振动，听起来就像低低的叹息声。,待核对
+FORM:0591,form,风滚暮虫（金黄的样子）,T01,data/nrc_wiki.db:spirit_forms,591,,借风而行的精灵，利用风把自己带离原地，遇到水面或湿润区域就停下来休息。滚动的时候可以帮助植物传播种子。性情温和，对精灵的幼年体都照顾有加，因此与不少精灵能维持友好的关系。,待核对
+FORM:0592,form,风铃鲨,T01,data/nrc_wiki.db:spirit_forms,592,,如果看见它们在水面上大量聚集，往往预示着快要下雨。它们的尾巴摆动时带起细小涟漪，薄膜边缘会在气流中轻轻振动，发出清亮悦耳的声响。,待核对
+FORM:0593,form,飞飞钥,T01,data/nrc_wiki.db:spirit_forms,593,,翅膀上的纹路变得更加复杂，据说纹路的图案和它守护的那扇门有关。它们会在飞行中观察追逐者，如果它主动落在你的手心里，恭喜你，是门后的秘密选中了你。,待核对
+FORM:0594,form,食尘短绒,T01,data/nrc_wiki.db:spirit_forms,594,,绒毛短而浓密，出没在灰尘多的地方，能够在任何表面爬行，其脚掌上短且蓬松的绒毛在爬行时会产生静电作用，牢牢地黏在物体表面上，吸附灰尘，清理家具的死角。,待核对
+FORM:0595,form,饮雪狂兽,T01,data/nrc_wiki.db:spirit_forms,595,,暴风雪来的时候它们会迎着风跑出去，它以雪为食，等风暴过去，又会安静地回到洛克身边，它们的眼睛里比小时候多了许多丰富的情绪，不曾改变的是一份从未消失的倔强。,待核对
+FORM:0596,form,香草甜甜（杨桃饰品）,T01,data/nrc_wiki.db:spirit_forms,596,,香草甜甜一族口感各有不同，头上顶着的果果是身体的一部分，拥有360度的视野。因果果吸收不同能量而演化出不同口感分支，身体散发着浓郁的奶香。,待核对
+FORM:0597,form,香草甜甜（樱桃饰品）,T01,data/nrc_wiki.db:spirit_forms,597,,香草甜甜一族口感各有不同，头上顶着的果果是身体的一部分，拥有360度的视野。因果果吸收不同能量而演化出不同口感分支，身体散发着浓郁的奶香。,待核对
+FORM:0598,form,香草甜甜（蓝莓饰品）,T01,data/nrc_wiki.db:spirit_forms,598,,香草甜甜一族口感各有不同，头上顶着的果果是身体的一部分，拥有360度的视野。因果果吸收不同能量而演化出不同口感分支，身体散发着浓郁的奶香。,待核对
+FORM:0599,form,高帽鹬者,T01,data/nrc_wiki.db:spirit_forms,599,,头顶的帽形骨冠比普通个体更高更大，能覆盖更大的水面区域。族群捕猎时常由首领负责制造阴影，其他成员则在阴影边缘等候，乘凉的鱼虾往往还没反应过来，就已经落入了包围圈。,待核对
+FORM:0600,form,高脚鹬,T01,data/nrc_wiki.db:spirit_forms,600,,拥有较大的脑容量，是运筹帷幄的猎手，坚硬的帽形结构有良好的散热性，会用巨大的头部和双翅在水面上围出一片阴影，以此吸引喜欢在阴凉处生活的水生生物，静待着来乘凉的鱼虾进入它的捕猎范围。,待核对
+FORM:0601,form,魔力猫,T01,data/nrc_wiki.db:spirit_forms,601,,普遍性情温和，体型巨大，据说深吸一口气能呼出将洛克都吹走的狂风，但通常情况下举止动作十分轻柔。“长了三条锋利的尾巴，经常会用身体冲撞碾压对手”。,待核对
+FORM:0602,form,魔眷鸟,T01,data/nrc_wiki.db:spirit_forms,602,,似乎并非是自然产生的物种，对魔法的共鸣极强。根据调查统计结果来看，即使是野生的魔眷鸟也曾经有过契约者，怀疑是被制作出之后再放生的。,待核对
+FORM:0603,form,魔翼鸟,T01,data/nrc_wiki.db:spirit_forms,603,,巨大的翅膀能够给予敌人强有力的打击，旋转时更能提高打击效率。物理攻击和魔法攻击都很擅长，翅膀中蕴含着巨量魔力，翅膀内侧的脉络中是魔力流转的痕迹。,待核对
+FORM:0604,form,魔草巫灵,T01,data/nrc_wiki.db:spirit_forms,604,,守护着森林的小巫师，头上的帽子似乎已经跟随它多年了。帽子的两侧是它树叶状的耳朵，能听到树木之间的对话。,待核对
+FORM:0605,form,鳗尾兽,T01,data/nrc_wiki.db:spirit_forms,605,,它们的头部几乎没有视力，主要靠嘴感受气流来调整方向，偶尔会在地表横冲直撞。吼叫时会带动口中的吊钟形花朵震动，发出阵阵钟声。它们和同伴间通过这些声响，彼此交流。,待核对
+FORM:0606,form,鸭吉吉国王（急急急鸭）,T01,data/nrc_wiki.db:spirit_forms,606,,啪嗒啪嗒，鸭吉吉国王来了。那边的，别看怀表了，让时间听国王的；这边的毛太蓬松了，站紧实一点，别挡着国王的道了。嗯？还有你，既然来了我们鸭吉吉王国，记得要给过路费鸭！,待核对
+FORM:0607,form,鸭吉吉国王（燃了鸭）,T01,data/nrc_wiki.db:spirit_forms,607,,啪嗒啪嗒，鸭吉吉国王来了。那边的，别看怀表了，让时间听国王的；这边的毛太蓬松了，站紧实一点，别挡着国王的道了。嗯？还有你，既然来了我们鸭吉吉王国，记得要给过路费鸭！,待核对
+FORM:0608,form,鸭吉吉国王（等一等鸭）,T01,data/nrc_wiki.db:spirit_forms,608,,啪嗒啪嗒，鸭吉吉国王来了。那边的，别看怀表了，让时间听国王的；这边的毛太蓬松了，站紧实一点，别挡着国王的道了。嗯？还有你，既然来了我们鸭吉吉王国，记得要给过路费鸭！,待核对
+FORM:0609,form,鸭吉吉国王（紧实的样子）,T01,data/nrc_wiki.db:spirit_forms,609,,啪嗒啪嗒，鸭吉吉国王来了。那边的，别看怀表了，让时间听国王的；这边的毛太蓬松了，站紧实一点，别挡着国王的道了。嗯？还有你，既然来了我们鸭吉吉王国，记得要给过路费鸭！,待核对
+FORM:0610,form,鸭吉吉国王（蓬松的样子）,T01,data/nrc_wiki.db:spirit_forms,610,,啪嗒啪嗒，鸭吉吉国王来了。那边的，别看怀表了，让时间听国王的；这边的毛太蓬松了，站紧实一点，别挡着国王的道了。嗯？还有你，既然来了我们鸭吉吉王国，记得要给过路费鸭！,待核对
+FORM:0611,form,鸭吉吉国王（起来鸭）,T01,data/nrc_wiki.db:spirit_forms,611,,啪嗒啪嗒，鸭吉吉国王来了。那边的，别看怀表了，让时间听国王的；这边的毛太蓬松了，站紧实一点，别挡着国王的道了。嗯？还有你，既然来了我们鸭吉吉王国，记得要给过路费鸭！,待核对
+FORM:0612,form,鸭吉吉（急急急鸭）,T01,data/nrc_wiki.db:spirit_forms,612,,非常急躁的鸭吉吉，虽然拿着表，但是来不及看时间，似乎一直在赶路，走路速度极快，所到之处有“啪嗒啪嗒”的响声。,待核对
+FORM:0613,form,鸭吉吉（燃了鸭）,T01,data/nrc_wiki.db:spirit_forms,613,,“嘎！嘎！”火烧鸭屁股了，快让一让。燃了鸭总是处于紧张炸毛的状态，立毛反射会增大它自身的轮廓，看起来体型更大，因此，在鸭吉吉种族里，燃了鸭是不好惹的代名词。,待核对
+FORM:0614,form,鸭吉吉（等一等鸭）,T01,data/nrc_wiki.db:spirit_forms,614,,因为等待太久，焦急的心情让它的脸涨得通红，光滑的毛发也因为缺水而翘起，会专注地一直看着沙漏计时，内心的渴望支撑着它，相信前方总会有好事发生。,待核对
+FORM:0615,form,鸭吉吉（紧实的样子）,T01,data/nrc_wiki.db:spirit_forms,615,,拥有蓬松的被毛，非常柔软。似乎很讨厌肢体接触，抗拒被抚摸。非常聪慧的物种，对环境中与众不同的东西十分敏感，尤其对于闪光的物体和新奇的事物格外感兴趣。,待核对
+FORM:0616,form,鸭吉吉（蓬松的样子）,T01,data/nrc_wiki.db:spirit_forms,616,,拥有蓬松的被毛，非常柔软。似乎很讨厌肢体接触，抗拒被抚摸。非常聪慧的物种，对环境中与众不同的东西十分敏感，尤其对于闪光的物体和新奇的事物格外感兴趣。,待核对
+FORM:0617,form,鸭吉吉（起来鸭）,T01,data/nrc_wiki.db:spirit_forms,617,,它的眼皮开始打架，脑袋一点一点前倾——虽然随时能睡，但是也随时能醒。当你以为它睡着了，它能猛地抖翅，把自己从瞌睡里吓醒，大喊“嘎嘎——！”,待核对
+FORM:0618,form,黄蜂后,T01,data/nrc_wiki.db:spirit_forms,618,,在蜂后的下半身周围有能量波动，推测是用来建立两只小蜂的联系。战斗时，蜂后的两眼会变成红色，针刺也会变得锋利无比。,待核对
+FORM:0619,form,黑化加尔,T01,data/nrc_wiki.db:spirit_forms,619,,没有人知道它是从哪里出现的，它和加尔共用一具身体。眼珠滴溜溜地转，它聪明又凌厉，曾经严肃指出不是所有可可果它都喜欢，它明确表示不喜欢软的可可果，脆脆的口感才是最好的。,待核对
+FORM:0620,form,黑手浣熊,T01,data/nrc_wiki.db:spirit_forms,620,,每一群小浣蛋背后都跟着一只黑手浣熊，翻垃圾桶它先翻，新鲜的垃圾它先吃。黑手浣熊对体型更大的精灵大哥很有礼貌低头哈腰，尾巴摇得飞起，转头就打个手势让小浣蛋们偷偷去掏大哥的家底。,待核对
+FORM:0621,form,黑猫密探,T01,data/nrc_wiki.db:spirit_forms,621,,拥有了在黑暗夜空中穿行的能力，据说它们能读取宇宙中所有星光的讯息，预知即将发生的危机。小洛克常常发现，当黑猫密探突然变得异常安静时，往往预示着某种变故即将来临。,待核对
+FORM:0622,form,黑猫巫师,T01,data/nrc_wiki.db:spirit_forms,622,,夜晚总是在看星星，长久地观察星空和白天不停地思考，似乎让它们拥有了占卜的能力。偶尔会看到有小洛克拿着可可果去拜托黑猫巫师帮忙预测期末考试题。,待核对
+FORM:0623,form,黑羽夫人,T01,data/nrc_wiki.db:spirit_forms,623,,天鹅精灵中罕见的独居分支，对社交并不热衷。羽毛长而卷翘，摸起来有些刺手，似乎并不符合种族中普遍的审美，但自信令她看起来非常优雅。,待核对
+FORM:0624,form,龙息帕尔,T01,data/nrc_wiki.db:spirit_forms,624,,在古老的典籍中记载，龙息帕尔和其他恶系精灵的行事风格不同，它们秉持等价交换的原则，会严格遵守自己缔结的契约。在契约完成前绝不会离开，甚至愿意为此等待漫长的时光。,待核对
+FORM:0625,form,龙鱼,T01,data/nrc_wiki.db:spirit_forms,625,,长鳍长尾，身形纤细流畅，拥有强大的游泳能力和跳跃能力，身体的结构比起鱼更接近龙，证明其拥有少量龙系血脉，尾部的红珠中蕴含着些许龙系能量，可以在跃出水面时发出真正的龙吼。,待核对

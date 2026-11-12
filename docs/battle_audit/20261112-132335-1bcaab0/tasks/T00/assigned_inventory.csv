@@ -1,0 +1,621 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:1007-issues.md,file,1007-issues.md,T00,1007-issues.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:1007.md,file,1007.md,T00,1007.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:1007A.json,file,1007A.json,T00,1007A.json,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:1007B.json,file,1007B.json,T00,1007B.json,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:AGENTS.md,file,AGENTS.md,T00,AGENTS.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:data/manual_battles/#1002.md,file,data/manual_battles/#1002.md,T00,data/manual_battles/#1002.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/manual_battles/#1002.md:2,rule_clause,我方队伍：,T00,data/manual_battles/#1002.md,2,FILE:data/manual_battles/#1002.md,我方队伍：,待核对
+RULE:data/manual_battles/#1002.md:3,rule_clause,画间沉铁兽 490,T00,data/manual_battles/#1002.md,3,FILE:data/manual_battles/#1002.md,画间沉铁兽 490,待核对
+RULE:data/manual_battles/#1002.md:4,rule_clause,蹦蹦花（短毛球） 426,T00,data/manual_battles/#1002.md,4,FILE:data/manual_battles/#1002.md,蹦蹦花（短毛球） 426,待核对
+RULE:data/manual_battles/#1002.md:5,rule_clause,尖嘴狐仙 406,T00,data/manual_battles/#1002.md,5,FILE:data/manual_battles/#1002.md,尖嘴狐仙 406,待核对
+RULE:data/manual_battles/#1002.md:6,rule_clause,深渊蛙 403,T00,data/manual_battles/#1002.md,6,FILE:data/manual_battles/#1002.md,深渊蛙 403,待核对
+RULE:data/manual_battles/#1002.md:7,rule_clause,晶石蜗（火山琉璃） 376,T00,data/manual_battles/#1002.md,7,FILE:data/manual_battles/#1002.md,晶石蜗（火山琉璃） 376,待核对
+RULE:data/manual_battles/#1002.md:8,rule_clause,巨灵石 426,T00,data/manual_battles/#1002.md,8,FILE:data/manual_battles/#1002.md,巨灵石 426,待核对
+RULE:data/manual_battles/#1002.md:10,rule_clause,敌方队伍：未知,T00,data/manual_battles/#1002.md,10,FILE:data/manual_battles/#1002.md,敌方队伍：未知,待核对
+RULE:data/manual_battles/#1002.md:12,rule_clause,格式：技能[显示能耗](显示威力)克制关系,T00,data/manual_battles/#1002.md,12,FILE:data/manual_battles/#1002.md,格式：技能[显示能耗](显示威力)克制关系,待核对
+RULE:data/manual_battles/#1002.md:15,rule_clause,[敌方出场] 恶魔狼，血量100%，能量10,T00,data/manual_battles/#1002.md,15,FILE:data/manual_battles/#1002.md,[敌方出场] 恶魔狼，血量100%，能量10,待核对
+RULE:data/manual_battles/#1002.md:16,rule_clause,[我方出场] 画间沉铁兽，血量490，能量10,T00,data/manual_battles/#1002.md,16,FILE:data/manual_battles/#1002.md,[我方出场] 画间沉铁兽，血量490，能量10,待核对
+RULE:data/manual_battles/#1002.md:17,rule_clause,[我方选择技能] 连续爪击[2](37)0 反击拳[2](62)↑ 幻象[1](30)↓ 鼓劲[3](--)/ 选择了4,T00,data/manual_battles/#1002.md,17,FILE:data/manual_battles/#1002.md,[我方选择技能] 连续爪击[2](37)0 反击拳[2](62)↑ 幻象[1](30)↓ 鼓劲[3](--)/ 选择了4,待核对
+RULE:data/manual_battles/#1002.md:18,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,18,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:19,rule_clause,[敌方使用共鸣魔法] 恶魔狼-进化之力-恶魔狼王,T00,data/manual_battles/#1002.md,19,FILE:data/manual_battles/#1002.md,[敌方使用共鸣魔法] 恶魔狼-进化之力-恶魔狼王,待核对
+RULE:data/manual_battles/#1002.md:20,rule_clause,[敌方使用技能] 力量增效，剩余能量9,T00,data/manual_battles/#1002.md,20,FILE:data/manual_battles/#1002.md,[敌方使用技能] 力量增效，剩余能量9,待核对
+RULE:data/manual_battles/#1002.md:21,rule_clause,[敌方状态] 物攻+10层,T00,data/manual_battles/#1002.md,21,FILE:data/manual_battles/#1002.md,[敌方状态] 物攻+10层,待核对
+RULE:data/manual_battles/#1002.md:22,rule_clause,[我方状态] 变形活画_速度+10层，每层+5（威力上升不是状态）,T00,data/manual_battles/#1002.md,22,FILE:data/manual_battles/#1002.md,[我方状态] 变形活画_速度+10层，每层+5（威力上升不是状态）,待核对
+RULE:data/manual_battles/#1002.md:23,rule_clause,[我方使用技能] 鼓劲，剩余能量7,T00,data/manual_battles/#1002.md,23,FILE:data/manual_battles/#1002.md,[我方使用技能] 鼓劲，剩余能量7,待核对
+RULE:data/manual_battles/#1002.md:24,rule_clause,[我方状态] 魔防+17层,T00,data/manual_battles/#1002.md,24,FILE:data/manual_battles/#1002.md,[我方状态] 魔防+17层,待核对
+RULE:data/manual_battles/#1002.md:25,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,25,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:28,rule_clause,[我方选择技能] 连续爪击[2](75)0 反击拳[2](125)↑ 幻象[1](60)↓ 鼓劲[3](--)/ 选择了2,T00,data/manual_battles/#1002.md,28,FILE:data/manual_battles/#1002.md,[我方选择技能] 连续爪击[2](75)0 反击拳[2](125)↑ 幻象[1](60)↓ 鼓劲[3](--)/ 选择了2,待核对
+RULE:data/manual_battles/#1002.md:29,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,29,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:30,rule_clause,[我方使用技能] 反击拳，剩余能量5，克制156，二连击，恶魔狼HP=26%,T00,data/manual_battles/#1002.md,30,FILE:data/manual_battles/#1002.md,[我方使用技能] 反击拳，剩余能量5，克制156，二连击，恶魔狼HP=26%,待核对
+RULE:data/manual_battles/#1002.md:31,rule_clause,[敌方使用技能] 贪婪，剩余能量7,T00,data/manual_battles/#1002.md,31,FILE:data/manual_battles/#1002.md,[敌方使用技能] 贪婪，剩余能量7,待核对
+RULE:data/manual_battles/#1002.md:32,rule_clause,[敌方状态] 吸血+10层,T00,data/manual_battles/#1002.md,32,FILE:data/manual_battles/#1002.md,[敌方状态] 吸血+10层,待核对
+RULE:data/manual_battles/#1002.md:33,rule_clause,[我方状态] 变形活画_速度+10层，每层+5，现有20层,T00,data/manual_battles/#1002.md,33,FILE:data/manual_battles/#1002.md,[我方状态] 变形活画_速度+10层，每层+5，现有20层,待核对
+RULE:data/manual_battles/#1002.md:34,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,34,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:37,rule_clause,[我方选择技能] 连续爪击[2](112)0 反击拳[2](187)↑ 幻象[1](90)↓ 鼓劲[3](--)/ 选择了2,T00,data/manual_battles/#1002.md,37,FILE:data/manual_battles/#1002.md,[我方选择技能] 连续爪击[2](112)0 反击拳[2](187)↑ 幻象[1](90)↓ 鼓劲[3](--)/ 选择了2,待核对
+RULE:data/manual_battles/#1002.md:38,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,38,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:39,rule_clause,[敌方切换精灵] 恶魔狼→海豹船长，能量10，HP=100%,T00,data/manual_battles/#1002.md,39,FILE:data/manual_battles/#1002.md,[敌方切换精灵] 恶魔狼→海豹船长，能量10，HP=100%,待核对
+RULE:data/manual_battles/#1002.md:40,rule_clause,[我方状态] 变形活画_速度 全部消失（威力上升也消失）,T00,data/manual_battles/#1002.md,40,FILE:data/manual_battles/#1002.md,[我方状态] 变形活画_速度 全部消失（威力上升也消失）,待核对
+RULE:data/manual_battles/#1002.md:41,rule_clause,[我方使用技能] 反击拳，剩余能量3，29，二连击，海豹船长HP=77%,T00,data/manual_battles/#1002.md,41,FILE:data/manual_battles/#1002.md,[我方使用技能] 反击拳，剩余能量3，29，二连击，海豹船长HP=77%,待核对
+RULE:data/manual_battles/#1002.md:42,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,42,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:45,rule_clause,[我方选择技能] 连续爪击[2](37)0 反击拳[2](31)0 幻象[1](60)0 鼓劲[3](--)/ 选择换人-深渊蛙,T00,data/manual_battles/#1002.md,45,FILE:data/manual_battles/#1002.md,[我方选择技能] 连续爪击[2](37)0 反击拳[2](31)0 幻象[1](60)0 鼓劲[3](--)/ 选择换人-深渊蛙,待核对
+RULE:data/manual_battles/#1002.md:46,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,46,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:47,rule_clause,[我方切换精灵] 画间沉铁兽→深渊蛙，能量10，HP=403,T00,data/manual_battles/#1002.md,47,FILE:data/manual_battles/#1002.md,[我方切换精灵] 画间沉铁兽→深渊蛙，能量10，HP=403,待核对
+RULE:data/manual_battles/#1002.md:48,rule_clause,[敌方使用技能] 一拳，剩余能量5，163，深渊蛙HP=240,T00,data/manual_battles/#1002.md,48,FILE:data/manual_battles/#1002.md,[敌方使用技能] 一拳，剩余能量5，163，深渊蛙HP=240,待核对
+RULE:data/manual_battles/#1002.md:49,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,49,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:52,rule_clause,[我方选择技能] 沉溺[4](137)0 叠浪[3](12)0 网缚[2](30)↓ 三连破[1](--)/ 选择了换人-尖嘴狐仙,T00,data/manual_battles/#1002.md,52,FILE:data/manual_battles/#1002.md,[我方选择技能] 沉溺[4](137)0 叠浪[3](12)0 网缚[2](30)↓ 三连破[1](--)/ 选择了换人-尖嘴狐仙,待核对
+RULE:data/manual_battles/#1002.md:53,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,53,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:54,rule_clause,[我方切换精灵] 深渊蛙→尖嘴狐仙，能量10，HP=406,T00,data/manual_battles/#1002.md,54,FILE:data/manual_battles/#1002.md,[我方切换精灵] 深渊蛙→尖嘴狐仙，能量10，HP=406,待核对
+RULE:data/manual_battles/#1002.md:55,rule_clause,[敌方使用技能] 斩断，剩余能量3，克制202，尖嘴狐仙HP=204,T00,data/manual_battles/#1002.md,55,FILE:data/manual_battles/#1002.md,[敌方使用技能] 斩断，剩余能量3，克制202，尖嘴狐仙HP=204,待核对
+RULE:data/manual_battles/#1002.md:56,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,56,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:59,rule_clause,[我方选择技能] 火焰箭[2](50)↓ 暴风雪[3](106)↑ 晒太阳[1](--)↓ 防御[1](--)/ 选择了换人-画间沉铁兽,T00,data/manual_battles/#1002.md,59,FILE:data/manual_battles/#1002.md,[我方选择技能] 火焰箭[2](50)↓ 暴风雪[3](106)↑ 晒太阳[1](--)↓ 防御[1](--)/ 选择了换人-画间沉铁兽,待核对
+RULE:data/manual_battles/#1002.md:60,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,60,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:61,rule_clause,[我方切换精灵] 深渊狐仙→画间沉铁兽，能量3，HP=490,T00,data/manual_battles/#1002.md,61,FILE:data/manual_battles/#1002.md,[我方切换精灵] 深渊狐仙→画间沉铁兽，能量3，HP=490,待核对
+RULE:data/manual_battles/#1002.md:62,rule_clause,[敌方使用技能] 聚能，剩余能量8,T00,data/manual_battles/#1002.md,62,FILE:data/manual_battles/#1002.md,[敌方使用技能] 聚能，剩余能量8,待核对
+RULE:data/manual_battles/#1002.md:63,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,63,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:66,rule_clause,[我方选择技能] 连续爪击[2](37)0 反击拳[2](31)↑ 幻象[1](60)↓ 鼓劲[3](--)/ 选择了4,T00,data/manual_battles/#1002.md,66,FILE:data/manual_battles/#1002.md,[我方选择技能] 连续爪击[2](37)0 反击拳[2](31)↑ 幻象[1](60)↓ 鼓劲[3](--)/ 选择了4,待核对
+RULE:data/manual_battles/#1002.md:67,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,67,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:68,rule_clause,[敌方使用技能] 一拳，剩余能量3，克制314，画间沉铁兽HP=176,T00,data/manual_battles/#1002.md,68,FILE:data/manual_battles/#1002.md,[敌方使用技能] 一拳，剩余能量3，克制314，画间沉铁兽HP=176,待核对
+RULE:data/manual_battles/#1002.md:69,rule_clause,[我方使用技能] 鼓劲，剩余能量0,T00,data/manual_battles/#1002.md,69,FILE:data/manual_battles/#1002.md,[我方使用技能] 鼓劲，剩余能量0,待核对
+RULE:data/manual_battles/#1002.md:70,rule_clause,[我方状态] 魔防+17层,T00,data/manual_battles/#1002.md,70,FILE:data/manual_battles/#1002.md,[我方状态] 魔防+17层,待核对
+RULE:data/manual_battles/#1002.md:71,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,71,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:74,rule_clause,[我方选择技能] 连续爪击[2，不足](37)0 反击拳[2，不足](31)↑ 幻象[1，不足](60)↓ 鼓劲[3，不足](--)/ 选择了换人-巨灵石,T00,data/manual_battles/#1002.md,74,FILE:data/manual_battles/#1002.md,[我方选择技能] 连续爪击[2，不足](37)0 反击拳[2，不足](31)↑ 幻象[1，不足](60)↓ 鼓劲[3，不足](--)/ 选择了换人-巨灵石,待核对
+RULE:data/manual_battles/#1002.md:75,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,75,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:76,rule_clause,[我方切换精灵] 画间沉铁兽→巨灵石，能量10，HP=426,T00,data/manual_battles/#1002.md,76,FILE:data/manual_battles/#1002.md,[我方切换精灵] 画间沉铁兽→巨灵石，能量10，HP=426,待核对
+RULE:data/manual_battles/#1002.md:77,rule_clause,[敌方使用技能] 斩断，剩余能量1，68，巨灵石HP=358,T00,data/manual_battles/#1002.md,77,FILE:data/manual_battles/#1002.md,[敌方使用技能] 斩断，剩余能量1，68，巨灵石HP=358,待核对
+RULE:data/manual_battles/#1002.md:78,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,78,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:81,rule_clause,[我方选择技能] 跺地[2](50)↓ 穿膛[2](325)0 晒太阳[1](--)/ 吓退[2](--)/ 选择了2,T00,data/manual_battles/#1002.md,81,FILE:data/manual_battles/#1002.md,[我方选择技能] 跺地[2](50)↓ 穿膛[2](325)0 晒太阳[1](--)/ 吓退[2](--)/ 选择了2,待核对
+RULE:data/manual_battles/#1002.md:82,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,82,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:83,rule_clause,[敌方使用技能] 聚能，剩余能量6,T00,data/manual_battles/#1002.md,83,FILE:data/manual_battles/#1002.md,[敌方使用技能] 聚能，剩余能量6,待核对
+RULE:data/manual_battles/#1002.md:84,rule_clause,[我方使用技能] 穿膛，剩余能量8，44，海豹船长HP=65%,T00,data/manual_battles/#1002.md,84,FILE:data/manual_battles/#1002.md,[我方使用技能] 穿膛，剩余能量8，44，海豹船长HP=65%,待核对
+RULE:data/manual_battles/#1002.md:85,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,85,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:88,rule_clause,[我方选择技能] 跺地[2](50)↓ 穿膛[2](65)0 晒太阳[1](--)/ 吓退[2](--)/ 选择了2,T00,data/manual_battles/#1002.md,88,FILE:data/manual_battles/#1002.md,[我方选择技能] 跺地[2](50)↓ 穿膛[2](65)0 晒太阳[1](--)/ 吓退[2](--)/ 选择了2,待核对
+RULE:data/manual_battles/#1002.md:89,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,89,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:90,rule_clause,[敌方使用技能] 水幕冲击，剩余能量1，克制195，巨灵石HP=163,T00,data/manual_battles/#1002.md,90,FILE:data/manual_battles/#1002.md,[敌方使用技能] 水幕冲击，剩余能量1，克制195，巨灵石HP=163,待核对
+RULE:data/manual_battles/#1002.md:91,rule_clause,[我方使用技能] 穿膛，剩余能量6，220，海豹船长HP=5%,T00,data/manual_battles/#1002.md,91,FILE:data/manual_battles/#1002.md,[我方使用技能] 穿膛，剩余能量6，220，海豹船长HP=5%,待核对
+RULE:data/manual_battles/#1002.md:92,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,92,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:95,rule_clause,[我方选择技能] 跺地[2](50)↓ 穿膛[2](65)0 晒太阳[1](--)/ 吓退[2](--)/ 选择了换人-蹦蹦花,T00,data/manual_battles/#1002.md,95,FILE:data/manual_battles/#1002.md,[我方选择技能] 跺地[2](50)↓ 穿膛[2](65)0 晒太阳[1](--)/ 吓退[2](--)/ 选择了换人-蹦蹦花,待核对
+RULE:data/manual_battles/#1002.md:96,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,96,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:97,rule_clause,[我方切换精灵] 巨灵石→蹦蹦花，能量10，HP=426,T00,data/manual_battles/#1002.md,97,FILE:data/manual_battles/#1002.md,[我方切换精灵] 巨灵石→蹦蹦花，能量10，HP=426,待核对
+RULE:data/manual_battles/#1002.md:98,rule_clause,[敌方使用技能] 聚能，剩余能量6,T00,data/manual_battles/#1002.md,98,FILE:data/manual_battles/#1002.md,[敌方使用技能] 聚能，剩余能量6,待核对
+RULE:data/manual_battles/#1002.md:99,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,99,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:102,rule_clause,[我方选择技能] [用户打开速度面板] 蹦蹦花速度148 海豹船长速度158~234,T00,data/manual_battles/#1002.md,102,FILE:data/manual_battles/#1002.md,[我方选择技能] [用户打开速度面板] 蹦蹦花速度148 海豹船长速度158~234,待核对
+RULE:data/manual_battles/#1002.md:103,rule_clause,[我方选择技能] 毒誓[4](150)0 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了3,T00,data/manual_battles/#1002.md,103,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](150)0 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了3,待核对
+RULE:data/manual_battles/#1002.md:104,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,104,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:105,rule_clause,[敌方使用技能] 斩断，剩余能量4，抵抗44，蹦蹦花HP=382,T00,data/manual_battles/#1002.md,105,FILE:data/manual_battles/#1002.md,[敌方使用技能] 斩断，剩余能量4，抵抗44，蹦蹦花HP=382,待核对
+RULE:data/manual_battles/#1002.md:106,rule_clause,[我方使用技能] 反击拳，剩余能量8，17，二连击，海豹船长力竭，对方MP-1,T00,data/manual_battles/#1002.md,106,FILE:data/manual_battles/#1002.md,[我方使用技能] 反击拳，剩余能量8，17，二连击，海豹船长力竭，对方MP-1,待核对
+RULE:data/manual_battles/#1002.md:107,rule_clause,[敌方选择上场精灵] 银月狼王，剩余能量10，HP=100%,T00,data/manual_battles/#1002.md,107,FILE:data/manual_battles/#1002.md,[敌方选择上场精灵] 银月狼王，剩余能量10，HP=100%,待核对
+RULE:data/manual_battles/#1002.md:108,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,108,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:111,rule_clause,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2](--)/ 选择了4,T00,data/manual_battles/#1002.md,111,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2](--)/ 选择了4,待核对
+RULE:data/manual_battles/#1002.md:112,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,112,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:113,rule_clause,[敌方使用技能] 月蚀，剩余能量5，,T00,data/manual_battles/#1002.md,113,FILE:data/manual_battles/#1002.md,[敌方使用技能] 月蚀，剩余能量5，,待核对
+RULE:data/manual_battles/#1002.md:114,rule_clause,[我方应对成功] 应对！蜡质膜，剩余能量9，克制67，蹦蹦花HP=315,T00,data/manual_battles/#1002.md,114,FILE:data/manual_battles/#1002.md,[我方应对成功] 应对！蜡质膜，剩余能量9，克制67，蹦蹦花HP=315,待核对
+RULE:data/manual_battles/#1002.md:115,rule_clause,[敌方状态] 中毒+2层,T00,data/manual_battles/#1002.md,115,FILE:data/manual_battles/#1002.md,[敌方状态] 中毒+2层,待核对
+RULE:data/manual_battles/#1002.md:116,rule_clause,[状态结算] 中毒：银月狼王-12,T00,data/manual_battles/#1002.md,116,FILE:data/manual_battles/#1002.md,[状态结算] 中毒：银月狼王-12,待核对
+RULE:data/manual_battles/#1002.md:117,rule_clause,[回合结束结算] 铭记于月亮：银月狼王-20，HP=93%,T00,data/manual_battles/#1002.md,117,FILE:data/manual_battles/#1002.md,[回合结束结算] 铭记于月亮：银月狼王-20，HP=93%,待核对
+RULE:data/manual_battles/#1002.md:118,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,118,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:121,rule_clause,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2，冷却1](--)/ 选择了换人-画间沉铁兽,T00,data/manual_battles/#1002.md,121,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2，冷却1](--)/ 选择了换人-画间沉铁兽,待核对
+RULE:data/manual_battles/#1002.md:122,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,122,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:123,rule_clause,[我方切换精灵] 蹦蹦花→画间沉铁兽，能量0，HP=176,T00,data/manual_battles/#1002.md,123,FILE:data/manual_battles/#1002.md,[我方切换精灵] 蹦蹦花→画间沉铁兽，能量0，HP=176,待核对
+RULE:data/manual_battles/#1002.md:124,rule_clause,[敌方使用技能] 月蚀，剩余能量3，克制300，画间沉铁兽力竭，我方MP-1,T00,data/manual_battles/#1002.md,124,FILE:data/manual_battles/#1002.md,[敌方使用技能] 月蚀，剩余能量3，克制300，画间沉铁兽力竭，我方MP-1,待核对
+RULE:data/manual_battles/#1002.md:125,rule_clause,[状态结算] 中毒：银月狼王-12,T00,data/manual_battles/#1002.md,125,FILE:data/manual_battles/#1002.md,[状态结算] 中毒：银月狼王-12,待核对
+RULE:data/manual_battles/#1002.md:126,rule_clause,[回合结束结算] 铭记于月亮：银月狼王-20，HP=85%,T00,data/manual_battles/#1002.md,126,FILE:data/manual_battles/#1002.md,[回合结束结算] 铭记于月亮：银月狼王-20，HP=85%,待核对
+RULE:data/manual_battles/#1002.md:127,rule_clause,[我方选择上场精灵] 深渊蛙，剩余能量10，HP=240,T00,data/manual_battles/#1002.md,127,FILE:data/manual_battles/#1002.md,[我方选择上场精灵] 深渊蛙，剩余能量10，HP=240,待核对
+RULE:data/manual_battles/#1002.md:128,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,128,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:131,rule_clause,[我方选择技能] 沉溺[4](137)0 叠浪[3](12)0 网缚[2](60)0 三连破[1](--)/ 选择了1,T00,data/manual_battles/#1002.md,131,FILE:data/manual_battles/#1002.md,[我方选择技能] 沉溺[4](137)0 叠浪[3](12)0 网缚[2](60)0 三连破[1](--)/ 选择了1,待核对
+RULE:data/manual_battles/#1002.md:132,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,132,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:133,rule_clause,[敌方使用技能] 聚能，剩余能量8,T00,data/manual_battles/#1002.md,133,FILE:data/manual_battles/#1002.md,[敌方使用技能] 聚能，剩余能量8,待核对
+RULE:data/manual_battles/#1002.md:134,rule_clause,[我方使用技能] 沉溺，剩余能量6，129，银月狼王HP=54%,T00,data/manual_battles/#1002.md,134,FILE:data/manual_battles/#1002.md,[我方使用技能] 沉溺，剩余能量6，129，银月狼王HP=54%,待核对
+RULE:data/manual_battles/#1002.md:135,rule_clause,[状态结算] 中毒：银月狼王-12，HP=51%,T00,data/manual_battles/#1002.md,135,FILE:data/manual_battles/#1002.md,[状态结算] 中毒：银月狼王-12，HP=51%,待核对
+RULE:data/manual_battles/#1002.md:136,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,136,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:139,rule_clause,[我方选择技能] 沉溺[4](137)0 叠浪[3](12)0 网缚[2](60)0 三连破[1](--)/ 选择了4,T00,data/manual_battles/#1002.md,139,FILE:data/manual_battles/#1002.md,[我方选择技能] 沉溺[4](137)0 叠浪[3](12)0 网缚[2](60)0 三连破[1](--)/ 选择了4,待核对
+RULE:data/manual_battles/#1002.md:140,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,140,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:141,rule_clause,[敌方使用技能] 月蚀，剩余能量3，克制313，深渊蛙力竭，我方MP-1,T00,data/manual_battles/#1002.md,141,FILE:data/manual_battles/#1002.md,[敌方使用技能] 月蚀，剩余能量3，克制313，深渊蛙力竭，我方MP-1,待核对
+RULE:data/manual_battles/#1002.md:142,rule_clause,[状态结算] 中毒：银月狼王-12,T00,data/manual_battles/#1002.md,142,FILE:data/manual_battles/#1002.md,[状态结算] 中毒：银月狼王-12,待核对
+RULE:data/manual_battles/#1002.md:143,rule_clause,[回合结束结算] 铭记于月亮：银月狼王-20，HP=44%,T00,data/manual_battles/#1002.md,143,FILE:data/manual_battles/#1002.md,[回合结束结算] 铭记于月亮：银月狼王-20，HP=44%,待核对
+RULE:data/manual_battles/#1002.md:144,rule_clause,[我方选择上场精灵] 蹦蹦花，剩余能量9，HP=315,T00,data/manual_battles/#1002.md,144,FILE:data/manual_battles/#1002.md,[我方选择上场精灵] 蹦蹦花，剩余能量9，HP=315,待核对
+RULE:data/manual_battles/#1002.md:145,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,145,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:148,rule_clause,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2](--)/ 选择了4,T00,data/manual_battles/#1002.md,148,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2](--)/ 选择了4,待核对
+RULE:data/manual_battles/#1002.md:149,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,149,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:150,rule_clause,[敌方使用技能] 聚能，剩余能量8,T00,data/manual_battles/#1002.md,150,FILE:data/manual_battles/#1002.md,[敌方使用技能] 聚能，剩余能量8,待核对
+RULE:data/manual_battles/#1002.md:151,rule_clause,[我方使用技能] 蜡质膜，剩余能量7,T00,data/manual_battles/#1002.md,151,FILE:data/manual_battles/#1002.md,[我方使用技能] 蜡质膜，剩余能量7,待核对
+RULE:data/manual_battles/#1002.md:152,rule_clause,[敌方状态] 中毒+2层,T00,data/manual_battles/#1002.md,152,FILE:data/manual_battles/#1002.md,[敌方状态] 中毒+2层,待核对
+RULE:data/manual_battles/#1002.md:153,rule_clause,[状态结算] 中毒：银月狼王-25，HP=38%,T00,data/manual_battles/#1002.md,153,FILE:data/manual_battles/#1002.md,[状态结算] 中毒：银月狼王-25，HP=38%,待核对
+RULE:data/manual_battles/#1002.md:154,rule_clause,[回合结束结算] 王子的诺言：银月狼王所有技能能耗+1（王子的诺言是深渊蛙特性，被银月狼王的特性掠夺了过来）,T00,data/manual_battles/#1002.md,154,FILE:data/manual_battles/#1002.md,[回合结束结算] 王子的诺言：银月狼王所有技能能耗+1（王子的诺言是深渊蛙特性，被银月狼王的特性掠夺了过来）,待核对
+RULE:data/manual_battles/#1002.md:155,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,155,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:158,rule_clause,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2，冷却1](--)/ 选择了换人-晶石蜗,T00,data/manual_battles/#1002.md,158,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](75)↓ 见招拆招[2](32)↓ 反击拳[2](6)↓↓ 蜡质膜[2，冷却1](--)/ 选择了换人-晶石蜗,待核对
+RULE:data/manual_battles/#1002.md:159,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,159,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:160,rule_clause,[我方切换精灵] 蹦蹦花→晶石蜗，能量10，HP=376,T00,data/manual_battles/#1002.md,160,FILE:data/manual_battles/#1002.md,[我方切换精灵] 蹦蹦花→晶石蜗，能量10，HP=376,待核对
+RULE:data/manual_battles/#1002.md:161,rule_clause,[敌方使用技能] 月蚀，剩余能量2，抵抗71，晶石蜗HP=305,T00,data/manual_battles/#1002.md,161,FILE:data/manual_battles/#1002.md,[敌方使用技能] 月蚀，剩余能量2，抵抗71，晶石蜗HP=305,待核对
+RULE:data/manual_battles/#1002.md:162,rule_clause,[状态结算] 中毒：银月狼王-25,T00,data/manual_battles/#1002.md,162,FILE:data/manual_battles/#1002.md,[状态结算] 中毒：银月狼王-25,待核对
+RULE:data/manual_battles/#1002.md:163,rule_clause,[回合结束结算] 铭记于月亮：银月狼王-20，HP=27%,T00,data/manual_battles/#1002.md,163,FILE:data/manual_battles/#1002.md,[回合结束结算] 铭记于月亮：银月狼王-20，HP=27%,待核对
+RULE:data/manual_battles/#1002.md:164,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,164,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:167,rule_clause,[我方选择技能] 震击[3](100)0 跺地[2](100)0 锐利眼神[2](--)/ 蓄势待发[4](--)/ 选择了3,T00,data/manual_battles/#1002.md,167,FILE:data/manual_battles/#1002.md,[我方选择技能] 震击[3](100)0 跺地[2](100)0 锐利眼神[2](--)/ 蓄势待发[4](--)/ 选择了3,待核对
+RULE:data/manual_battles/#1002.md:168,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,168,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:169,rule_clause,[敌方使用技能] 聚能，剩余能量7,T00,data/manual_battles/#1002.md,169,FILE:data/manual_battles/#1002.md,[敌方使用技能] 聚能，剩余能量7,待核对
+RULE:data/manual_battles/#1002.md:170,rule_clause,[我方使用技能] 锐利眼神，剩余能量8,T00,data/manual_battles/#1002.md,170,FILE:data/manual_battles/#1002.md,[我方使用技能] 锐利眼神，剩余能量8,待核对
+RULE:data/manual_battles/#1002.md:171,rule_clause,[敌方状态] 物理防御降低+12层，魔法防御降低+12层,T00,data/manual_battles/#1002.md,171,FILE:data/manual_battles/#1002.md,[敌方状态] 物理防御降低+12层，魔法防御降低+12层,待核对
+RULE:data/manual_battles/#1002.md:172,rule_clause,[状态结算] 中毒：银月狼王-25，HP=21%,T00,data/manual_battles/#1002.md,172,FILE:data/manual_battles/#1002.md,[状态结算] 中毒：银月狼王-25，HP=21%,待核对
+RULE:data/manual_battles/#1002.md:173,rule_clause,[回合结束结算] 王子的诺言：银月狼王所有技能能耗+1,T00,data/manual_battles/#1002.md,173,FILE:data/manual_battles/#1002.md,[回合结束结算] 王子的诺言：银月狼王所有技能能耗+1,待核对
+RULE:data/manual_battles/#1002.md:174,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,174,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:177,rule_clause,[我方选择技能] 震击[3](220)0 跺地[2](220)0 锐利眼神[2](--)/ 蓄势待发[4](--)/ 选择了1,T00,data/manual_battles/#1002.md,177,FILE:data/manual_battles/#1002.md,[我方选择技能] 震击[3](220)0 跺地[2](220)0 锐利眼神[2](--)/ 蓄势待发[4](--)/ 选择了1,待核对
+RULE:data/manual_battles/#1002.md:178,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,178,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:179,rule_clause,[敌方使用技能] 叠加态，剩余能量4,T00,data/manual_battles/#1002.md,179,FILE:data/manual_battles/#1002.md,[敌方使用技能] 叠加态，剩余能量4,待核对
+RULE:data/manual_battles/#1002.md:180,rule_clause,[敌方状态] 物理攻击增加+2层，魔法攻击增加+3层，速度攻击增加+4层,T00,data/manual_battles/#1002.md,180,FILE:data/manual_battles/#1002.md,[敌方状态] 物理攻击增加+2层，魔法攻击增加+3层，速度攻击增加+4层,待核对
+RULE:data/manual_battles/#1002.md:181,rule_clause,[我方使用技能] 跺地，剩余能量6，136，银月狼王力竭，对方MP-1,T00,data/manual_battles/#1002.md,181,FILE:data/manual_battles/#1002.md,[我方使用技能] 跺地，剩余能量6，136，银月狼王力竭，对方MP-1,待核对
+RULE:data/manual_battles/#1002.md:182,rule_clause,[敌方选择上场精灵] 魔力猫，剩余能量10，HP=100%,T00,data/manual_battles/#1002.md,182,FILE:data/manual_battles/#1002.md,[敌方选择上场精灵] 魔力猫，剩余能量10，HP=100%,待核对
+RULE:data/manual_battles/#1002.md:183,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,183,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:186,rule_clause,[我方选择技能] 震击[3](50)↓ 跺地[2](50)↓ 锐利眼神[2](--)/ 蓄势待发[4](--)/ 选择了换人-蹦蹦花,T00,data/manual_battles/#1002.md,186,FILE:data/manual_battles/#1002.md,[我方选择技能] 震击[3](50)↓ 跺地[2](50)↓ 锐利眼神[2](--)/ 蓄势待发[4](--)/ 选择了换人-蹦蹦花,待核对
+RULE:data/manual_battles/#1002.md:187,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,187,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:188,rule_clause,[我方切换精灵] 晶石蜗→蹦蹦花，能量7，HP=315,T00,data/manual_battles/#1002.md,188,FILE:data/manual_battles/#1002.md,[我方切换精灵] 晶石蜗→蹦蹦花，能量7，HP=315,待核对
+RULE:data/manual_battles/#1002.md:189,rule_clause,[敌方使用技能] 斩断，剩余能量8，抵抗32，蹦蹦花HP=283,T00,data/manual_battles/#1002.md,189,FILE:data/manual_battles/#1002.md,[敌方使用技能] 斩断，剩余能量8，抵抗32，蹦蹦花HP=283,待核对
+RULE:data/manual_battles/#1002.md:190,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,190,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:193,rule_clause,[我方选择技能] 毒誓[4](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了1,T00,data/manual_battles/#1002.md,193,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了1,待核对
+RULE:data/manual_battles/#1002.md:194,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,194,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:195,rule_clause,[敌方使用技能] 孢子，剩余能量5，敌方HP恢复，已达上限，100%->100%,T00,data/manual_battles/#1002.md,195,FILE:data/manual_battles/#1002.md,[敌方使用技能] 孢子，剩余能量5，敌方HP恢复，已达上限，100%->100%,待核对
+RULE:data/manual_battles/#1002.md:196,rule_clause,[我方状态] 免疫寄生,T00,data/manual_battles/#1002.md,196,FILE:data/manual_battles/#1002.md,[我方状态] 免疫寄生,待核对
+RULE:data/manual_battles/#1002.md:197,rule_clause,[我方使用技能] 毒誓，剩余能量3，克制292，魔力猫HP=28%,T00,data/manual_battles/#1002.md,197,FILE:data/manual_battles/#1002.md,[我方使用技能] 毒誓，剩余能量3，克制292，魔力猫HP=28%,待核对
+RULE:data/manual_battles/#1002.md:198,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,198,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:201,rule_clause,[我方选择技能] 毒誓[4，不足](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了聚能,T00,data/manual_battles/#1002.md,201,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4，不足](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了聚能,待核对
+RULE:data/manual_battles/#1002.md:202,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,202,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:203,rule_clause,[我方使用技能] 聚能，,T00,data/manual_battles/#1002.md,203,FILE:data/manual_battles/#1002.md,[我方使用技能] 聚能，,待核对
+RULE:data/manual_battles/#1002.md:204,rule_clause,[敌方应对成功] 应对！斩断，剩余能量3，打断并抵抗32，蹦蹦花HP=251,T00,data/manual_battles/#1002.md,204,FILE:data/manual_battles/#1002.md,[敌方应对成功] 应对！斩断，剩余能量3，打断并抵抗32，蹦蹦花HP=251,待核对
+RULE:data/manual_battles/#1002.md:205,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,205,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:208,rule_clause,[我方选择技能] 毒誓[4，不足](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了聚能,T00,data/manual_battles/#1002.md,208,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4，不足](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了聚能,待核对
+RULE:data/manual_battles/#1002.md:209,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,209,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:210,rule_clause,[我方使用技能] 聚能，,T00,data/manual_battles/#1002.md,210,FILE:data/manual_battles/#1002.md,[我方使用技能] 聚能，,待核对
+RULE:data/manual_battles/#1002.md:211,rule_clause,[敌方应对成功] 应对！斩断，剩余能量1，打断并抵抗32，蹦蹦花HP=219,T00,data/manual_battles/#1002.md,211,FILE:data/manual_battles/#1002.md,[敌方应对成功] 应对！斩断，剩余能量1，打断并抵抗32，蹦蹦花HP=219,待核对
+RULE:data/manual_battles/#1002.md:212,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,212,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:215,rule_clause,[我方选择技能] 毒誓[4，不足](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了聚能,T00,data/manual_battles/#1002.md,215,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4，不足](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了聚能,待核对
+RULE:data/manual_battles/#1002.md:216,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,216,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:217,rule_clause,[敌方使用技能] 聚能，剩余能量6,T00,data/manual_battles/#1002.md,217,FILE:data/manual_battles/#1002.md,[敌方使用技能] 聚能，剩余能量6,待核对
+RULE:data/manual_battles/#1002.md:218,rule_clause,[我方使用技能] 聚能，剩余能量8,T00,data/manual_battles/#1002.md,218,FILE:data/manual_battles/#1002.md,[我方使用技能] 聚能，剩余能量8,待核对
+RULE:data/manual_battles/#1002.md:219,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,219,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:222,rule_clause,[我方选择技能] 毒誓[4](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了1,T00,data/manual_battles/#1002.md,222,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](300)↑ 见招拆招[2](65)0 反击拳[2](25)0 蜡质膜[2](--)/ 选择了1,待核对
+RULE:data/manual_battles/#1002.md:223,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,223,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:224,rule_clause,[敌方使用技能] 斩断，剩余能量4，抵抗32，蹦蹦花HP=219,T00,data/manual_battles/#1002.md,224,FILE:data/manual_battles/#1002.md,[敌方使用技能] 斩断，剩余能量4，抵抗32，蹦蹦花HP=219,待核对
+RULE:data/manual_battles/#1002.md:225,rule_clause,[我方使用技能] 毒誓，剩余能量4，克制292，魔力猫力竭，敌方MP-1,T00,data/manual_battles/#1002.md,225,FILE:data/manual_battles/#1002.md,[我方使用技能] 毒誓，剩余能量4，克制292，魔力猫力竭，敌方MP-1,待核对
+RULE:data/manual_battles/#1002.md:226,rule_clause,[敌方选择上场精灵] 龙息帕尔，剩余能量10，HP=100%,T00,data/manual_battles/#1002.md,226,FILE:data/manual_battles/#1002.md,[敌方选择上场精灵] 龙息帕尔，剩余能量10，HP=100%,待核对
+RULE:data/manual_battles/#1002.md:227,rule_clause,[回合结束] 战报:略,T00,data/manual_battles/#1002.md,227,FILE:data/manual_battles/#1002.md,[回合结束] 战报:略,待核对
+RULE:data/manual_battles/#1002.md:230,rule_clause,[我方选择技能] 毒誓[4](150)0 见招拆招[2](65)0 反击拳[2](50)↑ 蜡质膜[2](--)/ 选择了1,T00,data/manual_battles/#1002.md,230,FILE:data/manual_battles/#1002.md,[我方选择技能] 毒誓[4](150)0 见招拆招[2](65)0 反击拳[2](50)↑ 蜡质膜[2](--)/ 选择了1,待核对
+RULE:data/manual_battles/#1002.md:231,rule_clause,[敌方选择技能] 完成,T00,data/manual_battles/#1002.md,231,FILE:data/manual_battles/#1002.md,[敌方选择技能] 完成,待核对
+RULE:data/manual_battles/#1002.md:232,rule_clause,[敌方使用技能] 极限撕裂，剩余能量6，克制350，蹦蹦花力竭，我方MP-2（特性：付给恶魔的赎价）,T00,data/manual_battles/#1002.md,232,FILE:data/manual_battles/#1002.md,[敌方使用技能] 极限撕裂，剩余能量6，克制350，蹦蹦花力竭，我方MP-2（特性：付给恶魔的赎价）,待核对
+RULE:data/manual_battles/#1002.md:233,rule_clause,[终局] 我方MP=0,T00,data/manual_battles/#1002.md,233,FILE:data/manual_battles/#1002.md,[终局] 我方MP=0,待核对
+FILE:data/README.md,file,data/README.md,T00,data/README.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/README.md:3,rule_clause,石头：攻击技能：消耗能量，造成物理或魔法伤害，有些会附带“应对”效果（比如未被防御就驱散印记等）,T00,data/README.md,3,FILE:data/README.md,石头：攻击技能：消耗能量，造成物理或魔法伤害，有些会附带“应对”效果（比如未被防御就驱散印记等）,待核对
+RULE:data/README.md:4,rule_clause,分类分类,T00,data/README.md,4,FILE:data/README.md,分类分类,待核对
+RULE:data/README.md:5,rule_clause,布：防御技能：消耗能量，对对手的攻击技能进行“格挡”，减少本次对手的技能对自己造成的伤害，并触发防御技能的特殊增益（先手、增伤、buff、挂dot等等）,T00,data/README.md,5,FILE:data/README.md,布：防御技能：消耗能量，对对手的攻击技能进行“格挡”，减少本次对手的技能对自己造成的伤害，并触发防御技能的特殊增益（先手、增伤、buff、挂dot等等）,待核对
+RULE:data/README.md:6,rule_clause,分类,T00,data/README.md,6,FILE:data/README.md,分类,待核对
+RULE:data/README.md:7,rule_clause,剪刀：状态技能：主要有几大类（1）回复能量（2）消耗能量回复气血和能量（3）本次技能不造成直接伤害，但会给对手挂dot持续伤害（4）消耗能量获得自身的各种增益（5）让双方精灵退场（6）偷取对方能量等,T00,data/README.md,7,FILE:data/README.md,剪刀：状态技能：主要有几大类（1）回复能量（2）消耗能量回复气血和能量（3）本次技能不造成直接伤害，但会给对手挂dot持续伤害（4）消耗能量获得自身的各种增益（5）让双方精灵退场（6）偷取对方能量等,待核对
+RULE:data/README.md:11,rule_clause,拼速：比较双方场上精灵的速度值和速度加成、减弱，若速度完全相等，则出手顺序随机,T00,data/README.md,11,FILE:data/README.md,拼速：比较双方场上精灵的速度值和速度加成、减弱，若速度完全相等，则出手顺序随机,待核对
+RULE:data/README.md:13,rule_clause,实战时的属性值由三部分组成，第一部分是属性值，,T00,data/README.md,13,FILE:data/README.md,实战时的属性值由三部分组成，第一部分是属性值，,待核对
+RULE:data/README.md:14,rule_clause,第二部分是加减加成，,T00,data/README.md,14,FILE:data/README.md,第二部分是加减加成，,待核对
+RULE:data/README.md:15,rule_clause,第三部分是状态属性，(向下取整(属性值*(加成百分比)))*层数,T00,data/README.md,15,FILE:data/README.md,第三部分是状态属性，(向下取整(属性值*(加成百分比)))*层数,待核对
+RULE:data/README.md:19,rule_clause,结算顺序；所有步骤，如果双方都需要结算，那么就拼速,T00,data/README.md,19,FILE:data/README.md,结算顺序；所有步骤，如果双方都需要结算，那么就拼速,待核对
+RULE:data/README.md:20,rule_clause,- 双方选择共鸣魔法（首领化、愿力）和技能,T00,data/README.md,20,FILE:data/README.md,- 双方选择共鸣魔法（首领化、愿力）和技能,待核对
+RULE:data/README.md:21,rule_clause,- 结算共鸣魔法,T00,data/README.md,21,FILE:data/README.md,- 结算共鸣魔法,待核对
+RULE:data/README.md:22,rule_clause,- 结算更换精灵并触发入场效果（包括特性以及迅捷技能，例如风墙就可以在切换上来后马上应对攻击）,T00,data/README.md,22,FILE:data/README.md,- 结算更换精灵并触发入场效果（包括特性以及迅捷技能，例如风墙就可以在切换上来后马上应对攻击）,待核对
+RULE:data/README.md:23,rule_clause,- 结算技能，顺序：,T00,data/README.md,23,FILE:data/README.md,- 结算技能，顺序：,待核对
+RULE:data/README.md:24,rule_clause,-- 结算应对成功的技能,T00,data/README.md,24,FILE:data/README.md,-- 结算应对成功的技能,待核对
+RULE:data/README.md:25,rule_clause,-- 结算先手值高的，默认先手值0，可以被技能、特性影响,T00,data/README.md,25,FILE:data/README.md,-- 结算先手值高的，默认先手值0，可以被技能、特性影响,待核对
+RULE:data/README.md:26,rule_clause,-- 拼速，结算技能时同时结算技能附带的状态并显示，但是暂时不触发效果，例如中毒、灼烧效果,T00,data/README.md,26,FILE:data/README.md,-- 拼速，结算技能时同时结算技能附带的状态并显示，但是暂时不触发效果，例如中毒、灼烧效果,待核对
+RULE:data/README.md:27,rule_clause,- 如果先手的技能结算触发了离场，那么立即让用户选择下一个精灵，触发入场，之后再轮到对方的技能结算,T00,data/README.md,27,FILE:data/README.md,- 如果先手的技能结算触发了离场，那么立即让用户选择下一个精灵，触发入场，之后再轮到对方的技能结算,待核对
+RULE:data/README.md:28,rule_clause,- 结算状态伤害等效果,T00,data/README.md,28,FILE:data/README.md,- 结算状态伤害等效果,待核对
+RULE:data/README.md:29,rule_clause,- 回合结束，触发所有回合结束效果,T00,data/README.md,29,FILE:data/README.md,- 回合结束，触发所有回合结束效果,待核对
+RULE:data/README.md:30,rule_clause,- 任何一方场上精灵如果力竭，但未触发终局，那么选择下一个精灵，触发入场效果，注意入场效果也有可能导致对方力竭，那么对方也要选择下一个精灵。,T00,data/README.md,30,FILE:data/README.md,- 任何一方场上精灵如果力竭，但未触发终局，那么选择下一个精灵，触发入场效果，注意入场效果也有可能导致对方力竭，那么对方也要选择下一个精灵。,待核对
+RULE:data/README.md:31,rule_clause,- 更新战报，回合数+1,T00,data/README.md,31,FILE:data/README.md,- 更新战报，回合数+1,待核对
+RULE:data/README.md:35,rule_clause,如果一方魔力值清零，或全队倒下，则立即结束回合并结算。,T00,data/README.md,35,FILE:data/README.md,如果一方魔力值清零，或全队倒下，则立即结束回合并结算。,待核对
+RULE:data/README.md:37,rule_clause,除此之外，PvP最多50个回合，若双方仍未决出胜负，则按以下规则判胜负：,T00,data/README.md,37,FILE:data/README.md,除此之外，PvP最多50个回合，若双方仍未决出胜负，则按以下规则判胜负：,待核对
+RULE:data/README.md:38,rule_clause,- 魔力值（不是能量）,T00,data/README.md,38,FILE:data/README.md,- 魔力值（不是能量）,待核对
+RULE:data/README.md:39,rule_clause,- 存活精灵数量,T00,data/README.md,39,FILE:data/README.md,- 存活精灵数量,待核对
+RULE:data/README.md:40,rule_clause,- 血量总和,T00,data/README.md,40,FILE:data/README.md,- 血量总和,待核对
+RULE:data/README.md:41,rule_clause,- 能量总和,T00,data/README.md,41,FILE:data/README.md,- 能量总和,待核对
+RULE:data/README.md:42,rule_clause,剩余规则不明确，因为很难做到上述四个都平局，如果真的出现了，请单独记录下来,T00,data/README.md,42,FILE:data/README.md,剩余规则不明确，因为很难做到上述四个都平局，如果真的出现了，请单独记录下来,待核对
+RULE:data/README.md:46,rule_clause,data/下的规则是使用的最频繁的规则。data/部分规则详解中有一些规则的详细解释。,T00,data/README.md,46,FILE:data/README.md,data/下的规则是使用的最频繁的规则。data/部分规则详解中有一些规则的详细解释。,待核对
+RULE:data/README.md:48,rule_clause,如果对规则有任何疑惑，请先查找有没有对应的md，如果没有，再查找wiki/game_description.csv中有没有对应规则描述。,T00,data/README.md,48,FILE:data/README.md,如果对规则有任何疑惑，请先查找有没有对应的md，如果没有，再查找wiki/game_description.csv中有没有对应规则描述。,待核对
+RULE:data/README.md:50,rule_clause,如果还不能解答，请记录到md中并申请人工解释。,T00,data/README.md,50,FILE:data/README.md,如果还不能解答，请记录到md中并申请人工解释。,待核对
+FILE:data/伤害数值计算.md,file,data/伤害数值计算.md,T00,data/伤害数值计算.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/伤害数值计算.md:3,rule_clause,https://rococalc.top/,T00,data/伤害数值计算.md,3,FILE:data/伤害数值计算.md,https://rococalc.top/,待核对
+RULE:data/伤害数值计算.md:7,rule_clause,"max(向下取整(四舍五入(威力*攻击*37/41)/防御),1)",T00,data/伤害数值计算.md,7,FILE:data/伤害数值计算.md,"max(向下取整(四舍五入(威力*攻击*37/41)/防御),1)",待核对
+RULE:data/伤害数值计算.md:9,rule_clause,其中威力是(技能原威力+威力数值变化)×本系技能加成×(1+我方攻击加成+敌方防御降低)/(1+我方攻击降低+敌方防御提升)×威力加成×克制抵抗系数x天气影响x减伤,T00,data/伤害数值计算.md,9,FILE:data/伤害数值计算.md,其中威力是(技能原威力+威力数值变化)×本系技能加成×(1+我方攻击加成+敌方防御降低)/(1+我方攻击降低+敌方防御提升)×威力加成×克制抵抗系数x天气影响x减伤,待核对
+RULE:data/伤害数值计算.md:11,rule_clause,本系技能加成在PvP中锁定为1.25，本系指的是技能属性在精灵的属性中（双系精灵的两个系都有这个效果，但是血脉系没有这个效果）,T00,data/伤害数值计算.md,11,FILE:data/伤害数值计算.md,本系技能加成在PvP中锁定为1.25，本系指的是技能属性在精灵的属性中（双系精灵的两个系都有这个效果，但是血脉系没有这个效果）,待核对
+RULE:data/伤害数值计算.md:13,rule_clause,威力数值变化是指所有描述中加、减威力的描述。例如“能量刃”，携带能量刃的精灵每成功应对一次，该技能在此处额外+90,T00,data/伤害数值计算.md,13,FILE:data/伤害数值计算.md,威力数值变化是指所有描述中加、减威力的描述。例如“能量刃”，携带能量刃的精灵每成功应对一次，该技能在此处额外+90,待核对
+RULE:data/伤害数值计算.md:15,rule_clause,双攻加成只能吃到和技能相同的类型的加成（物理、魔法中之一）例如10层攻击加成，那么就是1+10%*10=200%，乘2。同一方的加成和减弱可同时存在。所有这些状态上限99层,T00,data/伤害数值计算.md,15,FILE:data/伤害数值计算.md,双攻加成只能吃到和技能相同的类型的加成（物理、魔法中之一）例如10层攻击加成，那么就是1+10%*10=200%，乘2。同一方的加成和减弱可同时存在。所有这些状态上限99层,待核对
+RULE:data/伤害数值计算.md:17,rule_clause,威力加成是一些特殊技能和特性，例如“不移”就在此处*1.3,T00,data/伤害数值计算.md,17,FILE:data/伤害数值计算.md,威力加成是一些特殊技能和特性，例如“不移”就在此处*1.3,待核对
+RULE:data/伤害数值计算.md:19,rule_clause,双防加成，例如20层防御，那么双防加成就要/3,T00,data/伤害数值计算.md,19,FILE:data/伤害数值计算.md,双防加成，例如20层防御，那么双防加成就要/3,待核对
+RULE:data/伤害数值计算.md:21,rule_clause,减伤50%，则乘0.5，如果有多个减伤，则连乘,T00,data/伤害数值计算.md,21,FILE:data/伤害数值计算.md,减伤50%，则乘0.5，如果有多个减伤，则连乘,待核对
+RULE:data/伤害数值计算.md:25,rule_clause,山火的威力翻倍，是直接将技能原威力翻倍的，在威力数值变化之前；,T00,data/伤害数值计算.md,25,FILE:data/伤害数值计算.md,山火的威力翻倍，是直接将技能原威力翻倍的，在威力数值变化之前；,待核对
+RULE:data/伤害数值计算.md:27,rule_clause,【应对】的威力变成多少倍，也是类似山火的方法；,T00,data/伤害数值计算.md,27,FILE:data/伤害数值计算.md,【应对】的威力变成多少倍，也是类似山火的方法；,待核对
+RULE:data/伤害数值计算.md:31,rule_clause,显示威力是为了方便玩家观察而计算的，其中包含所有能预先计算的信息，只有涉及对方的威力提升才不会被计算，例如应对成功的威力提升，例如风起印记,T00,data/伤害数值计算.md,31,FILE:data/伤害数值计算.md,显示威力是为了方便玩家观察而计算的，其中包含所有能预先计算的信息，只有涉及对方的威力提升才不会被计算，例如应对成功的威力提升，例如风起印记,待核对
+FILE:data/对战过程中的信息遮蔽规则.md,file,data/对战过程中的信息遮蔽规则.md,T00,data/对战过程中的信息遮蔽规则.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/对战过程中的信息遮蔽规则.md:3,rule_clause,双方可见的信息：场上的精灵血量、能量、增减益状态特性状态、两方阵营的印记、共同的天气、以及对手已经上场过的精灵的详细信息、双方MP值,T00,data/对战过程中的信息遮蔽规则.md,3,FILE:data/对战过程中的信息遮蔽规则.md,双方可见的信息：场上的精灵血量、能量、增减益状态特性状态、两方阵营的印记、共同的天气、以及对手已经上场过的精灵的详细信息、双方MP值,待核对
+RULE:data/对战过程中的信息遮蔽规则.md:5,rule_clause,以我方精灵详细信息为例，若还未上场，则对方无法看见任何信息（我方不受影响），上场时或上场过后，双方可见的包括：血量、能量、属性、血脉、形态、是否首领化、增减益状态特性状态，仅我方可见的有技能、技能威力,T00,data/对战过程中的信息遮蔽规则.md,5,FILE:data/对战过程中的信息遮蔽规则.md,以我方精灵详细信息为例，若还未上场，则对方无法看见任何信息（我方不受影响），上场时或上场过后，双方可见的包括：血量、能量、属性、血脉、形态、是否首领化、增减益状态特性状态，仅我方可见的有技能、技能威力、技能能耗、技能冷却，我方前端无需显示但是API可以提供的有性格、六维属性、资质、技能池,待核对
+RULE:data/对战过程中的信息遮蔽规则.md:7,rule_clause,仅己方可见的信息：部分特别声明过的状态信息（例如奉献的效果抽取具体分布）、仅生效于特定技能的效果（例如xx技能威力提高、能耗降低、连击数增加）,T00,data/对战过程中的信息遮蔽规则.md,7,FILE:data/对战过程中的信息遮蔽规则.md,仅己方可见的信息：部分特别声明过的状态信息（例如奉献的效果抽取具体分布）、仅生效于特定技能的效果（例如xx技能威力提高、能耗降低、连击数增加）,待核对
+FILE:data/属性克制表.md,file,data/属性克制表.md,T00,data/属性克制表.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/属性克制表.md:1,rule_clause,属性相克表（攻击 / 防御）,T00,data/属性克制表.md,1,FILE:data/属性克制表.md,属性相克表（攻击 / 防御）,待核对
+RULE:data/属性克制表.md:3,rule_clause,下面每行表示该属性攻击其他属性的相克关系，没有则表示无克制抵抗关系。,T00,data/属性克制表.md,3,FILE:data/属性克制表.md,下面每行表示该属性攻击其他属性的相克关系，没有则表示无克制抵抗关系。,待核对
+RULE:data/属性克制表.md:5,rule_clause,普通：无,T00,data/属性克制表.md,5,FILE:data/属性克制表.md,普通：无,待核对
+RULE:data/属性克制表.md:7,rule_clause,草：克制光地水，火龙毒虫翼机械抵抗,T00,data/属性克制表.md,7,FILE:data/属性克制表.md,草：克制光地水，火龙毒虫翼机械抵抗,待核对
+RULE:data/属性克制表.md:9,rule_clause,火：克制草冰虫机械，水地龙抵抗,T00,data/属性克制表.md,9,FILE:data/属性克制表.md,火：克制草冰虫机械，水地龙抵抗,待核对
+RULE:data/属性克制表.md:11,rule_clause,水：克制火地机械，草冰龙抵抗,T00,data/属性克制表.md,11,FILE:data/属性克制表.md,水：克制火地机械，草冰龙抵抗,待核对
+RULE:data/属性克制表.md:13,rule_clause,光：克制幽灵、恶，草冰抵抗,T00,data/属性克制表.md,13,FILE:data/属性克制表.md,光：克制幽灵、恶，草冰抵抗,待核对
+RULE:data/属性克制表.md:15,rule_clause,地：克制火冰电毒，草武抵抗,T00,data/属性克制表.md,15,FILE:data/属性克制表.md,地：克制火冰电毒，草武抵抗,待核对
+RULE:data/属性克制表.md:17,rule_clause,冰：克制草地龙翼，火冰机械抵抗,T00,data/属性克制表.md,17,FILE:data/属性克制表.md,冰：克制草地龙翼，火冰机械抵抗,待核对
+RULE:data/属性克制表.md:19,rule_clause,龙：克制龙，机械抵抗,T00,data/属性克制表.md,19,FILE:data/属性克制表.md,龙：克制龙，机械抵抗,待核对
+RULE:data/属性克制表.md:21,rule_clause,电：克制水翼，草地龙电抵抗,T00,data/属性克制表.md,21,FILE:data/属性克制表.md,电：克制水翼，草地龙电抵抗,待核对
+RULE:data/属性克制表.md:23,rule_clause,毒：克制草萌，地毒幽机械抵抗,T00,data/属性克制表.md,23,FILE:data/属性克制表.md,毒：克制草萌，地毒幽机械抵抗,待核对
+RULE:data/属性克制表.md:25,rule_clause,虫：克制草恶幻，火毒武翼萌幽机械抵抗,T00,data/属性克制表.md,25,FILE:data/属性克制表.md,虫：克制草恶幻，火毒武翼萌幽机械抵抗,待核对
+RULE:data/属性克制表.md:27,rule_clause,武：克制普通恶冰地机械，毒虫翼萌幽幻抵抗,T00,data/属性克制表.md,27,FILE:data/属性克制表.md,武：克制普通恶冰地机械，毒虫翼萌幽幻抵抗,待核对
+RULE:data/属性克制表.md:29,rule_clause,翼：克制虫草武，地龙电机械抵抗,T00,data/属性克制表.md,29,FILE:data/属性克制表.md,翼：克制虫草武，地龙电机械抵抗,待核对
+RULE:data/属性克制表.md:31,rule_clause,萌：克制龙武恶，火毒机械抵抗,T00,data/属性克制表.md,31,FILE:data/属性克制表.md,萌：克制龙武恶，火毒机械抵抗,待核对
+RULE:data/属性克制表.md:33,rule_clause,幽：克制光幽幻，普通恶抵抗；,T00,data/属性克制表.md,33,FILE:data/属性克制表.md,幽：克制光幽幻，普通恶抵抗；,待核对
+RULE:data/属性克制表.md:35,rule_clause,恶：克制毒萌幽，光武恶抵抗,T00,data/属性克制表.md,35,FILE:data/属性克制表.md,恶：克制毒萌幽，光武恶抵抗,待核对
+RULE:data/属性克制表.md:37,rule_clause,机械：克制地冰萌，火水电机械抵抗,T00,data/属性克制表.md,37,FILE:data/属性克制表.md,机械：克制地冰萌，火水电机械抵抗,待核对
+RULE:data/属性克制表.md:39,rule_clause,幻：克制毒武，光机械幻抵抗,T00,data/属性克制表.md,39,FILE:data/属性克制表.md,幻：克制毒武，光机械幻抵抗,待核对
+RULE:data/属性克制表.md:41,rule_clause,说明：,T00,data/属性克制表.md,41,FILE:data/属性克制表.md,说明：,待核对
+RULE:data/属性克制表.md:43,rule_clause,• 双系别主副系别交换，不影响克制抵抗关系，两个属性分别计算克制抵抗后叠加，都克制则威力变为3倍，都抵抗则威力变为0.25倍，一个克制一个抵抗则威力不变。精灵血脉系别是唯一的，不影响克制关系。,T00,data/属性克制表.md,43,FILE:data/属性克制表.md,• 双系别主副系别交换，不影响克制抵抗关系，两个属性分别计算克制抵抗后叠加，都克制则威力变为3倍，都抵抗则威力变为0.25倍，一个克制一个抵抗则威力不变。精灵血脉系别是唯一的，不影响克制关系。,待核对
+FILE:data/属性数值计算.md,file,data/属性数值计算.md,T00,data/属性数值计算.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/属性数值计算.md:4,rule_clause,数值最终计算公式是：四舍五入((四舍五入(零级基本属性+等级×每级加值))×性格加成+成长值),T00,data/属性数值计算.md,4,FILE:data/属性数值计算.md,数值最终计算公式是：四舍五入((四舍五入(零级基本属性+等级×每级加值))×性格加成+成长值),待核对
+RULE:data/属性数值计算.md:8,rule_clause,性格 生命+ 物攻+ 魔攻+ 物防+ 魔防+ 速度+,T00,data/属性数值计算.md,8,FILE:data/属性数值计算.md,性格 生命+ 物攻+ 魔攻+ 物防+ 魔防+ 速度+,待核对
+RULE:data/属性数值计算.md:10,rule_clause,生命- / 逞强 理性 坦率 焦虑 热情,T00,data/属性数值计算.md,10,FILE:data/属性数值计算.md,生命- / 逞强 理性 坦率 焦虑 热情,待核对
+RULE:data/属性数值计算.md:12,rule_clause,物攻- 沉默 / 聪明 稳重 警惕 胆小,T00,data/属性数值计算.md,12,FILE:data/属性数值计算.md,物攻- 沉默 / 聪明 稳重 警惕 胆小,待核对
+RULE:data/属性数值计算.md:14,rule_clause,魔攻- 平和 固执 / 天真 害羞 开朗,T00,data/属性数值计算.md,14,FILE:data/属性数值计算.md,魔攻- 平和 固执 / 天真 害羞 开朗,待核对
+RULE:data/属性数值计算.md:16,rule_clause,物防- 忧郁 大胆 专注 / 温顺 急躁,T00,data/属性数值计算.md,16,FILE:data/属性数值计算.md,物防- 忧郁 大胆 专注 / 温顺 急躁,待核对
+RULE:data/属性数值计算.md:18,rule_clause,魔防- 粗心 调皮 偏执 懒散 / 莽撞,T00,data/属性数值计算.md,18,FILE:data/属性数值计算.md,魔防- 粗心 调皮 偏执 懒散 / 莽撞,待核对
+RULE:data/属性数值计算.md:20,rule_clause,速度- 踏实 勇敢 冷静 悠闲 慎重 /,T00,data/属性数值计算.md,20,FILE:data/属性数值计算.md,速度- 踏实 勇敢 冷静 悠闲 慎重 /,待核对
+RULE:data/属性数值计算.md:22,rule_clause,特别的对PvP而言，其中+都是+20%，-都是-10%，/表示不存在这种性格,T00,data/属性数值计算.md,22,FILE:data/属性数值计算.md,特别的对PvP而言，其中+都是+20%，-都是-10%，/表示不存在这种性格,待核对
+RULE:data/属性数值计算.md:24,rule_clause,各种资质代表此精灵对应项提升的难易程度，也就是每升一级该能力提升的多少,T00,data/属性数值计算.md,24,FILE:data/属性数值计算.md,各种资质代表此精灵对应项提升的难易程度，也就是每升一级该能力提升的多少,待核对
+RULE:data/属性数值计算.md:28,rule_clause,PvP固定成长值为5星，也就是5次升星和50次成长，也就是生命成长值100，其余成长值50。5次升星则更为复杂，涉及资质值计算。,T00,data/属性数值计算.md,28,FILE:data/属性数值计算.md,PvP固定成长值为5星，也就是5次升星和50次成长，也就是生命成长值100，其余成长值50。5次升星则更为复杂，涉及资质值计算。,待核对
+RULE:data/属性数值计算.md:30,rule_clause,资质值是初始随机，但是可修改、可提升的属性，每个精灵最多拥有三项大于零的资质值，其余为0,T00,data/属性数值计算.md,30,FILE:data/属性数值计算.md,资质值是初始随机，但是可修改、可提升的属性，每个精灵最多拥有三项大于零的资质值，其余为0,待核对
+RULE:data/属性数值计算.md:32,rule_clause,其中PvP固定5升星的意思就是资质值为基础成长值的6倍，例如随机精灵基础资质值为+8，那么最终资质值就是+40，资质值一般为5-10，但是低于8的一般不会用来PvP，因为提升并不昂贵,T00,data/属性数值计算.md,32,FILE:data/属性数值计算.md,其中PvP固定5升星的意思就是资质值为基础成长值的6倍，例如随机精灵基础资质值为+8，那么最终资质值就是+40，资质值一般为5-10，但是低于8的一般不会用来PvP，因为提升并不昂贵,待核对
+RULE:data/属性数值计算.md:36,rule_clause,5维度等级加值计算公式是种族值*0.01+资质值*0.005，5维度指除了生命之外的维度，注意每个维度的种族值和资质值都可能不同的,T00,data/属性数值计算.md,36,FILE:data/属性数值计算.md,5维度等级加值计算公式是种族值*0.01+资质值*0.005，5维度指除了生命之外的维度，注意每个维度的种族值和资质值都可能不同的,待核对
+RULE:data/属性数值计算.md:38,rule_clause,生命维度等级加值要在5维度的基础上乘2再加1,T00,data/属性数值计算.md,38,FILE:data/属性数值计算.md,生命维度等级加值要在5维度的基础上乘2再加1,待核对
+RULE:data/属性数值计算.md:42,rule_clause,零级基本属性计算公式是10+(5维度等级加值*50)，该基本属性公式适用于6维度，生命维度也采用【*2+1之前】的数值计算。,T00,data/属性数值计算.md,42,FILE:data/属性数值计算.md,零级基本属性计算公式是10+(5维度等级加值*50)，该基本属性公式适用于6维度，生命维度也采用【*2+1之前】的数值计算。,待核对
+RULE:data/属性数值计算.md:46,rule_clause,综上，我们可以得到PvP环境下的数值计算公式：,T00,data/属性数值计算.md,46,FILE:data/属性数值计算.md,综上，我们可以得到PvP环境下的数值计算公式：,待核对
+RULE:data/属性数值计算.md:48,rule_clause,生命=四舍五入(四舍五入[1.7×种族值+个体值×0.85+70]×（1+性格修正）)+100,T00,data/属性数值计算.md,48,FILE:data/属性数值计算.md,生命=四舍五入(四舍五入[1.7×种族值+个体值×0.85+70]×（1+性格修正）)+100,待核对
+RULE:data/属性数值计算.md:49,rule_clause,其他=四舍五入(四舍五入[1.1×种族值+个体值×0.55+10]×（1+性格修正）)+50,T00,data/属性数值计算.md,49,FILE:data/属性数值计算.md,其他=四舍五入(四舍五入[1.1×种族值+个体值×0.55+10]×（1+性格修正）)+50,待核对
+RULE:data/属性数值计算.md:50,rule_clause,为了在极端边界条件下（例如种族值105，个体值0，无性格修正）保持和游戏内计算结果一致，需要严格使用Float32类型,T00,data/属性数值计算.md,50,FILE:data/属性数值计算.md,为了在极端边界条件下（例如种族值105，个体值0，无性格修正）保持和游戏内计算结果一致，需要严格使用Float32类型,待核对
+RULE:data/属性数值计算.md:52,rule_clause,也就是说有两个变量，一个是资质，另一个是性格，只能通过观察得出。,T00,data/属性数值计算.md,52,FILE:data/属性数值计算.md,也就是说有两个变量，一个是资质，另一个是性格，只能通过观察得出。,待核对
+FILE:data/效果指示器.md,file,data/效果指示器.md,T00,data/效果指示器.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/效果指示器.md:3,rule_clause,效果指示器分为六类，显示在一个圆形展示框中：,T00,data/效果指示器.md,3,FILE:data/效果指示器.md,效果指示器分为六类，显示在一个圆形展示框中：,待核对
+RULE:data/效果指示器.md:5,rule_clause,平衡：该技能的属性与防御方的属性没有克制或抵抗关系，或双属性中一个克制另一个抵抗,T00,data/效果指示器.md,5,FILE:data/效果指示器.md,平衡：该技能的属性与防御方的属性没有克制或抵抗关系，或双属性中一个克制另一个抵抗,待核对
+RULE:data/效果指示器.md:7,rule_clause,克制：该技能的属性与防御方的单属性有克制关系，或双属性中只有一个有克制关系,T00,data/效果指示器.md,7,FILE:data/效果指示器.md,克制：该技能的属性与防御方的单属性有克制关系，或双属性中只有一个有克制关系,待核对
+RULE:data/效果指示器.md:9,rule_clause,抵抗：该技能的属性与防御方的单属性有抵抗关系，或双属性中只有一个有抵抗关系,T00,data/效果指示器.md,9,FILE:data/效果指示器.md,抵抗：该技能的属性与防御方的单属性有抵抗关系，或双属性中只有一个有抵抗关系,待核对
+RULE:data/效果指示器.md:11,rule_clause,双重克制：该技能的属性与防御方的双属性都有克制关系,T00,data/效果指示器.md,11,FILE:data/效果指示器.md,双重克制：该技能的属性与防御方的双属性都有克制关系,待核对
+RULE:data/效果指示器.md:13,rule_clause,双重抵抗：该技能的属性与防御方的双属性都有抵抗关系,T00,data/效果指示器.md,13,FILE:data/效果指示器.md,双重抵抗：该技能的属性与防御方的双属性都有抵抗关系,待核对
+RULE:data/效果指示器.md:15,rule_clause,无：该技能是防御或状态，没有攻击效果,T00,data/效果指示器.md,15,FILE:data/效果指示器.md,无：该技能是防御或状态，没有攻击效果,待核对
+FILE:data/状态分类.md,file,data/状态分类.md,T00,data/状态分类.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/状态分类.md:2,rule_clause,增益减益（攻击、防御、连击、速度等可正可负的层状状态）、状态（萌化、冻结、烧伤、精灵特性等只能为正的层状状态，部分精灵特性如果可以为负，则视为两种不同的状态）这两类和精灵绑定；,T00,data/状态分类.md,2,FILE:data/状态分类.md,增益减益（攻击、防御、连击、速度等可正可负的层状状态）、状态（萌化、冻结、烧伤、精灵特性等只能为正的层状状态，部分精灵特性如果可以为负，则视为两种不同的状态）这两类和精灵绑定；,待核对
+RULE:data/状态分类.md:4,rule_clause,技能状态（技能威力增加数、连击增加数、冷却回合数、能耗增减数等只影响特定技能的）跟精灵的技能绑定（不同精灵的相同技能不会共享能力状态）；,T00,data/状态分类.md,4,FILE:data/状态分类.md,技能状态（技能威力增加数、连击增加数、冷却回合数、能耗增减数等只影响特定技能的）跟精灵的技能绑定（不同精灵的相同技能不会共享能力状态）；,待核对
+RULE:data/状态分类.md:6,rule_clause,印记（中毒印记、星陨印记等不会因精灵切换而带走的层状状态）不和精灵绑定，而是绑定在我方、对方阵营上,T00,data/状态分类.md,6,FILE:data/状态分类.md,印记（中毒印记、星陨印记等不会因精灵切换而带走的层状状态）不和精灵绑定，而是绑定在我方、对方阵营上,待核对
+FILE:data/部分规则详解/传动机制.md,file,data/部分规则详解/传动机制.md,T00,data/部分规则详解/传动机制.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/传动机制.md:1,rule_clause,传动机制,T00,data/部分规则详解/传动机制.md,1,FILE:data/部分规则详解/传动机制.md,传动机制,待核对
+RULE:data/部分规则详解/传动机制.md:3,rule_clause,首先，传动发生在回合开始时，循环执行以下操作，直到所有技能的“传动次数”都等于“传动”结束：,T00,data/部分规则详解/传动机制.md,3,FILE:data/部分规则详解/传动机制.md,首先，传动发生在回合开始时，循环执行以下操作，直到所有技能的“传动次数”都等于“传动”结束：,待核对
+RULE:data/部分规则详解/传动机制.md:5,rule_clause,1. 将所有传动次数已经等于传动的技能按顺序记下来，记为A1 A2 A3；（记号仅为方便理解）,T00,data/部分规则详解/传动机制.md,5,FILE:data/部分规则详解/传动机制.md,1. 将所有传动次数已经等于传动的技能按顺序记下来，记为A1 A2 A3；（记号仅为方便理解）,待核对
+RULE:data/部分规则详解/传动机制.md:6,rule_clause,2. 将所有传动次数仍小于传动的技能，记为B1 B2 B3，往后移一位，如果是最后一个技能，那么回到第一个；,T00,data/部分规则详解/传动机制.md,6,FILE:data/部分规则详解/传动机制.md,2. 将所有传动次数仍小于传动的技能，记为B1 B2 B3，往后移一位，如果是最后一个技能，那么回到第一个；,待核对
+RULE:data/部分规则详解/传动机制.md:7,rule_clause,3. 将A1 A2。。。重新按顺序填入空位；,T00,data/部分规则详解/传动机制.md,7,FILE:data/部分规则详解/传动机制.md,3. 将A1 A2。。。重新按顺序填入空位；,待核对
+RULE:data/部分规则详解/传动机制.md:8,rule_clause,例如B1 A1 B2 A2，那么传动后变成- B1 - B2，A1和A2都被覆盖了，这就是为什么要先记下来。然后填入空位变成A1 B1 A2 B2，结束本轮传动。,T00,data/部分规则详解/传动机制.md,8,FILE:data/部分规则详解/传动机制.md,例如B1 A1 B2 A2，那么传动后变成- B1 - B2，A1和A2都被覆盖了，这就是为什么要先记下来。然后填入空位变成A1 B1 A2 B2，结束本轮传动。,待核对
+FILE:data/部分规则详解/共鸣魔法.md,file,data/部分规则详解/共鸣魔法.md,T00,data/部分规则详解/共鸣魔法.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/共鸣魔法.md:3,rule_clause,每场对局，每方只能携带一种共鸣魔法。,T00,data/部分规则详解/共鸣魔法.md,3,FILE:data/部分规则详解/共鸣魔法.md,每场对局，每方只能携带一种共鸣魔法。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:7,rule_clause,描述：对任意系别血脉的精灵使用，本回合技能栏首个技能替换为【愿力冲击】，每场战斗可使用2次，冷却3回合。,T00,data/部分规则详解/共鸣魔法.md,7,FILE:data/部分规则详解/共鸣魔法.md,描述：对任意系别血脉的精灵使用，本回合技能栏首个技能替换为【愿力冲击】，每场战斗可使用2次，冷却3回合。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:8,rule_clause,愿力冲击描述：基础威力80，能耗2，标注普通系，但不属于任何系别技能池。造成物理/魔法伤害，应对成功时，本次威力提高150%，应对状态。,T00,data/部分规则详解/共鸣魔法.md,8,FILE:data/部分规则详解/共鸣魔法.md,愿力冲击描述：基础威力80，能耗2，标注普通系，但不属于任何系别技能池。造成物理/魔法伤害，应对成功时，本次威力提高150%，应对状态。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:10,rule_clause,愿力冲击是一个技能，这个技能比较特殊，虽然写的是魔攻，但是战斗时会根据当前精灵哪一项攻击值更高变化，也就是说，该技能通过两条路径结算伤害，取高的那一项作为实际触发。,T00,data/部分规则详解/共鸣魔法.md,10,FILE:data/部分规则详解/共鸣魔法.md,愿力冲击是一个技能，这个技能比较特殊，虽然写的是魔攻，但是战斗时会根据当前精灵哪一项攻击值更高变化，也就是说，该技能通过两条路径结算伤害，取高的那一项作为实际触发。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:12,rule_clause,愿力冲击的系别跟随精灵的血脉系别。,T00,data/部分规则详解/共鸣魔法.md,12,FILE:data/部分规则详解/共鸣魔法.md,愿力冲击的系别跟随精灵的血脉系别。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:14,rule_clause,精灵不能携带愿力冲击技能，而是在战斗中通过共鸣魔法-愿力冲击来将第一个技能替换成愿力冲击，持续1回合，即便未使用，下一回合也会替换回原来的技能。,T00,data/部分规则详解/共鸣魔法.md,14,FILE:data/部分规则详解/共鸣魔法.md,精灵不能携带愿力冲击技能，而是在战斗中通过共鸣魔法-愿力冲击来将第一个技能替换成愿力冲击，持续1回合，即便未使用，下一回合也会替换回原来的技能。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:16,rule_clause,通过这个机制，可以有效的补充精灵双属性无法克制的系别。,T00,data/部分规则详解/共鸣魔法.md,16,FILE:data/部分规则详解/共鸣魔法.md,通过这个机制，可以有效的补充精灵双属性无法克制的系别。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:18,rule_clause,愿力共鸣魔法，无论有没有使用愿力冲击，每场对局每方只能使用两次。,T00,data/部分规则详解/共鸣魔法.md,18,FILE:data/部分规则详解/共鸣魔法.md,愿力共鸣魔法，无论有没有使用愿力冲击，每场对局每方只能使用两次。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:20,rule_clause,除了首领血脉 / 奇异血脉 / 污染血脉之外的精灵都能使用该魔法。精灵血脉是唯一的。,T00,data/部分规则详解/共鸣魔法.md,20,FILE:data/部分规则详解/共鸣魔法.md,除了首领血脉 / 奇异血脉 / 污染血脉之外的精灵都能使用该魔法。精灵血脉是唯一的。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:22,rule_clause,愿力强化使用的冷却时间是3回合,T00,data/部分规则详解/共鸣魔法.md,22,FILE:data/部分规则详解/共鸣魔法.md,愿力强化使用的冷却时间是3回合,待核对
+RULE:data/部分规则详解/共鸣魔法.md:26,rule_clause,描述：进化之力：对首领血脉的精灵使用，可以使该精灵在本场战斗中进化，部分精灵会激活远古血脉。,T00,data/部分规则详解/共鸣魔法.md,26,FILE:data/部分规则详解/共鸣魔法.md,描述：进化之力：对首领血脉的精灵使用，可以使该精灵在本场战斗中进化，部分精灵会激活远古血脉。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:28,rule_clause,一般来说，平时只存在带有首领血脉的精灵。首领血脉不算混血。但是S3更新后，迪莫可以常驻首领状态，而且可以根据佩戴的信物选择不同的首领形态（但是不能在对局中切换），所以对于迪莫这样有首领形态和普通形态非,T00,data/部分规则详解/共鸣魔法.md,28,FILE:data/部分规则详解/共鸣魔法.md,一般来说，平时只存在带有首领血脉的精灵。首领血脉不算混血。但是S3更新后，迪莫可以常驻首领状态，而且可以根据佩戴的信物选择不同的首领形态（但是不能在对局中切换），所以对于迪莫这样有首领形态和普通形态非一一对应的精灵，需要传入核心模拟器首领化的形态,待核对
+RULE:data/部分规则详解/共鸣魔法.md:30,rule_clause,带有首领血脉的精灵在场上，可以通过进化之力共鸣魔法在场上立即进化为首领，并会触发首领的入场特性，精灵的所有特性和数值变为首领的数值，技能不变。,T00,data/部分规则详解/共鸣魔法.md,30,FILE:data/部分规则详解/共鸣魔法.md,带有首领血脉的精灵在场上，可以通过进化之力共鸣魔法在场上立即进化为首领，并会触发首领的入场特性，精灵的所有特性和数值变为首领的数值，技能不变。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:32,rule_clause,每一场对局只能使用1次,T00,data/部分规则详解/共鸣魔法.md,32,FILE:data/部分规则详解/共鸣魔法.md,每一场对局只能使用1次,待核对
+RULE:data/部分规则详解/共鸣魔法.md:34,rule_clause,进化之力使用后全局有效。,T00,data/部分规则详解/共鸣魔法.md,34,FILE:data/部分规则详解/共鸣魔法.md,进化之力使用后全局有效。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:38,rule_clause,描述：光合治愈：对任意血脉的精灵使用，立即回复15%生命，每回合结束时回复15%生命，持续3回合。,T00,data/部分规则详解/共鸣魔法.md,38,FILE:data/部分规则详解/共鸣魔法.md,描述：光合治愈：对任意血脉的精灵使用，立即回复15%生命，每回合结束时回复15%生命，持续3回合。,待核对
+RULE:data/部分规则详解/共鸣魔法.md:40,rule_clause,每一场对局只能使用1次,T00,data/部分规则详解/共鸣魔法.md,40,FILE:data/部分规则详解/共鸣魔法.md,每一场对局只能使用1次,待核对
+RULE:data/部分规则详解/共鸣魔法.md:44,rule_clause,尚未上线,T00,data/部分规则详解/共鸣魔法.md,44,FILE:data/部分规则详解/共鸣魔法.md,尚未上线,待核对
+RULE:data/部分规则详解/共鸣魔法.md:48,rule_clause,尚未上线,T00,data/部分规则详解/共鸣魔法.md,48,FILE:data/部分规则详解/共鸣魔法.md,尚未上线,待核对
+FILE:data/部分规则详解/奉献.md,file,data/部分规则详解/奉献.md,T00,data/部分规则详解/奉献.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/奉献.md:1,rule_clause,每次获得“1 次奉献”，如果没有指定获得哪一种，则会从下面 5 种里随机拿一种：威力 +20、能耗 -2、连击 +1、10% 吸血、敌方 +2 层中毒,T00,data/部分规则详解/奉献.md,1,FILE:data/部分规则详解/奉献.md,每次获得“1 次奉献”，如果没有指定获得哪一种，则会从下面 5 种里随机拿一种：威力 +20、能耗 -2、连击 +1、10% 吸血、敌方 +2 层中毒,待核对
+RULE:data/部分规则详解/奉献.md:2,rule_clause,除了威力最多只能叠5层，其他的最多分别可以叠10层，如果某一层叠满了则不再参与随机抽取。,T00,data/部分规则详解/奉献.md,2,FILE:data/部分规则详解/奉献.md,除了威力最多只能叠5层，其他的最多分别可以叠10层，如果某一层叠满了则不再参与随机抽取。,待核对
+RULE:data/部分规则详解/奉献.md:4,rule_clause,注意这个增益只对己方所有技能描述中明确说明受奉献影响的技能有效，且是无法洗去的，不受切换精灵影响；,T00,data/部分规则详解/奉献.md,4,FILE:data/部分规则详解/奉献.md,注意这个增益只对己方所有技能描述中明确说明受奉献影响的技能有效，且是无法洗去的，不受切换精灵影响；,待核对
+RULE:data/部分规则详解/奉献.md:5,rule_clause,对战时，己方可以通过受奉献影响的技能直接观察到抽取到了哪些效果，而对方只能看到总共有多少层，也无法看到具体取得了哪些效果,T00,data/部分规则详解/奉献.md,5,FILE:data/部分规则详解/奉献.md,对战时，己方可以通过受奉献影响的技能直接观察到抽取到了哪些效果，而对方只能看到总共有多少层，也无法看到具体取得了哪些效果,待核对
+RULE:data/部分规则详解/奉献.md:6,rule_clause,随机奉献经过多次实验，没有足够证据说明有不均匀分布权重，暂定为均匀分布。,T00,data/部分规则详解/奉献.md,6,FILE:data/部分规则详解/奉献.md,随机奉献经过多次实验，没有足够证据说明有不均匀分布权重，暂定为均匀分布。,待核对
+FILE:data/部分规则详解/契约的形状.md,file,data/部分规则详解/契约的形状.md,T00,data/部分规则详解/契约的形状.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/契约的形状.md:1,rule_clause,契约的形状，下述除了柔软咕噜球之外，都是获得该行的所有效果,T00,data/部分规则详解/契约的形状.md,1,FILE:data/部分规则详解/契约的形状.md,契约的形状，下述除了柔软咕噜球之外，都是获得该行的所有效果,待核对
+RULE:data/部分规则详解/契约的形状.md:2,rule_clause,普通咕噜球自身双攻、双防、速度+5%,T00,data/部分规则详解/契约的形状.md,2,FILE:data/部分规则详解/契约的形状.md,普通咕噜球自身双攻、双防、速度+5%,待核对
+RULE:data/部分规则详解/契约的形状.md:3,rule_clause,高级咕噜球自身双攻、双防、速度+10%,T00,data/部分规则详解/契约的形状.md,3,FILE:data/部分规则详解/契约的形状.md,高级咕噜球自身双攻、双防、速度+10%,待核对
+RULE:data/部分规则详解/契约的形状.md:4,rule_clause,国王球自身双攻、双防、速度+15%,T00,data/部分规则详解/契约的形状.md,4,FILE:data/部分规则详解/契约的形状.md,国王球自身双攻、双防、速度+15%,待核对
+RULE:data/部分规则详解/契约的形状.md:5,rule_clause,美妙球自身技能威力+20对手双攻−30%,T00,data/部分规则详解/契约的形状.md,5,FILE:data/部分规则详解/契约的形状.md,美妙球自身技能威力+20对手双攻−30%,待核对
+RULE:data/部分规则详解/契约的形状.md:6,rule_clause,好战球自身物攻+40%对手魔防−40%,T00,data/部分规则详解/契约的形状.md,6,FILE:data/部分规则详解/契约的形状.md,好战球自身物攻+40%对手魔防−40%,待核对
+RULE:data/部分规则详解/契约的形状.md:7,rule_clause,光合球自身回复生命10%自身魔攻+40%,T00,data/部分规则详解/契约的形状.md,7,FILE:data/部分规则详解/契约的形状.md,光合球自身回复生命10%自身魔攻+40%,待核对
+RULE:data/部分规则详解/契约的形状.md:8,rule_clause,网兜球自身连击次数+1自身所有技能能耗−1,T00,data/部分规则详解/契约的形状.md,8,FILE:data/部分规则详解/契约的形状.md,网兜球自身连击次数+1自身所有技能能耗−1,待核对
+RULE:data/部分规则详解/契约的形状.md:9,rule_clause,暗星球对手能量−1自身吸血30%,T00,data/部分规则详解/契约的形状.md,9,FILE:data/部分规则详解/契约的形状.md,暗星球对手能量−1自身吸血30%,待核对
+RULE:data/部分规则详解/契约的形状.md:10,rule_clause,调温球对手冻结1层对手灼烧4层,T00,data/部分规则详解/契约的形状.md,10,FILE:data/部分规则详解/契约的形状.md,调温球对手冻结1层对手灼烧4层,待核对
+RULE:data/部分规则详解/契约的形状.md:11,rule_clause,绝缘球对手中毒1层自身速度+50,T00,data/部分规则详解/契约的形状.md,11,FILE:data/部分规则详解/契约的形状.md,绝缘球对手中毒1层自身速度+50,待核对
+RULE:data/部分规则详解/契约的形状.md:12,rule_clause,淘沙球对手速度−40对手连击次数−2对手物防−40%,T00,data/部分规则详解/契约的形状.md,12,FILE:data/部分规则详解/契约的形状.md,淘沙球对手速度−40对手连击次数−2对手物防−40%,待核对
+RULE:data/部分规则详解/契约的形状.md:13,rule_clause,变幻球自身双防+30%对手星陨印记1层,T00,data/部分规则详解/契约的形状.md,13,FILE:data/部分规则详解/契约的形状.md,变幻球自身双防+30%对手星陨印记1层,待核对
+RULE:data/部分规则详解/契约的形状.md:14,rule_clause,柔软咕噜球(特殊对战用球)随机获得下述1种效果:,T00,data/部分规则详解/契约的形状.md,14,FILE:data/部分规则详解/契约的形状.md,柔软咕噜球(特殊对战用球)随机获得下述1种效果:,待核对
+RULE:data/部分规则详解/契约的形状.md:15,rule_clause,自身技能威力+20,T00,data/部分规则详解/契约的形状.md,15,FILE:data/部分规则详解/契约的形状.md,自身技能威力+20,待核对
+RULE:data/部分规则详解/契约的形状.md:16,rule_clause,自身回复生命10%,T00,data/部分规则详解/契约的形状.md,16,FILE:data/部分规则详解/契约的形状.md,自身回复生命10%,待核对
+RULE:data/部分规则详解/契约的形状.md:17,rule_clause,对手灼烧4层,T00,data/部分规则详解/契约的形状.md,17,FILE:data/部分规则详解/契约的形状.md,对手灼烧4层,待核对
+RULE:data/部分规则详解/契约的形状.md:18,rule_clause,自身所有技能能耗−1,T00,data/部分规则详解/契约的形状.md,18,FILE:data/部分规则详解/契约的形状.md,自身所有技能能耗−1,待核对
+RULE:data/部分规则详解/契约的形状.md:19,rule_clause,自身魔攻+40%,T00,data/部分规则详解/契约的形状.md,19,FILE:data/部分规则详解/契约的形状.md,自身魔攻+40%,待核对
+RULE:data/部分规则详解/契约的形状.md:20,rule_clause,对手速度−40且连击次数−2,T00,data/部分规则详解/契约的形状.md,20,FILE:data/部分规则详解/契约的形状.md,对手速度−40且连击次数−2,待核对
+RULE:data/部分规则详解/契约的形状.md:21,rule_clause,自身速度+50,T00,data/部分规则详解/契约的形状.md,21,FILE:data/部分规则详解/契约的形状.md,自身速度+50,待核对
+RULE:data/部分规则详解/契约的形状.md:22,rule_clause,对手中毒1层,T00,data/部分规则详解/契约的形状.md,22,FILE:data/部分规则详解/契约的形状.md,对手中毒1层,待核对
+RULE:data/部分规则详解/契约的形状.md:23,rule_clause,对手物防−40%,T00,data/部分规则详解/契约的形状.md,23,FILE:data/部分规则详解/契约的形状.md,对手物防−40%,待核对
+RULE:data/部分规则详解/契约的形状.md:24,rule_clause,自身物攻+40%,T00,data/部分规则详解/契约的形状.md,24,FILE:data/部分规则详解/契约的形状.md,自身物攻+40%,待核对
+RULE:data/部分规则详解/契约的形状.md:25,rule_clause,自身连击次数+1,T00,data/部分规则详解/契约的形状.md,25,FILE:data/部分规则详解/契约的形状.md,自身连击次数+1,待核对
+RULE:data/部分规则详解/契约的形状.md:26,rule_clause,对手双攻−30%,T00,data/部分规则详解/契约的形状.md,26,FILE:data/部分规则详解/契约的形状.md,对手双攻−30%,待核对
+RULE:data/部分规则详解/契约的形状.md:27,rule_clause,自身双防+30%,T00,data/部分规则详解/契约的形状.md,27,FILE:data/部分规则详解/契约的形状.md,自身双防+30%,待核对
+RULE:data/部分规则详解/契约的形状.md:28,rule_clause,对手星陨印记1层,T00,data/部分规则详解/契约的形状.md,28,FILE:data/部分规则详解/契约的形状.md,对手星陨印记1层,待核对
+RULE:data/部分规则详解/契约的形状.md:29,rule_clause,对手冻结1层,T00,data/部分规则详解/契约的形状.md,29,FILE:data/部分规则详解/契约的形状.md,对手冻结1层,待核对
+RULE:data/部分规则详解/契约的形状.md:30,rule_clause,对手魔防−40%,T00,data/部分规则详解/契约的形状.md,30,FILE:data/部分规则详解/契约的形状.md,对手魔防−40%,待核对
+RULE:data/部分规则详解/契约的形状.md:31,rule_clause,对手能量−1,T00,data/部分规则详解/契约的形状.md,31,FILE:data/部分规则详解/契约的形状.md,对手能量−1,待核对
+RULE:data/部分规则详解/契约的形状.md:32,rule_clause,自身吸血30%,T00,data/部分规则详解/契约的形状.md,32,FILE:data/部分规则详解/契约的形状.md,自身吸血30%,待核对
+FILE:data/部分规则详解/安眠、松弛有度：时间规则.md,file,data/部分规则详解/安眠、松弛有度：时间规则.md,T00,data/部分规则详解/安眠、松弛有度：时间规则.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/安眠、松弛有度：时间规则.md:1,rule_clause,安眠、松弛有度：时间规则,T00,data/部分规则详解/安眠、松弛有度：时间规则.md,1,FILE:data/部分规则详解/安眠、松弛有度：时间规则.md,安眠、松弛有度：时间规则,待核对
+RULE:data/部分规则详解/安眠、松弛有度：时间规则.md:3,rule_clause,游戏中时间节律为早上、中午、晚上循环往复，每个15分钟，但是玩家可以自行调节游戏时间。现实时间UTC+8 23:00-4:00时游戏时间锁定夜晚不允许调。,T00,data/部分规则详解/安眠、松弛有度：时间规则.md,3,FILE:data/部分规则详解/安眠、松弛有度：时间规则.md,游戏中时间节律为早上、中午、晚上循环往复，每个15分钟，但是玩家可以自行调节游戏时间。现实时间UTC+8 23:00-4:00时游戏时间锁定夜晚不允许调。,待核对
+RULE:data/部分规则详解/安眠、松弛有度：时间规则.md:5,rule_clause,对战状态需要传入系统时间给核心模拟器，但如果是测试阶段，可以通过metadata手动选择游戏时间类型、现实是否周末等影响特性。,T00,data/部分规则详解/安眠、松弛有度：时间规则.md,5,FILE:data/部分规则详解/安眠、松弛有度：时间规则.md,对战状态需要传入系统时间给核心模拟器，但如果是测试阶段，可以通过metadata手动选择游戏时间类型、现实是否周末等影响特性。,待核对
+FILE:data/部分规则详解/战报.md,file,data/部分规则详解/战报.md,T00,data/部分规则详解/战报.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/战报.md:1,rule_clause,战报包含以下内容：双方使用了什么技能，谁应对成功，该技能最终结算威力是多少，是否力竭并换了谁,T00,data/部分规则详解/战报.md,1,FILE:data/部分规则详解/战报.md,战报包含以下内容：双方使用了什么技能，谁应对成功，该技能最终结算威力是多少，是否力竭并换了谁,待核对
+RULE:data/部分规则详解/战报.md:3,rule_clause,战报由对战模块负责，对战模块记录当前对战的所有信息，向双方隐藏对方的信息然后提供给 双方，并将双方的选择传入模拟核心后得到结果，,T00,data/部分规则详解/战报.md,3,FILE:data/部分规则详解/战报.md,战报由对战模块负责，对战模块记录当前对战的所有信息，向双方隐藏对方的信息然后提供给 双方，并将双方的选择传入模拟核心后得到结果，,待核对
+RULE:data/部分规则详解/战报.md:5,rule_clause,对战模块记录需要包含当前的合法操作，特别注意的是，技能的实际耗能、显示威力需要交由核心计算，对战哦模块只负责展示。计算这些信息可以交由独立的核心接口进行，表示一种预览,T00,data/部分规则详解/战报.md,5,FILE:data/部分规则详解/战报.md,对战模块记录需要包含当前的合法操作，特别注意的是，技能的实际耗能、显示威力需要交由核心计算，对战哦模块只负责展示。计算这些信息可以交由独立的核心接口进行，表示一种预览,待核对
+FILE:data/部分规则详解/折射效果.md,file,data/部分规则详解/折射效果.md,T00,data/部分规则详解/折射效果.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/折射效果.md:1,rule_clause,自身携带下列系别技能，每次使用折射时，产生对应效果（每个技能独立生效，被免疫则跳过，包括折射本身）：,T00,data/部分规则详解/折射效果.md,1,FILE:data/部分规则详解/折射效果.md,自身携带下列系别技能，每次使用折射时，产生对应效果（每个技能独立生效，被免疫则跳过，包括折射本身）：,待核对
+RULE:data/部分规则详解/折射效果.md:2,rule_clause,普通系自身技能威力+10,T00,data/部分规则详解/折射效果.md,2,FILE:data/部分规则详解/折射效果.md,普通系自身技能威力+10,待核对
+RULE:data/部分规则详解/折射效果.md:3,rule_clause,草系自身回复生命15%,T00,data/部分规则详解/折射效果.md,3,FILE:data/部分规则详解/折射效果.md,草系自身回复生命15%,待核对
+RULE:data/部分规则详解/折射效果.md:4,rule_clause,火系对手灼烧4层,T00,data/部分规则详解/折射效果.md,4,FILE:data/部分规则详解/折射效果.md,火系对手灼烧4层,待核对
+RULE:data/部分规则详解/折射效果.md:5,rule_clause,水系自身所有技能能耗−1,T00,data/部分规则详解/折射效果.md,5,FILE:data/部分规则详解/折射效果.md,水系自身所有技能能耗−1,待核对
+RULE:data/部分规则详解/折射效果.md:6,rule_clause,光系自身魔攻+30%,T00,data/部分规则详解/折射效果.md,6,FILE:data/部分规则详解/折射效果.md,光系自身魔攻+30%,待核对
+RULE:data/部分规则详解/折射效果.md:7,rule_clause,地系对手速度−40对手连击次数−2,T00,data/部分规则详解/折射效果.md,7,FILE:data/部分规则详解/折射效果.md,地系对手速度−40对手连击次数−2,待核对
+RULE:data/部分规则详解/折射效果.md:8,rule_clause,冰系对手冻结2层,T00,data/部分规则详解/折射效果.md,8,FILE:data/部分规则详解/折射效果.md,冰系对手冻结2层,待核对
+RULE:data/部分规则详解/折射效果.md:9,rule_clause,龙系对手魔防−40%,T00,data/部分规则详解/折射效果.md,9,FILE:data/部分规则详解/折射效果.md,龙系对手魔防−40%,待核对
+RULE:data/部分规则详解/折射效果.md:10,rule_clause,电系自身速度+20,T00,data/部分规则详解/折射效果.md,10,FILE:data/部分规则详解/折射效果.md,电系自身速度+20,待核对
+RULE:data/部分规则详解/折射效果.md:11,rule_clause,毒系对手中毒2层,T00,data/部分规则详解/折射效果.md,11,FILE:data/部分规则详解/折射效果.md,毒系对手中毒2层,待核对
+RULE:data/部分规则详解/折射效果.md:12,rule_clause,虫系对手物防−40%,T00,data/部分规则详解/折射效果.md,12,FILE:data/部分规则详解/折射效果.md,虫系对手物防−40%,待核对
+RULE:data/部分规则详解/折射效果.md:13,rule_clause,武系自身物攻+30%,T00,data/部分规则详解/折射效果.md,13,FILE:data/部分规则详解/折射效果.md,武系自身物攻+30%,待核对
+RULE:data/部分规则详解/折射效果.md:14,rule_clause,翼系自身连击次数+1,T00,data/部分规则详解/折射效果.md,14,FILE:data/部分规则详解/折射效果.md,翼系自身连击次数+1,待核对
+RULE:data/部分规则详解/折射效果.md:15,rule_clause,萌系对手双攻−30%,T00,data/部分规则详解/折射效果.md,15,FILE:data/部分规则详解/折射效果.md,萌系对手双攻−30%,待核对
+RULE:data/部分规则详解/折射效果.md:16,rule_clause,幽系对手能量−2,T00,data/部分规则详解/折射效果.md,16,FILE:data/部分规则详解/折射效果.md,幽系对手能量−2,待核对
+RULE:data/部分规则详解/折射效果.md:17,rule_clause,恶系自身吸血30%,T00,data/部分规则详解/折射效果.md,17,FILE:data/部分规则详解/折射效果.md,恶系自身吸血30%,待核对
+RULE:data/部分规则详解/折射效果.md:18,rule_clause,机械系自身物防+30%,T00,data/部分规则详解/折射效果.md,18,FILE:data/部分规则详解/折射效果.md,机械系自身物防+30%,待核对
+RULE:data/部分规则详解/折射效果.md:19,rule_clause,幻系对手星陨印记1层,T00,data/部分规则详解/折射效果.md,19,FILE:data/部分规则详解/折射效果.md,幻系对手星陨印记1层,待核对
+FILE:data/部分规则详解/最好的伙伴.md,file,data/部分规则详解/最好的伙伴.md,T00,data/部分规则详解/最好的伙伴.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/最好的伙伴.md:3,rule_clause,造成克制伤害后，获得 1 层“最好的伙伴”，并立即恢复 2 点能量。,T00,data/部分规则详解/最好的伙伴.md,3,FILE:data/部分规则详解/最好的伙伴.md,造成克制伤害后，获得 1 层“最好的伙伴”，并立即恢复 2 点能量。,待核对
+RULE:data/部分规则详解/最好的伙伴.md:5,rule_clause,每层使物攻、魔攻、物防、魔防、速度各提升 20%。恢复能量仅在触发时结算，不是每次使用状态时重复恢复。,T00,data/部分规则详解/最好的伙伴.md,5,FILE:data/部分规则详解/最好的伙伴.md,每层使物攻、魔攻、物防、魔防、速度各提升 20%。恢复能量仅在触发时结算，不是每次使用状态时重复恢复。,待核对
+RULE:data/部分规则详解/最好的伙伴.md:7,rule_clause,“最好的伙伴”作为完整层状状态保存；计算属性时使用对应加成，不将其永久拆成五种普通属性增益，也不因属性计算消耗层数。,T00,data/部分规则详解/最好的伙伴.md,7,FILE:data/部分规则详解/最好的伙伴.md,“最好的伙伴”作为完整层状状态保存；计算属性时使用对应加成，不将其永久拆成五种普通属性增益，也不因属性计算消耗层数。,待核对
+FILE:data/部分规则详解/秋收：草系环境.md,file,data/部分规则详解/秋收：草系环境.md,T00,data/部分规则详解/秋收：草系环境.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/秋收：草系环境.md:1,rule_clause,秋收：草系环境,T00,data/部分规则详解/秋收：草系环境.md,1,FILE:data/部分规则详解/秋收：草系环境.md,秋收：草系环境,待核对
+RULE:data/部分规则详解/秋收：草系环境.md:3,rule_clause,目前还没有草系环境，但是推测可能是类似特殊天气的效果,T00,data/部分规则详解/秋收：草系环境.md,3,FILE:data/部分规则详解/秋收：草系环境.md,目前还没有草系环境，但是推测可能是类似特殊天气的效果,待核对
+FILE:data/部分规则详解/稀兽花宝.md,file,data/部分规则详解/稀兽花宝.md,T00,data/部分规则详解/稀兽花宝.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/稀兽花宝.md:1,rule_clause,普通血脉自身技能威力+40,T00,data/部分规则详解/稀兽花宝.md,1,FILE:data/部分规则详解/稀兽花宝.md,普通血脉自身技能威力+40,待核对
+RULE:data/部分规则详解/稀兽花宝.md:2,rule_clause,草血脉自身回复生命20%,T00,data/部分规则详解/稀兽花宝.md,2,FILE:data/部分规则详解/稀兽花宝.md,草血脉自身回复生命20%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:3,rule_clause,火血脉对手灼烧6层,T00,data/部分规则详解/稀兽花宝.md,3,FILE:data/部分规则详解/稀兽花宝.md,火血脉对手灼烧6层,待核对
+RULE:data/部分规则详解/稀兽花宝.md:4,rule_clause,水血脉自身所有技能能耗−2,T00,data/部分规则详解/稀兽花宝.md,4,FILE:data/部分规则详解/稀兽花宝.md,水血脉自身所有技能能耗−2,待核对
+RULE:data/部分规则详解/稀兽花宝.md:5,rule_clause,光血脉自身魔攻+80%,T00,data/部分规则详解/稀兽花宝.md,5,FILE:data/部分规则详解/稀兽花宝.md,光血脉自身魔攻+80%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:6,rule_clause,地血脉对手速度−60对手连击次数−3,T00,data/部分规则详解/稀兽花宝.md,6,FILE:data/部分规则详解/稀兽花宝.md,地血脉对手速度−60对手连击次数−3,待核对
+RULE:data/部分规则详解/稀兽花宝.md:7,rule_clause,冰血脉对手冻结2层,T00,data/部分规则详解/稀兽花宝.md,7,FILE:data/部分规则详解/稀兽花宝.md,冰血脉对手冻结2层,待核对
+RULE:data/部分规则详解/稀兽花宝.md:8,rule_clause,龙血脉对手魔防−80%,T00,data/部分规则详解/稀兽花宝.md,8,FILE:data/部分规则详解/稀兽花宝.md,龙血脉对手魔防−80%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:9,rule_clause,电血脉自身速度+100,T00,data/部分规则详解/稀兽花宝.md,9,FILE:data/部分规则详解/稀兽花宝.md,电血脉自身速度+100,待核对
+RULE:data/部分规则详解/稀兽花宝.md:10,rule_clause,毒血脉对手中毒2层,T00,data/部分规则详解/稀兽花宝.md,10,FILE:data/部分规则详解/稀兽花宝.md,毒血脉对手中毒2层,待核对
+RULE:data/部分规则详解/稀兽花宝.md:11,rule_clause,虫血脉对手物防−80%,T00,data/部分规则详解/稀兽花宝.md,11,FILE:data/部分规则详解/稀兽花宝.md,虫血脉对手物防−80%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:12,rule_clause,武血脉自身物攻+80%,T00,data/部分规则详解/稀兽花宝.md,12,FILE:data/部分规则详解/稀兽花宝.md,武血脉自身物攻+80%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:13,rule_clause,翼血脉自身连击次数+3,T00,data/部分规则详解/稀兽花宝.md,13,FILE:data/部分规则详解/稀兽花宝.md,翼血脉自身连击次数+3,待核对
+RULE:data/部分规则详解/稀兽花宝.md:14,rule_clause,萌血脉对手双攻−60%,T00,data/部分规则详解/稀兽花宝.md,14,FILE:data/部分规则详解/稀兽花宝.md,萌血脉对手双攻−60%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:15,rule_clause,幽血脉对手能量−2,T00,data/部分规则详解/稀兽花宝.md,15,FILE:data/部分规则详解/稀兽花宝.md,幽血脉对手能量−2,待核对
+RULE:data/部分规则详解/稀兽花宝.md:16,rule_clause,恶血脉自身吸血50%,T00,data/部分规则详解/稀兽花宝.md,16,FILE:data/部分规则详解/稀兽花宝.md,恶血脉自身吸血50%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:17,rule_clause,机械血脉自身双防+60%,T00,data/部分规则详解/稀兽花宝.md,17,FILE:data/部分规则详解/稀兽花宝.md,机械血脉自身双防+60%,待核对
+RULE:data/部分规则详解/稀兽花宝.md:18,rule_clause,幻血脉对手星陨印记2层,T00,data/部分规则详解/稀兽花宝.md,18,FILE:data/部分规则详解/稀兽花宝.md,幻血脉对手星陨印记2层,待核对
+FILE:data/部分规则详解/选择类技能.md,file,data/部分规则详解/选择类技能.md,T00,data/部分规则详解/选择类技能.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+RULE:data/部分规则详解/选择类技能.md:1,rule_clause,选择类技能,T00,data/部分规则详解/选择类技能.md,1,FILE:data/部分规则详解/选择类技能.md,选择类技能,待核对
+RULE:data/部分规则详解/选择类技能.md:3,rule_clause,选择类技能的合法选项是固定的，两个选项，没有更多的，不依赖对方选择，完全由己方选择。,T00,data/部分规则详解/选择类技能.md,3,FILE:data/部分规则详解/选择类技能.md,选择类技能的合法选项是固定的，两个选项，没有更多的，不依赖对方选择，完全由己方选择。,待核对
+RULE:data/部分规则详解/选择类技能.md:5,rule_clause,对于加尔、黑化加尔的特性，额外触发选择类技能的效果不算作重复使用技能，但是会统计进入“猫精灵的礼物”等特性中,T00,data/部分规则详解/选择类技能.md,5,FILE:data/部分规则详解/选择类技能.md,对于加尔、黑化加尔的特性，额外触发选择类技能的效果不算作重复使用技能，但是会统计进入“猫精灵的礼物”等特性中,待核对
+FILE:package-lock.json,file,package-lock.json,T00,package-lock.json,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:package.json,file,package.json,T00,package.json,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:playwright_1007.js,file,playwright_1007.js,T00,playwright_1007.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:pyproject.toml,file,pyproject.toml,T00,pyproject.toml,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:scripts/__init__.py,file,scripts/__init__.py,T00,scripts/__init__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:scripts/check_runtime_migration.py,file,scripts/check_runtime_migration.py,T00,scripts/check_runtime_migration.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:scripts/check_runtime_migration.py:18:main,code_object,main,T00,scripts/check_runtime_migration.py,18,FILE:scripts/check_runtime_migration.py,从版本库临时加载旧实现，比较同一目录与输入的结果。,待核对
+BRANCH:scripts/check_runtime_migration.py:64:true,code_branch,true,T00,scripts/check_runtime_migration.py,64,FILE:scripts/check_runtime_migration.py,"__name__ == ""__main__""",待核对
+BRANCH:scripts/check_runtime_migration.py:64:false,code_branch,false,T00,scripts/check_runtime_migration.py,64,FILE:scripts/check_runtime_migration.py,"__name__ == ""__main__""",待核对
+BRANCH:scripts/check_runtime_migration.py:31:body,code_branch,body,T00,scripts/check_runtime_migration.py,31,FILE:scripts/check_runtime_migration.py,For,待核对
+BRANCH:scripts/check_runtime_migration.py:31:zero_or_exit,code_branch,zero_or_exit,T00,scripts/check_runtime_migration.py,31,FILE:scripts/check_runtime_migration.py,For,待核对
+BRANCH:scripts/check_runtime_migration.py:42:body,code_branch,body,T00,scripts/check_runtime_migration.py,42,FILE:scripts/check_runtime_migration.py,For,待核对
+BRANCH:scripts/check_runtime_migration.py:42:zero_or_exit,code_branch,zero_or_exit,T00,scripts/check_runtime_migration.py,42,FILE:scripts/check_runtime_migration.py,For,待核对
+BRANCH:scripts/check_runtime_migration.py:33:true,code_branch,true,T00,scripts/check_runtime_migration.py,33,FILE:scripts/check_runtime_migration.py,len(skills) < 4,待核对
+BRANCH:scripts/check_runtime_migration.py:33:false,code_branch,false,T00,scripts/check_runtime_migration.py,33,FILE:scripts/check_runtime_migration.py,len(skills) < 4,待核对
+BRANCH:scripts/check_runtime_migration.py:36:true,code_branch,true,T00,scripts/check_runtime_migration.py,36,FILE:scripts/check_runtime_migration.py,len(teams) == 2,待核对
+BRANCH:scripts/check_runtime_migration.py:36:false,code_branch,false,T00,scripts/check_runtime_migration.py,36,FILE:scripts/check_runtime_migration.py,len(teams) == 2,待核对
+BRANCH:scripts/check_runtime_migration.py:44:body,code_branch,body,T00,scripts/check_runtime_migration.py,44,FILE:scripts/check_runtime_migration.py,For,待核对
+BRANCH:scripts/check_runtime_migration.py:44:zero_or_exit,code_branch,zero_or_exit,T00,scripts/check_runtime_migration.py,44,FILE:scripts/check_runtime_migration.py,For,待核对
+BRANCH:scripts/check_runtime_migration.py:47:true,code_branch,true,T00,scripts/check_runtime_migration.py,47,FILE:scripts/check_runtime_migration.py,index < 3,待核对
+BRANCH:scripts/check_runtime_migration.py:47:false,code_branch,false,T00,scripts/check_runtime_migration.py,47,FILE:scripts/check_runtime_migration.py,index < 3,待核对
+FILE:tests/__init__.py,file,tests/__init__.py,T00,tests/__init__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:tests/playwright_ui_changes.js,file,tests/playwright_ui_changes.js,T00,tests/playwright_ui_changes.js,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:tests/test_1007_regressions.py,file,tests/test_1007_regressions.py,T00,tests/test_1007_regressions.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:tests/test_1007_regressions.py:19:initial_battle,code_object,initial_battle,T00,tests/test_1007_regressions.py,19,FILE:tests/test_1007_regressions.py,使用真实阵容和平台注入的数据，避免伪造进化数值。,待核对
+CODE:tests/test_1007_regressions.py:33:test_burst_cost_matches_preview_legal_actions_and_payment,code_object,test_burst_cost_matches_preview_legal_actions_and_payment,T00,tests/test_1007_regressions.py,33,FILE:tests/test_1007_regressions.py,首次行动只需一能量；面板、合法动作和结算一致，后续不重复减耗。,待核对
+CODE:tests/test_1007_regressions.py:54:test_attack_counter_settles_before_status_skill,code_object,test_attack_counter_settles_before_status_skill,T00,tests/test_1007_regressions.py,54,FILE:tests/test_1007_regressions.py,应对先结算；存活才能执行状态技能，应对也只能计数一次。,待核对
+CODE:tests/test_1007_regressions.py:70:test_cute_keeps_hp_and_only_increases_powered_skills,code_object,test_cute_keeps_hp_and_only_increases_powered_skills,T00,tests/test_1007_regressions.py,70,FILE:tests/test_1007_regressions.py,退化保留当前生命并截断上限，永久威力加成跳过 -1 技能。,待核对
+CODE:tests/test_1007_regressions.py:91:test_devils_feast_keeps_whole_status_and_ability_description,code_object,test_devils_feast_keeps_whole_status_and_ability_description,T00,tests/test_1007_regressions.py,91,FILE:tests/test_1007_regressions.py,连续击败只累计晚宴层数，双方可见同一特性原文，普通中毒没有说明。,待核对
+CODE:tests/test_1007_regressions.py:124:test_skill_ability_status_keeps_raw_power_and_preview_damage,code_object,test_skill_ability_status_keeps_raw_power_and_preview_damage,T00,tests/test_1007_regressions.py,124,FILE:tests/test_1007_regressions.py,技能加成保留完整来源；重复预览不污染技能，实际伤害仍与展开后的数值一致。,待核对
+BRANCH:tests/test_1007_regressions.py:25:body,code_branch,body,T00,tests/test_1007_regressions.py,25,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:25:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_1007_regressions.py,25,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:59:true,code_branch,true,T00,tests/test_1007_regressions.py,59,FILE:tests/test_1007_regressions.py,survives,待核对
+BRANCH:tests/test_1007_regressions.py:59:false,code_branch,false,T00,tests/test_1007_regressions.py,59,FILE:tests/test_1007_regressions.py,survives,待核对
+BRANCH:tests/test_1007_regressions.py:99:body,code_branch,body,T00,tests/test_1007_regressions.py,99,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:99:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_1007_regressions.py,99,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:108:body,code_branch,body,T00,tests/test_1007_regressions.py,108,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:108:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_1007_regressions.py,108,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:132:true,code_branch,true,T00,tests/test_1007_regressions.py,132,FILE:tests/test_1007_regressions.py,"side == ""a""",待核对
+BRANCH:tests/test_1007_regressions.py:132:false,code_branch,false,T00,tests/test_1007_regressions.py,132,FILE:tests/test_1007_regressions.py,"side == ""a""",待核对
+BRANCH:tests/test_1007_regressions.py:151:body,code_branch,body,T00,tests/test_1007_regressions.py,151,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:151:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_1007_regressions.py,151,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:27:body,code_branch,body,T00,tests/test_1007_regressions.py,27,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:27:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_1007_regressions.py,27,FILE:tests/test_1007_regressions.py,For,待核对
+BRANCH:tests/test_1007_regressions.py:63:true,code_branch,true,T00,tests/test_1007_regressions.py,63,FILE:tests/test_1007_regressions.py,survives,待核对
+BRANCH:tests/test_1007_regressions.py:63:false,code_branch,false,T00,tests/test_1007_regressions.py,63,FILE:tests/test_1007_regressions.py,survives,待核对
+BRANCH:tests/test_1007_regressions.py:66:true,code_branch,true,T00,tests/test_1007_regressions.py,66,FILE:tests/test_1007_regressions.py,survives,待核对
+BRANCH:tests/test_1007_regressions.py:66:false,code_branch,false,T00,tests/test_1007_regressions.py,66,FILE:tests/test_1007_regressions.py,survives,待核对
+FILE:tests/test_compound_status.py,file,tests/test_compound_status.py,T00,tests/test_compound_status.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:tests/test_compound_status.py:18:match,code_object,match,T00,tests/test_compound_status.py,18,FILE:tests/test_compound_status.py,用 1007 阵容创建独立对局，不影响浏览器会话。,待核对
+CODE:tests/test_compound_status.py:32:play,code_object,play,T00,tests/test_compound_status.py,32,FILE:tests/test_compound_status.py,通过平台收齐双方动作并返回本回合结果。,待核对
+CODE:tests/test_compound_status.py:40:active,code_object,active,T00,tests/test_compound_status.py,40,FILE:tests/test_compound_status.py,读取本测试对局的迪莫。,待核对
+CODE:tests/test_compound_status.py:46:test_real_turn_keeps_one_status_and_five_derived_attributes,code_object,test_real_turn_keeps_one_status_and_five_derived_attributes,T00,tests/test_compound_status.py,46,FILE:tests/test_compound_status.py,触发后只保存组合状态，伤害与速度求值时才使用五项加成。,待核对
+CODE:tests/test_compound_status.py:66:test_repeated_preview_exception_and_export_preserve_raw_status,code_object,test_repeated_preview_exception_and_export_preserve_raw_status,T00,tests/test_compound_status.py,66,FILE:tests/test_compound_status.py,多次预览、预览失败与导出导入都不污染状态或重复叠加。,待核对
+CODE:tests/test_compound_status.py:83:test_multiple_turns_keep_damage_and_accumulate_only_status,code_object,test_multiple_turns_keep_damage_and_accumulate_only_status,T00,tests/test_compound_status.py,83,FILE:tests/test_compound_status.py,连续回合沿用原伤害，第二次触发仅把完整状态增加到两层。,待核对
+CODE:tests/test_compound_status.py:103:test_generic_status_matches_explicit_modifiers_without_mutation,code_object,test_generic_status_matches_explicit_modifiers_without_mutation,T00,tests/test_compound_status.py,103,FILE:tests/test_compound_status.py,其他组合状态与独立增益可共存，物理和魔法路径均使用临时求值。,待核对
+CODE:tests/test_compound_status.py:127:test_switch_selection_name_is_private_to_its_owner,code_object,test_switch_selection_name_is_private_to_its_owner,T00,tests/test_compound_status.py,127,FILE:tests/test_compound_status.py,己方换宠目标可见，对手选择记录不泄露目标名称或索引。,待核对
+CODE:tests/test_compound_status.py:142:test_soul_burn_uses_skill_element,code_object,test_soul_burn_uses_skill_element,T00,tests/test_compound_status.py,142,FILE:tests/test_compound_status.py,灵魂灼伤按使用技能系别触发，火系冻结、冰系灼烧、其他系别不触发。,待核对
+BRANCH:tests/test_compound_status.py:24:body,code_branch,body,T00,tests/test_compound_status.py,24,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:24:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_compound_status.py,24,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:52:body,code_branch,body,T00,tests/test_compound_status.py,52,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:52:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_compound_status.py,52,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:111:body,code_branch,body,T00,tests/test_compound_status.py,111,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:111:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_compound_status.py,111,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:115:body,code_branch,body,T00,tests/test_compound_status.py,115,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:115:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_compound_status.py,115,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:154:true,code_branch,true,T00,tests/test_compound_status.py,154,FILE:tests/test_compound_status.py,with_suffix,待核对
+BRANCH:tests/test_compound_status.py:154:false,code_branch,false,T00,tests/test_compound_status.py,154,FILE:tests/test_compound_status.py,with_suffix,待核对
+BRANCH:tests/test_compound_status.py:26:body,code_branch,body,T00,tests/test_compound_status.py,26,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:26:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_compound_status.py,26,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:112:body,code_branch,body,T00,tests/test_compound_status.py,112,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:112:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_compound_status.py,112,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:155:body,code_branch,body,T00,tests/test_compound_status.py,155,FILE:tests/test_compound_status.py,For,待核对
+BRANCH:tests/test_compound_status.py:155:zero_or_exit,code_branch,zero_or_exit,T00,tests/test_compound_status.py,155,FILE:tests/test_compound_status.py,For,待核对
+GAME_RULE:0001,game_rule,中毒,T00,data/nrc_wiki.db:game_rules,1,,回合结束时，造成3%生命的毒系伤害。（毒系精灵免疫此效果）,待核对
+GAME_RULE:0001:C01,game_rule_clause,中毒,T00,data/nrc_wiki.db:game_rules,1,GAME_RULE:0001,回合结束时，造成3%生命的毒系伤害,待核对
+GAME_RULE:0001:C02,game_rule_clause,中毒,T00,data/nrc_wiki.db:game_rules,1,GAME_RULE:0001,（毒系精灵免疫此效果）,待核对
+GAME_RULE:0002,game_rule,中毒印记,T00,data/nrc_wiki.db:game_rules,2,,印记效果，回合结束造成3%生命的毒系伤害。,待核对
+GAME_RULE:0002:C01,game_rule_clause,中毒印记,T00,data/nrc_wiki.db:game_rules,2,GAME_RULE:0002,印记效果，回合结束造成3%生命的毒系伤害,待核对
+GAME_RULE:0003,game_rule,中毒效果,T00,data/nrc_wiki.db:game_rules,3,,包括中毒和中毒印记。,待核对
+GAME_RULE:0003:C01,game_rule_clause,中毒效果,T00,data/nrc_wiki.db:game_rules,3,GAME_RULE:0003,包括中毒和中毒印记,待核对
+GAME_RULE:0004,game_rule,传动,T00,data/nrc_wiki.db:game_rules,4,,回合开始时，带有“传动X”的技能会向下移动X个位置，该效果可叠加。,待核对
+GAME_RULE:0004:C01,game_rule_clause,传动,T00,data/nrc_wiki.db:game_rules,4,GAME_RULE:0004,回合开始时，带有“传动X”的技能会向下移动X个位置，该效果可叠加,待核对
+GAME_RULE:0005,game_rule,先手,T00,data/nrc_wiki.db:game_rules,5,,技能行动的优先级，先手度更高的技能忽略双方精灵速度差异，优先释放，先手度可叠加。,待核对
+GAME_RULE:0005:C01,game_rule_clause,先手,T00,data/nrc_wiki.db:game_rules,5,GAME_RULE:0005,技能行动的优先级，先手度更高的技能忽略双方精灵速度差异，优先释放，先手度可叠加,待核对
+GAME_RULE:0006,game_rule,光合印记,T00,data/nrc_wiki.db:game_rules,6,,印记效果，回合结束时获得1能量。,待核对
+GAME_RULE:0006:C01,game_rule_clause,光合印记,T00,data/nrc_wiki.db:game_rules,6,GAME_RULE:0006,印记效果，回合结束时获得1能量,待核对
+GAME_RULE:0007,game_rule,冻结,T00,data/nrc_wiki.db:game_rules,7,,冻结5%生命，若当前生命低于冻结比例，则力竭。（冰系精灵免疫此效果）,待核对
+GAME_RULE:0007:C01,game_rule_clause,冻结,T00,data/nrc_wiki.db:game_rules,7,GAME_RULE:0007,冻结5%生命，若当前生命低于冻结比例，则力竭,待核对
+GAME_RULE:0007:C02,game_rule_clause,冻结,T00,data/nrc_wiki.db:game_rules,7,GAME_RULE:0007,（冰系精灵免疫此效果）,待核对
+GAME_RULE:0008,game_rule,减益,T00,data/nrc_wiki.db:game_rules,8,,降低属性、技能威力、连击数，以及增加能耗、中毒、灼烧、寄生、冻结、萌化、引电等效果。（不包括类型为“印记”、“特性”、“其他”的效果）,待核对
+GAME_RULE:0008:C01,game_rule_clause,减益,T00,data/nrc_wiki.db:game_rules,8,GAME_RULE:0008,降低属性、技能威力、连击数，以及增加能耗、中毒、灼烧、寄生、冻结、萌化、引电等效果,待核对
+GAME_RULE:0008:C02,game_rule_clause,减益,T00,data/nrc_wiki.db:game_rules,8,GAME_RULE:0008,（不包括类型为“印记”、“特性”、“其他”的效果）,待核对
+GAME_RULE:0009,game_rule,减速印记,T00,data/nrc_wiki.db:game_rules,9,,印记效果，速度-10。,待核对
+GAME_RULE:0009:C01,game_rule_clause,减速印记,T00,data/nrc_wiki.db:game_rules,9,GAME_RULE:0009,印记效果，速度-10,待核对
+GAME_RULE:0010,game_rule,印记,T00,data/nrc_wiki.db:game_rules,10,,精灵下场后印记不会消失，新入场的精灵会继承印记效果。精灵最多同时拥有1种正面印记和1种负面印记。,待核对
+GAME_RULE:0010:C01,game_rule_clause,印记,T00,data/nrc_wiki.db:game_rules,10,GAME_RULE:0010,精灵下场后印记不会消失，新入场的精灵会继承印记效果,待核对
+GAME_RULE:0010:C02,game_rule_clause,印记,T00,data/nrc_wiki.db:game_rules,10,GAME_RULE:0010,精灵最多同时拥有1种正面印记和1种负面印记,待核对
+GAME_RULE:0011,game_rule,吸血,T00,data/nrc_wiki.db:game_rules,11,,造成伤害时，根据吸血比例和造成伤害值，回复生命。,待核对
+GAME_RULE:0011:C01,game_rule_clause,吸血,T00,data/nrc_wiki.db:game_rules,11,GAME_RULE:0011,造成伤害时，根据吸血比例和造成伤害值，回复生命,待核对
+GAME_RULE:0012,game_rule,增益,T00,data/nrc_wiki.db:game_rules,12,,增加属性、技能威力、连击数，以及降低能耗、吸血、过载等效果。（不包括类型为“印记”、“特性”、“其他”的效果）,待核对
+GAME_RULE:0012:C01,game_rule_clause,增益,T00,data/nrc_wiki.db:game_rules,12,GAME_RULE:0012,增加属性、技能威力、连击数，以及降低能耗、吸血、过载等效果,待核对
+GAME_RULE:0012:C02,game_rule_clause,增益,T00,data/nrc_wiki.db:game_rules,12,GAME_RULE:0012,（不包括类型为“印记”、“特性”、“其他”的效果）,待核对
+GAME_RULE:0013,game_rule,奉献,T00,data/nrc_wiki.db:game_rules,13,,使己方队伍中所有的「啃咬」和「虫群」技能获得奉献对应的强化效果。,待核对
+GAME_RULE:0013:C01,game_rule_clause,奉献,T00,data/nrc_wiki.db:game_rules,13,GAME_RULE:0013,使己方队伍中所有的「啃咬」和「虫群」技能获得奉献对应的强化效果,待核对
+GAME_RULE:0014,game_rule,寄生,T00,data/nrc_wiki.db:game_rules,14,,回合结束时，从寄生来源吸收2%生命。（草系精灵免疫此效果）,待核对
+GAME_RULE:0014:C01,game_rule_clause,寄生,T00,data/nrc_wiki.db:game_rules,14,GAME_RULE:0014,回合结束时，从寄生来源吸收2%生命,待核对
+GAME_RULE:0014:C02,game_rule_clause,寄生,T00,data/nrc_wiki.db:game_rules,14,GAME_RULE:0014,（草系精灵免疫此效果）,待核对
+GAME_RULE:0015,game_rule,属性减益,T00,data/nrc_wiki.db:game_rules,15,,减益的其中一种类型，指降低物攻、魔攻、物防、魔防、速度的减益。,待核对
+GAME_RULE:0015:C01,game_rule_clause,属性减益,T00,data/nrc_wiki.db:game_rules,15,GAME_RULE:0015,减益的其中一种类型，指降低物攻、魔攻、物防、魔防、速度的减益,待核对
+GAME_RULE:0016,game_rule,属性增益,T00,data/nrc_wiki.db:game_rules,16,,增益的其中一种类型，指提升物攻、魔攻、物防、魔防、速度的增益。,待核对
+GAME_RULE:0016:C01,game_rule_clause,属性增益,T00,data/nrc_wiki.db:game_rules,16,GAME_RULE:0016,增益的其中一种类型，指提升物攻、魔攻、物防、魔防、速度的增益,待核对
+GAME_RULE:0017,game_rule,巧变,T00,data/nrc_wiki.db:game_rules,17,,使用后会变为指定范围内的随机技能，且能耗-1。使用该随机技能后会变回原技能。,待核对
+GAME_RULE:0017:C01,game_rule_clause,巧变,T00,data/nrc_wiki.db:game_rules,17,GAME_RULE:0017,使用后会变为指定范围内的随机技能，且能耗-1,待核对
+GAME_RULE:0017:C02,game_rule_clause,巧变,T00,data/nrc_wiki.db:game_rules,17,GAME_RULE:0017,使用该随机技能后会变回原技能,待核对
+GAME_RULE:0018,game_rule,应对攻击,T00,data/nrc_wiki.db:game_rules,18,,若敌方使用攻击技能，则本技能应对成功，本次行动必定先手，且触发应对效果。使用后，携带的防御技能进入1回合冷却。,待核对
+GAME_RULE:0018:C01,game_rule_clause,应对攻击,T00,data/nrc_wiki.db:game_rules,18,GAME_RULE:0018,若敌方使用攻击技能，则本技能应对成功，本次行动必定先手，且触发应对效果,待核对
+GAME_RULE:0018:C02,game_rule_clause,应对攻击,T00,data/nrc_wiki.db:game_rules,18,GAME_RULE:0018,使用后，携带的防御技能进入1回合冷却,待核对
+GAME_RULE:0019,game_rule,应对状态,T00,data/nrc_wiki.db:game_rules,19,,若敌方使用状态技能，则本技能应对成功，本次行动必定先手，且触发应对效果。,待核对
+GAME_RULE:0019:C01,game_rule_clause,应对状态,T00,data/nrc_wiki.db:game_rules,19,GAME_RULE:0019,若敌方使用状态技能，则本技能应对成功，本次行动必定先手，且触发应对效果,待核对
+GAME_RULE:0020,game_rule,应对防御,T00,data/nrc_wiki.db:game_rules,20,,若敌方使用防御技能，则本技能应对成功，本次行动必定先手，且触发应对效果。,待核对
+GAME_RULE:0020:C01,game_rule_clause,应对防御,T00,data/nrc_wiki.db:game_rules,20,GAME_RULE:0020,若敌方使用防御技能，则本技能应对成功，本次行动必定先手，且触发应对效果,待核对
+GAME_RULE:0021,game_rule,引电,T00,data/nrc_wiki.db:game_rules,21,,获得2层引电时，立即受到25%生命的电系伤害，并失去2层引电。（电系精灵免疫此效果）,待核对
+GAME_RULE:0021:C01,game_rule_clause,引电,T00,data/nrc_wiki.db:game_rules,21,GAME_RULE:0021,获得2层引电时，立即受到25%生命的电系伤害，并失去2层引电,待核对
+GAME_RULE:0021:C02,game_rule_clause,引电,T00,data/nrc_wiki.db:game_rules,21,GAME_RULE:0021,（电系精灵免疫此效果）,待核对
+GAME_RULE:0022,game_rule,打断,T00,data/nrc_wiki.db:game_rules,22,,使敌方本次无法释放对应技能。,待核对
+GAME_RULE:0022:C01,game_rule_clause,打断,T00,data/nrc_wiki.db:game_rules,22,GAME_RULE:0022,使敌方本次无法释放对应技能,待核对
+GAME_RULE:0023,game_rule,攻击印记,T00,data/nrc_wiki.db:game_rules,23,,印记效果，全技能威力+10%。,待核对
+GAME_RULE:0023:C01,game_rule_clause,攻击印记,T00,data/nrc_wiki.db:game_rules,23,GAME_RULE:0023,印记效果，全技能威力+10%,待核对
+GAME_RULE:0024,game_rule,星陨印记,T00,data/nrc_wiki.db:game_rules,24,,印记效果，使用非幻系技能攻击拥有此印记的精灵时，会触发星陨印记，消耗全部星陨层数，对其造成额外的幻系伤害。,待核对
+GAME_RULE:0024:C01,game_rule_clause,星陨印记,T00,data/nrc_wiki.db:game_rules,24,GAME_RULE:0024,印记效果，使用非幻系技能攻击拥有此印记的精灵时，会触发星陨印记，消耗全部星陨层数，对其造成额外的幻系伤害,待核对
+GAME_RULE:0025,game_rule,暗涌印记,T00,data/nrc_wiki.db:game_rules,25,,印记效果，场上的精灵离场后，更换入场的精灵获得随机5层属性减益。,待核对
+GAME_RULE:0025:C01,game_rule_clause,暗涌印记,T00,data/nrc_wiki.db:game_rules,25,GAME_RULE:0025,印记效果，场上的精灵离场后，更换入场的精灵获得随机5层属性减益,待核对
+GAME_RULE:0026,game_rule,暴风雪（游戏描述）,T00,data/nrc_wiki.db:game_rules,26,,天气为暴风雪时，双方每回合结束获得2层冻结。（冰系精灵免疫此效果）,待核对
+GAME_RULE:0026:C01,game_rule_clause,暴风雪（游戏描述）,T00,data/nrc_wiki.db:game_rules,26,GAME_RULE:0026,天气为暴风雪时，双方每回合结束获得2层冻结,待核对
+GAME_RULE:0026:C02,game_rule_clause,暴风雪（游戏描述）,T00,data/nrc_wiki.db:game_rules,26,GAME_RULE:0026,（冰系精灵免疫此效果）,待核对
+GAME_RULE:0027,game_rule,月陨星状态,T00,data/nrc_wiki.db:game_rules,27,,该状态下会隐藏精灵的信息，自己行动或被敌方攻击时解除。,待核对
+GAME_RULE:0027:C01,game_rule_clause,月陨星状态,T00,data/nrc_wiki.db:game_rules,27,GAME_RULE:0027,该状态下会隐藏精灵的信息，自己行动或被敌方攻击时解除,待核对
+GAME_RULE:0028,game_rule,木桶状态,T00,data/nrc_wiki.db:game_rules,28,,该状态下会隐藏精灵的信息，自己行动或被敌方攻击时解除。,待核对
+GAME_RULE:0028:C01,game_rule_clause,木桶状态,T00,data/nrc_wiki.db:game_rules,28,GAME_RULE:0028,该状态下会隐藏精灵的信息，自己行动或被敌方攻击时解除,待核对
+GAME_RULE:0029,game_rule,棘刺印记,T00,data/nrc_wiki.db:game_rules,29,,印记效果，场上的精灵离场后，更换入场的精灵失去6%生命。,待核对
+GAME_RULE:0029:C01,game_rule_clause,棘刺印记,T00,data/nrc_wiki.db:game_rules,29,GAME_RULE:0029,印记效果，场上的精灵离场后，更换入场的精灵失去6%生命,待核对
+GAME_RULE:0030,game_rule,沙暴,T00,data/nrc_wiki.db:game_rules,30,,天气为沙暴时，双方的地系技能能耗减半。,待核对
+GAME_RULE:0030:C01,game_rule_clause,沙暴,T00,data/nrc_wiki.db:game_rules,30,GAME_RULE:0030,天气为沙暴时，双方的地系技能能耗减半,待核对
+GAME_RULE:0031,game_rule,混血精灵,T00,data/nrc_wiki.db:game_rules,31,,非本系血脉的精灵，包括非本系的系别血脉、首领血脉、奇异血脉、污染血脉等。,待核对
+GAME_RULE:0031:C01,game_rule_clause,混血精灵,T00,data/nrc_wiki.db:game_rules,31,GAME_RULE:0031,非本系血脉的精灵，包括非本系的系别血脉、首领血脉、奇异血脉、污染血脉等,待核对
+GAME_RULE:0032,game_rule,湿润印记,T00,data/nrc_wiki.db:game_rules,32,,印记效果，全技能能耗-1。,待核对
+GAME_RULE:0032:C01,game_rule_clause,湿润印记,T00,data/nrc_wiki.db:game_rules,32,GAME_RULE:0032,印记效果，全技能能耗-1,待核对
+GAME_RULE:0033,game_rule,灼烧,T00,data/nrc_wiki.db:game_rules,33,,回合结束时，造成2%生命的火系伤害，并衰减一半层数。（火系精灵免疫此效果）,待核对
+GAME_RULE:0033:C01,game_rule_clause,灼烧,T00,data/nrc_wiki.db:game_rules,33,GAME_RULE:0033,回合结束时，造成2%生命的火系伤害，并衰减一半层数,待核对
+GAME_RULE:0033:C02,game_rule_clause,灼烧,T00,data/nrc_wiki.db:game_rules,33,GAME_RULE:0033,（火系精灵免疫此效果）,待核对
+GAME_RULE:0034,game_rule,禁足,T00,data/nrc_wiki.db:game_rules,34,,处于禁足状态时，精灵无法离场，且无法获得新的禁足状态。,待核对
+GAME_RULE:0034:C01,game_rule_clause,禁足,T00,data/nrc_wiki.db:game_rules,34,GAME_RULE:0034,处于禁足状态时，精灵无法离场，且无法获得新的禁足状态,待核对
+GAME_RULE:0035,game_rule,离场,T00,data/nrc_wiki.db:game_rules,35,,通过主动更换精灵或触发脱离效果的方式下场。（不包括精灵力竭后下场）,待核对
+GAME_RULE:0035:C01,game_rule_clause,离场,T00,data/nrc_wiki.db:game_rules,35,GAME_RULE:0035,通过主动更换精灵或触发脱离效果的方式下场,待核对
+GAME_RULE:0035:C02,game_rule_clause,离场,T00,data/nrc_wiki.db:game_rules,35,GAME_RULE:0035,（不包括精灵力竭后下场）,待核对
+GAME_RULE:0036,game_rule,紧急脱离,T00,data/nrc_wiki.db:game_rules,36,,精灵离场，并随机选择队伍里一只其他精灵替换入场。本回合入场的精灵免疫此效果。,待核对
+GAME_RULE:0036:C01,game_rule_clause,紧急脱离,T00,data/nrc_wiki.db:game_rules,36,GAME_RULE:0036,精灵离场，并随机选择队伍里一只其他精灵替换入场,待核对
+GAME_RULE:0036:C02,game_rule_clause,紧急脱离,T00,data/nrc_wiki.db:game_rules,36,GAME_RULE:0036,本回合入场的精灵免疫此效果,待核对
+GAME_RULE:0037,game_rule,脱离,T00,data/nrc_wiki.db:game_rules,37,,精灵离场，并选择队伍里一只其他精灵替换入场。本回合入场的精灵免疫此效果。,待核对
+GAME_RULE:0037:C01,game_rule_clause,脱离,T00,data/nrc_wiki.db:game_rules,37,GAME_RULE:0037,精灵离场，并选择队伍里一只其他精灵替换入场,待核对
+GAME_RULE:0037:C02,game_rule_clause,脱离,T00,data/nrc_wiki.db:game_rules,37,GAME_RULE:0037,本回合入场的精灵免疫此效果,待核对
+GAME_RULE:0038,game_rule,萌化,T00,data/nrc_wiki.db:game_rules,38,,退化到上一阶，种族资质相应降低。（可退化的精灵才可以获得萌化，下场不会消失）,待核对
+GAME_RULE:0038:C01,game_rule_clause,萌化,T00,data/nrc_wiki.db:game_rules,38,GAME_RULE:0038,退化到上一阶，种族资质相应降低,待核对
+GAME_RULE:0038:C02,game_rule_clause,萌化,T00,data/nrc_wiki.db:game_rules,38,GAME_RULE:0038,（可退化的精灵才可以获得萌化，下场不会消失）,待核对
+GAME_RULE:0039,game_rule,萌芽印记,T00,data/nrc_wiki.db:game_rules,39,,获得增益时，会额外获得1层。,待核对
+GAME_RULE:0039:C01,game_rule_clause,萌芽印记,T00,data/nrc_wiki.db:game_rules,39,GAME_RULE:0039,获得增益时，会额外获得1层,待核对
+GAME_RULE:0040,game_rule,蓄力,T00,data/nrc_wiki.db:game_rules,40,,该技能需要先蓄力1回合，下回合才能释放。蓄力期间免疫所有离场效果。,待核对
+GAME_RULE:0040:C01,game_rule_clause,蓄力,T00,data/nrc_wiki.db:game_rules,40,GAME_RULE:0040,该技能需要先蓄力1回合，下回合才能释放,待核对
+GAME_RULE:0040:C02,game_rule_clause,蓄力,T00,data/nrc_wiki.db:game_rules,40,GAME_RULE:0040,蓄力期间免疫所有离场效果,待核对
+GAME_RULE:0041,game_rule,蓄势印记,T00,data/nrc_wiki.db:game_rules,41,,印记效果，全攻击技能威力+30%，且能耗+1。,待核对
+GAME_RULE:0041:C01,game_rule_clause,蓄势印记,T00,data/nrc_wiki.db:game_rules,41,GAME_RULE:0041,印记效果，全攻击技能威力+30%，且能耗+1,待核对
+GAME_RULE:0042,game_rule,蓄电印记,T00,data/nrc_wiki.db:game_rules,42,,印记效果，攻击技能获得迸发：本次威力+10。,待核对
+GAME_RULE:0042:C01,game_rule_clause,蓄电印记,T00,data/nrc_wiki.db:game_rules,42,GAME_RULE:0042,印记效果，攻击技能获得迸发：本次威力+10,待核对
+GAME_RULE:0043,game_rule,迅捷,T00,data/nrc_wiki.db:game_rules,43,,通过主动更换精灵的方式入场时，使用第一个能量满足要求，并带有迅捷的技能。,待核对
+GAME_RULE:0043:C01,game_rule_clause,迅捷,T00,data/nrc_wiki.db:game_rules,43,GAME_RULE:0043,通过主动更换精灵的方式入场时，使用第一个能量满足要求，并带有迅捷的技能,待核对
+GAME_RULE:0044,game_rule,返场,T00,data/nrc_wiki.db:game_rules,44,,精灵离场，并立即入场。本回合入场的精灵免疫此效果。,待核对
+GAME_RULE:0044:C01,game_rule_clause,返场,T00,data/nrc_wiki.db:game_rules,44,GAME_RULE:0044,精灵离场，并立即入场,待核对
+GAME_RULE:0044:C02,game_rule_clause,返场,T00,data/nrc_wiki.db:game_rules,44,GAME_RULE:0044,本回合入场的精灵免疫此效果,待核对
+GAME_RULE:0045,game_rule,连击数,T00,data/nrc_wiki.db:game_rules,45,,改变连击次数，仅对有连击的技能生效。,待核对
+GAME_RULE:0045:C01,game_rule_clause,连击数,T00,data/nrc_wiki.db:game_rules,45,GAME_RULE:0045,改变连击次数，仅对有连击的技能生效,待核对
+GAME_RULE:0046,game_rule,迸发,T00,data/nrc_wiki.db:game_rules,46,,入场后的首次行动，会获得额外效果。,待核对
+GAME_RULE:0046:C01,game_rule_clause,迸发,T00,data/nrc_wiki.db:game_rules,46,GAME_RULE:0046,入场后的首次行动，会获得额外效果,待核对
+GAME_RULE:0047,game_rule,选择,T00,data/nrc_wiki.db:game_rules,47,,可以从2个效果中选择1个使用。（2个效果视为相同技能，分别记为「明」和「暗」）,待核对
+GAME_RULE:0047:C01,game_rule_clause,选择,T00,data/nrc_wiki.db:game_rules,47,GAME_RULE:0047,可以从2个效果中选择1个使用,待核对
+GAME_RULE:0047:C02,game_rule_clause,选择,T00,data/nrc_wiki.db:game_rules,47,GAME_RULE:0047,（2个效果视为相同技能，分别记为「明」和「暗」）,待核对
+GAME_RULE:0048,game_rule,透射（游戏描述）,T00,data/nrc_wiki.db:game_rules,48,,光系技能，1能耗，对敌方造成60威力物伤。,待核对
+GAME_RULE:0048:C01,game_rule_clause,透射（游戏描述）,T00,data/nrc_wiki.db:game_rules,48,GAME_RULE:0048,光系技能，1能耗，对敌方造成60威力物伤,待核对
+GAME_RULE:0049,game_rule,附加中毒,T00,data/nrc_wiki.db:game_rules,49,,使用附加中毒X的技能会使敌方获得X层中毒。,待核对
+GAME_RULE:0049:C01,game_rule_clause,附加中毒,T00,data/nrc_wiki.db:game_rules,49,GAME_RULE:0049,使用附加中毒X的技能会使敌方获得X层中毒,待核对
+GAME_RULE:0050,game_rule,降灵印记,T00,data/nrc_wiki.db:game_rules,50,,印记效果，场上的精灵离场后，更换入场的精灵失去1能量。,待核对
+GAME_RULE:0050:C01,game_rule_clause,降灵印记,T00,data/nrc_wiki.db:game_rules,50,GAME_RULE:0050,印记效果，场上的精灵离场后，更换入场的精灵失去1能量,待核对
+GAME_RULE:0051,game_rule,雨天,T00,data/nrc_wiki.db:game_rules,51,,天气为雨天时，双方的水系技能威力+75%。,待核对
+GAME_RULE:0051:C01,game_rule_clause,雨天,T00,data/nrc_wiki.db:game_rules,51,GAME_RULE:0051,天气为雨天时，双方的水系技能威力+75%,待核对
+GAME_RULE:0052,game_rule,雷鸣,T00,data/nrc_wiki.db:game_rules,52,,天气为雷鸣时，双方每回合结束获得1层引电。（电系精灵免疫此效果）,待核对
+GAME_RULE:0052:C01,game_rule_clause,雷鸣,T00,data/nrc_wiki.db:game_rules,52,GAME_RULE:0052,天气为雷鸣时，双方每回合结束获得1层引电,待核对
+GAME_RULE:0052:C02,game_rule_clause,雷鸣,T00,data/nrc_wiki.db:game_rules,52,GAME_RULE:0052,（电系精灵免疫此效果）,待核对
+GAME_RULE:0053,game_rule,风起印记,T00,data/nrc_wiki.db:game_rules,53,,印记效果，先手攻击时，本次技能威力+20%。,待核对
+GAME_RULE:0053:C01,game_rule_clause,风起印记,T00,data/nrc_wiki.db:game_rules,53,GAME_RULE:0053,印记效果，先手攻击时，本次技能威力+20%,待核对
+GAME_RULE:0054,game_rule,龙噬印记,T00,data/nrc_wiki.db:game_rules,54,,印记效果，释放3能耗技能后，获得双攻+40%。,待核对
+GAME_RULE:0054:C01,game_rule_clause,龙噬印记,T00,data/nrc_wiki.db:game_rules,54,GAME_RULE:0054,印记效果，释放3能耗技能后，获得双攻+40%,待核对
+GAME_RULE:0055,game_rule,光合治愈,T00,data/nrc_wiki.db:game_rules,55,,对任意血脉的精灵使用，立即回复15%生命，每回合结束时回复15%生命，持续3回合。,待核对
+GAME_RULE:0055:C01,game_rule_clause,光合治愈,T00,data/nrc_wiki.db:game_rules,55,GAME_RULE:0055,对任意血脉的精灵使用，立即回复15%生命，每回合结束时回复15%生命，持续3回合,待核对
+GAME_RULE:0056,game_rule,愿力强化,T00,data/nrc_wiki.db:game_rules,56,,对任意系别血脉的精灵使用，本回合技能栏首个技能替换为【愿力冲击】，每场战斗可使用2次，冷却3回合。,待核对
+GAME_RULE:0056:C01,game_rule_clause,愿力强化,T00,data/nrc_wiki.db:game_rules,56,GAME_RULE:0056,对任意系别血脉的精灵使用，本回合技能栏首个技能替换为【愿力冲击】，每场战斗可使用2次，冷却3回合,待核对
+GAME_RULE:0057,game_rule,进化之力,T00,data/nrc_wiki.db:game_rules,57,,对首领血脉的精灵使用，可以使该精灵在本场战斗中进化，部分精灵会激活远古血脉。,待核对
+GAME_RULE:0057:C01,game_rule_clause,进化之力,T00,data/nrc_wiki.db:game_rules,57,GAME_RULE:0057,对首领血脉的精灵使用，可以使该精灵在本场战斗中进化，部分精灵会激活远古血脉,待核对

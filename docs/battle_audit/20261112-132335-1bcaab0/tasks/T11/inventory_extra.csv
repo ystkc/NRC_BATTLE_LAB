@@ -1,0 +1,6 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+T11:CONTRACT:outer_transaction_rollback,contract_branch,outer_transaction_rollback,T11,nrc_platform/platform.py,1,,异常回滚接口契约,当前生产路径/本地快照入口
+T11:CONTRACT:room_idempotence,contract_branch,room_idempotence,T11,nrc_platform/platform.py,1,,双人请求幂等接口契约,当前生产路径/本地快照入口
+T11:CONTRACT:snapshot_pending_roundtrip,contract_branch,snapshot_pending_roundtrip,T11,nrc_platform/platform.py,1,,快照恢复语义契约；不要求pickle字节相同,当前生产路径/本地快照入口
+T11:CONTRACT:simultaneous_submissions,contract_branch,simultaneous_submissions,T11,nrc_platform/platform.py,1,,双方提交一次推进契约,当前生产路径/本地快照入口
+T11:CONTRACT:terminal_lock,contract_branch,terminal_lock,T11,nrc_platform/platform.py,1,,data/README.md:33,当前生产路径/本地快照入口

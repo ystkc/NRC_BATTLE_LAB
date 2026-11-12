@@ -1,0 +1,5 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+SEM:nrc_core/engine/handlers_skill.py:POSITIVE_MARKS,semantic_constant,POSITIVE_MARKS,T08,nrc_core/engine/handlers_skill.py,399,FILE:nrc_core/engine/handlers_skill.py,POSITIVE_MARKS = {,印记分类使用；天气两个常量当前无消费者，不能称未上线
+SEM:nrc_core/engine/handlers_skill.py:NEGATIVE_MARKS,semantic_constant,NEGATIVE_MARKS,T08,nrc_core/engine/handlers_skill.py,406,FILE:nrc_core/engine/handlers_skill.py,NEGATIVE_MARKS = {,印记分类使用；天气两个常量当前无消费者，不能称未上线
+SEM:nrc_core/engine/handlers_skill.py:_WEATHER_DAMAGE_TYPES,semantic_constant,_WEATHER_DAMAGE_TYPES,T08,nrc_core/engine/handlers_skill.py,873,FILE:nrc_core/engine/handlers_skill.py,"_WEATHER_DAMAGE_TYPES = {""sandstorm"", ""snow""}   # 洛克王国真实天气（沙暴/雪天）",印记分类使用；天气两个常量当前无消费者，不能称未上线
+SEM:nrc_core/engine/handlers_skill.py:_WEATHER_IMMUNE_TYPES,semantic_constant,_WEATHER_IMMUNE_TYPES,T08,nrc_core/engine/handlers_skill.py,877,FILE:nrc_core/engine/handlers_skill.py,"_WEATHER_IMMUNE_TYPES = {""ground"", ""steel""}      # 游戏无岩系，免疫天气伤害的属性",印记分类使用；天气两个常量当前无消费者，不能称未上线

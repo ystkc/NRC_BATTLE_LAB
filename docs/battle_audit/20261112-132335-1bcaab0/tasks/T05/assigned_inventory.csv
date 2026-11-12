@@ -1,0 +1,517 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_core/__init__.py,file,nrc_core/__init__.py,T05,nrc_core/__init__.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/__init__.py:11:__getattr__,code_object,__getattr__,T05,nrc_core/__init__.py,11,FILE:nrc_core/__init__.py,无描述字符串,待核对
+BRANCH:nrc_core/__init__.py:12:true,code_branch,true,T05,nrc_core/__init__.py,12,FILE:nrc_core/__init__.py,"name in {""BattleRuntime"", ""BattleSession"", ""UnsupportedMechanicError"", ""VersionMismatchError"", ""create_runtime""}",待核对
+BRANCH:nrc_core/__init__.py:12:false,code_branch,false,T05,nrc_core/__init__.py,12,FILE:nrc_core/__init__.py,"name in {""BattleRuntime"", ""BattleSession"", ""UnsupportedMechanicError"", ""VersionMismatchError"", ""create_runtime""}",待核对
+FILE:nrc_core/actions.py,file,nrc_core/actions.py,T05,nrc_core/actions.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/actions.py:11:ActionKind,code_object,ActionKind,T05,nrc_core/actions.py,11,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:19:ItemKind,code_object,ItemKind,T05,nrc_core/actions.py,19,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:27:ActionIntent,code_object,ActionIntent,T05,nrc_core/actions.py,27,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:81:SideTurnInput,code_object,SideTurnInput,T05,nrc_core/actions.py,81,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:39:skill,code_object,skill,T05,nrc_core/actions.py,39,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:45:charge,code_object,charge,T05,nrc_core/actions.py,45,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:49:switch,code_object,switch,T05,nrc_core/actions.py,49,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:53:item,code_object,item,T05,nrc_core/actions.py,53,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:56:validate_primary,code_object,validate_primary,T05,nrc_core/actions.py,56,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:66:to_json,code_object,to_json,T05,nrc_core/actions.py,66,FILE:nrc_core/actions.py,无描述字符串,待核对
+CODE:nrc_core/actions.py:85:validate,code_object,validate,T05,nrc_core/actions.py,85,FILE:nrc_core/actions.py,无描述字符串,待核对
+BRANCH:nrc_core/actions.py:58:true,code_branch,true,T05,nrc_core/actions.py,58,FILE:nrc_core/actions.py,self.kind == ActionKind.SKILL and not (self.skill_id or self.skill_name or self.skill_slot is not None),待核对
+BRANCH:nrc_core/actions.py:58:false,code_branch,false,T05,nrc_core/actions.py,58,FILE:nrc_core/actions.py,self.kind == ActionKind.SKILL and not (self.skill_id or self.skill_name or self.skill_slot is not None),待核对
+BRANCH:nrc_core/actions.py:60:true,code_branch,true,T05,nrc_core/actions.py,60,FILE:nrc_core/actions.py,self.kind == ActionKind.SWITCH and self.switch_index is None,待核对
+BRANCH:nrc_core/actions.py:60:false,code_branch,false,T05,nrc_core/actions.py,60,FILE:nrc_core/actions.py,self.kind == ActionKind.SWITCH and self.switch_index is None,待核对
+BRANCH:nrc_core/actions.py:62:true,code_branch,true,T05,nrc_core/actions.py,62,FILE:nrc_core/actions.py,self.kind == ActionKind.ITEM,待核对
+BRANCH:nrc_core/actions.py:62:false,code_branch,false,T05,nrc_core/actions.py,62,FILE:nrc_core/actions.py,self.kind == ActionKind.ITEM,待核对
+BRANCH:nrc_core/actions.py:87:body,code_branch,body,T05,nrc_core/actions.py,87,FILE:nrc_core/actions.py,For,待核对
+BRANCH:nrc_core/actions.py:87:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/actions.py,87,FILE:nrc_core/actions.py,For,待核对
+BRANCH:nrc_core/actions.py:88:true,code_branch,true,T05,nrc_core/actions.py,88,FILE:nrc_core/actions.py,item.kind != ActionKind.ITEM,待核对
+BRANCH:nrc_core/actions.py:88:false,code_branch,false,T05,nrc_core/actions.py,88,FILE:nrc_core/actions.py,item.kind != ActionKind.ITEM,待核对
+BRANCH:nrc_core/actions.py:74:true,code_branch,true,T05,nrc_core/actions.py,74,FILE:nrc_core/actions.py,self.item_kind,待核对
+BRANCH:nrc_core/actions.py:74:false,code_branch,false,T05,nrc_core/actions.py,74,FILE:nrc_core/actions.py,self.item_kind,待核对
+FILE:nrc_core/codec.py,file,nrc_core/codec.py,T05,nrc_core/codec.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/codec.py:22:_maybe,code_object,_maybe,T05,nrc_core/codec.py,22,FILE:nrc_core/codec.py,无描述字符串,待核对
+CODE:nrc_core/codec.py:26:_maybe_dict,code_object,_maybe_dict,T05,nrc_core/codec.py,26,FILE:nrc_core/codec.py,无描述字符串,待核对
+CODE:nrc_core/codec.py:33:action_from_dict,code_object,action_from_dict,T05,nrc_core/codec.py,33,FILE:nrc_core/codec.py,无描述字符串,待核对
+CODE:nrc_core/codec.py:49:side_turn_from_dict,code_object,side_turn_from_dict,T05,nrc_core/codec.py,49,FILE:nrc_core/codec.py,无描述字符串,待核对
+CODE:nrc_core/codec.py:56:creature_from_dict,code_object,creature_from_dict,T05,nrc_core/codec.py,56,FILE:nrc_core/codec.py,无描述字符串,待核对
+CODE:nrc_core/codec.py:123:team_from_dict,code_object,team_from_dict,T05,nrc_core/codec.py,123,FILE:nrc_core/codec.py,无描述字符串,待核对
+CODE:nrc_core/codec.py:139:battle_request_from_dict,code_object,battle_request_from_dict,T05,nrc_core/codec.py,139,FILE:nrc_core/codec.py,无描述字符串,待核对
+BRANCH:nrc_core/codec.py:28:true,code_branch,true,T05,nrc_core/codec.py,28,FILE:nrc_core/codec.py,value.known and value.exists and value.value is None,待核对
+BRANCH:nrc_core/codec.py:28:false,code_branch,false,T05,nrc_core/codec.py,28,FILE:nrc_core/codec.py,value.known and value.exists and value.value is None,待核对
+BRANCH:nrc_core/codec.py:43:true,code_branch,true,T05,nrc_core/codec.py,43,FILE:nrc_core/codec.py,item_kind,待核对
+BRANCH:nrc_core/codec.py:43:false,code_branch,false,T05,nrc_core/codec.py,43,FILE:nrc_core/codec.py,item_kind,待核对
+BRANCH:nrc_core/codec.py:158:true,code_branch,true,T05,nrc_core/codec.py,158,FILE:nrc_core/codec.py,"raw.get(""own_turn"")",待核对
+BRANCH:nrc_core/codec.py:158:false,code_branch,false,T05,nrc_core/codec.py,158,FILE:nrc_core/codec.py,"raw.get(""own_turn"")",待核对
+BRANCH:nrc_core/codec.py:159:true,code_branch,true,T05,nrc_core/codec.py,159,FILE:nrc_core/codec.py,"raw.get(""opponent_turn"")",待核对
+BRANCH:nrc_core/codec.py:159:false,code_branch,false,T05,nrc_core/codec.py,159,FILE:nrc_core/codec.py,"raw.get(""opponent_turn"")",待核对
+BRANCH:nrc_core/codec.py:100:true,code_branch,true,T05,nrc_core/codec.py,100,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:100:false,code_branch,false,T05,nrc_core/codec.py,100,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:101:true,code_branch,true,T05,nrc_core/codec.py,101,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:101:false,code_branch,false,T05,nrc_core/codec.py,101,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:95:true,code_branch,true,T05,nrc_core/codec.py,95,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:95:false,code_branch,false,T05,nrc_core/codec.py,95,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:96:true,code_branch,true,T05,nrc_core/codec.py,96,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:96:false,code_branch,false,T05,nrc_core/codec.py,96,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:97:true,code_branch,true,T05,nrc_core/codec.py,97,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:97:false,code_branch,false,T05,nrc_core/codec.py,97,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:98:true,code_branch,true,T05,nrc_core/codec.py,98,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:98:false,code_branch,false,T05,nrc_core/codec.py,98,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:99:true,code_branch,true,T05,nrc_core/codec.py,99,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+BRANCH:nrc_core/codec.py:99:false,code_branch,false,T05,nrc_core/codec.py,99,FILE:nrc_core/codec.py,"isinstance(slot, dict)",待核对
+FILE:nrc_core/contracts.py,file,nrc_core/contracts.py,T05,nrc_core/contracts.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/contracts.py:12:CoreManifest,code_object,CoreManifest,T05,nrc_core/contracts.py,12,FILE:nrc_core/contracts.py,运行协议与规则目录版本。,待核对
+CODE:nrc_core/contracts.py:24:LegalAction,code_object,LegalAction,T05,nrc_core/contracts.py,24,FILE:nrc_core/contracts.py,合法动作键与解析后的动作内容。,待核对
+CODE:nrc_core/contracts.py:32:Decision,code_object,Decision,T05,nrc_core/contracts.py,32,FILE:nrc_core/contracts.py,当前决策阶段与需要提交操作的玩家。,待核对
+CODE:nrc_core/contracts.py:44:Observation,code_object,Observation,T05,nrc_core/contracts.py,44,FILE:nrc_core/contracts.py,面向指定玩家的结构化观测。,待核对
+CODE:nrc_core/contracts.py:55:Transition,code_object,Transition,T05,nrc_core/contracts.py,55,FILE:nrc_core/contracts.py,一次推进后的状态、观测与战斗事件。,待核对
+CODE:nrc_core/contracts.py:66:CoreBackend,code_object,CoreBackend,T05,nrc_core/contracts.py,66,FILE:nrc_core/contracts.py,战斗运行器的结构化调用协议。,待核对
+CODE:nrc_core/contracts.py:81:action_map,code_object,action_map,T05,nrc_core/contracts.py,81,FILE:nrc_core/contracts.py,校验动作键并建立索引。,待核对
+CODE:nrc_core/contracts.py:70:manifest,code_object,manifest,T05,nrc_core/contracts.py,70,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:71:new_game,code_object,new_game,T05,nrc_core/contracts.py,71,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:72:clone,code_object,clone,T05,nrc_core/contracts.py,72,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:73:decision,code_object,decision,T05,nrc_core/contracts.py,73,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:74:observe,code_object,observe,T05,nrc_core/contracts.py,74,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:75:legal_actions,code_object,legal_actions,T05,nrc_core/contracts.py,75,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:76:advance,code_object,advance,T05,nrc_core/contracts.py,76,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:77:export_state,code_object,export_state,T05,nrc_core/contracts.py,77,FILE:nrc_core/contracts.py,无描述字符串,待核对
+CODE:nrc_core/contracts.py:78:import_state,code_object,import_state,T05,nrc_core/contracts.py,78,FILE:nrc_core/contracts.py,无描述字符串,待核对
+BRANCH:nrc_core/contracts.py:84:body,code_branch,body,T05,nrc_core/contracts.py,84,FILE:nrc_core/contracts.py,For,待核对
+BRANCH:nrc_core/contracts.py:84:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/contracts.py,84,FILE:nrc_core/contracts.py,For,待核对
+BRANCH:nrc_core/contracts.py:85:true,code_branch,true,T05,nrc_core/contracts.py,85,FILE:nrc_core/contracts.py,not action.key or action.key in result,待核对
+BRANCH:nrc_core/contracts.py:85:false,code_branch,false,T05,nrc_core/contracts.py,85,FILE:nrc_core/contracts.py,not action.key or action.key in result,待核对
+FILE:nrc_core/debug.py,file,nrc_core/debug.py,T05,nrc_core/debug.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/debug.py:28:configure_core_logging,code_object,configure_core_logging,T05,nrc_core/debug.py,28,FILE:nrc_core/debug.py,"Configure console diagnostics; empty spec disables logging.
+
+``spec`` accepts ``all``/``1`` or a comma-separated category list.  The
+environment variable ``NRC_CORE_LOG`` is used when ``spec`` is omitted.",待核对
+CODE:nrc_core/debug.py:45:core_log,code_object,core_log,T05,nrc_core/debug.py,45,FILE:nrc_core/debug.py,无描述字符串,待核对
+CODE:nrc_core/debug.py:52:core_logging_enabled,code_object,core_logging_enabled,T05,nrc_core/debug.py,52,FILE:nrc_core/debug.py,无描述字符串,待核对
+BRANCH:nrc_core/debug.py:40:true,code_branch,true,T05,nrc_core/debug.py,40,FILE:nrc_core/debug.py,stream is not None,待核对
+BRANCH:nrc_core/debug.py:40:false,code_branch,false,T05,nrc_core/debug.py,40,FILE:nrc_core/debug.py,stream is not None,待核对
+BRANCH:nrc_core/debug.py:46:true,code_branch,true,T05,nrc_core/debug.py,46,FILE:nrc_core/debug.py,category not in _categories and _ALL not in _categories,待核对
+BRANCH:nrc_core/debug.py:46:false,code_branch,false,T05,nrc_core/debug.py,46,FILE:nrc_core/debug.py,category not in _categories and _ALL not in _categories,待核对
+BRANCH:nrc_core/debug.py:35:true,code_branch,true,T05,nrc_core/debug.py,35,FILE:nrc_core/debug.py,spec is None,待核对
+BRANCH:nrc_core/debug.py:35:false,code_branch,false,T05,nrc_core/debug.py,35,FILE:nrc_core/debug.py,spec is None,待核对
+BRANCH:nrc_core/debug.py:37:true,code_branch,true,T05,nrc_core/debug.py,37,FILE:nrc_core/debug.py,"raw in {""1"", ""true"", ""yes"", _ALL}",待核对
+BRANCH:nrc_core/debug.py:37:false,code_branch,false,T05,nrc_core/debug.py,37,FILE:nrc_core/debug.py,"raw in {""1"", ""true"", ""yes"", _ALL}",待核对
+FILE:nrc_core/devotion.py,file,nrc_core/devotion.py,T05,nrc_core/devotion.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/devotion.py:33:DevotionInput,code_object,DevotionInput,T05,nrc_core/devotion.py,33,FILE:nrc_core/devotion.py,"一方的奉献状态。
+
+``specified_counts`` 是已经确定的指定奉献；``random_counts`` 是已经
+通过观测或己方信息确认的随机奉献分配。只有 ``random_draws`` 已知而
+``random_counts`` 未知时，才表示“随机状态”，模拟器不会强行猜测其
+具体分配，而会返回潜变量分支。",待核对
+CODE:nrc_core/devotion.py:47:to_json,code_object,to_json,T05,nrc_core/devotion.py,47,FILE:nrc_core/devotion.py,无描述字符串,待核对
+CODE:nrc_core/devotion.py:56:random_is_unresolved,code_object,random_is_unresolved,T05,nrc_core/devotion.py,56,FILE:nrc_core/devotion.py,无描述字符串,待核对
+FILE:nrc_core/README.md,file,nrc_core/README.md,T05,nrc_core/README.md,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_core/rules_support.py,file,nrc_core/rules_support.py,T05,nrc_core/rules_support.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/rules_support.py:38:_layer_entries,code_object,_layer_entries,T05,nrc_core/rules_support.py,38,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:53:_layer_name,code_object,_layer_name,T05,nrc_core/rules_support.py,53,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:56:_layer_stacks,code_object,_layer_stacks,T05,nrc_core/rules_support.py,56,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:62:_layer_unit_value,code_object,_layer_unit_value,T05,nrc_core/rules_support.py,62,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:69:_stat_layer_key,code_object,_stat_layer_key,T05,nrc_core/rules_support.py,69,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:73:_status_layer_key,code_object,_status_layer_key,T05,nrc_core/rules_support.py,73,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:77:BattleRulesSupport,code_object,BattleRulesSupport,T05,nrc_core/rules_support.py,77,FILE:nrc_core/rules_support.py,仅操作完整战斗对象，不补全原始观测输入。,待核对
+BRANCH:nrc_core/rules_support.py:39:true,code_branch,true,T05,nrc_core/rules_support.py,39,FILE:nrc_core/rules_support.py,raw is None,待核对
+BRANCH:nrc_core/rules_support.py:39:false,code_branch,false,T05,nrc_core/rules_support.py,39,FILE:nrc_core/rules_support.py,raw is None,待核对
+BRANCH:nrc_core/rules_support.py:41:true,code_branch,true,T05,nrc_core/rules_support.py,41,FILE:nrc_core/rules_support.py,"isinstance(raw, dict)",待核对
+BRANCH:nrc_core/rules_support.py:41:false,code_branch,false,T05,nrc_core/rules_support.py,41,FILE:nrc_core/rules_support.py,"isinstance(raw, dict)",待核对
+BRANCH:nrc_core/rules_support.py:43:true,code_branch,true,T05,nrc_core/rules_support.py,43,FILE:nrc_core/rules_support.py,"not isinstance(raw, list)",待核对
+BRANCH:nrc_core/rules_support.py:43:false,code_branch,false,T05,nrc_core/rules_support.py,43,FILE:nrc_core/rules_support.py,"not isinstance(raw, list)",待核对
+BRANCH:nrc_core/rules_support.py:46:body,code_branch,body,T05,nrc_core/rules_support.py,46,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:46:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,46,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:63:true,code_branch,true,T05,nrc_core/rules_support.py,63,FILE:nrc_core/rules_support.py,"isinstance(unit, (int, float))",待核对
+BRANCH:nrc_core/rules_support.py:63:false,code_branch,false,T05,nrc_core/rules_support.py,63,FILE:nrc_core/rules_support.py,"isinstance(unit, (int, float))",待核对
+CODE:nrc_core/rules_support.py:80:__init__,code_object,__init__,T05,nrc_core/rules_support.py,80,FILE:nrc_core/rules_support.py,绑定已解析的共鸣形态和技能映射。,待核对
+CODE:nrc_core/rules_support.py:85:_is_boss_bloodline,code_object,_is_boss_bloodline,T05,nrc_core/rules_support.py,85,FILE:nrc_core/rules_support.py,读取平台已规范化的首领血脉标记。,待核对
+CODE:nrc_core/rules_support.py:90:_bloodline_type,code_object,_bloodline_type,T05,nrc_core/rules_support.py,90,FILE:nrc_core/rules_support.py,读取平台已解析的系别血脉。,待核对
+CODE:nrc_core/rules_support.py:95:_apply_boss_resonance,code_object,_apply_boss_resonance,T05,nrc_core/rules_support.py,95,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:140:_apply_resonance_items,code_object,_apply_resonance_items,T05,nrc_core/rules_support.py,140,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:186:_restore_resonance_items,code_object,_restore_resonance_items,T05,nrc_core/rules_support.py,186,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:190:_to_legacy_action,code_object,_to_legacy_action,T05,nrc_core/rules_support.py,190,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:208:_snapshot_layers,code_object,_snapshot_layers,T05,nrc_core/rules_support.py,208,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:237:_snapshot_statuses,code_object,_snapshot_statuses,T05,nrc_core/rules_support.py,237,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:252:_snapshot_marks,code_object,_snapshot_marks,T05,nrc_core/rules_support.py,252,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:256:_snapshot_ability_states,code_object,_snapshot_ability_states,T05,nrc_core/rules_support.py,256,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+CODE:nrc_core/rules_support.py:270:_state_change_events,code_object,_state_change_events,T05,nrc_core/rules_support.py,270,FILE:nrc_core/rules_support.py,无描述字符串,待核对
+BRANCH:nrc_core/rules_support.py:47:true,code_branch,true,T05,nrc_core/rules_support.py,47,FILE:nrc_core/rules_support.py,"isinstance(item, str)",待核对
+BRANCH:nrc_core/rules_support.py:47:false,code_branch,false,T05,nrc_core/rules_support.py,47,FILE:nrc_core/rules_support.py,"isinstance(item, str)",待核对
+BRANCH:nrc_core/rules_support.py:59:exception,code_branch,exception,T05,nrc_core/rules_support.py,59,FILE:nrc_core/rules_support.py,ExceptHandler,待核对
+BRANCH:nrc_core/rules_support.py:97:true,code_branch,true,T05,nrc_core/rules_support.py,97,FILE:nrc_core/rules_support.py,"getattr(state, used_name)",待核对
+BRANCH:nrc_core/rules_support.py:97:false,code_branch,false,T05,nrc_core/rules_support.py,97,FILE:nrc_core/rules_support.py,"getattr(state, used_name)",待核对
+BRANCH:nrc_core/rules_support.py:100:true,code_branch,true,T05,nrc_core/rules_support.py,100,FILE:nrc_core/rules_support.py,not self._is_boss_bloodline(active),待核对
+BRANCH:nrc_core/rules_support.py:100:false,code_branch,false,T05,nrc_core/rules_support.py,100,FILE:nrc_core/rules_support.py,not self._is_boss_bloodline(active),待核对
+BRANCH:nrc_core/rules_support.py:106:true,code_branch,true,T05,nrc_core/rules_support.py,106,FILE:nrc_core/rules_support.py,len(candidates) != 1,待核对
+BRANCH:nrc_core/rules_support.py:106:false,code_branch,false,T05,nrc_core/rules_support.py,106,FILE:nrc_core/rules_support.py,len(candidates) != 1,待核对
+BRANCH:nrc_core/rules_support.py:136:true,code_branch,true,T05,nrc_core/rules_support.py,136,FILE:nrc_core/rules_support.py,active.ability_effects,待核对
+BRANCH:nrc_core/rules_support.py:136:false,code_branch,false,T05,nrc_core/rules_support.py,136,FILE:nrc_core/rules_support.py,active.ability_effects,待核对
+BRANCH:nrc_core/rules_support.py:142:true,code_branch,true,T05,nrc_core/rules_support.py,142,FILE:nrc_core/rules_support.py,not items,待核对
+BRANCH:nrc_core/rules_support.py:142:false,code_branch,false,T05,nrc_core/rules_support.py,142,FILE:nrc_core/rules_support.py,not items,待核对
+BRANCH:nrc_core/rules_support.py:144:true,code_branch,true,T05,nrc_core/rules_support.py,144,FILE:nrc_core/rules_support.py,len(items) > 1,待核对
+BRANCH:nrc_core/rules_support.py:144:false,code_branch,false,T05,nrc_core/rules_support.py,144,FILE:nrc_core/rules_support.py,len(items) > 1,待核对
+BRANCH:nrc_core/rules_support.py:148:true,code_branch,true,T05,nrc_core/rules_support.py,148,FILE:nrc_core/rules_support.py,kind != carried,待核对
+BRANCH:nrc_core/rules_support.py:148:false,code_branch,false,T05,nrc_core/rules_support.py,148,FILE:nrc_core/rules_support.py,kind != carried,待核对
+BRANCH:nrc_core/rules_support.py:151:true,code_branch,true,T05,nrc_core/rules_support.py,151,FILE:nrc_core/rules_support.py,active.is_fainted,待核对
+BRANCH:nrc_core/rules_support.py:151:false,code_branch,false,T05,nrc_core/rules_support.py,151,FILE:nrc_core/rules_support.py,active.is_fainted,待核对
+BRANCH:nrc_core/rules_support.py:153:true,code_branch,true,T05,nrc_core/rules_support.py,153,FILE:nrc_core/rules_support.py,"kind == ""willpower""",待核对
+BRANCH:nrc_core/rules_support.py:153:false,code_branch,false,T05,nrc_core/rules_support.py,153,FILE:nrc_core/rules_support.py,"kind == ""willpower""",待核对
+BRANCH:nrc_core/rules_support.py:187:body,code_branch,body,T05,nrc_core/rules_support.py,187,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:187:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,187,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:191:true,code_branch,true,T05,nrc_core/rules_support.py,191,FILE:nrc_core/rules_support.py,action.kind == ActionKind.CHARGE or action.kind == ActionKind.PASS,待核对
+BRANCH:nrc_core/rules_support.py:191:false,code_branch,false,T05,nrc_core/rules_support.py,191,FILE:nrc_core/rules_support.py,action.kind == ActionKind.CHARGE or action.kind == ActionKind.PASS,待核对
+BRANCH:nrc_core/rules_support.py:193:true,code_branch,true,T05,nrc_core/rules_support.py,193,FILE:nrc_core/rules_support.py,action.kind == ActionKind.SWITCH,待核对
+BRANCH:nrc_core/rules_support.py:193:false,code_branch,false,T05,nrc_core/rules_support.py,193,FILE:nrc_core/rules_support.py,action.kind == ActionKind.SWITCH,待核对
+BRANCH:nrc_core/rules_support.py:197:true,code_branch,true,T05,nrc_core/rules_support.py,197,FILE:nrc_core/rules_support.py,action.kind != ActionKind.SKILL,待核对
+BRANCH:nrc_core/rules_support.py:197:false,code_branch,false,T05,nrc_core/rules_support.py,197,FILE:nrc_core/rules_support.py,action.kind != ActionKind.SKILL,待核对
+BRANCH:nrc_core/rules_support.py:200:true,code_branch,true,T05,nrc_core/rules_support.py,200,FILE:nrc_core/rules_support.py,action.skill_slot is not None,待核对
+BRANCH:nrc_core/rules_support.py:200:false,code_branch,false,T05,nrc_core/rules_support.py,200,FILE:nrc_core/rules_support.py,action.skill_slot is not None,待核对
+BRANCH:nrc_core/rules_support.py:210:true,code_branch,true,T05,nrc_core/rules_support.py,210,FILE:nrc_core/rules_support.py,stored,待核对
+BRANCH:nrc_core/rules_support.py:210:false,code_branch,false,T05,nrc_core/rules_support.py,210,FILE:nrc_core/rules_support.py,stored,待核对
+BRANCH:nrc_core/rules_support.py:227:body,code_branch,body,T05,nrc_core/rules_support.py,227,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:227:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,227,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:232:true,code_branch,true,T05,nrc_core/rules_support.py,232,FILE:nrc_core/rules_support.py,"direction == ""up"" and action_speed_layers > 0",待核对
+BRANCH:nrc_core/rules_support.py:232:false,code_branch,false,T05,nrc_core/rules_support.py,232,FILE:nrc_core/rules_support.py,"direction == ""up"" and action_speed_layers > 0",待核对
+BRANCH:nrc_core/rules_support.py:239:true,code_branch,true,T05,nrc_core/rules_support.py,239,FILE:nrc_core/rules_support.py,stored,待核对
+BRANCH:nrc_core/rules_support.py:239:false,code_branch,false,T05,nrc_core/rules_support.py,239,FILE:nrc_core/rules_support.py,stored,待核对
+BRANCH:nrc_core/rules_support.py:260:body,code_branch,body,T05,nrc_core/rules_support.py,260,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:260:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,260,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:274:body,code_branch,body,T05,nrc_core/rules_support.py,274,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:274:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,274,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:49:true,code_branch,true,T05,nrc_core/rules_support.py,49,FILE:nrc_core/rules_support.py,"isinstance(item, dict)",待核对
+BRANCH:nrc_core/rules_support.py:49:false,code_branch,false,T05,nrc_core/rules_support.py,49,FILE:nrc_core/rules_support.py,"isinstance(item, dict)",待核对
+BRANCH:nrc_core/rules_support.py:93:true,code_branch,true,T05,nrc_core/rules_support.py,93,FILE:nrc_core/rules_support.py,"isinstance(value, Type)",待核对
+BRANCH:nrc_core/rules_support.py:93:false,code_branch,false,T05,nrc_core/rules_support.py,93,FILE:nrc_core/rules_support.py,"isinstance(value, Type)",待核对
+BRANCH:nrc_core/rules_support.py:96:true,code_branch,true,T05,nrc_core/rules_support.py,96,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:96:false,code_branch,false,T05,nrc_core/rules_support.py,96,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:104:true,code_branch,true,T05,nrc_core/rules_support.py,104,FILE:nrc_core/rules_support.py,boss_name,待核对
+BRANCH:nrc_core/rules_support.py:104:false,code_branch,false,T05,nrc_core/rules_support.py,104,FILE:nrc_core/rules_support.py,boss_name,待核对
+BRANCH:nrc_core/rules_support.py:147:true,code_branch,true,T05,nrc_core/rules_support.py,147,FILE:nrc_core/rules_support.py,item.item_kind,待核对
+BRANCH:nrc_core/rules_support.py:147:false,code_branch,false,T05,nrc_core/rules_support.py,147,FILE:nrc_core/rules_support.py,item.item_kind,待核对
+BRANCH:nrc_core/rules_support.py:156:true,code_branch,true,T05,nrc_core/rules_support.py,156,FILE:nrc_core/rules_support.py,"getattr(state, uses_name) >= 2 or getattr(state, cooldown_name) > 0",待核对
+BRANCH:nrc_core/rules_support.py:156:false,code_branch,false,T05,nrc_core/rules_support.py,156,FILE:nrc_core/rules_support.py,"getattr(state, uses_name) >= 2 or getattr(state, cooldown_name) > 0",待核对
+BRANCH:nrc_core/rules_support.py:159:true,code_branch,true,T05,nrc_core/rules_support.py,159,FILE:nrc_core/rules_support.py,bloodline_type is None,待核对
+BRANCH:nrc_core/rules_support.py:159:false,code_branch,false,T05,nrc_core/rules_support.py,159,FILE:nrc_core/rules_support.py,bloodline_type is None,待核对
+BRANCH:nrc_core/rules_support.py:171:true,code_branch,true,T05,nrc_core/rules_support.py,171,FILE:nrc_core/rules_support.py,"kind == ""boss""",待核对
+BRANCH:nrc_core/rules_support.py:171:false,code_branch,false,T05,nrc_core/rules_support.py,171,FILE:nrc_core/rules_support.py,"kind == ""boss""",待核对
+BRANCH:nrc_core/rules_support.py:194:true,code_branch,true,T05,nrc_core/rules_support.py,194,FILE:nrc_core/rules_support.py,action.switch_index is None,待核对
+BRANCH:nrc_core/rules_support.py:194:false,code_branch,false,T05,nrc_core/rules_support.py,194,FILE:nrc_core/rules_support.py,action.switch_index is None,待核对
+BRANCH:nrc_core/rules_support.py:201:true,code_branch,true,T05,nrc_core/rules_support.py,201,FILE:nrc_core/rules_support.py,not 0 <= int(action.skill_slot) < len(current.skills),待核对
+BRANCH:nrc_core/rules_support.py:201:false,code_branch,false,T05,nrc_core/rules_support.py,201,FILE:nrc_core/rules_support.py,not 0 <= int(action.skill_slot) < len(current.skills),待核对
+BRANCH:nrc_core/rules_support.py:212:body,code_branch,body,T05,nrc_core/rules_support.py,212,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:212:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,212,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:223:true,code_branch,true,T05,nrc_core/rules_support.py,223,FILE:nrc_core/rules_support.py,"direction == ""up"" and action_speed_layers > 0",待核对
+BRANCH:nrc_core/rules_support.py:223:false,code_branch,false,T05,nrc_core/rules_support.py,223,FILE:nrc_core/rules_support.py,"direction == ""up"" and action_speed_layers > 0",待核对
+BRANCH:nrc_core/rules_support.py:229:true,code_branch,true,T05,nrc_core/rules_support.py,229,FILE:nrc_core/rules_support.py,value,待核对
+BRANCH:nrc_core/rules_support.py:229:false,code_branch,false,T05,nrc_core/rules_support.py,229,FILE:nrc_core/rules_support.py,value,待核对
+BRANCH:nrc_core/rules_support.py:241:body,code_branch,body,T05,nrc_core/rules_support.py,241,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:241:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,241,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:261:true,code_branch,true,T05,nrc_core/rules_support.py,261,FILE:nrc_core/rules_support.py,"key in {""layered_state"", ""lab_metadata"", ""battle_context"", ""last_skill_cost"", ""last_skill_turn"", ""faint_processed""} or str(key).startswith(""_"")",待核对
+BRANCH:nrc_core/rules_support.py:261:false,code_branch,false,T05,nrc_core/rules_support.py,261,FILE:nrc_core/rules_support.py,"key in {""layered_state"", ""lab_metadata"", ""battle_context"", ""last_skill_cost"", ""last_skill_turn"", ""faint_processed""} or str(key).startswith(""_"")",待核对
+BRANCH:nrc_core/rules_support.py:263:true,code_branch,true,T05,nrc_core/rules_support.py,263,FILE:nrc_core/rules_support.py,"isinstance(value, bool) and value",待核对
+BRANCH:nrc_core/rules_support.py:263:false,code_branch,false,T05,nrc_core/rules_support.py,263,FILE:nrc_core/rules_support.py,"isinstance(value, bool) and value",待核对
+BRANCH:nrc_core/rules_support.py:280:body,code_branch,body,T05,nrc_core/rules_support.py,280,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:280:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,280,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:284:body,code_branch,body,T05,nrc_core/rules_support.py,284,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:284:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,284,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:289:body,code_branch,body,T05,nrc_core/rules_support.py,289,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:289:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,289,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:320:true,code_branch,true,T05,nrc_core/rules_support.py,320,FILE:nrc_core/rules_support.py,changes,待核对
+BRANCH:nrc_core/rules_support.py:320:false,code_branch,false,T05,nrc_core/rules_support.py,320,FILE:nrc_core/rules_support.py,changes,待核对
+BRANCH:nrc_core/rules_support.py:322:true,code_branch,true,T05,nrc_core/rules_support.py,322,FILE:nrc_core/rules_support.py,private_changes,待核对
+BRANCH:nrc_core/rules_support.py:322:false,code_branch,false,T05,nrc_core/rules_support.py,322,FILE:nrc_core/rules_support.py,private_changes,待核对
+BRANCH:nrc_core/rules_support.py:135:true,code_branch,true,T05,nrc_core/rules_support.py,135,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:135:false,code_branch,false,T05,nrc_core/rules_support.py,135,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:154:true,code_branch,true,T05,nrc_core/rules_support.py,154,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:154:false,code_branch,false,T05,nrc_core/rules_support.py,154,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:155:true,code_branch,true,T05,nrc_core/rules_support.py,155,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:155:false,code_branch,false,T05,nrc_core/rules_support.py,155,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:173:true,code_branch,true,T05,nrc_core/rules_support.py,173,FILE:nrc_core/rules_support.py,"kind == ""solar_heal""",待核对
+BRANCH:nrc_core/rules_support.py:173:false,code_branch,false,T05,nrc_core/rules_support.py,173,FILE:nrc_core/rules_support.py,"kind == ""solar_heal""",待核对
+BRANCH:nrc_core/rules_support.py:209:true,code_branch,true,T05,nrc_core/rules_support.py,209,FILE:nrc_core/rules_support.py,"direction == ""up""",待核对
+BRANCH:nrc_core/rules_support.py:209:false,code_branch,false,T05,nrc_core/rules_support.py,209,FILE:nrc_core/rules_support.py,"direction == ""up""",待核对
+BRANCH:nrc_core/rules_support.py:217:true,code_branch,true,T05,nrc_core/rules_support.py,217,FILE:nrc_core/rules_support.py,"stat and unit != ""legacy""",待核对
+BRANCH:nrc_core/rules_support.py:217:false,code_branch,false,T05,nrc_core/rules_support.py,217,FILE:nrc_core/rules_support.py,"stat and unit != ""legacy""",待核对
+BRANCH:nrc_core/rules_support.py:265:true,code_branch,true,T05,nrc_core/rules_support.py,265,FILE:nrc_core/rules_support.py,"isinstance(value, (int, float)) and value",待核对
+BRANCH:nrc_core/rules_support.py:265:false,code_branch,false,T05,nrc_core/rules_support.py,265,FILE:nrc_core/rules_support.py,"isinstance(value, (int, float)) and value",待核对
+BRANCH:nrc_core/rules_support.py:275:true,code_branch,true,T05,nrc_core/rules_support.py,275,FILE:nrc_core/rules_support.py,index < len(before_creatures),待核对
+BRANCH:nrc_core/rules_support.py:275:false,code_branch,false,T05,nrc_core/rules_support.py,275,FILE:nrc_core/rules_support.py,index < len(before_creatures),待核对
+BRANCH:nrc_core/rules_support.py:281:true,code_branch,true,T05,nrc_core/rules_support.py,281,FILE:nrc_core/rules_support.py,"old_modifiers.get(name, 0) != new_modifiers.get(name, 0)",待核对
+BRANCH:nrc_core/rules_support.py:281:false,code_branch,false,T05,nrc_core/rules_support.py,281,FILE:nrc_core/rules_support.py,"old_modifiers.get(name, 0) != new_modifiers.get(name, 0)",待核对
+BRANCH:nrc_core/rules_support.py:287:true,code_branch,true,T05,nrc_core/rules_support.py,287,FILE:nrc_core/rules_support.py,old_value != new_value,待核对
+BRANCH:nrc_core/rules_support.py:287:false,code_branch,false,T05,nrc_core/rules_support.py,287,FILE:nrc_core/rules_support.py,old_value != new_value,待核对
+BRANCH:nrc_core/rules_support.py:292:true,code_branch,true,T05,nrc_core/rules_support.py,292,FILE:nrc_core/rules_support.py,"field == ""skills""",待核对
+BRANCH:nrc_core/rules_support.py:292:false,code_branch,false,T05,nrc_core/rules_support.py,292,FILE:nrc_core/rules_support.py,"field == ""skills""",待核对
+BRANCH:nrc_core/rules_support.py:313:body,code_branch,body,T05,nrc_core/rules_support.py,313,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:313:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,313,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:175:true,code_branch,true,T05,nrc_core/rules_support.py,175,FILE:nrc_core/rules_support.py,"getattr(state, used_name)",待核对
+BRANCH:nrc_core/rules_support.py:175:false,code_branch,false,T05,nrc_core/rules_support.py,175,FILE:nrc_core/rules_support.py,"getattr(state, used_name)",待核对
+BRANCH:nrc_core/rules_support.py:219:true,code_branch,true,T05,nrc_core/rules_support.py,219,FILE:nrc_core/rules_support.py,unit_value > 0,待核对
+BRANCH:nrc_core/rules_support.py:219:false,code_branch,false,T05,nrc_core/rules_support.py,219,FILE:nrc_core/rules_support.py,unit_value > 0,待核对
+BRANCH:nrc_core/rules_support.py:245:true,code_branch,true,T05,nrc_core/rules_support.py,245,FILE:nrc_core/rules_support.py,field,待核对
+BRANCH:nrc_core/rules_support.py:245:false,code_branch,false,T05,nrc_core/rules_support.py,245,FILE:nrc_core/rules_support.py,field,待核对
+BRANCH:nrc_core/rules_support.py:295:body,code_branch,body,T05,nrc_core/rules_support.py,295,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:295:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,295,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:318:true,code_branch,true,T05,nrc_core/rules_support.py,318,FILE:nrc_core/rules_support.py,old_stacks != new_stacks,待核对
+BRANCH:nrc_core/rules_support.py:318:false,code_branch,false,T05,nrc_core/rules_support.py,318,FILE:nrc_core/rules_support.py,old_stacks != new_stacks,待核对
+BRANCH:nrc_core/rules_support.py:174:true,code_branch,true,T05,nrc_core/rules_support.py,174,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:174:false,code_branch,false,T05,nrc_core/rules_support.py,174,FILE:nrc_core/rules_support.py,"team == ""a""",待核对
+BRANCH:nrc_core/rules_support.py:296:true,code_branch,true,T05,nrc_core/rules_support.py,296,FILE:nrc_core/rules_support.py,slot >= len(old_items),待核对
+BRANCH:nrc_core/rules_support.py:296:false,code_branch,false,T05,nrc_core/rules_support.py,296,FILE:nrc_core/rules_support.py,slot >= len(old_items),待核对
+BRANCH:nrc_core/rules_support.py:299:body,code_branch,body,T05,nrc_core/rules_support.py,299,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:299:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/rules_support.py,299,FILE:nrc_core/rules_support.py,For,待核对
+BRANCH:nrc_core/rules_support.py:302:true,code_branch,true,T05,nrc_core/rules_support.py,302,FILE:nrc_core/rules_support.py,old_value is None or new_value is None,待核对
+BRANCH:nrc_core/rules_support.py:302:false,code_branch,false,T05,nrc_core/rules_support.py,302,FILE:nrc_core/rules_support.py,old_value is None or new_value is None,待核对
+BRANCH:nrc_core/rules_support.py:307:true,code_branch,true,T05,nrc_core/rules_support.py,307,FILE:nrc_core/rules_support.py,delta,待核对
+BRANCH:nrc_core/rules_support.py:307:false,code_branch,false,T05,nrc_core/rules_support.py,307,FILE:nrc_core/rules_support.py,delta,待核对
+BRANCH:nrc_core/rules_support.py:304:true,code_branch,true,T05,nrc_core/rules_support.py,304,FILE:nrc_core/rules_support.py,slot < len(old_public),待核对
+BRANCH:nrc_core/rules_support.py:304:false,code_branch,false,T05,nrc_core/rules_support.py,304,FILE:nrc_core/rules_support.py,slot < len(old_public),待核对
+BRANCH:nrc_core/rules_support.py:305:true,code_branch,true,T05,nrc_core/rules_support.py,305,FILE:nrc_core/rules_support.py,slot < len(new_public),待核对
+BRANCH:nrc_core/rules_support.py:305:false,code_branch,false,T05,nrc_core/rules_support.py,305,FILE:nrc_core/rules_support.py,slot < len(new_public),待核对
+FILE:nrc_core/runtime.py,file,nrc_core/runtime.py,T05,nrc_core/runtime.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/runtime.py:41:UnsupportedMechanicError,code_object,UnsupportedMechanicError,T05,nrc_core/runtime.py,41,FILE:nrc_core/runtime.py,Raised when a setup would require an unimplemented rule mechanism.,待核对
+CODE:nrc_core/runtime.py:45:VersionMismatchError,code_object,VersionMismatchError,T05,nrc_core/runtime.py,45,FILE:nrc_core/runtime.py,Raised when a snapshot belongs to a different core contract.,待核对
+CODE:nrc_core/runtime.py:50:BattleSession,code_object,BattleSession,T05,nrc_core/runtime.py,50,FILE:nrc_core/runtime.py,保存一次对战的完整状态与当前决策阶段。,待核对
+CODE:nrc_core/runtime.py:68:_isolated_rng,code_object,_isolated_rng,T05,nrc_core/runtime.py,68,FILE:nrc_core/runtime.py,Run the legacy engine from a deterministic call-local RNG.,待核对
+CODE:nrc_core/runtime.py:75:_manifest,code_object,_manifest,T05,nrc_core/runtime.py,75,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:79:_manifest_json,code_object,_manifest_json,T05,nrc_core/runtime.py,79,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:90:_decision_json,code_object,_decision_json,T05,nrc_core/runtime.py,90,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:101:_status_name,code_object,_status_name,T05,nrc_core/runtime.py,101,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:105:_skill_json,code_object,_skill_json,T05,nrc_core/runtime.py,105,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:122:_pokemon_json,code_object,_pokemon_json,T05,nrc_core/runtime.py,122,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:177:_weather_backups,code_object,_weather_backups,T05,nrc_core/runtime.py,177,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:188:_restore_weather_backups,code_object,_restore_weather_backups,T05,nrc_core/runtime.py,188,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:196:BattleRuntime,code_object,BattleRuntime,T05,nrc_core/runtime.py,196,FILE:nrc_core/runtime.py,使用上层注入的规则目录推进完整对战。,待核对
+CODE:nrc_core/runtime.py:537:create_runtime,code_object,create_runtime,T05,nrc_core/runtime.py,537,FILE:nrc_core/runtime.py,通过明确注入的规则目录创建战斗运行器。,待核对
+BRANCH:nrc_core/runtime.py:113:true,code_branch,true,T05,nrc_core/runtime.py,113,FILE:nrc_core/runtime.py,private,待核对
+BRANCH:nrc_core/runtime.py:113:false,code_branch,false,T05,nrc_core/runtime.py,113,FILE:nrc_core/runtime.py,private,待核对
+BRANCH:nrc_core/runtime.py:139:true,code_branch,true,T05,nrc_core/runtime.py,139,FILE:nrc_core/runtime.py,private,待核对
+BRANCH:nrc_core/runtime.py:139:false,code_branch,false,T05,nrc_core/runtime.py,139,FILE:nrc_core/runtime.py,private,待核对
+BRANCH:nrc_core/runtime.py:179:body,code_branch,body,T05,nrc_core/runtime.py,179,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:179:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,179,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:190:body,code_branch,body,T05,nrc_core/runtime.py,190,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:190:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,190,FILE:nrc_core/runtime.py,For,待核对
+CODE:nrc_core/runtime.py:199:__init__,code_object,__init__,T05,nrc_core/runtime.py,199,FILE:nrc_core/runtime.py,绑定已经解析的规则目录，不读取数据库。,待核对
+CODE:nrc_core/runtime.py:208:manifest,code_object,manifest,T05,nrc_core/runtime.py,208,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:211:new_game,code_object,new_game,T05,nrc_core/runtime.py,211,FILE:nrc_core/runtime.py,接收平台已解析的全知状态，创建独立对战会话。,待核对
+CODE:nrc_core/runtime.py:230:clone,code_object,clone,T05,nrc_core/runtime.py,230,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:237:_check_state,code_object,_check_state,T05,nrc_core/runtime.py,237,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:244:_pending_players,code_object,_pending_players,T05,nrc_core/runtime.py,244,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:252:_prepare_decision,code_object,_prepare_decision,T05,nrc_core/runtime.py,252,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:288:decision,code_object,decision,T05,nrc_core/runtime.py,288,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:292:_team,code_object,_team,T05,nrc_core/runtime.py,292,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:299:legal_actions,code_object,legal_actions,T05,nrc_core/runtime.py,299,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:339:_with_resonance_actions,code_object,_with_resonance_actions,T05,nrc_core/runtime.py,339,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:369:display,code_object,display,T05,nrc_core/runtime.py,369,FILE:nrc_core/runtime.py,在副本上计算当前玩家技能面板，避免预览污染真实状态。,待核对
+CODE:nrc_core/runtime.py:375:preview_damage,code_object,preview_damage,T05,nrc_core/runtime.py,375,FILE:nrc_core/runtime.py,返回指定技能的当前伤害预览；不推进对战或推测隐藏状态。,待核对
+CODE:nrc_core/runtime.py:382:observe,code_object,observe,T05,nrc_core/runtime.py,382,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:404:_replacement,code_object,_replacement,T05,nrc_core/runtime.py,404,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:425:advance,code_object,advance,T05,nrc_core/runtime.py,425,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:489:_report_state,code_object,_report_state,T05,nrc_core/runtime.py,489,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:515:export_state,code_object,export_state,T05,nrc_core/runtime.py,515,FILE:nrc_core/runtime.py,无描述字符串,待核对
+CODE:nrc_core/runtime.py:523:import_state,code_object,import_state,T05,nrc_core/runtime.py,523,FILE:nrc_core/runtime.py,无描述字符串,待核对
+BRANCH:nrc_core/runtime.py:180:body,code_branch,body,T05,nrc_core/runtime.py,180,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:180:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,180,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:192:true,code_branch,true,T05,nrc_core/runtime.py,192,FILE:nrc_core/runtime.py,0 <= index < len(team) and 0 <= slot < len(team[index].skills),待核对
+BRANCH:nrc_core/runtime.py:192:false,code_branch,false,T05,nrc_core/runtime.py,192,FILE:nrc_core/runtime.py,0 <= index < len(team) and 0 <= slot < len(team[index].skills),待核对
+BRANCH:nrc_core/runtime.py:201:true,code_branch,true,T05,nrc_core/runtime.py,201,FILE:nrc_core/runtime.py,"environment not in {""nrc"", ""test""}",待核对
+BRANCH:nrc_core/runtime.py:201:false,code_branch,false,T05,nrc_core/runtime.py,201,FILE:nrc_core/runtime.py,"environment not in {""nrc"", ""test""}",待核对
+BRANCH:nrc_core/runtime.py:213:true,code_branch,true,T05,nrc_core/runtime.py,213,FILE:nrc_core/runtime.py,"not isinstance(battle, BattleState)",待核对
+BRANCH:nrc_core/runtime.py:213:false,code_branch,false,T05,nrc_core/runtime.py,213,FILE:nrc_core/runtime.py,"not isinstance(battle, BattleState)",待核对
+BRANCH:nrc_core/runtime.py:215:true,code_branch,true,T05,nrc_core/runtime.py,215,FILE:nrc_core/runtime.py,not battle.team_a or not battle.team_b,待核对
+BRANCH:nrc_core/runtime.py:215:false,code_branch,false,T05,nrc_core/runtime.py,215,FILE:nrc_core/runtime.py,not battle.team_a or not battle.team_b,待核对
+BRANCH:nrc_core/runtime.py:217:body,code_branch,body,T05,nrc_core/runtime.py,217,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:217:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,217,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:238:true,code_branch,true,T05,nrc_core/runtime.py,238,FILE:nrc_core/runtime.py,"not isinstance(state, BattleSession)",待核对
+BRANCH:nrc_core/runtime.py:238:false,code_branch,false,T05,nrc_core/runtime.py,238,FILE:nrc_core/runtime.py,"not isinstance(state, BattleSession)",待核对
+BRANCH:nrc_core/runtime.py:240:true,code_branch,true,T05,nrc_core/runtime.py,240,FILE:nrc_core/runtime.py,state.manifest != self.manifest,待核对
+BRANCH:nrc_core/runtime.py:240:false,code_branch,false,T05,nrc_core/runtime.py,240,FILE:nrc_core/runtime.py,state.manifest != self.manifest,待核对
+BRANCH:nrc_core/runtime.py:246:true,code_branch,true,T05,nrc_core/runtime.py,246,FILE:nrc_core/runtime.py,battle.team_a[battle.current_a].is_fainted and any(not item.is_fainted for item in battle.team_a),待核对
+BRANCH:nrc_core/runtime.py:246:false,code_branch,false,T05,nrc_core/runtime.py,246,FILE:nrc_core/runtime.py,battle.team_a[battle.current_a].is_fainted and any(not item.is_fainted for item in battle.team_a),待核对
+BRANCH:nrc_core/runtime.py:248:true,code_branch,true,T05,nrc_core/runtime.py,248,FILE:nrc_core/runtime.py,battle.team_b[battle.current_b].is_fainted and any(not item.is_fainted for item in battle.team_b),待核对
+BRANCH:nrc_core/runtime.py:248:false,code_branch,false,T05,nrc_core/runtime.py,248,FILE:nrc_core/runtime.py,battle.team_b[battle.current_b].is_fainted and any(not item.is_fainted for item in battle.team_b),待核对
+BRANCH:nrc_core/runtime.py:254:true,code_branch,true,T05,nrc_core/runtime.py,254,FILE:nrc_core/runtime.py,battle.turn_report,待核对
+BRANCH:nrc_core/runtime.py:254:false,code_branch,false,T05,nrc_core/runtime.py,254,FILE:nrc_core/runtime.py,battle.turn_report,待核对
+BRANCH:nrc_core/runtime.py:258:true,code_branch,true,T05,nrc_core/runtime.py,258,FILE:nrc_core/runtime.py,winner,待核对
+BRANCH:nrc_core/runtime.py:258:false,code_branch,false,T05,nrc_core/runtime.py,258,FILE:nrc_core/runtime.py,winner,待核对
+BRANCH:nrc_core/runtime.py:266:true,code_branch,true,T05,nrc_core/runtime.py,266,FILE:nrc_core/runtime.py,not alive_a or not alive_b,待核对
+BRANCH:nrc_core/runtime.py:266:false,code_branch,false,T05,nrc_core/runtime.py,266,FILE:nrc_core/runtime.py,not alive_a or not alive_b,待核对
+BRANCH:nrc_core/runtime.py:273:true,code_branch,true,T05,nrc_core/runtime.py,273,FILE:nrc_core/runtime.py,pending,待核对
+BRANCH:nrc_core/runtime.py:273:false,code_branch,false,T05,nrc_core/runtime.py,273,FILE:nrc_core/runtime.py,pending,待核对
+BRANCH:nrc_core/runtime.py:279:true,code_branch,true,T05,nrc_core/runtime.py,279,FILE:nrc_core/runtime.py,settle_start and not battle.turn_start_prepared,待核对
+BRANCH:nrc_core/runtime.py:279:false,code_branch,false,T05,nrc_core/runtime.py,279,FILE:nrc_core/runtime.py,settle_start and not battle.turn_start_prepared,待核对
+BRANCH:nrc_core/runtime.py:284:true,code_branch,true,T05,nrc_core/runtime.py,284,FILE:nrc_core/runtime.py,battle.turn_report,待核对
+BRANCH:nrc_core/runtime.py:284:false,code_branch,false,T05,nrc_core/runtime.py,284,FILE:nrc_core/runtime.py,battle.turn_report,待核对
+BRANCH:nrc_core/runtime.py:293:true,code_branch,true,T05,nrc_core/runtime.py,293,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:293:false,code_branch,false,T05,nrc_core/runtime.py,293,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:295:true,code_branch,true,T05,nrc_core/runtime.py,295,FILE:nrc_core/runtime.py,player == 1,待核对
+BRANCH:nrc_core/runtime.py:295:false,code_branch,false,T05,nrc_core/runtime.py,295,FILE:nrc_core/runtime.py,player == 1,待核对
+BRANCH:nrc_core/runtime.py:301:true,code_branch,true,T05,nrc_core/runtime.py,301,FILE:nrc_core/runtime.py,current.terminated or player not in current.players,待核对
+BRANCH:nrc_core/runtime.py:301:false,code_branch,false,T05,nrc_core/runtime.py,301,FILE:nrc_core/runtime.py,current.terminated or player not in current.players,待核对
+BRANCH:nrc_core/runtime.py:306:true,code_branch,true,T05,nrc_core/runtime.py,306,FILE:nrc_core/runtime.py,"current.phase == ""replacement""",待核对
+BRANCH:nrc_core/runtime.py:306:false,code_branch,false,T05,nrc_core/runtime.py,306,FILE:nrc_core/runtime.py,"current.phase == ""replacement""",待核对
+BRANCH:nrc_core/runtime.py:313:true,code_branch,true,T05,nrc_core/runtime.py,313,FILE:nrc_core/runtime.py,active.is_fainted,待核对
+BRANCH:nrc_core/runtime.py:313:false,code_branch,false,T05,nrc_core/runtime.py,313,FILE:nrc_core/runtime.py,active.is_fainted,待核对
+BRANCH:nrc_core/runtime.py:317:body,code_branch,body,T05,nrc_core/runtime.py,317,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:317:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,317,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:332:body,code_branch,body,T05,nrc_core/runtime.py,332,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:332:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,332,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:345:body,code_branch,body,T05,nrc_core/runtime.py,345,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:345:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,345,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:378:true,code_branch,true,T05,nrc_core/runtime.py,378,FILE:nrc_core/runtime.py,not 0 <= skill_slot < len(skills),待核对
+BRANCH:nrc_core/runtime.py:378:false,code_branch,false,T05,nrc_core/runtime.py,378,FILE:nrc_core/runtime.py,not 0 <= skill_slot < len(skills),待核对
+BRANCH:nrc_core/runtime.py:384:true,code_branch,true,T05,nrc_core/runtime.py,384,FILE:nrc_core/runtime.py,"player not in (0, 1)",待核对
+BRANCH:nrc_core/runtime.py:384:false,code_branch,false,T05,nrc_core/runtime.py,384,FILE:nrc_core/runtime.py,"player not in (0, 1)",待核对
+BRANCH:nrc_core/runtime.py:405:body,code_branch,body,T05,nrc_core/runtime.py,405,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:405:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,405,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:427:true,code_branch,true,T05,nrc_core/runtime.py,427,FILE:nrc_core/runtime.py,current.terminated,待核对
+BRANCH:nrc_core/runtime.py:427:false,code_branch,false,T05,nrc_core/runtime.py,427,FILE:nrc_core/runtime.py,current.terminated,待核对
+BRANCH:nrc_core/runtime.py:430:true,code_branch,true,T05,nrc_core/runtime.py,430,FILE:nrc_core/runtime.py,set(actions) != expected,待核对
+BRANCH:nrc_core/runtime.py:430:false,code_branch,false,T05,nrc_core/runtime.py,430,FILE:nrc_core/runtime.py,set(actions) != expected,待核对
+BRANCH:nrc_core/runtime.py:433:body,code_branch,body,T05,nrc_core/runtime.py,433,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:433:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,433,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:440:true,code_branch,true,T05,nrc_core/runtime.py,440,FILE:nrc_core/runtime.py,"current.phase == ""replacement""",待核对
+BRANCH:nrc_core/runtime.py:440:false,code_branch,false,T05,nrc_core/runtime.py,440,FILE:nrc_core/runtime.py,"current.phase == ""replacement""",待核对
+BRANCH:nrc_core/runtime.py:483:true,code_branch,true,T05,nrc_core/runtime.py,483,FILE:nrc_core/runtime.py,next_state.terminated and next_state.winner is not None,待核对
+BRANCH:nrc_core/runtime.py:483:false,code_branch,false,T05,nrc_core/runtime.py,483,FILE:nrc_core/runtime.py,next_state.terminated and next_state.winner is not None,待核对
+BRANCH:nrc_core/runtime.py:491:body,code_branch,body,T05,nrc_core/runtime.py,491,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:491:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,491,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:524:true,code_branch,true,T05,nrc_core/runtime.py,524,FILE:nrc_core/runtime.py,"snapshot.get(""format"") != ""nrc_core.runtime.pickle.v1""",待核对
+BRANCH:nrc_core/runtime.py:524:false,code_branch,false,T05,nrc_core/runtime.py,524,FILE:nrc_core/runtime.py,"snapshot.get(""format"") != ""nrc_core.runtime.pickle.v1""",待核对
+BRANCH:nrc_core/runtime.py:526:true,code_branch,true,T05,nrc_core/runtime.py,526,FILE:nrc_core/runtime.py,"dict(snapshot.get(""manifest"") or {}) != _manifest_json(self.manifest)",待核对
+BRANCH:nrc_core/runtime.py:526:false,code_branch,false,T05,nrc_core/runtime.py,526,FILE:nrc_core/runtime.py,"dict(snapshot.get(""manifest"") or {}) != _manifest_json(self.manifest)",待核对
+BRANCH:nrc_core/runtime.py:181:body,code_branch,body,T05,nrc_core/runtime.py,181,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:181:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,181,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:191:true,code_branch,true,T05,nrc_core/runtime.py,191,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:191:false,code_branch,false,T05,nrc_core/runtime.py,191,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:218:true,code_branch,true,T05,nrc_core/runtime.py,218,FILE:nrc_core/runtime.py,not 0 <= active < len(team),待核对
+BRANCH:nrc_core/runtime.py:218:false,code_branch,false,T05,nrc_core/runtime.py,218,FILE:nrc_core/runtime.py,not 0 <= active < len(team),待核对
+BRANCH:nrc_core/runtime.py:220:true,code_branch,true,T05,nrc_core/runtime.py,220,FILE:nrc_core/runtime.py,any(not pokemon.skills for pokemon in team),待核对
+BRANCH:nrc_core/runtime.py:220:false,code_branch,false,T05,nrc_core/runtime.py,220,FILE:nrc_core/runtime.py,any(not pokemon.skills for pokemon in team),待核对
+BRANCH:nrc_core/runtime.py:307:body,code_branch,body,T05,nrc_core/runtime.py,307,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:307:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,307,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:315:true,code_branch,true,T05,nrc_core/runtime.py,315,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:315:false,code_branch,false,T05,nrc_core/runtime.py,315,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:316:true,code_branch,true,T05,nrc_core/runtime.py,316,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:316:false,code_branch,false,T05,nrc_core/runtime.py,316,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:319:true,code_branch,true,T05,nrc_core/runtime.py,319,FILE:nrc_core/runtime.py,"active.ability_state.get(""first_action_bonus"")",待核对
+BRANCH:nrc_core/runtime.py:319:false,code_branch,false,T05,nrc_core/runtime.py,319,FILE:nrc_core/runtime.py,"active.ability_state.get(""first_action_bonus"")",待核对
+BRANCH:nrc_core/runtime.py:321:true,code_branch,true,T05,nrc_core/runtime.py,321,FILE:nrc_core/runtime.py,"active.energy < skill_energy_cost(active, skill, enemy_team[enemy_index]) * repetitions or active.cooldowns.get(index, 0) > 0",待核对
+BRANCH:nrc_core/runtime.py:321:false,code_branch,false,T05,nrc_core/runtime.py,321,FILE:nrc_core/runtime.py,"active.energy < skill_energy_cost(active, skill, enemy_team[enemy_index]) * repetitions or active.cooldowns.get(index, 0) > 0",待核对
+BRANCH:nrc_core/runtime.py:324:true,code_branch,true,T05,nrc_core/runtime.py,324,FILE:nrc_core/runtime.py,len(options) == 2,待核对
+BRANCH:nrc_core/runtime.py:324:false,code_branch,false,T05,nrc_core/runtime.py,324,FILE:nrc_core/runtime.py,len(options) == 2,待核对
+BRANCH:nrc_core/runtime.py:333:true,code_branch,true,T05,nrc_core/runtime.py,333,FILE:nrc_core/runtime.py,index == active_index or pokemon.is_fainted,待核对
+BRANCH:nrc_core/runtime.py:333:false,code_branch,false,T05,nrc_core/runtime.py,333,FILE:nrc_core/runtime.py,index == active_index or pokemon.is_fainted,待核对
+BRANCH:nrc_core/runtime.py:342:true,code_branch,true,T05,nrc_core/runtime.py,342,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:342:false,code_branch,false,T05,nrc_core/runtime.py,342,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:343:true,code_branch,true,T05,nrc_core/runtime.py,343,FILE:nrc_core/runtime.py,carried,待核对
+BRANCH:nrc_core/runtime.py:343:false,code_branch,false,T05,nrc_core/runtime.py,343,FILE:nrc_core/runtime.py,carried,待核对
+BRANCH:nrc_core/runtime.py:348:true,code_branch,true,T05,nrc_core/runtime.py,348,FILE:nrc_core/runtime.py,"kind not in {""skill"", ""charge""}",待核对
+BRANCH:nrc_core/runtime.py:348:false,code_branch,false,T05,nrc_core/runtime.py,348,FILE:nrc_core/runtime.py,"kind not in {""skill"", ""charge""}",待核对
+BRANCH:nrc_core/runtime.py:350:body,code_branch,body,T05,nrc_core/runtime.py,350,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:350:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,350,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:410:true,code_branch,true,T05,nrc_core/runtime.py,410,FILE:nrc_core/runtime.py,chosen == current_index or team[chosen].is_fainted,待核对
+BRANCH:nrc_core/runtime.py:410:false,code_branch,false,T05,nrc_core/runtime.py,410,FILE:nrc_core/runtime.py,chosen == current_index or team[chosen].is_fainted,待核对
+BRANCH:nrc_core/runtime.py:412:true,code_branch,true,T05,nrc_core/runtime.py,412,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:412:false,code_branch,false,T05,nrc_core/runtime.py,412,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:421:true,code_branch,true,T05,nrc_core/runtime.py,421,FILE:nrc_core/runtime.py,pokemon.ability_effects,待核对
+BRANCH:nrc_core/runtime.py:421:false,code_branch,false,T05,nrc_core/runtime.py,421,FILE:nrc_core/runtime.py,pokemon.ability_effects,待核对
+BRANCH:nrc_core/runtime.py:434:true,code_branch,true,T05,nrc_core/runtime.py,434,FILE:nrc_core/runtime.py,actions[player] not in legal_by_player[player],待核对
+BRANCH:nrc_core/runtime.py:434:false,code_branch,false,T05,nrc_core/runtime.py,434,FILE:nrc_core/runtime.py,actions[player] not in legal_by_player[player],待核对
+BRANCH:nrc_core/runtime.py:447:body,code_branch,body,T05,nrc_core/runtime.py,447,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:447:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,447,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:475:true,code_branch,true,T05,nrc_core/runtime.py,475,FILE:nrc_core/runtime.py,winner,待核对
+BRANCH:nrc_core/runtime.py:475:false,code_branch,false,T05,nrc_core/runtime.py,475,FILE:nrc_core/runtime.py,winner,待核对
+BRANCH:nrc_core/runtime.py:493:body,code_branch,body,T05,nrc_core/runtime.py,493,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:493:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,493,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:530:exception,code_branch,exception,T05,nrc_core/runtime.py,530,FILE:nrc_core/runtime.py,ExceptHandler,待核对
+BRANCH:nrc_core/runtime.py:183:true,code_branch,true,T05,nrc_core/runtime.py,183,FILE:nrc_core/runtime.py,value is not None,待核对
+BRANCH:nrc_core/runtime.py:183:false,code_branch,false,T05,nrc_core/runtime.py,183,FILE:nrc_core/runtime.py,value is not None,待核对
+BRANCH:nrc_core/runtime.py:245:true,code_branch,true,T05,nrc_core/runtime.py,245,FILE:nrc_core/runtime.py,"item.get(""team"") == ""a""",待核对
+BRANCH:nrc_core/runtime.py:245:false,code_branch,false,T05,nrc_core/runtime.py,245,FILE:nrc_core/runtime.py,"item.get(""team"") == ""a""",待核对
+BRANCH:nrc_core/runtime.py:260:true,code_branch,true,T05,nrc_core/runtime.py,260,FILE:nrc_core/runtime.py,"winner == ""a""",待核对
+BRANCH:nrc_core/runtime.py:260:false,code_branch,false,T05,nrc_core/runtime.py,260,FILE:nrc_core/runtime.py,"winner == ""a""",待核对
+BRANCH:nrc_core/runtime.py:268:true,code_branch,true,T05,nrc_core/runtime.py,268,FILE:nrc_core/runtime.py,alive_a and not alive_b,待核对
+BRANCH:nrc_core/runtime.py:268:false,code_branch,false,T05,nrc_core/runtime.py,268,FILE:nrc_core/runtime.py,alive_a and not alive_b,待核对
+BRANCH:nrc_core/runtime.py:308:true,code_branch,true,T05,nrc_core/runtime.py,308,FILE:nrc_core/runtime.py,index == active_index or pokemon.is_fainted,待核对
+BRANCH:nrc_core/runtime.py:308:false,code_branch,false,T05,nrc_core/runtime.py,308,FILE:nrc_core/runtime.py,index == active_index or pokemon.is_fainted,待核对
+BRANCH:nrc_core/runtime.py:325:body,code_branch,body,T05,nrc_core/runtime.py,325,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:325:zero_or_exit,code_branch,zero_or_exit,T05,nrc_core/runtime.py,325,FILE:nrc_core/runtime.py,For,待核对
+BRANCH:nrc_core/runtime.py:351:true,code_branch,true,T05,nrc_core/runtime.py,351,FILE:nrc_core/runtime.py,"resonance == ""willpower""",待核对
+BRANCH:nrc_core/runtime.py:351:false,code_branch,false,T05,nrc_core/runtime.py,351,FILE:nrc_core/runtime.py,"resonance == ""willpower""",待核对
+BRANCH:nrc_core/runtime.py:420:true,code_branch,true,T05,nrc_core/runtime.py,420,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:420:false,code_branch,false,T05,nrc_core/runtime.py,420,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:448:true,code_branch,true,T05,nrc_core/runtime.py,448,FILE:nrc_core/runtime.py,player not in payloads,待核对
+BRANCH:nrc_core/runtime.py:448:false,code_branch,false,T05,nrc_core/runtime.py,448,FILE:nrc_core/runtime.py,player not in payloads,待核对
+BRANCH:nrc_core/runtime.py:451:true,code_branch,true,T05,nrc_core/runtime.py,451,FILE:nrc_core/runtime.py,not items,待核对
+BRANCH:nrc_core/runtime.py:451:false,code_branch,false,T05,nrc_core/runtime.py,451,FILE:nrc_core/runtime.py,not items,待核对
+BRANCH:nrc_core/runtime.py:454:true,code_branch,true,T05,nrc_core/runtime.py,454,FILE:nrc_core/runtime.py,"getattr(next_state.battle, field) is None",待核对
+BRANCH:nrc_core/runtime.py:454:false,code_branch,false,T05,nrc_core/runtime.py,454,FILE:nrc_core/runtime.py,"getattr(next_state.battle, field) is None",待核对
+BRANCH:nrc_core/runtime.py:268:true,code_branch,true,T05,nrc_core/runtime.py,268,FILE:nrc_core/runtime.py,alive_b and not alive_a,待核对
+BRANCH:nrc_core/runtime.py:268:false,code_branch,false,T05,nrc_core/runtime.py,268,FILE:nrc_core/runtime.py,alive_b and not alive_a,待核对
+BRANCH:nrc_core/runtime.py:354:true,code_branch,true,T05,nrc_core/runtime.py,354,FILE:nrc_core/runtime.py,"uses >= 2 or cooldown > 0 or active.energy < 2 or kind != ""skill"" or int(primary.get(""skill_slot"", -1)) != 0 or self._simulator._bloodline_type(active) is None",待核对
+BRANCH:nrc_core/runtime.py:354:false,code_branch,false,T05,nrc_core/runtime.py,354,FILE:nrc_core/runtime.py,"uses >= 2 or cooldown > 0 or active.energy < 2 or kind != ""skill"" or int(primary.get(""skill_slot"", -1)) != 0 or self._simulator._bloodline_type(active) is None",待核对
+BRANCH:nrc_core/runtime.py:356:true,code_branch,true,T05,nrc_core/runtime.py,356,FILE:nrc_core/runtime.py,"resonance == ""boss""",待核对
+BRANCH:nrc_core/runtime.py:356:false,code_branch,false,T05,nrc_core/runtime.py,356,FILE:nrc_core/runtime.py,"resonance == ""boss""",待核对
+BRANCH:nrc_core/runtime.py:453:true,code_branch,true,T05,nrc_core/runtime.py,453,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:453:false,code_branch,false,T05,nrc_core/runtime.py,453,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:477:true,code_branch,true,T05,nrc_core/runtime.py,477,FILE:nrc_core/runtime.py,"winner == ""a""",待核对
+BRANCH:nrc_core/runtime.py:477:false,code_branch,false,T05,nrc_core/runtime.py,477,FILE:nrc_core/runtime.py,"winner == ""a""",待核对
+BRANCH:nrc_core/runtime.py:352:true,code_branch,true,T05,nrc_core/runtime.py,352,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:352:false,code_branch,false,T05,nrc_core/runtime.py,352,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:353:true,code_branch,true,T05,nrc_core/runtime.py,353,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:353:false,code_branch,false,T05,nrc_core/runtime.py,353,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:358:true,code_branch,true,T05,nrc_core/runtime.py,358,FILE:nrc_core/runtime.py,used or not self._simulator._is_boss_bloodline(active),待核对
+BRANCH:nrc_core/runtime.py:358:false,code_branch,false,T05,nrc_core/runtime.py,358,FILE:nrc_core/runtime.py,used or not self._simulator._is_boss_bloodline(active),待核对
+BRANCH:nrc_core/runtime.py:360:true,code_branch,true,T05,nrc_core/runtime.py,360,FILE:nrc_core/runtime.py,"resonance == ""solar_heal""",待核对
+BRANCH:nrc_core/runtime.py:360:false,code_branch,false,T05,nrc_core/runtime.py,360,FILE:nrc_core/runtime.py,"resonance == ""solar_heal""",待核对
+BRANCH:nrc_core/runtime.py:395:true,code_branch,true,T05,nrc_core/runtime.py,395,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:395:false,code_branch,false,T05,nrc_core/runtime.py,395,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:395:true,code_branch,true,T05,nrc_core/runtime.py,395,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:395:false,code_branch,false,T05,nrc_core/runtime.py,395,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:396:true,code_branch,true,T05,nrc_core/runtime.py,396,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:396:false,code_branch,false,T05,nrc_core/runtime.py,396,FILE:nrc_core/runtime.py,player == 0,待核对
+BRANCH:nrc_core/runtime.py:357:true,code_branch,true,T05,nrc_core/runtime.py,357,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:357:false,code_branch,false,T05,nrc_core/runtime.py,357,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:362:true,code_branch,true,T05,nrc_core/runtime.py,362,FILE:nrc_core/runtime.py,used,待核对
+BRANCH:nrc_core/runtime.py:362:false,code_branch,false,T05,nrc_core/runtime.py,362,FILE:nrc_core/runtime.py,used,待核对
+BRANCH:nrc_core/runtime.py:361:true,code_branch,true,T05,nrc_core/runtime.py,361,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+BRANCH:nrc_core/runtime.py:361:false,code_branch,false,T05,nrc_core/runtime.py,361,FILE:nrc_core/runtime.py,"side == ""a""",待核对
+FILE:nrc_core/schema.py,file,nrc_core/schema.py,T05,nrc_core/schema.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/schema.py:15:CreatureBaseInfo,code_object,CreatureBaseInfo,T05,nrc_core/schema.py,15,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:33:CreatureState,code_object,CreatureState,T05,nrc_core/schema.py,33,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:49:SkillSlotInput,code_object,SkillSlotInput,T05,nrc_core/schema.py,49,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:71:AbilityInput,code_object,AbilityInput,T05,nrc_core/schema.py,71,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:85:CreatureInput,code_object,CreatureInput,T05,nrc_core/schema.py,85,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:122:TeamInput,code_object,TeamInput,T05,nrc_core/schema.py,122,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:140:SharedBattleState,code_object,SharedBattleState,T05,nrc_core/schema.py,140,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:167:BattleRequest,code_object,BattleRequest,T05,nrc_core/schema.py,167,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:28:to_json,code_object,to_json,T05,nrc_core/schema.py,28,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:44:to_json,code_object,to_json,T05,nrc_core/schema.py,44,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:58:to_json,code_object,to_json,T05,nrc_core/schema.py,58,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:76:to_json,code_object,to_json,T05,nrc_core/schema.py,76,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:100:resolved_name,code_object,resolved_name,T05,nrc_core/schema.py,100,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:103:to_json,code_object,to_json,T05,nrc_core/schema.py,103,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:129:to_json,code_object,to_json,T05,nrc_core/schema.py,129,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:153:to_json,code_object,to_json,T05,nrc_core/schema.py,153,FILE:nrc_core/schema.py,无描述字符串,待核对
+CODE:nrc_core/schema.py:177:to_json,code_object,to_json,T05,nrc_core/schema.py,177,FILE:nrc_core/schema.py,无描述字符串,待核对
+BRANCH:nrc_core/schema.py:182:true,code_branch,true,T05,nrc_core/schema.py,182,FILE:nrc_core/schema.py,self.own_turn,待核对
+BRANCH:nrc_core/schema.py:182:false,code_branch,false,T05,nrc_core/schema.py,182,FILE:nrc_core/schema.py,self.own_turn,待核对
+BRANCH:nrc_core/schema.py:186:true,code_branch,true,T05,nrc_core/schema.py,186,FILE:nrc_core/schema.py,self.opponent_turn,待核对
+BRANCH:nrc_core/schema.py:186:false,code_branch,false,T05,nrc_core/schema.py,186,FILE:nrc_core/schema.py,self.opponent_turn,待核对
+FILE:nrc_core/unknown.py,file,nrc_core/unknown.py,T05,nrc_core/unknown.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/unknown.py:15:Maybe,code_object,Maybe,T05,nrc_core/unknown.py,15,FILE:nrc_core/unknown.py,无描述字符串,待核对
+CODE:nrc_core/unknown.py:22:from_value,code_object,from_value,T05,nrc_core/unknown.py,22,FILE:nrc_core/unknown.py,无描述字符串,待核对
+CODE:nrc_core/unknown.py:26:unknown,code_object,unknown,T05,nrc_core/unknown.py,26,FILE:nrc_core/unknown.py,无描述字符串,待核对
+CODE:nrc_core/unknown.py:30:absent,code_object,absent,T05,nrc_core/unknown.py,30,FILE:nrc_core/unknown.py,无描述字符串,待核对
+CODE:nrc_core/unknown.py:34:from_json,code_object,from_json,T05,nrc_core/unknown.py,34,FILE:nrc_core/unknown.py,无描述字符串,待核对
+CODE:nrc_core/unknown.py:48:to_json,code_object,to_json,T05,nrc_core/unknown.py,48,FILE:nrc_core/unknown.py,无描述字符串,待核对
+CODE:nrc_core/unknown.py:56:or_default,code_object,or_default,T05,nrc_core/unknown.py,56,FILE:nrc_core/unknown.py,无描述字符串,待核对
+BRANCH:nrc_core/unknown.py:35:true,code_branch,true,T05,nrc_core/unknown.py,35,FILE:nrc_core/unknown.py,"isinstance(raw, Maybe)",待核对
+BRANCH:nrc_core/unknown.py:35:false,code_branch,false,T05,nrc_core/unknown.py,35,FILE:nrc_core/unknown.py,"isinstance(raw, Maybe)",待核对
+BRANCH:nrc_core/unknown.py:37:true,code_branch,true,T05,nrc_core/unknown.py,37,FILE:nrc_core/unknown.py,"isinstance(raw, dict) and ""known"" in raw",待核对
+BRANCH:nrc_core/unknown.py:37:false,code_branch,false,T05,nrc_core/unknown.py,37,FILE:nrc_core/unknown.py,"isinstance(raw, dict) and ""known"" in raw",待核对
+BRANCH:nrc_core/unknown.py:44:true,code_branch,true,T05,nrc_core/unknown.py,44,FILE:nrc_core/unknown.py,raw is None,待核对
+BRANCH:nrc_core/unknown.py:44:false,code_branch,false,T05,nrc_core/unknown.py,44,FILE:nrc_core/unknown.py,raw is None,待核对
+BRANCH:nrc_core/unknown.py:57:true,code_branch,true,T05,nrc_core/unknown.py,57,FILE:nrc_core/unknown.py,self.known and self.exists,待核对
+BRANCH:nrc_core/unknown.py:57:false,code_branch,false,T05,nrc_core/unknown.py,57,FILE:nrc_core/unknown.py,self.known and self.exists,待核对
+BRANCH:nrc_core/unknown.py:52:true,code_branch,true,T05,nrc_core/unknown.py,52,FILE:nrc_core/unknown.py,self.known and self.exists,待核对
+BRANCH:nrc_core/unknown.py:52:false,code_branch,false,T05,nrc_core/unknown.py,52,FILE:nrc_core/unknown.py,self.known and self.exists,待核对

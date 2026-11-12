@@ -1,0 +1,47 @@
+﻿original_id,item_id,owner,source,line,column,condition
+BRANCH:nrc_core/engine/executor.py:510:true,BRANCH:nrc_core/engine/executor.py:510:true:c50:n1,T07,nrc_core/engine/executor.py,510,50,percent
+BRANCH:nrc_core/engine/executor.py:510:false,BRANCH:nrc_core/engine/executor.py:510:false:c50:n1,T07,nrc_core/engine/executor.py,510,50,percent
+BRANCH:nrc_core/engine/executor.py:510:true,BRANCH:nrc_core/engine/executor.py:510:true:c87:n2,T07,nrc_core/engine/executor.py,510,87,percent
+BRANCH:nrc_core/engine/executor.py:510:false,BRANCH:nrc_core/engine/executor.py:510:false:c87:n2,T07,nrc_core/engine/executor.py,510,87,percent
+BRANCH:nrc_core/engine/handlers_skill.py:347:true,BRANCH:nrc_core/engine/handlers_skill.py:347:true:c14:n1,T08,nrc_core/engine/handlers_skill.py,347,14,"tgt == ""self"""
+BRANCH:nrc_core/engine/handlers_skill.py:347:false,BRANCH:nrc_core/engine/handlers_skill.py:347:false:c14:n1,T08,nrc_core/engine/handlers_skill.py,347,14,"tgt == ""self"""
+BRANCH:nrc_core/engine/handlers_skill.py:347:true,BRANCH:nrc_core/engine/handlers_skill.py:347:true:c46:n2,T08,nrc_core/engine/handlers_skill.py,347,46,"ctx.team == ""a"""
+BRANCH:nrc_core/engine/handlers_skill.py:347:false,BRANCH:nrc_core/engine/handlers_skill.py:347:false:c46:n2,T08,nrc_core/engine/handlers_skill.py,347,46,"ctx.team == ""a"""
+BRANCH:nrc_core/runtime.py:268:true,BRANCH:nrc_core/runtime.py:268:true:c27:n1,T05,nrc_core/runtime.py,268,27,alive_a and not alive_b
+BRANCH:nrc_core/runtime.py:268:false,BRANCH:nrc_core/runtime.py:268:false:c27:n1,T05,nrc_core/runtime.py,268,27,alive_a and not alive_b
+BRANCH:nrc_core/runtime.py:268:true,BRANCH:nrc_core/runtime.py:268:true:c61:n2,T05,nrc_core/runtime.py,268,61,alive_b and not alive_a
+BRANCH:nrc_core/runtime.py:268:false,BRANCH:nrc_core/runtime.py:268:false:c61:n2,T05,nrc_core/runtime.py,268,61,alive_b and not alive_a
+BRANCH:nrc_core/runtime.py:395:true,BRANCH:nrc_core/runtime.py:395:true:c30:n1,T05,nrc_core/runtime.py,395,30,player == 0
+BRANCH:nrc_core/runtime.py:395:false,BRANCH:nrc_core/runtime.py:395:false:c30:n1,T05,nrc_core/runtime.py,395,30,player == 0
+BRANCH:nrc_core/runtime.py:395:true,BRANCH:nrc_core/runtime.py:395:true:c103:n2,T05,nrc_core/runtime.py,395,103,player == 0
+BRANCH:nrc_core/runtime.py:395:false,BRANCH:nrc_core/runtime.py:395:false:c103:n2,T05,nrc_core/runtime.py,395,103,player == 0
+BRANCH:nrc_platform/platform.py:135:true,BRANCH:nrc_platform/platform.py:135:true:c23:n1,T11,nrc_platform/platform.py,135,23,"isinstance(item, str)"
+BRANCH:nrc_platform/platform.py:135:false,BRANCH:nrc_platform/platform.py:135:false:c23:n1,T11,nrc_platform/platform.py,135,23,"isinstance(item, str)"
+BRANCH:nrc_platform/platform.py:135:true,BRANCH:nrc_platform/platform.py:135:true:c68:n2,T11,nrc_platform/platform.py,135,68,"isinstance(item, Mapping)"
+BRANCH:nrc_platform/platform.py:135:false,BRANCH:nrc_platform/platform.py:135:false:c68:n2,T11,nrc_platform/platform.py,135,68,"isinstance(item, Mapping)"
+BRANCH:nrc_platform/platform.py:449:true,BRANCH:nrc_platform/platform.py:449:true:c31:n1,T11,nrc_platform/platform.py,449,31,single_hp_input
+BRANCH:nrc_platform/platform.py:449:false,BRANCH:nrc_platform/platform.py:449:false:c31:n1,T11,nrc_platform/platform.py,449,31,single_hp_input
+BRANCH:nrc_platform/platform.py:449:true,BRANCH:nrc_platform/platform.py:449:true:c61:n2,T11,nrc_platform/platform.py,449,61,stats_input
+BRANCH:nrc_platform/platform.py:449:false,BRANCH:nrc_platform/platform.py:449:false:c61:n2,T11,nrc_platform/platform.py,449,61,stats_input
+BRANCH:nrc_platform/rooms.py:116:true,BRANCH:nrc_platform/rooms.py:116:true:c232:n1,T11,nrc_platform/rooms.py,116,232,session.get('terminal')
+BRANCH:nrc_platform/rooms.py:116:false,BRANCH:nrc_platform/rooms.py:116:false:c232:n1,T11,nrc_platform/rooms.py,116,232,session.get('terminal')
+BRANCH:nrc_platform/rooms.py:116:true,BRANCH:nrc_platform/rooms.py:116:true:c858:n2,T11,nrc_platform/rooms.py,116,858,own_side
+BRANCH:nrc_platform/rooms.py:116:false,BRANCH:nrc_platform/rooms.py:116:false:c858:n2,T11,nrc_platform/rooms.py,116,858,own_side
+BRANCH:nrc_platform/rooms.py:116:true,BRANCH:nrc_platform/rooms.py:116:true:c275:n3,T11,nrc_platform/rooms.py,116,275,session.get('initialized')
+BRANCH:nrc_platform/rooms.py:116:false,BRANCH:nrc_platform/rooms.py:116:false:c275:n3,T11,nrc_platform/rooms.py,116,275,session.get('initialized')
+BRANCH:nrc_server/presentation.py:72:true,BRANCH:nrc_server/presentation.py:72:true:c27:n1,T12,nrc_server/presentation.py,72,27,multiplier is None
+BRANCH:nrc_server/presentation.py:72:false,BRANCH:nrc_server/presentation.py:72:false:c27:n1,T12,nrc_server/presentation.py,72,27,multiplier is None
+BRANCH:nrc_server/presentation.py:72:true,BRANCH:nrc_server/presentation.py:72:true:c60:n2,T12,nrc_server/presentation.py,72,60,float(multiplier) > 2
+BRANCH:nrc_server/presentation.py:72:false,BRANCH:nrc_server/presentation.py:72:false:c60:n2,T12,nrc_server/presentation.py,72,60,float(multiplier) > 2
+BRANCH:nrc_server/presentation.py:72:true,BRANCH:nrc_server/presentation.py:72:true:c105:n3,T12,nrc_server/presentation.py,72,105,float(multiplier) > 1
+BRANCH:nrc_server/presentation.py:72:false,BRANCH:nrc_server/presentation.py:72:false:c105:n3,T12,nrc_server/presentation.py,72,105,float(multiplier) > 1
+BRANCH:nrc_server/presentation.py:72:true,BRANCH:nrc_server/presentation.py:72:true:c144:n4,T12,nrc_server/presentation.py,72,144,0 < float(multiplier) < 0.5
+BRANCH:nrc_server/presentation.py:72:false,BRANCH:nrc_server/presentation.py:72:false:c144:n4,T12,nrc_server/presentation.py,72,144,0 < float(multiplier) < 0.5
+BRANCH:nrc_server/presentation.py:72:true,BRANCH:nrc_server/presentation.py:72:true:c195:n5,T12,nrc_server/presentation.py,72,195,0 < float(multiplier) < 1
+BRANCH:nrc_server/presentation.py:72:false,BRANCH:nrc_server/presentation.py:72:false:c195:n5,T12,nrc_server/presentation.py,72,195,0 < float(multiplier) < 1
+BRANCH:nrc_server/server.py:27:true,BRANCH:nrc_server/server.py:27:true:c17:n1,T12,nrc_server/server.py,27,17,"message == ""player token is required"""
+BRANCH:nrc_server/server.py:27:false,BRANCH:nrc_server/server.py:27:false:c17:n1,T12,nrc_server/server.py,27,17,"message == ""player token is required"""
+BRANCH:nrc_server/server.py:27:true,BRANCH:nrc_server/server.py:27:true:c67:n2,T12,nrc_server/server.py,27,67,"""not a member"" in message"
+BRANCH:nrc_server/server.py:27:false,BRANCH:nrc_server/server.py:27:false:c67:n2,T12,nrc_server/server.py,27,67,"""not a member"" in message"
+BRANCH:nrc_server/server.py:27:true,BRANCH:nrc_server/server.py:27:true:c105:n3,T12,nrc_server/server.py,27,105,"""not found"" in message"
+BRANCH:nrc_server/server.py:27:false,BRANCH:nrc_server/server.py:27:false:c105:n3,T12,nrc_server/server.py,27,105,"""not found"" in message"

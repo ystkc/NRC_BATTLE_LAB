@@ -1,0 +1,18 @@
+﻿method,route,implementation,success,errors,evidence,limits
+GET,/,nrc_server/server.py:66,200，static_output.http或Chrome实际页面,未注入HTML文件缺失错误；匿名200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/catalog/index,nrc_server/server.py:71,200，static_output.http或Chrome实际页面,匿名200；未注入catalog不可用错误,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/catalog,nrc_server/server.py:80,200，static_output.http或Chrome实际页面,kind=invalid仍200，返回默认目录；没有约定其必须报错,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/pokemon/{name},nrc_server/server.py:89,200，static_output.http或Chrome实际页面,未知精灵422 invalid_roster,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+POST,/api/pokemon/preview,nrc_server/server.py:98,200，static_output.http或Chrome实际页面,空name404；顶层数组422；非法JSON422；base字符串500(T02主),static_output.json；browser_output.json,目录内容/核心公式不在HTTP成功结论中；preview base字符串500归T02
+POST,/api/battles,nrc_server/server.py:108,200，static_output.http或Chrome实际页面,无效mode422、非对象payload422；匿名创建签发身份,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+POST,/api/battles/{battle_id}/join,nrc_server/server.py:120,200，static_output.http或Chrome实际页面,不存在房间404、第三席422；同身份恢复固定席位200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id},nrc_server/server.py:131,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id}/opponent-roster,nrc_server/server.py:141,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+POST,/api/battles/{battle_id}/rosters,nrc_server/server.py:151,200，static_output.http或Chrome实际页面,缺令牌401、非成员403；side注入422；不完整技能槽422,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id}/display,nrc_server/server.py:162,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id}/matchups,nrc_server/server.py:172,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id}/actions,nrc_server/server.py:182,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id}/state,nrc_server/server.py:192,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id}/operation,nrc_server/server.py:202,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+GET,/api/battles/{battle_id}/events,nrc_server/server.py:212,200，static_output.http或Chrome实际页面,缺令牌401、已有非成员403；有效两席均200,static_output.json；browser_output.json,未逐一枚举底层所有业务异常
+POST,/api/battles/{battle_id}/selection,nrc_server/server.py:222,200，static_output.http或Chrome实际页面,缺令牌401、非成员403；pending新ID409、stale decision409；相同ID200相同响应,static_output.json；browser_output.json,未逐一枚举底层所有业务异常

@@ -1,0 +1,65 @@
+﻿question_id,category,primary_task,source_ids,title,evidence
+QUE-001,规则/协议存疑,T00,T00-Q01;T04-Q01;T04-Q02,50 回合四项指标全平如何结束,tasks/T00/questions.md
+QUE-002,规则/协议存疑,T00,T00-Q02;T06-Q03,秋收的草系环境尚无定义,tasks/T00/questions.md
+QUE-003,规则/协议存疑,T00,T00-Q03;T03-Q01,资质倍数文字与示例冲突,tasks/T00/questions.md
+QUE-004,暂定规则,T00,T00-Q04,奉献随机分布是暂定规则,tasks/T00/questions.md
+QUE-005,检查受阻,T00,T00-Q05,1002/1007人工资料的可重放性与预期,tasks/T00/questions.md
+QUE-006,实现待证实,T00,T00-Q06,复杂条件的实现待证实与缺少定向输入,coverage.csv
+QUE-007,规则/协议存疑,T01,T01-Q01,"· 44 个缺失精灵名称与 2,564 条关系",tasks/T01/questions.md
+QUE-008,规则/协议存疑,T01,T01-Q02,· 全部262条退化依据来自编号推断,tasks/T01/questions.md
+QUE-009,规则/协议存疑,T01,T01-Q03,· 旧 XLSX 与当前目录的差异,tasks/T01/questions.md
+QUE-010,检查受阻,T01,T01-Q04,· 采集入口受阻及未实测的外部故障分支,tasks/T01/questions.md
+QUE-011,规则/协议存疑,T01,T01-Q05,· 重复来源与多文件提交的冲突处理,tasks/T01/questions.md
+QUE-012,规则/协议存疑,T02,T02-Q01,血脉唯一性与规范输入,tasks/T02/questions.md
+QUE-013,规则/协议存疑,T02,T02-Q02,full建造是否允许把明确unknown当默认值,tasks/T02/questions.md
+QUE-014,规则/协议存疑,T02,T02-Q03,状态恢复与施加必须区分,tasks/T02/questions.md
+QUE-015,规则/协议存疑,T02,T02-Q04,完整全知元数据的必填/补全边界,tasks/T02/questions.md
+QUE-016,规则/协议存疑,T02,T02-Q05,退化链、括号技能继承与首领映射来源,tasks/T02/questions.md
+QUE-017,规则/协议存疑,T02,T02-Q06,常驻首领的输入支持,tasks/T02/questions.md
+QUE-018,规则/协议存疑,T02,T02-Q07,分数层/纯数unit与输入形状,tasks/T02/questions.md
+QUE-019,规则/协议存疑,T02,T02-Q08,缺配置/空配置技能的拒绝策略,tasks/T02/questions.md
+QUE-020,规则/协议存疑,T03,T03-Q00,速度与组合特性是否适用99层,tasks/T03/questions.md
+QUE-021,规则/协议存疑,T03,T03-Q03,绑定精灵的状态/组合特性下场清除集合,tasks/T03/questions.md
+QUE-022,规则/协议存疑,T03,T03-Q04;T04-Q03,冻结阈值相等及百分比伤害取整,tasks/T03/questions.md
+QUE-023,规则/协议存疑,T03,T03-Q05,默认参数和未知性格吞错,tasks/T03/questions.md
+QUE-024,规则/协议存疑,T03,T03-Q06,组合状态层数变化时每层修正是否固定,tasks/T03/questions.md
+QUE-025,规则/协议存疑,T03,T03-Q07,目录能力效果对象是否允许调用方修改,tasks/T03/questions.md
+QUE-026,规则/协议存疑,T04,T04-Q00,先手自力竭后，后手攻击/状态/聚能是否继续,tasks/T04/questions.md
+QUE-027,规则/协议存疑,T04,T04-Q04,寄生来源与血量方向,tasks/T04/questions.md
+QUE-028,规则/协议存疑,T04,T04-Q05,迸发遇到蓄力、打断或能量不足,tasks/T04/questions.md
+QUE-029,规则/协议存疑,T04,T04-Q06,特性输入、变身与巧变候选池完整性,tasks/T04/questions.md
+QUE-030,规则/协议存疑,T04,T04-Q07,预警的“一击力竭威胁”口径,tasks/T04/questions.md
+QUE-031,实现待证实,T04,T04-Q08,复杂分支尚未取得逐对象证据,tasks/T04/questions.md
+QUE-032,规则/协议存疑,T05,T05-Q01,双方同时共鸣/补位与连锁入场的拼速,tasks/T05/questions.md
+QUE-033,规则/协议存疑,T05,T05-Q02,蓄力期间的手动换人与其他技能,tasks/T05/questions.md
+QUE-034,规则/协议存疑,T05,T05-Q03,进化之力的生命比例、能量和血脉更新,tasks/T05/questions.md
+QUE-035,规则/协议存疑,T05,T05-Q04,愿力与交换、临时替换的还原归属,tasks/T05/questions.md
+QUE-036,规则/协议存疑,T05,T05-Q05,缺少已解析目录/未实现共鸣的错误类型,tasks/T05/questions.md
+QUE-037,规则/协议存疑,T05,T05-Q06,初始化接口是否区分新对局与已有状态恢复,tasks/T05/questions.md
+QUE-038,规则/协议存疑,T05,T05-Q07,冷却3回合的起算口径,tasks/T05/questions.md
+QUE-039,规则/协议存疑,T05,T05-Q08,结构输入与游戏规则的验证边界,tasks/T05/questions.md
+QUE-040,规则/协议存疑,T06,T06-Q01,体重相关技能缺少威力定量映射,tasks/T06/questions.md
+QUE-041,规则/协议存疑,T06,T06-Q02,比值相关技能缺少威力公式,tasks/T06/questions.md
+QUE-042,规则/协议存疑,T07,T07-Q01,过滤条件与阶段的接口契约,tasks/T07/questions.md
+QUE-043,规则/协议存疑,T07,T07-Q02,永久威力多次使用的叠加公式,tasks/T07/questions.md
+QUE-044,规则/协议存疑,T07,T07-Q03,王子的诺言是否应观察复合状态中的增益、全技能能耗减少,tasks/T07/questions.md
+QUE-045,规则/协议存疑,T07,T07-Q04,copy的深度与对局隔离契约,tasks/T07/questions.md
+QUE-046,规则/协议存疑,T07,T07-Q05,系统发育“随机分配”的单位,tasks/T07/questions.md
+QUE-047,规则/协议存疑,T07,T07-Q06,应对阶段伤害重算是否必须经过相同临时修正,tasks/T07/questions.md
+QUE-048,规则/协议存疑,T08,T08-Q01,偷取不足量、偷取方封顶时应转移多少,tasks/T08/questions.md
+QUE-049,规则/协议存疑,T08,T08-Q02,部分印记驱散、偷取与增益转换的选择及分类,tasks/T08/questions.md
+QUE-050,规则/协议存疑,T08,T08-Q03,本次、下次、技能结束与逐段触发边界,tasks/T08/questions.md
+QUE-051,规则/协议存疑,T08,T08-Q04,动态成本与临时加耗的起算、反转、翻倍,tasks/T08/questions.md
+QUE-052,规则/协议存疑,T08,T08-Q05,环境冻结来源和失败技能计数,tasks/T08/questions.md
+QUE-053,规则/协议存疑,T09,T09-Q01,原文已确定的子句与仍需裁决的边界,tasks/T09/questions.md
+QUE-054,规则/协议存疑,T09,T09-Q02,复活和应对变身限制,tasks/T09/questions.md
+QUE-055,规则/协议存疑,T09,T09-Q03,衡量与状态分类,tasks/T09/questions.md
+QUE-056,规则/协议存疑,T09,T09-Q04,反伤、触发烧伤和治疗替换,tasks/T09/questions.md
+QUE-057,规则/协议存疑,T09,T09-Q05,复制、技能交换和位置绑定,tasks/T09/questions.md
+QUE-058,规则/协议存疑,T09,T09-Q06,临时修正与损益传播范围,tasks/T09/questions.md
+QUE-059,规则/协议存疑,T10,T10-Q01,柔软咕噜球重入是否重新随机,tasks/T10/questions.md
+QUE-060,规则/协议存疑,T10,T10-Q02,萌化层数、无忧无虑与解除后的属性恢复细节,tasks/T10/questions.md
+QUE-061,规则/协议存疑,T10,T10-Q03,无威力状态技能是否接受“全技能威力”永久加成,tasks/T10/questions.md
+QUE-062,规则/协议存疑,T11,T11-Q01;T12-Q01,准备阶段是否允许向对方公开完整阵容名称,tasks/T11/questions.md
+QUE-063,实现待证实,T11,T11-Q02,技能冷却与特定技能效果的完整遮蔽,tasks/T11/questions.md
+QUE-064,规则/协议存疑,T11,T11-Q03,快照导入同ID替换与房间恢复协议,tasks/T11/questions.md

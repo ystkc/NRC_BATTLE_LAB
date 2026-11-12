@@ -1,0 +1,180 @@
+﻿item_id,kind,name,owner,source,line,parent_id,description,reachability
+FILE:nrc_core/catalog.py,file,nrc_core/catalog.py,T03,nrc_core/catalog.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/catalog.py:27:calc_combat_stats,code_object,calc_combat_stats,T03,nrc_core/catalog.py,27,FILE:nrc_core/catalog.py,"Calculate stats from already-resolved catalog values.
+    生命=四舍五入[1.7×种族值+个体资质值×0.85+70]×四舍五入（1+性格修正）+100
+其他=四舍五入[1.1×种族值+个体资质值×0.55+10]×四舍五入（1+性格修正）+50
+为了在极端边界条件下（例如种族值105，个体资质值0，无性格修正）保持和游戏内计算结果一致，需要严格使用float16类型",待核对
+CODE:nrc_core/catalog.py:68:CoreCatalog,code_object,CoreCatalog,T03,nrc_core/catalog.py,68,FILE:nrc_core/catalog.py,"Resolved, read-only catalog data required by the rules engine.",待核对
+CODE:nrc_core/catalog.py:79:get_skill,code_object,get_skill,T03,nrc_core/catalog.py,79,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:90:all_skills,code_object,all_skills,T03,nrc_core/catalog.py,90,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:93:get_pokemon,code_object,get_pokemon,T03,nrc_core/catalog.py,93,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:96:calc_combat_stats,code_object,calc_combat_stats,T03,nrc_core/catalog.py,96,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:99:get_boss_forms,code_object,get_boss_forms,T03,nrc_core/catalog.py,99,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:102:get_distribution,code_object,get_distribution,T03,nrc_core/catalog.py,102,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:105:get_ability_effects,code_object,get_ability_effects,T03,nrc_core/catalog.py,105,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:111:get_skill_description,code_object,get_skill_description,T03,nrc_core/catalog.py,111,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:46:rounded,code_object,rounded,T03,nrc_core/catalog.py,46,FILE:nrc_core/catalog.py,无描述字符串,待核对
+CODE:nrc_core/catalog.py:49:other,code_object,other,T03,nrc_core/catalog.py,49,FILE:nrc_core/catalog.py,无描述字符串,待核对
+BRANCH:nrc_core/catalog.py:62:exception,code_branch,exception,T03,nrc_core/catalog.py,62,FILE:nrc_core/catalog.py,ExceptHandler,待核对
+BRANCH:nrc_core/catalog.py:80:true,code_branch,true,T03,nrc_core/catalog.py,80,FILE:nrc_core/catalog.py,not identifier,待核对
+BRANCH:nrc_core/catalog.py:80:false,code_branch,false,T03,nrc_core/catalog.py,80,FILE:nrc_core/catalog.py,not identifier,待核对
+BRANCH:nrc_core/catalog.py:83:true,code_branch,true,T03,nrc_core/catalog.py,83,FILE:nrc_core/catalog.py,skill is not None,待核对
+BRANCH:nrc_core/catalog.py:83:false,code_branch,false,T03,nrc_core/catalog.py,83,FILE:nrc_core/catalog.py,skill is not None,待核对
+BRANCH:nrc_core/catalog.py:85:body,code_branch,body,T03,nrc_core/catalog.py,85,FILE:nrc_core/catalog.py,For,待核对
+BRANCH:nrc_core/catalog.py:85:zero_or_exit,code_branch,zero_or_exit,T03,nrc_core/catalog.py,85,FILE:nrc_core/catalog.py,For,待核对
+BRANCH:nrc_core/catalog.py:106:true,code_branch,true,T03,nrc_core/catalog.py,106,FILE:nrc_core/catalog.py,not ability,待核对
+BRANCH:nrc_core/catalog.py:106:false,code_branch,false,T03,nrc_core/catalog.py,106,FILE:nrc_core/catalog.py,not ability,待核对
+BRANCH:nrc_core/catalog.py:86:true,code_branch,true,T03,nrc_core/catalog.py,86,FILE:nrc_core/catalog.py,"str(getattr(candidate, ""skill_id"", """")) == str(identifier)",待核对
+BRANCH:nrc_core/catalog.py:86:false,code_branch,false,T03,nrc_core/catalog.py,86,FILE:nrc_core/catalog.py,"str(getattr(candidate, ""skill_id"", """")) == str(identifier)",待核对
+BRANCH:nrc_core/catalog.py:94:true,code_branch,true,T03,nrc_core/catalog.py,94,FILE:nrc_core/catalog.py,name,待核对
+BRANCH:nrc_core/catalog.py:94:false,code_branch,false,T03,nrc_core/catalog.py,94,FILE:nrc_core/catalog.py,name,待核对
+BRANCH:nrc_core/catalog.py:112:true,code_branch,true,T03,nrc_core/catalog.py,112,FILE:nrc_core/catalog.py,name,待核对
+BRANCH:nrc_core/catalog.py:112:false,code_branch,false,T03,nrc_core/catalog.py,112,FILE:nrc_core/catalog.py,name,待核对
+FILE:nrc_core/compound_status.py,file,nrc_core/compound_status.py,T03,nrc_core/compound_status.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/compound_status.py:6:buff_modifiers,code_object,buff_modifiers,T03,nrc_core/compound_status.py,6,FILE:nrc_core/compound_status.py,将规则中的属性缩写转换为可复用的每层修正定义。,待核对
+CODE:nrc_core/compound_status.py:19:CompoundStatus,code_object,CompoundStatus,T03,nrc_core/compound_status.py,19,FILE:nrc_core/compound_status.py,层数与每层修正独立保存，不将派生值写回精灵。,待核对
+BRANCH:nrc_core/compound_status.py:12:body,code_branch,body,T03,nrc_core/compound_status.py,12,FILE:nrc_core/compound_status.py,For,待核对
+BRANCH:nrc_core/compound_status.py:12:zero_or_exit,code_branch,zero_or_exit,T03,nrc_core/compound_status.py,12,FILE:nrc_core/compound_status.py,For,待核对
+CODE:nrc_core/compound_status.py:29:modifier,code_object,modifier,T03,nrc_core/compound_status.py,29,FILE:nrc_core/compound_status.py,返回本次计算所需的派生值，不缓存、不消耗原始层数。,待核对
+CODE:nrc_core/compound_status.py:33:observation,code_object,observation,T03,nrc_core/compound_status.py,33,FILE:nrc_core/compound_status.py,输出状态本身，避免向平台散发派生的普通增益。,待核对
+BRANCH:nrc_core/compound_status.py:13:body,code_branch,body,T03,nrc_core/compound_status.py,13,FILE:nrc_core/compound_status.py,For,待核对
+BRANCH:nrc_core/compound_status.py:13:zero_or_exit,code_branch,zero_or_exit,T03,nrc_core/compound_status.py,13,FILE:nrc_core/compound_status.py,For,待核对
+FILE:nrc_core/constant.py,file,nrc_core/constant.py,T03,nrc_core/constant.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+FILE:nrc_core/models.py,file,nrc_core/models.py,T03,nrc_core/models.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/models.py:12:StatusType,code_object,StatusType,T03,nrc_core/models.py,12,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:17:StatType,code_object,StatType,T03,nrc_core/models.py,17,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:26:Type,code_object,Type,T03,nrc_core/models.py,26,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:47:SkillCategory,code_object,SkillCategory,T03,nrc_core/models.py,47,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:95:get_type_effectiveness,code_object,get_type_effectiveness,T03,nrc_core/models.py,95,FILE:nrc_core/models.py,Return NRC dual-type effectiveness using the documented combination rules.,待核对
+CODE:nrc_core/models.py:113:has_type,code_object,has_type,T03,nrc_core/models.py,113,FILE:nrc_core/models.py,"Check primary and secondary combat attributes, excluding bloodline attributes.",待核对
+CODE:nrc_core/models.py:118:get_mark_stacks,code_object,get_mark_stacks,T03,nrc_core/models.py,118,FILE:nrc_core/models.py,Read normal mark stacks plus all source-owned 吟游之弦 slots.,待核对
+CODE:nrc_core/models.py:126:Skill,code_object,Skill,T03,nrc_core/models.py,126,FILE:nrc_core/models.py,技能 - 完整数据模型,待核对
+CODE:nrc_core/models.py:272:Pokemon,code_object,Pokemon,T03,nrc_core/models.py,272,FILE:nrc_core/models.py,精灵,待核对
+CODE:nrc_core/models.py:553:add_freeze_stacks,code_object,add_freeze_stacks,T03,nrc_core/models.py,553,FILE:nrc_core/models.py,Apply freeze as an irreversible 5% maximum-HP layer and check fainting.,待核对
+CODE:nrc_core/models.py:579:add_electric_stacks,code_object,add_electric_stacks,T03,nrc_core/models.py,579,FILE:nrc_core/models.py,Apply 引电; every complete pair deals 25% max-HP electric damage.,待核对
+CODE:nrc_core/models.py:593:BattleState,code_object,BattleState,T03,nrc_core/models.py,593,FILE:nrc_core/models.py,战斗状态,待核对
+BRANCH:nrc_core/models.py:100:body,code_branch,body,T03,nrc_core/models.py,100,FILE:nrc_core/models.py,For,待核对
+BRANCH:nrc_core/models.py:100:zero_or_exit,code_branch,zero_or_exit,T03,nrc_core/models.py,100,FILE:nrc_core/models.py,For,待核对
+BRANCH:nrc_core/models.py:103:true,code_branch,true,T03,nrc_core/models.py,103,FILE:nrc_core/models.py,not multipliers,待核对
+BRANCH:nrc_core/models.py:103:false,code_branch,false,T03,nrc_core/models.py,103,FILE:nrc_core/models.py,not multipliers,待核对
+BRANCH:nrc_core/models.py:105:true,code_branch,true,T03,nrc_core/models.py,105,FILE:nrc_core/models.py,len(multipliers) == 2 and all(value == 2.0 for value in multipliers),待核对
+BRANCH:nrc_core/models.py:105:false,code_branch,false,T03,nrc_core/models.py,105,FILE:nrc_core/models.py,len(multipliers) == 2 and all(value == 2.0 for value in multipliers),待核对
+BRANCH:nrc_core/models.py:108:body,code_branch,body,T03,nrc_core/models.py,108,FILE:nrc_core/models.py,For,待核对
+BRANCH:nrc_core/models.py:108:zero_or_exit,code_branch,zero_or_exit,T03,nrc_core/models.py,108,FILE:nrc_core/models.py,For,待核对
+CODE:nrc_core/models.py:208:copy,code_object,copy,T03,nrc_core/models.py,208,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:354:__post_init__,code_object,__post_init__,T03,nrc_core/models.py,354,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:366:is_fainted,code_object,is_fainted,T03,nrc_core/models.py,366,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:370:freeze_threshold,code_object,freeze_threshold,T03,nrc_core/models.py,370,FILE:nrc_core/models.py,冻结致死阈值只由当前层数计算，不独立存储或传输。,待核对
+CODE:nrc_core/models.py:375:effective_max_hp,code_object,effective_max_hp,T03,nrc_core/models.py,375,FILE:nrc_core/models.py,冻伤后的有效最大HP (从左侧侵蚀),待核对
+CODE:nrc_core/models.py:379:gain_energy,code_object,gain_energy,T03,nrc_core/models.py,379,FILE:nrc_core/models.py,增加能量，不超过上限10（除非有 energy_no_cap 特性）,待核对
+CODE:nrc_core/models.py:387:_clamp_up,code_object,_clamp_up,T03,nrc_core/models.py,387,FILE:nrc_core/models.py,"正向修正上界 [0.0, 4.0]",待核对
+CODE:nrc_core/models.py:392:_clamp_down,code_object,_clamp_down,T03,nrc_core/models.py,392,FILE:nrc_core/models.py,"降低量上界 [0.0, 0.9]，防止防御/攻击降低超过90%",待核对
+CODE:nrc_core/models.py:396:effective_atk,code_object,effective_atk,T03,nrc_core/models.py,396,FILE:nrc_core/models.py,计算包含组合状态的当前物攻，不保存展开值。,待核对
+CODE:nrc_core/models.py:400:effective_def,code_object,effective_def,T03,nrc_core/models.py,400,FILE:nrc_core/models.py,计算包含组合状态的当前物防。,待核对
+CODE:nrc_core/models.py:404:effective_spatk,code_object,effective_spatk,T03,nrc_core/models.py,404,FILE:nrc_core/models.py,计算包含组合状态的当前魔攻。,待核对
+CODE:nrc_core/models.py:408:effective_spdef,code_object,effective_spdef,T03,nrc_core/models.py,408,FILE:nrc_core/models.py,计算包含组合状态的当前魔防。,待核对
+CODE:nrc_core/models.py:412:effective_speed,code_object,effective_speed,T03,nrc_core/models.py,412,FILE:nrc_core/models.py,计算包含组合状态的当前速度。,待核对
+CODE:nrc_core/models.py:416:_effective_attribute,code_object,_effective_attribute,T03,nrc_core/models.py,416,FILE:nrc_core/models.py,统一应用本次计算的提升与降低修正。,待核对
+CODE:nrc_core/models.py:422:calculation_modifier,code_object,calculation_modifier,T03,nrc_core/models.py,422,FILE:nrc_core/models.py,计算时临时合并独立增减益与组合状态，原始字段保持不变。,待核对
+CODE:nrc_core/models.py:426:skill_modifier,code_object,skill_modifier,T03,nrc_core/models.py,426,FILE:nrc_core/models.py,计算特性状态对当前技能的修正，不改写携带技能。,待核对
+CODE:nrc_core/models.py:434:add_compound_status,code_object,add_compound_status,T03,nrc_core/models.py,434,FILE:nrc_core/models.py,增加一个完整状态的层数，其他状态可复用此入口。,待核对
+CODE:nrc_core/models.py:440:apply_self_buff,code_object,apply_self_buff,T03,nrc_core/models.py,440,FILE:nrc_core/models.py,应用技能的自身增益（写入 *_up 字段）,待核对
+CODE:nrc_core/models.py:448:apply_enemy_debuff,code_object,apply_enemy_debuff,T03,nrc_core/models.py,448,FILE:nrc_core/models.py,应用技能的敌方减益（写入 *_down 字段，参数值为正）,待核对
+CODE:nrc_core/models.py:456:on_switch_out,code_object,on_switch_out,T03,nrc_core/models.py,456,FILE:nrc_core/models.py,"下场时清除：属性修正(Buff/Debuff) + 威力乘数 + 临时修改 + 蓄力 + 中毒/灼烧/寄生。
+保留：冻结/星陨/萌化（换人不清除）。",待核对
+CODE:nrc_core/models.py:485:reset_mods,code_object,reset_mods,T03,nrc_core/models.py,485,FILE:nrc_core/models.py,重置所有方向修正（用于变身等特殊场景）,待核对
+CODE:nrc_core/models.py:494:copy_state,code_object,copy_state,T03,nrc_core/models.py,494,FILE:nrc_core/models.py,复制状态（用于MCTS模拟）,待核对
+BRANCH:nrc_core/models.py:557:true,code_branch,true,T03,nrc_core/models.py,557,FILE:nrc_core/models.py,"stacks <= 0 or pokemon.is_fainted or has_type(pokemon, Type.ICE)
+            or pokemon.ability_state.get(""freeze_immune"")",待核对
+BRANCH:nrc_core/models.py:557:false,code_branch,false,T03,nrc_core/models.py,557,FILE:nrc_core/models.py,"stacks <= 0 or pokemon.is_fainted or has_type(pokemon, Type.ICE)
+            or pokemon.ability_state.get(""freeze_immune"")",待核对
+BRANCH:nrc_core/models.py:560:true,code_branch,true,T03,nrc_core/models.py,560,FILE:nrc_core/models.py,source is not None and source is not pokemon,待核对
+BRANCH:nrc_core/models.py:560:false,code_branch,false,T03,nrc_core/models.py,560,FILE:nrc_core/models.py,source is not None and source is not pokemon,待核对
+BRANCH:nrc_core/models.py:568:true,code_branch,true,T03,nrc_core/models.py,568,FILE:nrc_core/models.py,source is not None and source is not pokemon,待核对
+BRANCH:nrc_core/models.py:568:false,code_branch,false,T03,nrc_core/models.py,568,FILE:nrc_core/models.py,source is not None and source is not pokemon,待核对
+BRANCH:nrc_core/models.py:574:true,code_branch,true,T03,nrc_core/models.py,574,FILE:nrc_core/models.py,pokemon.current_hp <= pokemon.freeze_threshold,待核对
+BRANCH:nrc_core/models.py:574:false,code_branch,false,T03,nrc_core/models.py,574,FILE:nrc_core/models.py,pokemon.current_hp <= pokemon.freeze_threshold,待核对
+BRANCH:nrc_core/models.py:582:true,code_branch,true,T03,nrc_core/models.py,582,FILE:nrc_core/models.py,"stacks <= 0 or pokemon.is_fainted or has_type(pokemon, Type.ELECTRIC)",待核对
+BRANCH:nrc_core/models.py:582:false,code_branch,false,T03,nrc_core/models.py,582,FILE:nrc_core/models.py,"stacks <= 0 or pokemon.is_fainted or has_type(pokemon, Type.ELECTRIC)",待核对
+BRANCH:nrc_core/models.py:585:body,code_branch,body,T03,nrc_core/models.py,585,FILE:nrc_core/models.py,pokemon.electric_stacks >= 2 and not pokemon.is_fainted,待核对
+BRANCH:nrc_core/models.py:585:zero_or_exit,code_branch,zero_or_exit,T03,nrc_core/models.py,585,FILE:nrc_core/models.py,pokemon.electric_stacks >= 2 and not pokemon.is_fainted,待核对
+CODE:nrc_core/models.py:680:_get_devotion,code_object,_get_devotion,T03,nrc_core/models.py,680,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:683:get_current,code_object,get_current,T03,nrc_core/models.py,683,FILE:nrc_core/models.py,无描述字符串,待核对
+CODE:nrc_core/models.py:688:deep_copy,code_object,deep_copy,T03,nrc_core/models.py,688,FILE:nrc_core/models.py,无描述字符串,待核对
+BRANCH:nrc_core/models.py:97:true,code_branch,true,T03,nrc_core/models.py,97,FILE:nrc_core/models.py,"isinstance(attack_type, Type)",待核对
+BRANCH:nrc_core/models.py:97:false,code_branch,false,T03,nrc_core/models.py,97,FILE:nrc_core/models.py,"isinstance(attack_type, Type)",待核对
+BRANCH:nrc_core/models.py:98:true,code_branch,true,T03,nrc_core/models.py,98,FILE:nrc_core/models.py,"isinstance(defense_type, (list, tuple))",待核对
+BRANCH:nrc_core/models.py:98:false,code_branch,false,T03,nrc_core/models.py,98,FILE:nrc_core/models.py,"isinstance(defense_type, (list, tuple))",待核对
+BRANCH:nrc_core/models.py:260:true,code_branch,true,T03,nrc_core/models.py,260,FILE:nrc_core/models.py,"hasattr(self, ""_base_energy_cost"")",待核对
+BRANCH:nrc_core/models.py:260:false,code_branch,false,T03,nrc_core/models.py,260,FILE:nrc_core/models.py,"hasattr(self, ""_base_energy_cost"")",待核对
+BRANCH:nrc_core/models.py:262:true,code_branch,true,T03,nrc_core/models.py,262,FILE:nrc_core/models.py,"hasattr(self, ""burst"")",待核对
+BRANCH:nrc_core/models.py:262:false,code_branch,false,T03,nrc_core/models.py,262,FILE:nrc_core/models.py,"hasattr(self, ""burst"")",待核对
+BRANCH:nrc_core/models.py:264:true,code_branch,true,T03,nrc_core/models.py,264,FILE:nrc_core/models.py,"hasattr(self, ""devotion_affected"")",待核对
+BRANCH:nrc_core/models.py:264:false,code_branch,false,T03,nrc_core/models.py,264,FILE:nrc_core/models.py,"hasattr(self, ""devotion_affected"")",待核对
+BRANCH:nrc_core/models.py:266:true,code_branch,true,T03,nrc_core/models.py,266,FILE:nrc_core/models.py,"hasattr(self, ""_resonance_dual_path"")",待核对
+BRANCH:nrc_core/models.py:266:false,code_branch,false,T03,nrc_core/models.py,266,FILE:nrc_core/models.py,"hasattr(self, ""_resonance_dual_path"")",待核对
+BRANCH:nrc_core/models.py:355:true,code_branch,true,T03,nrc_core/models.py,355,FILE:nrc_core/models.py,not self.pokemon_types,待核对
+BRANCH:nrc_core/models.py:355:false,code_branch,false,T03,nrc_core/models.py,355,FILE:nrc_core/models.py,not self.pokemon_types,待核对
+BRANCH:nrc_core/models.py:359:true,code_branch,true,T03,nrc_core/models.py,359,FILE:nrc_core/models.py,self.current_hp == 0,待核对
+BRANCH:nrc_core/models.py:359:false,code_branch,false,T03,nrc_core/models.py,359,FILE:nrc_core/models.py,self.current_hp == 0,待核对
+BRANCH:nrc_core/models.py:381:true,code_branch,true,T03,nrc_core/models.py,381,FILE:nrc_core/models.py,"self.ability_state.get(""energy_no_cap"")",待核对
+BRANCH:nrc_core/models.py:381:false,code_branch,false,T03,nrc_core/models.py,381,FILE:nrc_core/models.py,"self.ability_state.get(""energy_no_cap"")",待核对
+BRANCH:nrc_core/models.py:428:true,code_branch,true,T03,nrc_core/models.py,428,FILE:nrc_core/models.py,"field in {""power"", ""power_pct""} and skill.power < 0",待核对
+BRANCH:nrc_core/models.py:428:false,code_branch,false,T03,nrc_core/models.py,428,FILE:nrc_core/models.py,"field in {""power"", ""power_pct""} and skill.power < 0",待核对
+BRANCH:nrc_core/models.py:436:true,code_branch,true,T03,nrc_core/models.py,436,FILE:nrc_core/models.py,key not in self.compound_statuses,待核对
+BRANCH:nrc_core/models.py:436:false,code_branch,false,T03,nrc_core/models.py,436,FILE:nrc_core/models.py,key not in self.compound_statuses,待核对
+BRANCH:nrc_core/models.py:588:true,code_branch,true,T03,nrc_core/models.py,588,FILE:nrc_core/models.py,pokemon.current_hp <= 0,待核对
+BRANCH:nrc_core/models.py:588:false,code_branch,false,T03,nrc_core/models.py,588,FILE:nrc_core/models.py,pokemon.current_hp <= 0,待核对
+BRANCH:nrc_core/models.py:684:true,code_branch,true,T03,nrc_core/models.py,684,FILE:nrc_core/models.py,"team == ""a""",待核对
+BRANCH:nrc_core/models.py:684:false,code_branch,false,T03,nrc_core/models.py,684,FILE:nrc_core/models.py,"team == ""a""",待核对
+BRANCH:nrc_core/models.py:101:true,code_branch,true,T03,nrc_core/models.py,101,FILE:nrc_core/models.py,"isinstance(defense, Type)",待核对
+BRANCH:nrc_core/models.py:101:false,code_branch,false,T03,nrc_core/models.py,101,FILE:nrc_core/models.py,"isinstance(defense, Type)",待核对
+BRANCH:nrc_core/models.py:250:true,code_branch,true,T03,nrc_core/models.py,250,FILE:nrc_core/models.py,self.effects,待核对
+BRANCH:nrc_core/models.py:250:false,code_branch,false,T03,nrc_core/models.py,250,FILE:nrc_core/models.py,self.effects,待核对
+BRANCH:nrc_core/models.py:259:true,code_branch,true,T03,nrc_core/models.py,259,FILE:nrc_core/models.py,restore is not None,待核对
+BRANCH:nrc_core/models.py:259:false,code_branch,false,T03,nrc_core/models.py,259,FILE:nrc_core/models.py,restore is not None,待核对
+BRANCH:nrc_core/models.py:357:true,code_branch,true,T03,nrc_core/models.py,357,FILE:nrc_core/models.py,self.pokemon_type not in self.pokemon_types,待核对
+BRANCH:nrc_core/models.py:357:false,code_branch,false,T03,nrc_core/models.py,357,FILE:nrc_core/models.py,self.pokemon_type not in self.pokemon_types,待核对
+BRANCH:nrc_core/models.py:546:true,code_branch,true,T03,nrc_core/models.py,546,FILE:nrc_core/models.py,self.ability_effects,待核对
+BRANCH:nrc_core/models.py:546:false,code_branch,false,T03,nrc_core/models.py,546,FILE:nrc_core/models.py,self.ability_effects,待核对
+BRANCH:nrc_core/models.py:681:true,code_branch,true,T03,nrc_core/models.py,681,FILE:nrc_core/models.py,"team == ""a""",待核对
+BRANCH:nrc_core/models.py:681:false,code_branch,false,T03,nrc_core/models.py,681,FILE:nrc_core/models.py,"team == ""a""",待核对
+FILE:nrc_core/pokemon_nature_table.py,file,nrc_core/pokemon_nature_table.py,T03,nrc_core/pokemon_nature_table.py,1,,文件完整检查；测试和旧对局仅为线索,待核对
+CODE:nrc_core/pokemon_nature_table.py:14:NatureBonus,code_object,NatureBonus,T03,nrc_core/pokemon_nature_table.py,14,FILE:nrc_core/pokemon_nature_table.py,性格加成数据结构,待核对
+CODE:nrc_core/pokemon_nature_table.py:69:get_nature_bonus,code_object,get_nature_bonus,T03,nrc_core/pokemon_nature_table.py,69,FILE:nrc_core/pokemon_nature_table.py,"根据性格名称获取对应的加成效果。
+
+Args:
+    nature: 性格名称（如 ""固执"", ""胆小"" 等）
+
+Returns:
+    NatureBonus 字典，包含 atk, def, spatk, spdef, speed 的修正值
+
+Raises:
+    KeyError: 如果性格名称不存在",待核对
+CODE:nrc_core/pokemon_nature_table.py:87:is_neutral_nature,code_object,is_neutral_nature,T03,nrc_core/pokemon_nature_table.py,87,FILE:nrc_core/pokemon_nature_table.py,"判断是否为平衡型性格（无修正）。
+
+Args:
+    nature: 性格名称
+
+Returns:
+    True 如果是平衡型性格，否则 False",待核对
+BRANCH:nrc_core/pokemon_nature_table.py:82:true,code_branch,true,T03,nrc_core/pokemon_nature_table.py,82,FILE:nrc_core/pokemon_nature_table.py,nature not in NATURE_BONUSES,待核对
+BRANCH:nrc_core/pokemon_nature_table.py:82:false,code_branch,false,T03,nrc_core/pokemon_nature_table.py,82,FILE:nrc_core/pokemon_nature_table.py,nature not in NATURE_BONUSES,待核对
+ELEMENT:0001,element,武,T03,data/nrc_wiki.db:elements,1,,,待核对
+ELEMENT:0002,element,普通,T03,data/nrc_wiki.db:elements,2,,,待核对
+ELEMENT:0003,element,恶,T03,data/nrc_wiki.db:elements,3,,,待核对
+ELEMENT:0004,element,地,T03,data/nrc_wiki.db:elements,4,,,待核对
+ELEMENT:0005,element,毒,T03,data/nrc_wiki.db:elements,5,,,待核对
+ELEMENT:0006,element,冰,T03,data/nrc_wiki.db:elements,6,,,待核对
+ELEMENT:0007,element,草,T03,data/nrc_wiki.db:elements,7,,,待核对
+ELEMENT:0008,element,机械,T03,data/nrc_wiki.db:elements,8,,,待核对
+ELEMENT:0009,element,翼,T03,data/nrc_wiki.db:elements,9,,,待核对
+ELEMENT:0010,element,幻,T03,data/nrc_wiki.db:elements,10,,,待核对
+ELEMENT:0011,element,电,T03,data/nrc_wiki.db:elements,11,,,待核对
+ELEMENT:0012,element,虫,T03,data/nrc_wiki.db:elements,12,,,待核对
+ELEMENT:0013,element,萌,T03,data/nrc_wiki.db:elements,13,,,待核对
+ELEMENT:0014,element,火,T03,data/nrc_wiki.db:elements,14,,,待核对
+ELEMENT:0015,element,光,T03,data/nrc_wiki.db:elements,15,,,待核对
+ELEMENT:0016,element,幽,T03,data/nrc_wiki.db:elements,16,,,待核对
+ELEMENT:0017,element,龙,T03,data/nrc_wiki.db:elements,17,,,待核对
+ELEMENT:0018,element,水,T03,data/nrc_wiki.db:elements,18,,,待核对
