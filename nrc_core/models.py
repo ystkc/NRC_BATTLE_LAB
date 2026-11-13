@@ -3,6 +3,7 @@
 """
 
 import copy
+from uuid import uuid4
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 from enum import Enum
@@ -204,67 +205,29 @@ class Skill:
     random_source: str = ""
     choice_options: tuple[str, ...] = ()
     selected_choice: str = ""
+    # 放在原有字段之后，避免破坏旧的 positional 构造。
+    instance_id: str = field(default_factory=lambda: uuid4().hex)
 
-    def copy(self):
-        s = Skill(
-            name=self.name, skill_type=self.skill_type, category=self.category,
-            power=self.power, energy_cost=self.energy_cost, hit_count=self.hit_count,
-            skill_id=getattr(self, "skill_id", self.name),
-            use_count=max(1, int(getattr(self, "use_count", 1) or 1)),
-            life_drain=self.life_drain, damage_reduction=self.damage_reduction,
-            self_heal_hp=self.self_heal_hp, self_heal_energy=self.self_heal_energy,
-            steal_energy=self.steal_energy, enemy_lose_energy=self.enemy_lose_energy,
-            enemy_energy_cost_up=self.enemy_energy_cost_up, priority_mod=self.priority_mod,
-            force_switch=self.force_switch, agility=self.agility, charge=self.charge,
-            leech_stacks=self.leech_stacks, meteor_stacks=self.meteor_stacks,
-            is_mark=self.is_mark,
-            self_atk=self.self_atk, self_def=self.self_def, self_spatk=self.self_spatk,
-            self_spdef=self.self_spdef, self_speed=self.self_speed,
-            self_all_atk=self.self_all_atk, self_all_def=self.self_all_def,
-            enemy_atk=self.enemy_atk, enemy_def=self.enemy_def,
-            enemy_spatk=self.enemy_spatk, enemy_spdef=self.enemy_spdef,
-            enemy_speed=self.enemy_speed, enemy_all_atk=self.enemy_all_atk,
-            enemy_all_def=self.enemy_all_def,
-            poison_stacks=self.poison_stacks, burn_stacks=self.burn_stacks,
-            freeze_stacks=self.freeze_stacks,
-            counter_physical_drain=self.counter_physical_drain,
-            counter_physical_energy_drain=self.counter_physical_energy_drain,
-            counter_physical_self_atk=self.counter_physical_self_atk,
-            counter_physical_enemy_def=self.counter_physical_enemy_def,
-            counter_physical_enemy_atk=self.counter_physical_enemy_atk,
-            counter_physical_power_mult=self.counter_physical_power_mult,
-            counter_defense_self_atk=self.counter_defense_self_atk,
-            counter_defense_self_def=self.counter_defense_self_def,
-            counter_defense_enemy_def=self.counter_defense_enemy_def,
-            counter_defense_enemy_atk=self.counter_defense_enemy_atk,
-            counter_defense_enemy_energy_cost=self.counter_defense_enemy_energy_cost,
-            counter_defense_power_mult=self.counter_defense_power_mult,
-            counter_status_power_mult=self.counter_status_power_mult,
-            counter_status_enemy_lose_energy=self.counter_status_enemy_lose_energy,
-            counter_status_poison_stacks=self.counter_status_poison_stacks,
-            counter_status_burn_stacks=self.counter_status_burn_stacks,
-            counter_status_freeze_stacks=self.counter_status_freeze_stacks,
-            counter_skill_cooldown=self.counter_skill_cooldown,
-            counter_damage_reflect=self.counter_damage_reflect,
-        )
-        s.effects = [e.copy() for e in self.effects] if self.effects else []
-        s.description = getattr(self, "description", "")
-        s.transform_scope = getattr(self, "transform_scope", "")
-        s.transform_dynamic_scope = getattr(self, "transform_dynamic_scope", "")
-        s.transform_pending = getattr(self, "transform_pending", False)
-        s.random_source = getattr(self, "random_source", "")
-        s.choice_options = tuple(getattr(self, "choice_options", ()))
-        s.selected_choice = getattr(self, "selected_choice", "")
-        restore = getattr(self, "transform_restore", None)
-        s.transform_restore = restore.copy() if restore is not None else None
-        if hasattr(self, "_base_energy_cost"):
-            s._base_energy_cost = self._base_energy_cost
-        if hasattr(self, "burst"):
-            s.burst = self.burst
-        if hasattr(self, "devotion_affected"):
-            s.devotion_affected = self.devotion_affected
-        if hasattr(self, "_resonance_dual_path"):
-            s._resonance_dual_path = self._resonance_dual_path
+    _STACK_FIELDS = frozenset(("poison_stacks", "burn_stacks", "freeze_stacks", "leech_stacks", "meteor_stacks"))
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if name in self._STACK_FIELDS:
+            value = max(0, min(99, int(value)))
+        super().__setattr__(name, value)
+
+    @property
+    def skill_instance_id(self) -> str:
+        """技能实例的稳定身份；兼容旧代码使用 instance_id。"""
+        return self.instance_id
+
+    @skill_instance_id.setter
+    def skill_instance_id(self, value: str) -> None:
+        self.instance_id = str(value)
+
+    def copy(self, *, preserve_instance_id: bool = False):
+        # 深拷贝完整对象，确保运行时新增的技能专属状态也随实例复制。
+        s = copy.deepcopy(self)
+        s.instance_id = self.instance_id if preserve_instance_id else uuid4().hex
         return s
 
 
@@ -282,7 +245,8 @@ class Pokemon:
     ability: str = ""
     skills: List[Skill] = field(default_factory=list)
 
-    current_hp: int = 0
+    # -1表示构造时未提供当前HP；显式0必须保持力竭。
+    current_hp: int = -1
     energy: int = 10  # 登场时满能量，上限10
     status: StatusType = StatusType.NORMAL
     entry_count: int = 0
@@ -325,8 +289,9 @@ class Pokemon:
     # 蓄力状态
     charging_skill_idx: int = -1    # 正在蓄力的技能index (-1=没有蓄力)
 
-    # 技能冷却 (index -> cooldown turns remaining)
+    # 技能冷却（对外保留 index -> turns；内部同时按技能实例身份保存）
     cooldowns: Dict[int, int] = field(default_factory=dict)
+    skill_cooldowns: Dict[str, int] = field(default_factory=dict)
 
     # 冻结层数（每层侵蚀5%最大生命，换人保留）
     freeze_stacks: int = 0
@@ -350,13 +315,25 @@ class Pokemon:
     ability_state: Dict[str, Any] = field(default_factory=dict)  # 特性运行时状态
     compound_statuses: Dict[str, CompoundStatus] = field(default_factory=dict)
     devolution_forms: List[Dict[str, Any]] = field(default_factory=list)
+    # 放在原有字段之后，避免破坏旧的 positional 构造。
+    instance_id: str = field(default_factory=lambda: uuid4().hex)
+
+    _STACK_FIELDS = frozenset((
+        "poison_stacks", "burn_stacks", "leech_stacks", "electric_stacks",
+        "meteor_stacks", "cute_stacks", "freeze_stacks",
+    ))
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if name in self._STACK_FIELDS:
+            value = max(0, min(99, int(value)))
+        super().__setattr__(name, value)
 
     def __post_init__(self):
         if not self.pokemon_types:
             self.pokemon_types = [self.pokemon_type]
         elif self.pokemon_type not in self.pokemon_types:
             self.pokemon_types.insert(0, self.pokemon_type)
-        if self.current_hp == 0:
+        if self.current_hp < 0:
             self.current_hp = round(self.hp)
         # 确保 HP 是整数
         self.hp = round(self.hp)
@@ -435,7 +412,8 @@ class Pokemon:
         """增加一个完整状态的层数，其他状态可复用此入口。"""
         if key not in self.compound_statuses:
             self.compound_statuses[key] = CompoundStatus(name, modifiers=dict(modifiers), description=description)
-        self.compound_statuses[key].stacks += 1
+        status = self.compound_statuses[key]
+        status.stacks = max(0, min(99, int(status.stacks) + 1))
 
     def apply_self_buff(self, skill: Skill) -> None:
         """应用技能的自身增益（写入 *_up 字段）"""
@@ -499,7 +477,8 @@ class Pokemon:
             hp=self.hp, attack=self.attack, defense=self.defense,
             sp_attack=self.sp_attack, sp_defense=self.sp_defense,
             speed=self.speed, ability=self.ability,
-            skills=[s.copy() for s in self.skills],
+            skills=[s.copy(preserve_instance_id=True) for s in self.skills],
+            instance_id=self.instance_id,
             current_hp=self.current_hp, energy=self.energy,
             status=self.status,
             entry_count=self.entry_count,
@@ -534,6 +513,7 @@ class Pokemon:
         p.charging_skill_idx = self.charging_skill_idx
         p.freeze_stacks = self.freeze_stacks
         p.cooldowns = dict(self.cooldowns)
+        p.skill_cooldowns = dict(self.skill_cooldowns)
         # 个体值和性格（用户配置，复制时保留）
         p.iv_hp = self.iv_hp
         p.iv_atk = self.iv_atk
@@ -543,11 +523,72 @@ class Pokemon:
         p.iv_speed = self.iv_speed
         p.nature = self.nature
         # 新引擎字段
-        p.ability_effects = [ae.copy() for ae in self.ability_effects] if self.ability_effects else []
+        p.ability_effects = copy.deepcopy(self.ability_effects) if self.ability_effects else []
         p.ability_state = copy.deepcopy(self.ability_state)
         p.compound_statuses = copy.deepcopy(self.compound_statuses)
         p.devolution_forms = copy.deepcopy(self.devolution_forms)
         return p
+
+    def get_skill_cooldown(self, index: int) -> int:
+        """读取技能冷却；优先按实例身份，兼容旧的槽位字典。"""
+        if not 0 <= index < len(self.skills):
+            return 0
+        skill = self.skills[index]
+        key = skill.skill_instance_id
+        if key in self.skill_cooldowns:
+            return int(self.skill_cooldowns[key])
+        # 仅在尚未建立实例映射的旧状态中读取槽位冷却；技能对象被替换后，
+        # 已存在实例映射意味着该槽位的旧冷却不可转移给新技能。
+        if self.skill_cooldowns:
+            return 0
+        value = int(self.cooldowns.get(index, 0))
+        if value:
+            self.skill_cooldowns[key] = value
+        return value
+
+    def set_skill_cooldown(self, index: int, value: int) -> None:
+        """设置技能冷却并同步旧槽位视图。"""
+        if not 0 <= index < len(self.skills):
+            return
+        value = max(0, int(value))
+        key = self.skills[index].skill_instance_id
+        if value:
+            self.skill_cooldowns[key] = value
+            self.cooldowns[index] = value
+        else:
+            self.skill_cooldowns.pop(key, None)
+            self.cooldowns.pop(index, None)
+
+    def sync_skill_cooldowns(self) -> None:
+        """将旧槽位冷却迁移到实例身份，并重建槽位兼容视图。"""
+        # 只有完全没有实例映射时才迁移旧存档的槽位冷却。实例映射一旦建立，
+        # cooldowns 只是兼容视图；技能替换后残留的旧槽位值不能再转移给新实例。
+        if not self.skill_cooldowns:
+            for index, value in list(self.cooldowns.items()):
+                if 0 <= index < len(self.skills) and value:
+                    self.skill_cooldowns.setdefault(self.skills[index].skill_instance_id, int(value))
+        self.cooldowns = {
+            index: int(self.skill_cooldowns.get(skill.skill_instance_id, 0))
+            for index, skill in enumerate(self.skills)
+            if self.skill_cooldowns.get(skill.skill_instance_id, 0)
+        }
+
+    def decrement_skill_cooldowns(self) -> None:
+        """按技能实例递减冷却，并刷新旧槽位视图。"""
+        self.sync_skill_cooldowns()
+        for key in list(self.skill_cooldowns):
+            value = int(self.skill_cooldowns[key]) - 1
+            if value > 0:
+                self.skill_cooldowns[key] = value
+            else:
+                self.skill_cooldowns.pop(key, None)
+        # 此处只重建兼容视图，不能再次执行旧槽位迁移；否则冷却归零后，
+        # 仍残留的 cooldowns[index] 会被当作旧存档重新迁移回来。
+        self.cooldowns = {
+            index: int(self.skill_cooldowns[skill.skill_instance_id])
+            for index, skill in enumerate(self.skills)
+            if skill.skill_instance_id in self.skill_cooldowns
+        }
 
 
 def add_freeze_stacks(pokemon: Pokemon, stacks: int, source: Optional[Pokemon] = None,
@@ -607,8 +648,8 @@ class BattleState:
 
     # 印记/场效 (全队共享Buff, 不随换人消失)
     # 结构: {"atk": 0.3, "def": 0.2, "poison_mark": 3, ...}
-    marks_a: Dict[str, float] = field(default_factory=dict)
-    marks_b: Dict[str, float] = field(default_factory=dict)
+    marks_a: Dict[str, int] = field(default_factory=dict)
+    marks_b: Dict[str, int] = field(default_factory=dict)
 
     # 全队应对计数 (海豹船长特性需要)
     counter_count_a: int = 0
@@ -623,8 +664,8 @@ class BattleState:
     # 天气持续回合 (由 _h_weather 设置)
     weather_turns: int = 0
 
-    # 沙暴天气下的原始技能能耗备份 (id(skill) -> original_cost)
-    sandstorm_original_costs: Dict[int, int] = field(default_factory=dict)
+    # 沙暴天气下的原始技能能耗备份 (skill_instance_id -> original_cost)
+    sandstorm_original_costs: Dict[str, int] = field(default_factory=dict)
 
     # 聚能事件日志 (供 server.py 战斗播报使用)
     energy_recharge_log: list = field(default_factory=list)

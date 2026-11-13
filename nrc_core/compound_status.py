@@ -26,6 +26,10 @@ class CompoundStatus:
     skill_modifiers: dict[str, float] = field(default_factory=dict)
     skill_types: tuple[str, ...] = ()
 
+    def __post_init__(self) -> None:
+        """组合状态层数统一限制为独立整数 0..99。"""
+        self.stacks = max(0, min(99, int(self.stacks)))
+
     def modifier(self, attribute: str) -> float:
         """返回本次计算所需的派生值，不缓存、不消耗原始层数。"""
         return self.stacks * self.modifiers.get(attribute, 0.0)

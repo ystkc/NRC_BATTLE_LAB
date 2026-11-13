@@ -219,7 +219,7 @@ def _h_contract_entry(tag: EffectTag, ctx: Ctx) -> None:
     elif ball in {"变幻球", "def"}:
         ctx.user.def_up += 0.30; ctx.user.spdef_up += 0.30
         marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
-        marks["meteor_mark"] = marks.get("meteor_mark", 0) + 1
+        marks["meteor_mark"] = min(99, max(0, int(marks.get("meteor_mark", 0)) + 1))
     elif ball in {"对手攻击", "enemy_atk"}:
         ctx.target.atk_down += 0.30; ctx.target.spatk_down += 0.30
     elif ball in {"对手魔防", "enemy_spdef"}:
@@ -232,7 +232,7 @@ def _h_contract_entry(tag: EffectTag, ctx: Ctx) -> None:
         ctx.user.spdef_up += 0.30
     elif ball in {"meteor"}:
         marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
-        marks["meteor_mark"] = marks.get("meteor_mark", 0) + 1
+        marks["meteor_mark"] = min(99, max(0, int(marks.get("meteor_mark", 0)) + 1))
     elif ball == "drain":
         ctx.user.life_drain_mod += 0.30
     elif ball == "burn":

@@ -101,6 +101,7 @@ def _public_summary(session: Mapping[str, Any], side: str | None=None) -> dict[s
     pending = set(session.get('pending') or [])
     own_side = side if side in {'own', 'opponent'} else None
     winner = session.get('winner')
+    outcome = session.get('outcome')
     if own_side and winner is not None:
         winner = int(winner) if own_side == 'own' else 1 - int(winner)
     if session.get('initialized'):
@@ -113,7 +114,7 @@ def _public_summary(session: Mapping[str, Any], side: str | None=None) -> dict[s
         waiting_for = 'first_choice'
     else:
         waiting_for = 'opponent_first_choice' if not all(confirmed.values()) else 'battle'
-    return {'battle_id': session['battle_id'], 'mode': session.get('mode', 'full'), 'turn': session.get('turn', 1), 'phase': session.get('phase', 'waiting_for_players'), 'decision_index': session.get('decision_index', 0), 'status': 'finished' if session.get('terminal') else 'active' if session.get('initialized') else 'waiting', 'players': len(players), 'joined': len(players) >= 2, 'ready': ready, 'initialized': bool(session.get('initialized')), 'roster_submitted': bool(own_side and submitted.get(own_side)), 'confirmed': bool(own_side and confirmed.get(own_side)), 'confirmed_sides': [name for name, value in confirmed.items() if value], 'waiting_for': waiting_for, 'pending': bool(own_side and own_side in pending), 'terminal': bool(session.get('terminal')), 'winner': winner, 'event_count': _visible_event_count(session, own_side or 'own'), 'roster': copy.deepcopy(teams.get(own_side) or []) if own_side else []}
+    return {'battle_id': session['battle_id'], 'mode': session.get('mode', 'full'), 'turn': session.get('turn', 1), 'phase': session.get('phase', 'waiting_for_players'), 'decision_index': session.get('decision_index', 0), 'status': 'finished' if session.get('terminal') else 'active' if session.get('initialized') else 'waiting', 'players': len(players), 'joined': len(players) >= 2, 'ready': ready, 'initialized': bool(session.get('initialized')), 'roster_submitted': bool(own_side and submitted.get(own_side)), 'confirmed': bool(own_side and confirmed.get(own_side)), 'confirmed_sides': [name for name, value in confirmed.items() if value], 'waiting_for': waiting_for, 'pending': bool(own_side and own_side in pending), 'terminal': bool(session.get('terminal')), 'winner': winner, 'outcome': outcome, 'event_count': _visible_event_count(session, own_side or 'own'), 'roster': copy.deepcopy(teams.get(own_side) or []) if own_side else []}
 
 def _base_name(name: str) -> str:
     return re.split('[（(]', str(name), maxsplit=1)[0].strip()
@@ -406,6 +407,11 @@ class RoomService:
         current = self._member(session, identity)
         actual_side = current[1]
         result = self.platform.get_public_observation(battle_id, actual_side)
+        status = self.platform.get_battle_status(battle_id)
+        result['terminal'] = bool(status.get('terminal'))
+        winner = status.get('winner')
+        result['winner'] = winner if actual_side == 'own' or winner is None else 1 - int(winner)
+        result['outcome'] = status.get('outcome')
         return result
 
     @_room_operation
@@ -419,7 +425,7 @@ class RoomService:
         opponent = 'opponent' if side == 'own' else 'own'
         pending = set(session.get('pending') or [])
         decision_index = int(session.get('decision_index', 0))
-        return {'battle_id': battle_id, 'side': side, 'own_pending': side in pending, 'opponent_pending': opponent in pending, 'resolved': since >= 0 and decision_index != since, 'decision_index': decision_index, 'turn': session.get('turn', 1), 'phase': session.get('phase', 'waiting_for_players'), 'terminal': bool(session.get('terminal'))}
+        return {'battle_id': battle_id, 'side': side, 'own_pending': side in pending, 'opponent_pending': opponent in pending, 'resolved': since >= 0 and decision_index != since, 'decision_index': decision_index, 'turn': session.get('turn', 1), 'phase': session.get('phase', 'waiting_for_players'), 'terminal': bool(session.get('terminal')), 'winner': session.get('winner'), 'outcome': session.get('outcome')}
 
     @_room_operation
     def battle_events(self, battle_id: str, identity: str, since: int=0) -> Any:
@@ -430,7 +436,7 @@ class RoomService:
             raise ValueError('player token is required')
         events = _visible_events(session, current[1])
         cursor = max(0, min(int(since), len(events)))
-        return {'battle_id': battle_id, 'side': current[1], 'events': events[cursor:], 'cursor': len(events), 'total': len(events)}
+        return {'battle_id': battle_id, 'side': current[1], 'events': events[cursor:], 'cursor': len(events), 'total': len(events), 'terminal': bool(session.get('terminal')), 'winner': session.get('winner'), 'outcome': session.get('outcome')}
 
     @_room_operation
     def select_action(self, battle_id: str, identity: str, payload: Mapping[str, Any]) -> Any:
@@ -459,7 +465,10 @@ class RoomService:
                 battle.history.append(entry)
         response = result.to_dict()
         response['side'] = side
-        response['event_count'] = _visible_event_count(self._room(battle_id), side)
+        current_session = self._room(battle_id)
+        response['terminal'] = bool(current_session.get('terminal'))
+        response['outcome'] = current_session.get('outcome')
+        response['event_count'] = _visible_event_count(current_session, side)
         if response.get('result'):
             core_entry = next((entry for entry in reversed(battle.history)
                                if entry.get('source') == 'core' and entry.get('decision_index') == result.decision_index), {})

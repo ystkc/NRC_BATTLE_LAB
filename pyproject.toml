@@ -7,7 +7,7 @@ name = "nrc-battle-lab"
 version = "0.1.0"
 description = "纯核心战斗模拟器与半自动对战数据审计工具"
 requires-python = ">=3.10"
-dependencies = ["pypinyin>=0.50", "fastapi>=0.115", "uvicorn>=0.30"]
+dependencies = ["pypinyin>=0.50", "fastapi>=0.115", "uvicorn>=0.30", "numpy>=1.24"]
 
 [project.optional-dependencies]
 wiki = ["beautifulsoup4>=4.12", "PyYAML>=6.0"]

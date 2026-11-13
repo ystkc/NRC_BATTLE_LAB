@@ -37,9 +37,13 @@ _SKILL_MODIFIERS = {
     "priority_mod": ("priority", "层"),
 }
 _PUBLIC_SKILL_MODIFIERS = {**_SKILL_MODIFIERS, "power_pct": ("skill_power_pct", "%")}
+_SKILL_PRIVATE_MODIFIER_NAMES = frozenset({
+    "combo", "priority", "skill_power", "skill_power_pct", "skill_cost",
+    "next_attack_power", "next_attack_power_pct",
+})
 
 
-def creature_effects(pokemon: Pokemon) -> tuple[list[dict], list[dict]]:
+def creature_effects(pokemon: Pokemon, *, include_skill_private: bool = True) -> tuple[list[dict], list[dict]]:
     # Up and down layers coexist in the rules: do not cancel them into a net value.
     modifiers = []
     for stat in ("atk", "def", "spatk", "spdef", "speed"):
@@ -59,25 +63,28 @@ def creature_effects(pokemon: Pokemon) -> tuple[list[dict], list[dict]]:
         ("next_attack_power", pokemon.next_attack_power_bonus, "威力"),
         ("next_attack_power_pct", pokemon.next_attack_power_pct * 100, "%"),
     ):
-        if value:
+        if value and (include_skill_private or name not in _SKILL_PRIVATE_MODIFIER_NAMES):
             modifiers.append({"name": name, "stacks": value, "unit": unit})
     statuses = [
         {"name": name, "stacks": getattr(pokemon, field), "unit": unit}
         for name, field, unit in _STATUSES if getattr(pokemon, field) > 0
     ]
-    statuses.extend(status.observation(key) for key, status in pokemon.compound_statuses.items() if status.stacks > 0)
-    for field, value in pokemon.ability_state.get("public_skill_modifiers", {}).items():
-        if field in _PUBLIC_SKILL_MODIFIERS and value:
-            name, unit = _PUBLIC_SKILL_MODIFIERS[field]
-            modifiers.append({"name": name, "stacks": value, "unit": unit})
-    for mod in pokemon.ability_state.get("temporary_skill_cost_mods", []):
-        if mod.get("filter", "all") == "all" and mod.get("amount"):
-            amount = mod["amount"]
-            if pokemon.ability_state.get("cost_invert"):
-                amount = -amount
-            if pokemon.ability_state.get("cost_change_double"):
-                amount *= 2
-            modifiers.append({"name": "skill_cost", "stacks": amount, "unit": "能量"})
+    for key, status in pokemon.compound_statuses.items():
+        if status.stacks > 0 and (include_skill_private or not status.skill_modifiers and not status.skill_types):
+            statuses.append(status.observation(key))
+    if include_skill_private:
+        for field, value in pokemon.ability_state.get("public_skill_modifiers", {}).items():
+            if field in _PUBLIC_SKILL_MODIFIERS and value:
+                name, unit = _PUBLIC_SKILL_MODIFIERS[field]
+                modifiers.append({"name": name, "stacks": value, "unit": unit})
+        for mod in pokemon.ability_state.get("temporary_skill_cost_mods", []):
+            if mod.get("filter", "all") == "all" and mod.get("amount"):
+                amount = mod["amount"]
+                if pokemon.ability_state.get("cost_invert"):
+                    amount = -amount
+                if pokemon.ability_state.get("cost_change_double"):
+                    amount *= 2
+                modifiers.append({"name": "skill_cost", "stacks": amount, "unit": "能量"})
     status = str(getattr(pokemon.status, "value", pokemon.status))
     if status not in {"normal", "正常", "fainted", "力竭"} and not any(s["name"] == status for s in statuses):
         statuses.append({"name": status, "stacks": 1, "unit": "层"})
@@ -115,7 +122,7 @@ def normalize_observation(observation: Observation, battle: BattleState, catalog
             private = side == "own" and "skills" in item
             for key in _LEGACY:
                 item.pop(key, None)
-            modifiers, statuses = creature_effects(pokemon)
+            modifiers, statuses = creature_effects(pokemon, include_skill_private=private)
             ability_description = catalog.ability_descriptions.get(pokemon.ability, "")
             compound_names = set(pokemon.compound_statuses) | {status.name for status in pokemon.compound_statuses.values()}
             for entry in statuses:
@@ -152,6 +159,7 @@ def normalize_observation(observation: Observation, battle: BattleState, catalog
     opponent_devotion = battle.devotion_b if own_a else battle.devotion_a
     data["shared"]["devotion"] = {
         "own": {"total": sum(own_devotion.values()), "distribution": copy.deepcopy(own_devotion)},
+        "opponent": {"total": sum(opponent_devotion.values())},
     }
     return Observation(observation.player, observation.decision_index, observation.turn,
                        observation.phase, data)

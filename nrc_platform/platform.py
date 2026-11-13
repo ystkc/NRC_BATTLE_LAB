@@ -22,7 +22,7 @@ from nrc_core.models import SkillCategory, Type, get_type_effectiveness
 from nrc_core.runtime import BattleRuntime, BattleSession
 
 from .catalog import load_catalog
-from .builder import BattleBuilder
+from .builder import BattleBuilder, BuildResult
 from .input import merge_creature_spec
 from .state import normalize_observation
 from nrc_core.codec import creature_from_dict
@@ -92,6 +92,11 @@ class _ManagedBattle:
     def winner(self) -> int | None:
         """胜方由核心判定。"""
         return self.episode.winner if self.episode else None
+
+    @property
+    def outcome(self) -> str | None:
+        """终局结果；平局也有明确的 draw 值。"""
+        return self.episode.outcome if self.episode else None
 
 
 class _Catalog:
@@ -190,6 +195,22 @@ def _serialized(method):
     return call
 
 
+def _build_error(result: BuildResult) -> PlatformError:
+    """将构建器诊断完整桥接到平台错误，避免丢失输入路径。"""
+    diagnostics = result.diagnostics.to_json()
+    first = (result.diagnostics.issues or result.diagnostics.warnings or [None])[0]
+    if first is None:
+        return PlatformError("build_failed", "battle state construction failed", {"diagnostics": diagnostics})
+    details = {
+        "path": first.path,
+        "reason": first.reason,
+        "issues": diagnostics.get("issues", []),
+        "warnings": diagnostics.get("warnings", []),
+        "diagnostics": diagnostics,
+    }
+    return PlatformError(first.code, first.reason, details)
+
+
 class BattlePlatform:
     """持有双人对局，统一提交、历史和玩家视角。"""
 
@@ -212,7 +233,8 @@ class BattlePlatform:
         return PlatformResult(battle_id=battle_id, turn=self._current_turn(battle),
                               phase=battle.phase, decision_index=battle.decision_index,
                               pending=list(battle.pending), terminal=battle.terminal,
-                              winner=battle.winner, initialized=battle.episode is not None)
+                              winner=battle.winner, outcome=battle.outcome,
+                              initialized=battle.episode is not None)
 
     def resolve_pokemon(self, value: Any) -> Mapping[str, Any] | None:
         """Resolve a canonical creature record or a pinyin alias."""
@@ -276,7 +298,9 @@ class BattlePlatform:
             return battle.requests[request_id]
         self._ensure_mutable(battle)
         if decision_index is not None and decision_index != battle.decision_index:
-            raise PlatformError("stale_decision", "decision index is no longer current")
+            raise PlatformError("stale_decision", "decision index is no longer current", {
+                "expected": battle.decision_index, "received": decision_index,
+            })
         if side in battle.pending:
             raise PlatformError("already_submitted", "player already submitted this decision")
         if side not in {"own", "opponent"}:
@@ -336,6 +360,7 @@ class BattlePlatform:
             next_required=["own" if item == 0 else "opponent" for item in decision_after.players],
             terminated=transition.terminated,
             winner=transition.winner,
+            outcome=transition.outcome,
             warnings=[],
         )
         battle.requests[request_id] = result
@@ -514,33 +539,82 @@ class BattlePlatform:
             "decision_index": battle.decision_index,
             "terminal": battle.terminal,
             "winner": battle.winner,
+            "outcome": battle.outcome,
         }
         if battle.episode is not None:
             snapshot["episode"] = self._backend.export_state(battle.episode)
         return snapshot
 
     def import_battle(self, snapshot: Mapping[str, Any]) -> PlatformResult:
+        if not isinstance(snapshot, Mapping):
+            raise PlatformError("invalid_snapshot", "snapshot must be an object", {"path": "snapshot"})
         if snapshot.get("format") != "nrc_platform.session.v2":
-            raise PlatformError("version_mismatch", "unsupported platform snapshot format")
-        if dict(snapshot.get("manifest") or {}) != _manifest_dict(self.manifest):
+            raise PlatformError("version_mismatch", "unsupported platform snapshot format", {"path": "format"})
+        manifest = snapshot.get("manifest")
+        if not isinstance(manifest, Mapping):
+            raise PlatformError("invalid_snapshot", "snapshot manifest must be an object", {"path": "manifest"})
+        if dict(manifest) != _manifest_dict(self.manifest):
             raise PlatformError("version_mismatch", "snapshot manifest does not match active backend")
         battle_id = str(snapshot.get("battle_id") or "")
         if not battle_id:
             raise PlatformError("invalid_snapshot", "snapshot is missing battle_id")
-        battle = _ManagedBattle(
-            battle_id=battle_id,
-            mode=str(snapshot.get("mode", "full")),
-            seed=int(snapshot.get("seed", 0)),
-            manifest=self.manifest,
-            own_roster=copy.deepcopy(snapshot.get("own_roster")),
-            opponent_roster=copy.deepcopy(snapshot.get("opponent_roster")),
-            pending=copy.deepcopy(snapshot.get("pending") or {}),
-            history=copy.deepcopy(snapshot.get("history") or []),
-            revealed={p: set(snapshot.get("revealed", {}).get(str(p), [])) for p in (0, 1)},
-            requests={k: PlatformResult(v) for k, v in snapshot.get("requests", {}).items()},
-        )
+        try:
+            revealed = snapshot.get("revealed", {})
+            requests = snapshot.get("requests", {})
+            pending = snapshot.get("pending", {})
+            history = snapshot.get("history", [])
+            own_roster = snapshot.get("own_roster")
+            opponent_roster = snapshot.get("opponent_roster")
+            if revealed is None:
+                revealed = {}
+            if requests is None:
+                requests = {}
+            if pending is None:
+                pending = {}
+            if history is None:
+                history = []
+            if not isinstance(revealed, Mapping) or not isinstance(requests, Mapping):
+                raise TypeError("revealed and requests must be objects")
+            if not isinstance(pending, Mapping):
+                raise TypeError("pending must be an object")
+            if not isinstance(history, list):
+                raise TypeError("history must be an array")
+            if own_roster is not None and not isinstance(own_roster, Mapping):
+                raise TypeError("own_roster must be an object or null")
+            if opponent_roster is not None and not isinstance(opponent_roster, Mapping):
+                raise TypeError("opponent_roster must be an object or null")
+            if any(not isinstance(value, Mapping) for value in requests.values()):
+                raise TypeError("requests values must be objects")
+            for player in (0, 1):
+                visible = revealed.get(str(player), [])
+                if visible is None:
+                    continue
+                if isinstance(visible, (str, bytes)) or not isinstance(visible, (list, tuple, set, frozenset)):
+                    raise TypeError(f"revealed[{player}] must be an array")
+            battle = _ManagedBattle(
+                battle_id=battle_id,
+                mode=str(snapshot.get("mode", "full")),
+                seed=int(snapshot.get("seed", 0)),
+                manifest=self.manifest,
+                own_roster=copy.deepcopy(own_roster),
+                opponent_roster=copy.deepcopy(opponent_roster),
+                pending=copy.deepcopy(pending),
+                history=copy.deepcopy(history),
+                revealed={p: set(revealed.get(str(p), [])) for p in (0, 1)},
+                requests={k: PlatformResult(v) for k, v in requests.items()},
+            )
+        except (TypeError, ValueError, KeyError, AttributeError) as exc:
+            raise PlatformError("invalid_snapshot", "snapshot metadata is invalid", {
+                "path": "snapshot", "reason": str(exc),
+            }) from exc
+        # winner/outcome 从核心快照恢复；旧平台快照仍保留兼容字段。
         if snapshot.get("episode") is not None:
-            battle.episode = self._backend.import_state(snapshot["episode"])
+            try:
+                battle.episode = self._backend.import_state(snapshot["episode"])
+            except Exception as exc:
+                raise PlatformError("invalid_snapshot", "snapshot core state is invalid", {
+                    "path": "episode", "reason": str(exc),
+                }) from exc
         self._battles[battle_id] = battle
         return PlatformResult(
             battle_id=battle_id,
@@ -549,6 +623,9 @@ class BattlePlatform:
             turn=self._current_turn(battle),
             phase=battle.phase,
             manifest=_manifest_dict(self.manifest),
+            terminal=battle.terminal,
+            winner=battle.winner,
+            outcome=battle.outcome,
         )
 
     def query_display_power(self, state: Any, side: str, skill: Any, *, context: Mapping[str, Any] | None = None) -> PlatformResult:
@@ -651,10 +728,16 @@ class BattlePlatform:
             "opponent_team": copy.deepcopy(battle.opponent_roster),
             "shared": {"turn": 1, "mp": {"own": 4, "opponent": 4}},
         }
+        result = self._builder.build_result(setup, battle.seed)
+        if not result.ok:
+            raise _build_error(result)
         try:
-            battle.episode = self._backend.new_game(self._builder.build(setup, battle.seed), battle.seed)
-        except (ValueError, FileNotFoundError) as exc:
-            raise PlatformError("invalid_roster", str(exc)) from exc
+            episode = self._backend.new_game(result.state, battle.seed)
+        except Exception as exc:
+            raise PlatformError("core_initialization_failed", "core battle initialization failed", {
+                "path": "setup", "reason": str(exc),
+            }) from exc
+        battle.episode = episode
         self._record_revealed(battle)
 
     def _resolve_pending_actions(self, battle: _ManagedBattle) -> None:

@@ -21,6 +21,30 @@ if TYPE_CHECKING:
     from nrc_core.models import Pokemon, Skill, BattleState, SkillCategory
 
 
+class EffectExecutionError(ValueError):
+    """效果执行契约错误，携带与建造诊断一致的定位字段。"""
+
+    def __init__(self, reason: str, *, code: str, path: str = "effect") -> None:
+        self.code = code
+        self.path = path
+        self.reason = reason
+        super().__init__(f"{path}: {reason}")
+
+
+def unsupported_effect(reason: str, *, code: str, path: str = "effect") -> None:
+    """抛出统一的未支持效果错误，运行时存在时复用核心异常类型。"""
+    try:
+        from nrc_core.runtime import UnsupportedMechanicError
+    except ImportError:
+        error = EffectExecutionError(reason, code=code, path=path)
+    else:
+        error = UnsupportedMechanicError(f"{path}: {reason}")
+        error.code = code
+        error.path = path
+        error.reason = reason
+    raise error
+
+
 def _global_skill_cost_sources(tag: EffectTag, ctx: Ctx, handler: Callable) -> list:
     """由规则入口明确作用域，不能用四个技能变化相同推断全局。"""
     name = handler.__name__
@@ -84,6 +108,8 @@ def _global_skill_cost_sources(tag: EffectTag, ctx: Ctx, handler: Callable) -> l
 
 def _apply_tag(tag: EffectTag, ctx: Ctx, ability_mode: bool = False) -> None:
     """统一效果分发入口。ability_mode=True 时优先用特性专属 handler。"""
+    if not isinstance(tag, EffectTag):
+        unsupported_effect("效果标签不是 EffectTag", code="unsupported_effect_tag", path="effect.tag")
     promise_before = [(pokemon, _promise_modifiers(pokemon)) for pokemon in (ctx.user, ctx.target)]
     before = {
         "user_hp": ctx.user.current_hp,
@@ -97,21 +123,27 @@ def _apply_tag(tag: EffectTag, ctx: Ctx, ability_mode: bool = False) -> None:
         handler = _ABILITY_HANDLER_OVERRIDES.get(tag.type) or _HANDLERS.get(tag.type)
     else:
         handler = _HANDLERS.get(tag.type)
+    if handler is None:
+        unsupported_effect(
+            "效果原语没有注册处理器",
+            code="unsupported_effect_handler",
+            path=f"effect.{getattr(tag.type, 'name', str(tag.type))}",
+        )
     if handler:
         modifier_slots = []
         for pokemon in (ctx.user, ctx.target):
             private = pokemon.ability_state.get("_public_skill_modifier_deltas")
             if private is not None:
-                modifier_slots.append((pokemon, {id(skill): dict(private[index]) if index < len(private) else {}
+                modifier_slots.append((pokemon, {skill.skill_instance_id: dict(private[index]) if index < len(private) else {}
                                                    for index, skill in enumerate(pokemon.skills)},
-                                       [id(skill) for skill in pokemon.skills]))
+                                       [skill.skill_instance_id for skill in pokemon.skills]))
         sources = [(pokemon, field, delta, [getattr(s, field, 0) for s in pokemon.skills],
                     [entry.get(field, 0) for entry in pokemon.ability_state.get("_public_skill_modifier_deltas", [])])
                    for pokemon, field, delta in _global_skill_cost_sources(tag, ctx, handler)]
         handler(tag, ctx)
         for pokemon, slots, previous_ids in modifier_slots:
-            if previous_ids != [id(skill) for skill in pokemon.skills]:
-                pokemon.ability_state["_public_skill_modifier_deltas"] = [slots.get(id(skill), {}) for skill in pokemon.skills]
+            if previous_ids != [skill.skill_instance_id for skill in pokemon.skills]:
+                pokemon.ability_state["_public_skill_modifier_deltas"] = [slots.get(skill.skill_instance_id, {}) for skill in pokemon.skills]
         for pokemon, field, delta, values, previous_global in sources:
             current_global = pokemon.ability_state.get("_public_skill_modifier_deltas", [])
             values = [value + (current_global[index].get(field, 0) if index < len(current_global) else 0)
@@ -126,7 +158,7 @@ def _apply_tag(tag: EffectTag, ctx: Ctx, ability_mode: bool = False) -> None:
              user=ctx.user.name, target=ctx.target.name,
              skill=ctx.skill.name if ctx.skill else None,
              tag=getattr(tag.type, "value", str(tag.type)), params=tag.params,
-             handled=handler is not None, before=before,
+             handled=True, before=before,
              after={
                  "user_hp": ctx.user.current_hp,
                  "target_hp": ctx.target.current_hp,

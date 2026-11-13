@@ -8,6 +8,7 @@ from nrc_core.engine.context import (
 )
 from nrc_core.engine.dispatch import (
     _apply_tag,
+    unsupported_effect,
 )
 from nrc_core.engine.filters import (
     _check_skill_filter,
@@ -54,6 +55,14 @@ class EffectExecutor:
         执行技能的全部效果。
         自动检测 effects 是 List[SkillEffect] 还是 List[EffectTag]，分别走新/旧路径。
         """
+        if not effects:
+            unsupported_effect(
+                f"技能 {getattr(skill, 'name', '<unknown>')} 没有可执行效果",
+                code="empty_effects",
+                path=f"skill.{getattr(skill, 'name', '<unknown>')}.effects",
+            )
+        if not isinstance(effects, (list, tuple)):
+            unsupported_effect("技能 effects 必须是数组", code="invalid_effects", path="skill.effects")
         core_log("skill", "effect_start", turn=getattr(state, "turn", None),
                  team=team, user=user.name, target=target.name,
                  skill=skill.name, effect_count=len(effects or []),
@@ -461,6 +470,10 @@ class EffectExecutor:
         context: Optional[Dict] = None,
     ) -> Dict:
         """在指定时机触发特性效果。"""
+        if ability_effects is None or not ability_effects:
+            unsupported_effect("特性效果列表不能为 None", code="empty_ability_effects", path="ability_effects")
+        if not isinstance(ability_effects, (list, tuple)):
+            unsupported_effect("特性 effects 必须是数组", code="invalid_ability_effects", path="ability_effects")
         result = {"triggered": False, "damage_reduction": 0}
         report_start = len(state.turn_report)
         if context is None:

@@ -12,6 +12,7 @@ data/mitm/
 *.png
 *.jpg
 *.json
+!data/resident_boss_ids.json
 /data/wiki_staging
 *.pt
 /data/ai_runs

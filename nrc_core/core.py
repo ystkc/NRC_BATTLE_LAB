@@ -154,23 +154,23 @@ def simulate_turn(state: BattleState, action_a: tuple[int, ...], action_b: tuple
         action_a=action_a,
         action_b=action_b,
     )
-    if not getattr(next_state, "turn_start_prepared", False):
-        _trigger_battle_start_effects(next_state)
-        _apply_turn_start_ability_logic(next_state)
-        _apply_moisture_mark(next_state)
-        next_state.turn_start_prepared = True
-    turn_start_skill_display = {
-        "own": _turn_start_skill_display(next_state, "a"),
-        "opponent": _turn_start_skill_display(next_state, "b"),
-    }
-    display_power = {"a": _display_power(next_state, "a", action_a), "b": _display_power(next_state, "b", action_b)}
-    before = {
-        "turn": next_state.turn,
-        "active": {"a": next_state.team_a[next_state.current_a].name, "b": next_state.team_b[next_state.current_b].name},
-        "actions": {"a": _action_view(next_state, "a", action_a), "b": _action_view(next_state, "b", action_b)},
-        "hp": {"a": next_state.team_a[next_state.current_a].current_hp, "b": next_state.team_b[next_state.current_b].current_hp},
-    }
     with rng_scope(random.Random(int(seed))):
+        if not getattr(next_state, "turn_start_prepared", False):
+            _trigger_battle_start_effects(next_state)
+            _apply_turn_start_ability_logic(next_state)
+            _apply_moisture_mark(next_state)
+            next_state.turn_start_prepared = True
+        turn_start_skill_display = {
+            "own": _turn_start_skill_display(next_state, "a"),
+            "opponent": _turn_start_skill_display(next_state, "b"),
+        }
+        display_power = {"a": _display_power(next_state, "a", action_a), "b": _display_power(next_state, "b", action_b)}
+        before = {
+            "turn": next_state.turn,
+            "active": {"a": next_state.team_a[next_state.current_a].name, "b": next_state.team_b[next_state.current_b].name},
+            "actions": {"a": _action_view(next_state, "a", action_a), "b": _action_view(next_state, "b", action_b)},
+            "hp": {"a": next_state.team_a[next_state.current_a].current_hp, "b": next_state.team_b[next_state.current_b].current_hp},
+        }
         execute_full_turn(next_state, action_a, action_b, lambda *_: None, lambda *_: None, preserve_report=True)
     after = {
         "turn": next_state.turn,

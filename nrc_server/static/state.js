@@ -24,6 +24,7 @@ export const state = {
   previewRequest: 0,
   previewFormIndex: 0,
   locked: false,
+  diagnostics: { issues: [], warnings: [] },
 };
 
 

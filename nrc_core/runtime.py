@@ -25,13 +25,14 @@ from nrc_core.battle import (
     _apply_moisture_mark,
     _apply_turn_start_ability_logic,
     _trigger_battle_start_effects,
+    check_outcome,
     check_winner,
 )
 from nrc_core.effect_models import Timing
 from nrc_core.engine import EffectExecutor
 from nrc_core.catalog import CoreCatalog
 from nrc_core.models import BattleState, Pokemon
-from nrc_core.rng import rng_scope
+from nrc_core.rng import decision_rng, derive_subseed, rng_scope
 
 from .codec import side_turn_from_dict
 from .core import simulate_turn, skill_energy_cost, _turn_start_skill_display
@@ -57,6 +58,7 @@ class BattleSession:
     players: tuple[int, ...] = (0, 1)
     terminated: bool = False
     winner: int | None = None
+    outcome: str | None = None
     seed: int = 0
     events: list[dict[str, Any]] | None = None
 
@@ -70,6 +72,20 @@ def _isolated_rng(seed: int):
     with _RNG_LOCK:
         with rng_scope(random.Random(int(seed))):
             yield
+
+
+@contextmanager
+def _decision_rng_scope(
+    state: BattleSession,
+    phase: str,
+    side: str | int,
+    *,
+    decision_index: int | None = None,
+):
+    """按对局根 seed 和决策上下文建立稳定的随机作用域。"""
+    index = state.decision_index if decision_index is None else decision_index
+    with rng_scope(decision_rng(state.seed, index, phase, side)):
+        yield
 
 
 def _manifest(environment: str) -> CoreManifest:
@@ -95,6 +111,7 @@ def _decision_json(value: Decision) -> dict[str, Any]:
         "players": list(value.players),
         "terminated": value.terminated,
         "winner": value.winner,
+        "outcome": value.outcome,
     }
 
 
@@ -179,7 +196,7 @@ def _weather_backups(state: BattleState) -> list[tuple[str, int, int, int]]:
     for side, team in (("a", state.team_a), ("b", state.team_b)):
         for index, pokemon in enumerate(team):
             for slot, skill in enumerate(pokemon.skills):
-                value = state.sandstorm_original_costs.get(id(skill))
+                value = state.sandstorm_original_costs.get(skill.skill_instance_id)
                 if value is not None:
                     result.append((side, index, slot, int(value)))
     return result
@@ -190,7 +207,7 @@ def _restore_weather_backups(state: BattleState, values: list[tuple[str, int, in
     for side, index, slot, value in values:
         team = state.team_a if side == "a" else state.team_b
         if 0 <= index < len(team) and 0 <= slot < len(team[index].skills):
-            state.sandstorm_original_costs[id(team[index].skills[slot])] = value
+            state.sandstorm_original_costs[team[index].skills[slot].skill_instance_id] = value
 
 
 class BattleRuntime:
@@ -254,18 +271,11 @@ class BattleRuntime:
         if battle.turn_report:
             state.events.extend(battle.turn_report)
             battle.turn_report = []
-        winner = check_winner(battle)
-        if winner:
+        outcome = check_outcome(battle)
+        if outcome:
             state.terminated = True
-            state.winner = 0 if winner == "a" else 1
-            state.phase = "terminal"
-            state.players = ()
-            return
-        alive_a = any(not item.is_fainted for item in battle.team_a)
-        alive_b = any(not item.is_fainted for item in battle.team_b)
-        if not alive_a or not alive_b:
-            state.terminated = True
-            state.winner = 1 if alive_a and not alive_b else 0 if alive_b and not alive_a else None
+            state.outcome = outcome
+            state.winner = 0 if outcome == "a_win" else 1 if outcome == "b_win" else None
             state.phase = "terminal"
             state.players = ()
             return
@@ -277,17 +287,40 @@ class BattleRuntime:
         state.phase = "turn_choice"
         state.players = (0, 1)
         if settle_start and not battle.turn_start_prepared:
-            _trigger_battle_start_effects(battle)
-            _apply_turn_start_ability_logic(battle)
-            _apply_moisture_mark(battle)
+            with _decision_rng_scope(state, "battle_start", "shared"):
+                _trigger_battle_start_effects(battle)
+            with _decision_rng_scope(state, "turn_start", "shared"):
+                _apply_turn_start_ability_logic(battle)
+                _apply_moisture_mark(battle)
             battle.turn_start_prepared = True
+            # 入场/回合开始效果可能立即耗尽 MP 或令双方全队力竭，
+            # 必须在返回可行动阶段前再次锁定终局。
+            outcome = check_outcome(battle)
+            if outcome:
+                state.terminated = True
+                state.outcome = outcome
+                state.winner = 0 if outcome == "a_win" else 1 if outcome == "b_win" else None
+                state.phase = "terminal"
+                state.players = ()
+                if battle.turn_report:
+                    state.events.extend(battle.turn_report)
+                    battle.turn_report = []
+                return
         if battle.turn_report:
             state.events.extend(battle.turn_report)
             battle.turn_report = []
 
     def decision(self, state: object) -> Decision:
         current = self._check_state(state)
-        return Decision(current.decision_index, current.battle.turn, current.phase, current.players, current.terminated, current.winner)
+        return Decision(
+            current.decision_index,
+            current.battle.turn,
+            current.phase,
+            current.players,
+            current.terminated,
+            current.winner,
+            current.outcome,
+        )
 
     def _team(self, battle: BattleState, player: int) -> tuple[list[Pokemon], int, str]:
         if player == 0:
@@ -318,7 +351,7 @@ class BattleRuntime:
             repetitions = max(1, int(getattr(skill, "use_count", 1) or 1))
             if active.ability_state.get("first_action_bonus"):
                 repetitions += 1
-            if active.energy < skill_energy_cost(active, skill, enemy_team[enemy_index]) * repetitions or active.cooldowns.get(index, 0) > 0:
+            if active.energy < skill_energy_cost(active, skill, enemy_team[enemy_index]) * repetitions or active.get_skill_cooldown(index) > 0:
                 continue
             options = tuple(getattr(skill, "choice_options", ()))
             if len(options) == 2:
@@ -401,26 +434,33 @@ class BattleRuntime:
         }
         return Observation(player, current.decision_index, current.battle.turn, current.phase, data)
 
-    def _replacement(self, state: BattleSession, actions: Mapping[int, str]) -> None:
+    def _replacement(
+        self,
+        state: BattleSession,
+        actions: Mapping[int, str],
+        *,
+        decision_index: int | None = None,
+    ) -> None:
         for player in state.players:
-            legal = {item.key: item for item in self.legal_actions(state, player)}
-            payload = legal[actions[player]].payload["primary"]
             team, current_index, side = self._team(state.battle, player)
-            chosen = int(payload["switch_index"])
-            if chosen == current_index or team[chosen].is_fainted:
-                raise ValueError("illegal replacement target")
-            if side == "a":
-                state.battle.current_a = chosen
-            else:
-                state.battle.current_b = chosen
-            pokemon = team[chosen]
-            pokemon.entry_count += 1
-            pokemon.ability_state["_burst_pending"] = True
-            _apply_mark_on_enter(state.battle, side, pokemon)
-            enemy = state.battle.team_b[state.battle.current_b] if side == "a" else state.battle.team_a[state.battle.current_a]
-            if pokemon.ability_effects:
-                EffectExecutor.execute_ability(state.battle, pokemon, enemy, Timing.ON_ENTER, pokemon.ability_effects, side)
-            state.battle.pending_switch_requests = [item for item in state.battle.pending_switch_requests if item.get("team") != side]
+            with _decision_rng_scope(state, "replacement", side, decision_index=decision_index):
+                legal = {item.key: item for item in self.legal_actions(state, player)}
+                payload = legal[actions[player]].payload["primary"]
+                chosen = int(payload["switch_index"])
+                if chosen == current_index or team[chosen].is_fainted:
+                    raise ValueError("illegal replacement target")
+                if side == "a":
+                    state.battle.current_a = chosen
+                else:
+                    state.battle.current_b = chosen
+                pokemon = team[chosen]
+                pokemon.entry_count += 1
+                pokemon.ability_state["_burst_pending"] = True
+                _apply_mark_on_enter(state.battle, side, pokemon)
+                enemy = state.battle.team_b[state.battle.current_b] if side == "a" else state.battle.team_a[state.battle.current_a]
+                if pokemon.ability_effects:
+                    EffectExecutor.execute_ability(state.battle, pokemon, enemy, Timing.ON_ENTER, pokemon.ability_effects, side)
+                state.battle.pending_switch_requests = [item for item in state.battle.pending_switch_requests if item.get("team") != side]
 
     def advance(self, state: object, actions: Mapping[int, str], seed: int) -> Transition:
         current = self._check_state(state)
@@ -434,11 +474,13 @@ class BattleRuntime:
             if actions[player] not in legal_by_player[player]:
                 raise ValueError(f"illegal action {actions[player]!r} for player {player}")
         next_state = self.clone(current)
-        next_state.seed = int(seed)
+        # ``seed`` 保留为兼容参数；对局随机性始终从新局 root seed 派生。
+        int(seed)
+        decision_index = current.decision_index
         next_state.decision_index += 1
         next_state.events = []
         if current.phase == "replacement":
-            self._replacement(next_state, actions)
+            self._replacement(next_state, actions, decision_index=decision_index)
             self._prepare_decision(next_state, settle_start=True)
         else:
             payloads = {player: side_turn_from_dict(legal_by_player[player][actions[player]].payload) for player in current.players}
@@ -462,7 +504,8 @@ class BattleRuntime:
             try:
                 legacy_a = self._simulator._to_legacy_action(payloads[0].primary, next_state.battle, "a")
                 legacy_b = self._simulator._to_legacy_action(payloads[1].primary, next_state.battle, "b")
-                turn_result = simulate_turn(next_state.battle, legacy_a, legacy_b, seed=seed, clone=False)
+                turn_seed = derive_subseed(current.seed, decision_index, "turn", "shared")
+                turn_result = simulate_turn(next_state.battle, legacy_a, legacy_b, seed=turn_seed, clone=False)
             finally:
                 self._simulator._restore_resonance_items(cleanups)
             next_state.events.extend(turn_result.report)
@@ -471,10 +514,11 @@ class BattleRuntime:
             state_changes.extend(self._simulator._state_change_events(before_state["b"], after_state["b"], "b"))
             next_state.events.extend(state_changes)
             next_state.events.append({"type": "display_power", "value": turn_result.display_power})
-            winner = turn_result.winner or check_winner(next_state.battle)
-            if winner:
+            outcome = check_outcome(next_state.battle)
+            if outcome:
                 next_state.terminated = True
-                next_state.winner = 0 if winner == "a" else 1
+                next_state.outcome = outcome
+                next_state.winner = 0 if outcome == "a_win" else 1 if outcome == "b_win" else None
                 next_state.phase = "terminal"
                 next_state.players = ()
             else:
@@ -484,7 +528,15 @@ class BattleRuntime:
             rewards[next_state.winner] = 1.0
             rewards[1 - next_state.winner] = -1.0
         observations = {player: self.observe(next_state, player) for player in (0, 1)}
-        return Transition(next_state, observations, rewards, next_state.terminated, next_state.winner, tuple(next_state.events or ()))
+        return Transition(
+            next_state,
+            observations,
+            rewards,
+            next_state.terminated,
+            next_state.winner,
+            tuple(next_state.events or ()),
+            next_state.outcome,
+        )
 
     def _report_state(self, state: BattleState) -> dict[str, dict[str, Any]]:
         result = {}
@@ -518,11 +570,16 @@ class BattleRuntime:
         backups = _weather_backups(snapshot.battle)
         snapshot.battle.sandstorm_original_costs.clear()
         payload = base64.b64encode(pickle.dumps(snapshot, protocol=5)).decode("ascii")
-        return {"format": "nrc_core.runtime.pickle.v1", "manifest": _manifest_json(self.manifest), "weather_backups": backups, "payload": payload}
+        return {
+            "format": "nrc_core.runtime.pickle.v2",
+            "manifest": _manifest_json(self.manifest),
+            "weather_backups": backups,
+            "payload": payload,
+        }
 
     def import_state(self, snapshot: Mapping[str, Any]) -> BattleSession:
-        if snapshot.get("format") != "nrc_core.runtime.pickle.v1":
-            raise ValueError("unsupported state snapshot format")
+        if snapshot.get("format") != "nrc_core.runtime.pickle.v2":
+            raise VersionMismatchError("unsupported state snapshot format; nrc_core.runtime.pickle.v2 required")
         if dict(snapshot.get("manifest") or {}) != _manifest_json(self.manifest):
             raise VersionMismatchError("snapshot manifest does not match backend manifest")
         try:

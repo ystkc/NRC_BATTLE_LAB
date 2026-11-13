@@ -9,6 +9,10 @@
 - 本轮新增/修改的规划入口：[完整计划](repair_plan_full.md)、[逐项台账](repair_ledger.csv)、[门禁及解锁条件](repair_gates.md)、[只读保护基线](repair_plan_baseline.json)、[规划校验记录](repair_plan_validation.json)。[原前半计划](repair_plan_first_half.md) 改为完整计划入口；其旧基线和“只到QUE-033”不再适用。
 - 原始证据入口：[108项缺陷索引](issue_index.csv)、[64项问题索引](question_index.csv)、[缺陷全文](issues.md)、[裁决全文](questions.md)、[原场景矩阵](scenario_matrix.csv)。台账保留原T00–T12归属，实施包另设主责，不篡改历史归属。
 
+### 后续执行记录（2026-11-13）
+
+规划基线保留上面的只读核验结论；本轮后续执行已开始，业务改动集中在核心数值/状态生命周期、技能实例与冷却、派生随机、平台构建错误边界、目录注入、回合终局和前端双视角显示。当前批次的验证为现有 pytest 19 项、Python compileall、前端 Node 语法检查及 Chrome 双 context Playwright smoke；未决规则门禁仍按本计划执行，不能由这些回归结果替代。
+
 ## 规则依据及决策边界
 
 规则查阅顺序为 `data/*.md` → `data/部分规则详解/` → `data/wiki/game_descriptions.csv`，技能/特性具体范围再核对人工配置及已经授权的原文；资料不足才请求人工解释。本轮用户明确裁决是对旧问题的补充决定，台账标明“本轮裁决”，不冒称冲突文档已更正。

@@ -211,7 +211,8 @@ def _apply_ability_buff(pokemon: "Pokemon", params: Dict, stacks: int = 1) -> No
     extra = max(0, pokemon.ability_state.get("buff_extra_layers", 0))
     per_stack = {key: value * (1 + extra) / stacks for key, value in params.items()}
     pokemon.add_compound_status(name, name, buff_modifiers(per_stack))
-    pokemon.compound_statuses[name].stacks += stacks - 1
+    status = pokemon.compound_statuses[name]
+    status.stacks = max(0, min(99, int(status.stacks) + int(stacks) - 1))
 
 
 def _apply_buff(pokemon: "Pokemon", params: Dict) -> None:

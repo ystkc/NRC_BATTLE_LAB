@@ -38,6 +38,7 @@ class Decision:
     players: tuple[int, ...]
     terminated: bool = False
     winner: int | None = None
+    outcome: str | None = None
 
 
 @dataclass(frozen=True)
@@ -61,6 +62,7 @@ class Transition:
     terminated: bool
     winner: int | None = None
     events: tuple[Mapping[str, Any], ...] = ()
+    outcome: str | None = None
 
 
 class CoreBackend(Protocol):

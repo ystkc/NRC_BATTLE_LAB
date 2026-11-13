@@ -100,7 +100,8 @@ export function createRosterEditor({ $, esc, formFor, pokemonRow, baseName, rend
     const form = formFor(item.name) || item.form || {};
     const customization = form.customization || {};
     const base = item.base || {};
-    const nature = base.nature || customization.natures?.[0]?.name || '';
+    // 未选择性格时不冒充目录首项；直接数值输入按契约采用中性修正。
+    const nature = base.nature || (base.stats ? '中性' : '');
     const bloodline = Array.isArray(base.bloodline_attributes) ? base.bloodline_attributes[0] || '' : base.bloodline_attributes || '';
     const bonusText = natureBonusText(index, nature);
     const forms = (pokemonRow(item.name)?.forms || []).map((choice) => `<button type="button" class="form-choice ${choice.name === item.name ? 'active' : ''}" data-editor-form="${esc(choice.name)}">${esc(choice.name)}</button>`).join('');
@@ -143,16 +144,18 @@ export function createRosterEditor({ $, esc, formFor, pokemonRow, baseName, rend
   function selectedAptitudes(item, customization) {
     const values = item.base?.individual_values || {};
     const result = Object.entries(values).map(([field, value]) => {
-      return { field, name: aptitudeName(field) || field, value: Math.min(10, Math.max(1, Number(value) || 8)) };
+      const number = Number(value);
+      const normalized = Number.isFinite(number) ? Math.min(10, Math.max(0, number)) : 8;
+      return { field, name: aptitudeName(field) || field, value: normalized };
     }).slice(0, 3);
     return result;
   }
   
   function aptitudeEditorMarkup(item, customization) {
     const selected = selectedAptitudes(item, customization);
-    const rows = selected.map((entry) => `<div class="editor-entry aptitude-entry"><span>${esc(entry.name)}</span><input type="number" min="1" max="10" step="1" value="${entry.value}" data-aptitude-value="${esc(entry.field)}"><button type="button" data-remove-aptitude="${esc(entry.field)}">×</button></div>`).join('');
+    const rows = selected.map((entry) => `<div class="editor-entry aptitude-entry"><span>${esc(entry.name)}</span><input type="number" min="0" max="10" step="1" value="${entry.value}" data-aptitude-value="${esc(entry.field)}"><button type="button" data-remove-aptitude="${esc(entry.field)}">×</button></div>`).join('');
     const input = `<div class="editor-autocomplete"><input type="text" autocomplete="off" placeholder="输入资质名称 / 拼音 / 首字母" data-editor-autocomplete data-editor-field="aptitude"><div class="editor-suggest hidden" data-editor-suggest="aptitude"></div></div>`;
-    return `${rows}${input}<small class="hover-help">最多选择 3 项，新增资质默认 8</small>`;
+    return `${rows}${input}<small class="hover-help">最多选择 3 项，新增资质默认 8；允许输入 0</small>`;
   }
   
   function selectedSkills(item) {
@@ -162,10 +165,11 @@ export function createRosterEditor({ $, esc, formFor, pokemonRow, baseName, rend
   function normalizedBase(item) {
     const base = { ...(item.base || {}) };
     const values = Object.entries(base.individual_values || {})
-      .filter(([, value]) => Number(value) > 0)
+      .filter(([, value]) => Number.isFinite(Number(value)) && Number(value) >= 0)
       .slice(0, 3)
       .reduce((result, [field, value]) => {
-        result[field] = Math.min(10, Math.max(1, Number(value) || 8));
+        const number = Number(value);
+        result[field] = Number.isFinite(number) ? Math.min(10, Math.max(0, number)) : 8;
         return result;
       }, {});
     base.individual_values = values;
@@ -260,7 +264,8 @@ export function createRosterEditor({ $, esc, formFor, pokemonRow, baseName, rend
     ];
     const statHtml = entries.map(([key, label]) => `<div class="preview-stat"><img src="${esc(stat_icons[key] || '')}" alt="${label}"><b>${label}</b><span>${esc(data.stats_known?.[key] === false ? '?' : (stats[key] ?? '-'))}</span></div>`).join('');
     const bloodline = (data.bloodline_attributes || []).join(' / ');
-    $('#preview-card').innerHTML = `<img class="preview-art" src="${esc(data.portrait || '')}" alt=""><div class="preview-title"><b>${esc(data.name || '')}</b><span>${esc(data.nature || '?')}</span></div><div class="preview-bloodline">${data.bloodline_icon ? `<img src="${esc(data.bloodline_icon)}" alt="">` : ''}<span>${esc(bloodline || '-')}</span></div><div class="preview-stats">${statHtml}</div>`;
+    const nature = data.nature || (data.stats_input ? '中性' : '?');
+    $('#preview-card').innerHTML = `<img class="preview-art" src="${esc(data.portrait || '')}" alt=""><div class="preview-title"><b>${esc(data.name || '')}</b><span>${esc(nature)}</span></div><div class="preview-bloodline">${data.bloodline_icon ? `<img src="${esc(data.bloodline_icon)}" alt="">` : ''}<span>${esc(bloodline || '-')}</span></div><div class="preview-stats">${statHtml}</div>`;
   }
   
   function previewForms(index) {

@@ -2,19 +2,21 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Mapping
 import logging
 
-from nrc_core.effect_models import Timing
+from nrc_core.effect_models import AbilityEffect, E, EffectTag, SkillEffect, Timing
 from nrc_core.engine import EffectExecutor
+from nrc_core.engine.registry import _ABILITY_HANDLER_OVERRIDES, _HANDLERS
 from nrc_core.catalog import CoreCatalog, EMPTY_CATALOG
 from nrc_core.models import BattleState, Pokemon, Type
 from nrc_core.catalog import calc_combat_stats
 from nrc_core.debug import core_log
 from nrc_core.rules_support import BattleRulesSupport
-from nrc_core.codec import battle_request_from_dict
+from nrc_core.codec import InputValidationError, battle_request_from_dict
 from nrc_core.devotion import RANDOM_DEVOTION_CAPS
+from nrc_core.pokemon_nature_table import NATURE_BONUSES
 from nrc_core.rng import choice as rng_choice, rng_scope
 from nrc_core.runtime import UnsupportedMechanicError
 import random
@@ -27,12 +29,85 @@ from nrc_core.schema import (
 )
 
 
+class CatalogIntegrityError(ValueError):
+    """已解析目录缺少规则对象或引用断裂。"""
+
+    def __init__(self, reason: str, *, code: str = "catalog_integrity", path: str | None = None) -> None:
+        self.code = code
+        self.path = path
+        self.reason = reason
+        detail = f"{path}: {reason}" if path else reason
+        super().__init__(detail)
+
+
+@dataclass(frozen=True)
+class BuildIssue:
+    """一次构建错误或警告，保留稳定代码与输入位置。"""
+
+    code: str
+    path: str
+    reason: str
+    severity: str = "error"
+    value: Any = None
+    source: str | None = None
+
+
+@dataclass
+class BuildDiagnostics:
+    """构建诊断集合，供平台/HTTP层序列化。"""
+
+    issues: list[BuildIssue] = field(default_factory=list)
+    warnings: list[BuildIssue] = field(default_factory=list)
+
+    @property
+    def ok(self) -> bool:
+        return not self.issues
+
+    def to_json(self) -> dict[str, Any]:
+        encode = lambda issue: {
+            "code": issue.code, "path": issue.path, "reason": issue.reason,
+            "severity": issue.severity, "value": issue.value, "source": issue.source,
+        }
+        return {"ok": self.ok, "issues": [encode(item) for item in self.issues],
+                "warnings": [encode(item) for item in self.warnings]}
+
+
+@dataclass
+class BuildResult:
+    """构建状态与诊断的兼容包装。"""
+
+    state: BattleState | None
+    diagnostics: BuildDiagnostics
+
+    @property
+    def ok(self) -> bool:
+        return self.state is not None and self.diagnostics.ok
+
+
+_SUPPORTED_SKILL_FILTERS = frozenset({
+    "category", "enemy_switch", "first_strike", "on_kill", "prev_counter_success",
+    "self_hp_lt", "self_hp_gt", "enemy_hp_lt", "enemy_hp_gt", "counter", "prev_status",
+    "energy_zero_after", "self_hp_above", "self_hp_below", "per", "per_enemy_poison",
+})
+_SUPPORTED_ABILITY_FILTERS = frozenset({"category", "condition", "element", "positions"})
+_SUPPORTED_ABILITY_COMPUTE = frozenset({
+    "multiple_borrow", "magic_hat", "sleep_context", "context_time_buff", "autumn_harvest",
+    "prince_promise", "count_poison_skills", "modify_matching_skills", "shared_wing_skills",
+    "grant_first_skill_agility", "first_strike_power_bonus", "first_strike_hit_bonus",
+    "auto_switch_on_zero_energy", "auto_switch_every_turn", "swap_ally_on_zero_energy",
+    "swap_hp_ratio", "swap_buffs", "swap_skills", "borrow_ally_skill", "copy_enemy_skill",
+    "copy_random_skill", "double_enemy_burn_and_tick", "double_enemy_debuffs",
+    "grant_random_devotion", "cast_all_normal_skills_double_cost", "anti_heal",
+})
+_STRUCTURAL_EFFECTS = frozenset({E.INTERRUPT})
+
+
 LEGACY_DEVOTION_KEYS = {
-    "cost_reduce": "\u5047\u5be5",
-    "power_bonus": "\u98de\u65ad",
-    "life_drain": "\u866b\u8327",
-    "enemy_poison": "\u6346\u7f1a",
-    "hit_count_bonus": "\u866b\u7fa4\u8fc7\u5883",
+    "cost_reduce": "假寐",
+    "power_bonus": "飞断",
+    "life_drain": "虫茧",
+    "enemy_poison": "捆缚",
+    "hit_count_bonus": "虫群过境",
 }
 CANONICAL_DEVOTION_KEYS = {value: key for key, value in LEGACY_DEVOTION_KEYS.items()}
 
@@ -105,7 +180,7 @@ def _layer_name(entry: dict[str, Any]) -> str:
 
 def _layer_stacks(entry: dict[str, Any]) -> int:
     try:
-        return max(0, int(round(float(entry.get("stacks", entry.get("count", 0))))))
+        return min(99, max(0, int(round(float(entry.get("stacks", entry.get("count", 0)))))))
     except (TypeError, ValueError):
         return 0
 
@@ -186,7 +261,7 @@ class BattleBuilder(BattleRulesSupport):
                 if raw_marks.known and raw_marks.exists:
                     for entry in _layer_entries(raw_marks.value):
                         mark_name = _layer_name(entry)
-                        marks[mark_name] = marks.get(mark_name, 0) + _layer_stacks(entry)
+                        marks[mark_name] = min(99, max(0, int(marks.get(mark_name, 0)) + _layer_stacks(entry)))
         for pokemon in state.team_a + state.team_b:
             metadata = pokemon.ability_state.setdefault("lab_metadata", {})
             metadata["resolved_boss_bloodline"] = self._is_boss_bloodline(pokemon)
@@ -249,11 +324,11 @@ class BattleBuilder(BattleRulesSupport):
             "hit_count_bonus": "hit_count_bonus",
             "life_drain": "life_drain",
             "enemy_poison": "enemy_poison",
-            "\u5047\u5be5": "cost_reduce",
-            "\u98de\u65ad": "power_bonus",
-            "\u866b\u8327": "life_drain",
-            "\u6346\u7f1a": "enemy_poison",
-            "\u866b\u7fa4\u8fc7\u5883": "hit_count_bonus",
+            "假寐": "cost_reduce",
+            "飞断": "power_bonus",
+            "虫茧": "life_drain",
+            "捆缚": "enemy_poison",
+            "虫群过境": "hit_count_bonus",
         }
         return aliases.get(str(value), str(value))
 
@@ -271,7 +346,10 @@ class BattleBuilder(BattleRulesSupport):
         known: dict[str, int] = {}
         specified_known: dict[str, int] = {}
         if specified.known and specified.exists and isinstance(specified.value, dict):
-            specified_known = self._normalize_devotion_counts(specified.value)
+            specified_known = {
+                key: min(value, RANDOM_DEVOTION_CAPS[key])
+                for key, value in self._normalize_devotion_counts(specified.value).items()
+            }
             known.update(specified_known)
         if random_counts.known and random_counts.exists and isinstance(random_counts.value, dict):
             for key, value in self._normalize_devotion_counts(random_counts.value).items():
@@ -279,7 +357,7 @@ class BattleBuilder(BattleRulesSupport):
         legacy_known = {LEGACY_DEVOTION_KEYS[key]: value for key, value in known.items()}
         legacy_specified = {LEGACY_DEVOTION_KEYS[key]: value for key, value in specified_known.items()}
         legacy_random = {
-            LEGACY_DEVOTION_KEYS[key]: value
+            LEGACY_DEVOTION_KEYS[key]: min(value, RANDOM_DEVOTION_CAPS[key])
             for key, value in self._normalize_devotion_counts(random_counts.value or {}).items()
         }
         draws = int(team.devotion.random_draws.or_default(0))
@@ -316,6 +394,7 @@ class BattleBuilder(BattleRulesSupport):
         return [dict(row) for row in self.catalog.get_distribution(spirit_name, distribution_kind)]
     @staticmethod
     def _normalize_individual_values(raw: Any) -> dict[str, int]:
+        """规范化基础资质值；输入值按1..10基础资质保存，公式统一乘6。"""
         aliases = {
             "hp": "hp", "生命": "hp", "生命值": "hp",
             "atk": "atk", "attack": "atk", "物攻": "atk",
@@ -324,17 +403,27 @@ class BattleBuilder(BattleRulesSupport):
             "spdef": "spdef", "sp_defense": "spdef", "魔防": "spdef",
             "speed": "speed", "速度": "speed",
         }
+        if raw is None:
+            raw = {}
+        if not isinstance(raw, Mapping):
+            raise ValueError("individual_values 必须是对象")
         result = {key: 0 for key in ("hp", "atk", "spatk", "def", "spdef", "speed")}
-        items = raw.items() if isinstance(raw, dict) else ()
-        for key, value in items:
+        for key, value in raw.items():
             text = str(key).strip()
             normalized = aliases.get(text.lower(), aliases.get(text))
             if normalized is None:
-                continue
+                raise ValueError(f"未知资质维度: {key}")
+            if isinstance(value, bool):
+                raise ValueError(f"资质值必须是整数: {key}")
             try:
-                result[normalized] = max(0, min(60, int(value)))
-            except (TypeError, ValueError):
-                continue
+                parsed = int(value)
+            except (TypeError, ValueError) as exc:
+                raise ValueError(f"资质值必须是整数: {key}") from exc
+            if parsed < 0 or parsed > 10:
+                raise ValueError(f"资质值必须在0..10: {key}")
+            result[normalized] = parsed
+        if sum(value > 0 for value in result.values()) > 3:
+            raise ValueError("每只精灵最多三项正资质")
         return result
 
     def _resolve_combat_config(
@@ -352,7 +441,7 @@ class BattleBuilder(BattleRulesSupport):
             nature_name = str(item.base.nature.value)
             nature_source = "input"
         elif mode in {"neutral", "zero", "all_zero"}:
-            nature_name = "坦率"
+            nature_name = "中性"
             nature_source = "assumption:neutral"
         elif nature_rows:
             nature_name = nature_rows[0]["item"]
@@ -374,8 +463,11 @@ class BattleBuilder(BattleRulesSupport):
                 "物防": "def", "魔防": "spdef", "速度": "speed",
             }
             selected = [row for row in talent_rows if row["item"] in talent_map][:3]
-            iv_config = self._normalize_individual_values({talent_map[row["item"]]: 60 for row in selected})
-            iv_source = "catalog.distribution" if talent_rows else "fallback:zero"
+            fields = [talent_map[row["item"]] for row in selected]
+            if not fields:
+                fields = ["speed", "spatk", "atk"]
+            iv_config = self._normalize_individual_values({field: 8 for field in fields[:3]})
+            iv_source = "catalog.distribution" if talent_rows else "fallback:default_three_48"
 
         assumption = {
             "mode": mode,
@@ -586,26 +678,162 @@ class BattleBuilder(BattleRulesSupport):
     def _known_skill_names(self) -> set[str]:
         return set(self.catalog.skills)
 
+    @staticmethod
+    def _issue_from_exception(exc: Exception, *, fallback_path: str = "setup") -> BuildIssue:
+        """把异常转换为稳定诊断条目。"""
+        if isinstance(exc, InputValidationError):
+            return BuildIssue(getattr(exc, "code", "invalid_input"), getattr(exc, "path", None) or fallback_path, str(exc), source="input")
+        if isinstance(exc, CatalogIntegrityError):
+            return BuildIssue(exc.code, exc.path or fallback_path, exc.reason, source="catalog")
+        if isinstance(exc, UnsupportedMechanicError):
+            return BuildIssue(getattr(exc, "code", "unsupported_mechanic"), getattr(exc, "path", None) or fallback_path, str(exc), source="rules")
+        return BuildIssue("invalid_build", fallback_path, str(exc), source="builder")
+
+    @classmethod
+    def _decorate_exception(cls, exc: Exception, *, fallback_path: str = "setup") -> Exception:
+        """为历史异常补充诊断属性，不改变原有异常类型。"""
+        issue = cls._issue_from_exception(exc, fallback_path=fallback_path)
+        if not hasattr(exc, "code"):
+            exc.code = issue.code
+        if not hasattr(exc, "path"):
+            exc.path = issue.path
+        if not hasattr(exc, "reason"):
+            exc.reason = issue.reason
+        exc.issue = issue
+        exc.diagnostics = BuildDiagnostics([issue])
+        return exc
+
+    @staticmethod
+    def _raise_input(reason: str, *, code: str, path: str, value: Any = None) -> None:
+        error = InputValidationError(reason, code=code, path=path)
+        error.value = value
+        raise error
+
+    @staticmethod
+    def _raise_catalog(reason: str, *, code: str, path: str, value: Any = None) -> None:
+        error = CatalogIntegrityError(reason, code=code, path=path)
+        error.value = value
+        raise error
+
+    @staticmethod
+    def _unsupported_issue(*, code: str, path: str, reason: str, value: Any = None) -> BuildIssue:
+        return BuildIssue(code, path, reason, value=value, source="rules")
+
+    @classmethod
+    def _validate_effect_container(cls, container: Any, *, path: str, ability_mode: bool) -> list[BuildIssue]:
+        """校验效果容器、原语、过滤器和 ABILITY_COMPUTE 动作。"""
+        issues: list[BuildIssue] = []
+        if not isinstance(container, (AbilityEffect, SkillEffect)):
+            return [cls._unsupported_issue(code="unsupported_effect_container", path=path, reason="效果容器类型未实现", value=type(container).__name__)]
+        filters = container.filter or {}
+        allowed = _SUPPORTED_ABILITY_FILTERS if ability_mode else _SUPPORTED_SKILL_FILTERS
+        if not isinstance(filters, Mapping):
+            issues.append(cls._unsupported_issue(code="invalid_effect_filter", path=f"{path}.filter", reason="效果过滤器必须是对象", value=type(filters).__name__))
+        else:
+            for key in filters:
+                if key not in allowed:
+                    issues.append(cls._unsupported_issue(code="unsupported_filter", path=f"{path}.filter.{key}", reason="未知效果过滤器", value=filters[key]))
+
+        def validate_tag(tag: Any, tag_path: str) -> None:
+            if not isinstance(tag, EffectTag):
+                issues.append(cls._unsupported_issue(code="unsupported_effect_tag", path=tag_path, reason="效果标签类型未实现", value=type(tag).__name__))
+                return
+            handler = (_ABILITY_HANDLER_OVERRIDES.get(tag.type) if ability_mode else None) or _HANDLERS.get(tag.type)
+            if handler is None and tag.type not in _STRUCTURAL_EFFECTS:
+                issues.append(cls._unsupported_issue(
+                    code="unsupported_effect_handler",
+                    path=f"{tag_path}.type",
+                    reason="效果原语没有注册处理器",
+                    value=getattr(tag.type, "name", str(tag.type)),
+                ))
+            params = tag.params if isinstance(tag.params, Mapping) else {}
+            if tag.type == E.ABILITY_COMPUTE:
+                action = params.get("action")
+                if action not in _SUPPORTED_ABILITY_COMPUTE:
+                    issues.append(cls._unsupported_issue(code="unsupported_ability_compute", path=f"{tag_path}.params.action", reason="未知 ABILITY_COMPUTE 动作", value=action))
+            for child_index, child in enumerate(tag.sub_effects or []):
+                validate_tag(child, f"{tag_path}.sub_effects[{child_index}]")
+
+        tags = list(container.effects or [])
+        # 空的应对容器表示“该类别可被应对但无附加效果”，本身是合法协议；
+        # 真正的空技能在 _validate_effects 的根列表处拒绝。
+        for index, tag in enumerate(tags):
+            validate_tag(tag, f"{path}.effects[{index}]")
+        return issues
+
+    @classmethod
+    def _validate_effects(cls, effects: list[Any], *, path: str, ability_mode: bool) -> list[BuildIssue]:
+        issues: list[BuildIssue] = []
+        if not effects:
+            return [cls._unsupported_issue(code="empty_effects", path=path, reason="规则对象没有可执行效果")]
+        if all(isinstance(container, (AbilityEffect, SkillEffect)) and not container.effects for container in effects):
+            return [cls._unsupported_issue(code="empty_effects", path=path, reason="规则对象没有可执行效果")]
+        for index, container in enumerate(effects):
+            issues.extend(cls._validate_effect_container(container, path=f"{path}[{index}]", ability_mode=ability_mode))
+        return issues
+
+    def build_result(self, setup: Mapping[str, Any], seed: int = 0) -> BuildResult:
+        """构建并返回状态与结构化诊断；失败时不返回部分可用状态。"""
+        try:
+            return BuildResult(self._build_unchecked(setup, seed), BuildDiagnostics())
+        except Exception as exc:
+            self._decorate_exception(exc)
+            return BuildResult(None, getattr(exc, "diagnostics", BuildDiagnostics([self._issue_from_exception(exc)])))
+
+    def _build_unchecked(self, setup: Mapping[str, Any], seed: int = 0) -> BattleState:
+        """执行原有建造流程，保持 build 的返回类型与兼容行为。"""
+        if not isinstance(setup, Mapping):
+            self._raise_input("setup 必须是对象", code="invalid_setup", path="setup", value=type(setup).__name__)
+        raw = dict(setup)
+        if "setup" in raw and isinstance(raw["setup"], Mapping):
+            raw = dict(raw["setup"])
+        request = battle_request_from_dict(raw)
+        self._validate_setup(request)
+        with rng_scope(random.Random(int(seed))):
+            return self._build_legacy(request).state
+
     def _validate_setup(self, request: BattleRequest) -> None:
         if not request.own_team.creatures or not request.opponent_team.creatures:
-            raise ValueError("both teams must contain at least one creature")
-        unsupported: list[str] = []
+            self._raise_input("双方队伍至少各有一只精灵", code="empty_team", path="teams")
+        unsupported: list[BuildIssue] = []
         for side, team in (("0", request.own_team), ("1", request.opponent_team)):
             resonance = self._canonical_resonance(team.resonance_magic.or_default(None))
             if resonance in {"flame_burst", "throttle"}:
-                unsupported.append(f"player {side}: resonance {resonance}")
+                unsupported.append(self._unsupported_issue(code="unsupported_resonance", path=f"teams[{side}].resonance_magic", reason="共鸣魔法尚未上线", value=resonance))
             elif resonance not in {None, "willpower", "boss", "solar_heal"}:
-                unsupported.append(f"player {side}: unknown resonance {resonance}")
+                unsupported.append(self._unsupported_issue(code="unknown_resonance", path=f"teams[{side}].resonance_magic", reason="未知共鸣魔法", value=resonance))
             active_index = int(team.active_index.or_default(0))
             if active_index < 0 or active_index >= len(team.creatures):
-                raise ValueError(f"player {side} active_index is out of range")
+                self._raise_input("active_index 超出队伍范围", code="invalid_active_index", path=f"teams[{side}].active_index", value=active_index)
             for index, creature in enumerate(team.creatures):
                 name = creature.resolved_name(f"{side}_{index}")
+                creature_path = f"teams[{side}].creatures[{index}]"
                 db_record = self.catalog.get_pokemon(name)
                 if not db_record:
-                    raise ValueError(f"unknown creature {name!r}")
+                    self._raise_catalog("目录中不存在该精灵形态", code="catalog.creature_missing", path=f"{creature_path}.name", value=name)
                 if creature.bossified.known and creature.bossified.or_default(False):
-                    unsupported.append(f"{name}: boss mechanics")
+                    unsupported.append(self._unsupported_issue(code="unsupported_boss_mechanics", path=f"{creature_path}.bossified", reason="常驻首领建造尚未在当前入口实现", value=True))
+                explicit_attrs = creature.base.attributes
+                if explicit_attrs.known and explicit_attrs.exists:
+                    attrs = explicit_attrs.value
+                    attrs = [attrs] if isinstance(attrs, str) else attrs
+                    if not isinstance(attrs, (list, tuple)):
+                        self._raise_input("attributes 必须是字符串或数组", code="invalid_attributes", path=f"{creature_path}.base.attributes", value=type(attrs).__name__)
+                    for attr_index, attr in enumerate(attrs):
+                        if str(attr).strip() not in TYPE_MAP:
+                            self._raise_input("未知属性系别", code="invalid_attribute_type", path=f"{creature_path}.base.attributes[{attr_index}]", value=attr)
+                for type_index, attr in enumerate(db_record.get("types", ())):
+                    if str(attr).strip() not in TYPE_MAP:
+                        self._raise_catalog("目录精灵包含未知属性系别", code="catalog.attribute_missing", path=f"{creature_path}.catalog.types[{type_index}]", value=attr)
+                if creature.base.individual_values.known and creature.base.individual_values.exists:
+                    try:
+                        self._normalize_individual_values(creature.base.individual_values.value)
+                    except ValueError as exc:
+                        self._raise_input(str(exc), code="invalid_individual_values", path=f"{creature_path}.base.individual_values")
+                if creature.base.nature.known and creature.base.nature.exists:
+                    nature = str(creature.base.nature.value).strip()
+                    if nature not in NATURE_BONUSES and nature not in {"neutral", "中性", "无修正"}:
+                        self._raise_input("未知性格", code="invalid_nature", path=f"{creature_path}.base.nature", value=nature)
                 ability_names = []
                 if creature.ability.name.known and creature.ability.name.exists:
                     ability_names.append(str(creature.ability.name.value))
@@ -622,38 +850,43 @@ class BattleBuilder(BattleRulesSupport):
                     if ability.split(":", 1)[0].split("：", 1)[0].strip() == "契约的形状":
                         ball = (creature.metadata or {}).get("gulu_ball")
                         if ball not in {"普通咕噜球", "高级咕噜球", "国王球", "美妙球", "好战球", "光合球", "网兜球", "暗星球", "调温球", "绝缘球", "淘沙球", "变幻球", "柔软咕噜球"}:
-                            unsupported.append(f"{name}: contract mechanic requires valid gulu_ball")
-                    if not self.catalog.get_ability_effects(ability):
-                        unsupported.append(f"{name}: ability {ability}")
+                            unsupported.append(self._unsupported_issue(code="invalid_contract_ball", path=f"{creature_path}.metadata.gulu_ball", reason="契约特性需要合法咕噜球", value=ball))
+                    ability_key = ability.split(":", 1)[0].split("：", 1)[0].strip()
+                    if ability_key not in self.catalog.ability_effects:
+                        self._raise_catalog("目录缺少该特性的效果配置", code="catalog.ability_effects_missing", path=f"{creature_path}.ability", value=ability_key)
+                    ability_effects = self.catalog.get_ability_effects(ability)
+                    effect_issues = self._validate_effects(ability_effects, path=f"{creature_path}.ability_effects[{ability_key}]", ability_mode=True)
+                    unsupported.extend(effect_issues)
                 if not creature.skills:
-                    raise ValueError(f"{name} must provide all skill slots")
+                    self._raise_input("必须提供技能槽", code="missing_skills", path=f"{creature_path}.skills")
                 for slot, skill in enumerate(creature.skills):
-                    skill_name = skill.name.or_default(skill.skill_id.or_default(""))
-                    if not skill_name or skill_name not in self._known_skill_names():
-                        raise ValueError(f"unknown skill {skill_name!r} at {name}[{slot}]")
-                    if skill_name == "愿力冲击":
-                        unsupported.append(f"{name}[{slot}] 愿力冲击: resonance-only skill")
-                    parsed_skill = self.catalog.get_skill(skill_name)
+                    identifier = skill.name.or_default(skill.skill_id.or_default(""))
+                    parsed_skill = self.catalog.get_skill(identifier) if identifier else None
                     if parsed_skill is None:
-                        raise ValueError(f"unknown skill {skill_name!r} at {name}[{slot}]")
+                        self._raise_catalog("目录中不存在该技能", code="catalog.skill_missing", path=f"{creature_path}.skills[{slot}]", value=identifier)
+                    skill_name = parsed_skill.name
+                    if skill_name == "愿力冲击":
+                        unsupported.append(self._unsupported_issue(code="resonance_only_skill", path=f"{creature_path}.skills[{slot}]", reason="愿力冲击只能由愿力共鸣临时提供", value=skill_name))
+                    unsupported.extend(self._validate_effects(parsed_skill.effects, path=f"{creature_path}.skills[{slot}].effects", ability_mode=False))
                     if parsed_skill.choice_options and len(parsed_skill.choice_options) != 2:
-                        unsupported.append(f"{name}[{slot}] {skill_name}: choice skill must expose exactly two options")
+                        unsupported.append(self._unsupported_issue(code="invalid_choice_skill", path=f"{creature_path}.skills[{slot}]", reason="选择技能必须恰有两个选项", value=skill_name))
                     if parsed_skill.random_source:
-                        unsupported.append(f"{name}[{slot}] {skill_name}: random target/choice skill")
+                        unsupported.append(self._unsupported_issue(code="unsupported_random_skill", path=f"{creature_path}.skills[{slot}]", reason="随机目标或选择技能尚未实现", value=skill_name))
                 for key in ("items", "contract", "random_skill"):
                     if (creature.metadata or {}).get(key):
-                        unsupported.append(f"{name}: {key}")
+                        unsupported.append(self._unsupported_issue(code="unsupported_metadata", path=f"{creature_path}.metadata.{key}", reason="该元数据机制尚未实现", value=key))
         if unsupported:
-            raise UnsupportedMechanicError("unsupported mechanics: " + "; ".join(unsupported))
+            error = UnsupportedMechanicError("unsupported mechanics: " + "; ".join(f"{item.path}: {item.reason}" for item in unsupported))
+            error.code = "unsupported_mechanic"
+            error.path = unsupported[0].path
+            error.reason = str(error)
+            error.issues = unsupported
+            raise error
 
 
     def build(self, setup: Mapping[str, Any], seed: int = 0) -> BattleState:
         """校验并解析平台输入，返回不含未知占位的全知状态。"""
-        raw = dict(setup)
-        if "setup" in raw and isinstance(raw["setup"], Mapping):
-            raw = dict(raw["setup"])
-        request = battle_request_from_dict(raw)
-        self._validate_setup(request)
-        with rng_scope(random.Random(int(seed))):
-            battle = self._build_legacy(request).state
-        return battle
+        try:
+            return self._build_unchecked(setup, seed)
+        except Exception as exc:
+            raise self._decorate_exception(exc) from exc

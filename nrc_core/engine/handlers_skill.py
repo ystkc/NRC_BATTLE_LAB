@@ -25,6 +25,34 @@ if TYPE_CHECKING:
     from nrc_core.models import Pokemon, Skill, BattleState, SkillCategory
 
 
+_MAX_STATUS_STACKS = 99
+
+
+def _capped_stacks(current: int, requested: object) -> int:
+    """将一次施加限制为整数层，并截断到状态上限。"""
+    try:
+        amount = int(requested)
+    except (TypeError, ValueError):
+        return 0
+    return max(0, min(_MAX_STATUS_STACKS - max(0, int(current)), amount))
+
+
+def _add_status_stacks(target: object, field: str, requested: object) -> int:
+    """统一写入有层数状态并返回实际增加层数。"""
+    current = min(_MAX_STATUS_STACKS, max(0, int(getattr(target, field, 0))))
+    added = _capped_stacks(current, requested)
+    setattr(target, field, current + added)
+    return added
+
+
+def _add_mark_stacks(marks: dict, key: str, requested: object) -> int:
+    """统一写入阵营印记层数，印记与精灵状态共用99层上限。"""
+    current = min(_MAX_STATUS_STACKS, max(0, int(marks.get(key, 0))))
+    added = _capped_stacks(current, requested)
+    marks[key] = current + added
+    return added
+
+
 def _h_damage(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.battle import DamageCalculator, get_mark_damage_modifiers
     skill = ctx.skill
@@ -236,9 +264,13 @@ def _h_reset_skill_cost(tag: EffectTag, ctx: Ctx) -> None:
 
 
 def _h_steal_energy(tag: EffectTag, ctx: Ctx) -> None:
-    amt = tag.params.get("amount", 1)
-    ctx.user.gain_energy(amt)
-    ctx.target.energy = max(0, ctx.target.energy - amt)
+    requested = max(0, int(tag.params.get("amount", 1)))
+    # 先按敌方实际可扣量结算，再把同量交给施法方；己方满能不影响敌方扣除。
+    actual = min(requested, max(0, int(ctx.target.energy)))
+    ctx.target.energy -= actual
+    if actual:
+        ctx.user.gain_energy(actual)
+    ctx.result["energy_stolen"] = actual
 
 
 
@@ -285,9 +317,9 @@ def _h_poison(tag: EffectTag, ctx: Ctx) -> None:
     # 目标选择
     tgt = tag.params.get("target", "enemy")
     if tgt in ("enemy", "enemy_new"):
-        ctx.target.poison_stacks += stacks
+        _add_status_stacks(ctx.target, "poison_stacks", stacks)
     else:
-        ctx.user.poison_stacks += stacks
+        _add_status_stacks(ctx.user, "poison_stacks", stacks)
 
 
 
@@ -295,7 +327,7 @@ def _h_burn(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.models import has_type, Type
     if has_type(ctx.target, Type.FIRE) or ctx.target.ability_state.get("burn_immune"):
         return
-    ctx.target.burn_stacks += tag.params.get("stacks", 1)
+    _add_status_stacks(ctx.target, "burn_stacks", tag.params.get("stacks", 1))
 
 
 
@@ -303,14 +335,18 @@ def _h_freeze(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.models import add_freeze_stacks, has_type, Type
     if has_type(ctx.target, Type.ICE) or ctx.target.ability_state.get("freeze_immune"):
         return
-    add_freeze_stacks(ctx.target, tag.params.get("stacks", 1), ctx.user,
+    add_freeze_stacks(ctx.target, _capped_stacks(ctx.target.freeze_stacks, tag.params.get("stacks", 1)), ctx.user,
                       state=ctx.state, team=ctx.team)
+    ctx.target.freeze_stacks = min(_MAX_STATUS_STACKS, max(0, int(ctx.target.freeze_stacks)))
 
 
 
 def _h_electric_lure(tag: EffectTag, ctx: Ctx) -> None:
-    from nrc_core.models import add_electric_stacks
-    add_electric_stacks(ctx.target, tag.params.get("stacks", 1))
+    from nrc_core.models import add_electric_stacks, has_type, Type
+    if has_type(ctx.target, Type.ELECTRIC) or ctx.target.ability_state.get("electric_immune"):
+        return
+    add_electric_stacks(ctx.target, _capped_stacks(ctx.target.electric_stacks, tag.params.get("stacks", 1)))
+    ctx.target.electric_stacks = min(_MAX_STATUS_STACKS, max(0, int(ctx.target.electric_stacks)))
 
 
 
@@ -318,20 +354,20 @@ def _h_leech(tag: EffectTag, ctx: Ctx) -> None:
     from nrc_core.models import has_type, Type
     if has_type(ctx.target, Type.GRASS) or ctx.target.ability_state.get("leech_immune"):
         return
-    ctx.target.leech_stacks += tag.params.get("stacks", 1)
+    _add_status_stacks(ctx.target, "leech_stacks", tag.params.get("stacks", 1))
 
 
 
 def _h_meteor(tag: EffectTag, ctx: Ctx) -> None:
-    ctx.target.meteor_stacks += tag.params.get("stacks", 1)
-    if ctx.target.meteor_countdown <= 0:
+    _add_status_stacks(ctx.target, "meteor_stacks", tag.params.get("stacks", 1))
+    if ctx.target.meteor_stacks > 0 and ctx.target.meteor_countdown <= 0:
         ctx.target.meteor_countdown = 3
 
 
 
 def _h_poison_mark(tag: EffectTag, ctx: Ctx) -> None:
     marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
-    marks["poison_mark"] = marks.get("poison_mark", 0) + tag.params.get("stacks", 1)
+    _add_mark_stacks(marks, "poison_mark", tag.params.get("stacks", 1))
 
 
 
@@ -342,7 +378,7 @@ def _h_moisture_mark(tag: EffectTag, ctx: Ctx) -> None:
     else:
         marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
     stacks = tag.params.get("stacks", 1)
-    marks["moisture_mark"] = marks.get("moisture_mark", 0) + stacks
+    _add_mark_stacks(marks, "moisture_mark", stacks)
     # 湿润印记立即生效：释放后当回合就减能耗，不等下回合
     team_id = ctx.team if tgt == "self" else ("b" if ctx.team == "a" else "a")
     team_list = ctx.state.team_a if team_id == "a" else ctx.state.team_b
@@ -354,7 +390,8 @@ def _h_moisture_mark(tag: EffectTag, ctx: Ctx) -> None:
                 delta = -delta
             s.energy_cost = max(0, s.energy_cost + delta)
         _record_public_skill_modifier(p, "energy_cost", stacks if p.ability_state.get("cost_invert") else -stacks, previous_costs)
-    marks["moisture_mark"] = 0  # 已消耗
+    # 技能效果在本回合立即结算；回合开始路径也会消费尚存的湿润印记，避免重复应用。
+    marks["moisture_mark"] = 0
 
 
 
@@ -373,7 +410,7 @@ def _h_mark_generic(tag: EffectTag, ctx: Ctx, mark_key: str) -> None:
     # 吟游之弦拥有按来源隔离的专属槽，不占用普通正/负面印记槽。
     if ctx.user.ability_state.get("mark_stack_additive"):
         owned_key = f"bard_mark:{mark_key}:{ctx.user.name}"
-        marks[owned_key] = marks.get(owned_key, 0) + tag.params.get("stacks", 1)
+        _add_mark_stacks(marks, owned_key, tag.params.get("stacks", 1))
         return
 
     # 同类印记覆盖：只清除普通槽，不清除吟游之弦专属槽。
@@ -386,7 +423,7 @@ def _h_mark_generic(tag: EffectTag, ctx: Ctx, mark_key: str) -> None:
             if existing_key in NEGATIVE_MARKS and existing_key != mark_key:
                 del marks[existing_key]
     
-    marks[mark_key] = marks.get(mark_key, 0) + tag.params.get("stacks", 1)
+    _add_mark_stacks(marks, mark_key, tag.params.get("stacks", 1))
 
 
 
@@ -490,7 +527,7 @@ def _h_convert_marks_to_burn(tag: EffectTag, ctx: Ctx) -> None:
     enemy_marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
     total = sum(v for v in enemy_marks.values() if isinstance(v, (int, float)))
     if total > 0:
-        ctx.target.burn_stacks += int(total * ratio)
+        _add_status_stacks(ctx.target, "burn_stacks", int(total * ratio))
         enemy_marks.clear()
 
 
@@ -504,7 +541,7 @@ def _h_dispel_marks_to_burn(tag: EffectTag, ctx: Ctx) -> None:
     ctx.state.marks_a.clear()
     ctx.state.marks_b.clear()
     if total > 0:
-        ctx.target.burn_stacks += int(total * burn_per)
+        _add_status_stacks(ctx.target, "burn_stacks", int(total * burn_per))
 
 
 
@@ -529,7 +566,7 @@ def _h_marks_to_meteor(tag: EffectTag, ctx: Ctx) -> None:
     enemy_marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
     total = sum(v for v in enemy_marks.values() if isinstance(v, (int, float)))
     if total > 0:
-        ctx.target.meteor_stacks += int(total)
+        _add_status_stacks(ctx.target, "meteor_stacks", int(total))
         if ctx.target.meteor_countdown <= 0:
             ctx.target.meteor_countdown = 3
 
@@ -540,7 +577,7 @@ def _h_steal_marks(tag: EffectTag, ctx: Ctx) -> None:
     enemy_marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
     my_marks = ctx.state.marks_a if ctx.team == "a" else ctx.state.marks_b
     for k, v in enemy_marks.items():
-        my_marks[k] = my_marks.get(k, 0) + v
+        _add_mark_stacks(my_marks, k, v)
     enemy_marks.clear()
 
 
@@ -585,7 +622,7 @@ def _h_convert_buff_to_poison(tag: EffectTag, ctx: Ctx) -> None:
             total_buff += int(v * 10)
             setattr(ctx.target, attr, 0.0)
     if total_buff > 0:
-        ctx.target.poison_stacks += total_buff
+        _add_status_stacks(ctx.target, "poison_stacks", total_buff)
 
 
 
@@ -595,14 +632,14 @@ def _h_convert_poison_to_mark(tag: EffectTag, ctx: Ctx) -> None:
     marks = ctx.state.marks_b if ctx.team == "a" else ctx.state.marks_a
     if on == "kill" and ctx.target.is_fainted:
         stacks = ctx.target.poison_stacks
-        marks["poison_mark"] = marks.get("poison_mark", 0) + stacks
+        _add_mark_stacks(marks, "poison_mark", stacks)
         ctx.target.poison_stacks = 0
     elif ratio > 0:
         stacks = ctx.target.poison_stacks
         converted = stacks // ratio
         if converted > 0:
             ctx.target.poison_stacks -= converted * ratio
-            marks["poison_mark"] = marks.get("poison_mark", 0) + converted
+            _add_mark_stacks(marks, "poison_mark", converted)
 
 
 
@@ -863,7 +900,7 @@ def _h_weather(tag: EffectTag, ctx: Ctx) -> None:
                 continue
             for sk in p.skills:
                 if sk.skill_type == TypeEnum.GROUND:
-                    key = id(sk)
+                    key = sk.skill_instance_id
                     if key not in ctx.state.sandstorm_original_costs:
                         ctx.state.sandstorm_original_costs[key] = sk.energy_cost
                     sk.energy_cost = max(1, sk.energy_cost // 2)
@@ -900,16 +937,20 @@ def _apply_weather_damage(state) -> None:
         from nrc_core.models import add_freeze_stacks, has_type, Type
         for team, index in ((state.team_a, state.current_a), (state.team_b, state.current_b)):
             p = team[index]
-            if not p.is_fainted and not has_type(p, Type.ICE):
+            if (not p.is_fainted and not has_type(p, Type.ICE)
+                    and not p.ability_state.get("freeze_immune")):
                 opponent = state.team_b[state.current_b] if team is state.team_a else state.team_a[state.current_a]
-                add_freeze_stacks(p, 2, opponent, state=state,
+                add_freeze_stacks(p, _capped_stacks(p.freeze_stacks, 2), opponent, state=state,
                                   team="b" if team is state.team_a else "a")
+                p.freeze_stacks = min(_MAX_STATUS_STACKS, max(0, int(p.freeze_stacks)))
     if w in {"thunder", "雷鸣"}:
         from nrc_core.models import add_electric_stacks, has_type, Type
         for team, index in ((state.team_a, state.current_a), (state.team_b, state.current_b)):
             p = team[index]
-            if not p.is_fainted and not has_type(p, Type.ELECTRIC):
-                add_electric_stacks(p, 1)
+            if (not p.is_fainted and not has_type(p, Type.ELECTRIC)
+                    and not p.ability_state.get("electric_immune")):
+                add_electric_stacks(p, _capped_stacks(p.electric_stacks, 1))
+                p.electric_stacks = min(_MAX_STATUS_STACKS, max(0, int(p.electric_stacks)))
 
 
 
@@ -961,8 +1002,8 @@ def _h_counter_override(tag: EffectTag, ctx: Ctx) -> None:
     from_val = tag.params.get("from", 0)
     to_val = tag.params.get("to", 0)
     if replace_type == "poison":
-        ctx.target.poison_stacks -= from_val
-        ctx.target.poison_stacks += to_val
+        remaining = max(0, min(_MAX_STATUS_STACKS, int(ctx.target.poison_stacks)) - max(0, int(from_val)))
+        ctx.target.poison_stacks = min(_MAX_STATUS_STACKS, remaining + max(0, int(to_val)))
 
 
 

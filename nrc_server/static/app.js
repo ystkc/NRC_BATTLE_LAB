@@ -76,7 +76,11 @@ function ensureDefaultCustomization(item) {
   if (!item.base.bloodline_attributes?.length && customization.bloodlines?.[0]?.name) {
     item.base.bloodline_attributes = [customization.bloodlines[0].name];
   }
-  if (!Object.keys(item.base.individual_values || {}).length) {
+  // 显式 individual_values:{} 与直接 stats 输入都表示调用方已指定数值来源。
+  // 只有完全未提供数值的新建精灵才补三项基础资质 8。
+  const hasIndividualValues = Object.prototype.hasOwnProperty.call(item.base, 'individual_values');
+  const hasDirectStats = Object.prototype.hasOwnProperty.call(item.base, 'stats');
+  if (!hasIndividualValues && !hasDirectStats) {
     const aptitudes = (customization.aptitudes || []).slice(0, 3);
     if (aptitudes.length) item.base.individual_values = Object.fromEntries(aptitudes.map((aptitude) => [aptitudeField(aptitude.name), 8]));
   }
@@ -419,6 +423,8 @@ function startBattlePolling() {
 
 function mergeObservation(data) {
   state.shared = data?.shared || {};
+  state.diagnostics = data?.diagnostics || state.diagnostics;
+  renderDiagnostics();
   const own = data?.own_team || [];
   const old = state.teams.own || [];
   state.teams.own = own.map((item, index) => ({ ...old[index], ...item, form: old[index]?.form || formFor(item.name) }));
@@ -429,6 +435,17 @@ function mergeObservation(data) {
   state.teams.opponent = opponent.map((item, index) => ({ ...oldOpponent[index], ...item, form: oldOpponent[index]?.form || formFor(item.name) }));
   state.teams.opponent.activeIndex = opponent.findIndex((item) => item.active);
   if (state.teams.opponent.activeIndex < 0) state.teams.opponent.activeIndex = 0;
+}
+
+function renderDiagnostics() {
+  const container = $('#diagnostics');
+  if (!container) return;
+  const diagnostics = state.diagnostics || {};
+  const issues = diagnostics.issues || [];
+  const warnings = diagnostics.warnings || [];
+  const entries = issues.map((item) => ({ ...item, level: '错误' })).concat(warnings.map((item) => ({ ...item, level: '警告' })));
+  container.innerHTML = entries.map((item) => `<div class="diagnostic-${item.level === '错误' ? 'error' : 'warning'}"><b>${esc(item.level)} · ${esc(item.code || 'diagnostic')}</b><span>${esc(item.path || '')}</span><small>${esc(item.reason || item.message || '')}</small></div>`).join('');
+  container.classList.toggle('hidden', !entries.length);
 }
 
 function stateEffects(item, side = 'own') {
@@ -464,6 +481,8 @@ function renderSide(side) {
   $(`#${prefix}-hp-text`).textContent = item.hp == null ? `${percent ?? '?'}%` : `${item.hp} / ${item.max_hp}`;
   $(`#${prefix}-hp-bar`).style.width = `${percent || 0}%`;
   $(`#${prefix}-energy`).textContent = `能量 ${item.energy == null ? '?' : item.energy}`;
+  const mp = state.shared?.mp?.[side];
+  $(`#${prefix}-mp`).textContent = `MP ${mp == null ? '?' : mp}`;
   $(`#${prefix}-active-art`).src = item.portrait || asset(item.name, 'portrait') || asset(item.name, 'art');
   $(`#${prefix}-active-types`).innerHTML = (item.types || []).map((type) => `<img class="field-type" src="${esc(typeIcon(type))}" alt="${esc(typeKey(type))}" title="${esc(typeKey(type))}">`).join('');
   $(`#${prefix}-effects`).innerHTML = effectsMarkup(item, side);
@@ -522,14 +541,25 @@ function updateBattleMeta() {
   const summary = state.battle || {};
   $('#turn').textContent = summary.turn || 1;
   $('#phase').textContent = String(summary.phase || 'turn_choice').replaceAll('_', ' ').toUpperCase();
+  const outcome = summary.outcome;
+  if (outcome === 'draw') $('#lock-state').textContent = '平局 · 对局结束';
+  else if (outcome === 'a_win') $('#lock-state').textContent = '我方获胜 · 对局结束';
+  else if (outcome === 'b_win') $('#lock-state').textContent = '敌方获胜 · 对局结束';
   updateBattleLock();
 }
 
 function actionLabel(action) {
   const primary = action.payload?.primary || {};
   if (primary.kind === 'switch') return `切换至第 ${Number(primary.switch_index) + 1} 只精灵`;
-  if (primary.kind === 'charge') return '聚能';
-  return primary.skill_name || action.key;
+  const resonance = action.payload?.items?.find((item) => item.kind === 'item')?.item_kind
+    || action.key.match(/\|resonance=([^|]+)/)?.[1];
+  const resonanceInfo = {
+    willpower: { name: '愿力强化', effect: '首个技能替换为愿力冲击' },
+    boss: { name: '进化之力', effect: '当前精灵进化为首领' },
+    solar_heal: { name: '光合治愈', effect: '立即并持续回复15%生命（3回合）' },
+  }[resonance];
+  const base = primary.kind === 'charge' ? '聚能' : (primary.skill_name || action.key);
+  return resonanceInfo ? `${resonanceInfo.name} · ${base}（${resonanceInfo.effect}）` : base;
 }
 
 function renderDrawer(title, html) { $('#drawer-title').textContent = title; $('#drawer-body').innerHTML = html; $('#drawer').classList.remove('hidden'); }
@@ -622,7 +652,8 @@ function hideSkillTooltip() { $('#skill-tooltip')?.classList.add('hidden'); }
 function updateBattleLock() {
   renderSkills();
   const lock = $('#lock-state');
-  if (lock) lock.textContent = state.resolving || state.syncing ? '正在结算' : state.submitting ? '正在提交' : state.pending ? '已锁定，等待对手' : state.battle?.terminal ? '对局结束' : state.opponentPending ? '对手已锁定，等待我方' : '选择操作';
+  const terminalLabel = { a_win: '我方获胜 · 对局结束', b_win: '敌方获胜 · 对局结束', draw: '平局 · 对局结束' }[state.battle?.outcome] || '对局结束';
+  if (lock) lock.textContent = state.resolving || state.syncing ? '正在结算' : state.submitting ? '正在提交' : state.pending ? '已锁定，等待对手' : state.battle?.terminal ? terminalLabel : state.opponentPending ? '对手已锁定，等待我方' : '选择操作';
   const charge = $('#charge');
   if (charge) charge.disabled = state.pending || state.resolving || !isLegalAction('charge');
 }
@@ -793,8 +824,9 @@ function onInputChange(event) {
     const item = state.teams.own[index];
     if (!item) return;
     item.base = { ...(item.base || {}), individual_values: { ...(item.base?.individual_values || {}) } };
-    const value = Math.min(10, Math.max(1, Number(aptitude.value) || 8));
-    if (value) item.base.individual_values[aptitude.dataset.aptitudeValue] = value;
+    const number = Number(aptitude.value);
+    const value = Number.isFinite(number) ? Math.min(10, Math.max(0, number)) : 8;
+    item.base.individual_values[aptitude.dataset.aptitudeValue] = value;
     saveSession();
   }
 }

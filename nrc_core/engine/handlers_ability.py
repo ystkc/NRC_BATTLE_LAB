@@ -162,7 +162,24 @@ def _h_ability_compute(tag: EffectTag, ctx: Ctx) -> None:
     elif action == "swap_skills":
         # 隐藏条款：与敌方交换携带的技能
         target = ctx.target
+        # 冷却属于技能实例，交换技能时随对象迁移；保留旧槽位视图供平台读取。
+        pokemon.sync_skill_cooldowns()
+        target.sync_skill_cooldowns()
+        cooldowns = dict(pokemon.skill_cooldowns)
+        target_cooldowns = dict(target.skill_cooldowns)
         pokemon.skills, target.skills = target.skills, pokemon.skills
+        pokemon.skill_cooldowns = {
+            skill.skill_instance_id: target_cooldowns[skill.skill_instance_id]
+            for skill in pokemon.skills if skill.skill_instance_id in target_cooldowns
+        }
+        target.skill_cooldowns = {
+            skill.skill_instance_id: cooldowns[skill.skill_instance_id]
+            for skill in target.skills if skill.skill_instance_id in cooldowns
+        }
+        pokemon.cooldowns.clear()
+        target.cooldowns.clear()
+        pokemon.sync_skill_cooldowns()
+        target.sync_skill_cooldowns()
 
     elif action == "borrow_ally_skill":
         # 借用：变成己方其他精灵的随机技能

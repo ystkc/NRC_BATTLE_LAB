@@ -57,7 +57,7 @@ def _has_ko_threat(attacker: Pokemon, defender: Pokemon) -> bool:
             continue
         if attacker.energy < skill.energy_cost:
             continue
-        if attacker.cooldowns.get(idx, 0) > 0:
+        if attacker.get_skill_cooldown(idx) > 0:
             continue
         damage = DamageCalculator.calculate(attacker, defender, skill)
         if damage >= defender.current_hp:
@@ -437,6 +437,17 @@ class DamageCalculator:
         return max(1, int(damage))
 
 
+def _percent_status_damage(target: Pokemon, percent: float, stacks: int,
+                           damage_type: Type) -> int:
+    """按最大 HP 计算状态百分比伤害，并应用状态对应属性克制。"""
+    # 规则要求百分比伤害先对最大 HP 向下取整，再参与属性倍率计算。
+    base_damage = math.floor(int(target.hp) * percent * int(stacks))
+    effectiveness = get_type_effectiveness(damage_type, target.pokemon_types)
+    if base_damage <= 0 or effectiveness <= 0:
+        return 0
+    return max(1, math.floor(base_damage * effectiveness))
+
+
 # ============================================================
 # 技能执行
 # ============================================================
@@ -560,7 +571,7 @@ def get_actions(state: BattleState, team: str) -> List[Action]:
     actions.append((-1,))  # 汇合聚能
 
     for i, skill in enumerate(current.skills):
-        cd = current.cooldowns.get(i, 0)
+        cd = current.get_skill_cooldown(i)
         repetitions = max(1, int(getattr(skill, "use_count", 1) or 1))
         if current.ability_state.get("first_action_bonus"):
             repetitions += 1
@@ -814,14 +825,14 @@ def turn_end_effects(state: BattleState) -> None:
             # 中毒: 3% × 层数 (不衰减)
             if p.poison_stacks > 0:
                 hp_before = p.current_hp
-                dmg = int(p.hp * 0.03 * p.poison_stacks)
-                p.current_hp = round(p.current_hp - max(1, dmg), 2)
+                dmg = _percent_status_damage(p, 0.03, p.poison_stacks, Type.POISON)
+                p.current_hp = max(0, int(p.current_hp) - dmg)
                 state.turn_report.append({"type": "status", "team": team_id, "status": "中毒",
                                           "pokemon": p.name, "stacks": p.poison_stacks,
-                                          "damage": max(1, dmg), "before": hp_before,
+                                          "damage": dmg, "before": hp_before,
                                           "after": max(0, p.current_hp)})
                 core_log("status", "poison_tick", turn=state.turn, pokemon=p.name,
-                         stacks=p.poison_stacks, damage=max(1, dmg),
+                         stacks=p.poison_stacks, damage=dmg,
                          hp_before=hp_before, hp_after=p.current_hp)
                 _check_frostbite_lethal(p)
                 if p.is_fainted:
@@ -831,11 +842,11 @@ def turn_end_effects(state: BattleState) -> None:
             enemy_p = enemy_team_list[enemy_idx]
             if p.poison_stacks > 0 and enemy_p.ability_state.get("extra_poison_tick"):
                 hp_before = p.current_hp
-                dmg2 = int(p.hp * 0.03 * p.poison_stacks)
-                p.current_hp = round(p.current_hp - max(1, dmg2), 2)
+                dmg2 = _percent_status_damage(p, 0.03, p.poison_stacks, Type.POISON)
+                p.current_hp = max(0, int(p.current_hp) - dmg2)
                 state.turn_report.append({"type": "status", "team": team_id, "status": "中毒",
                                           "pokemon": p.name, "stacks": p.poison_stacks,
-                                          "damage": max(1, dmg2), "before": hp_before,
+                                          "damage": dmg2, "before": hp_before,
                                           "after": max(0, p.current_hp)})
                 _check_frostbite_lethal(p)
                 if p.is_fainted:
@@ -845,10 +856,10 @@ def turn_end_effects(state: BattleState) -> None:
             # 燃薪虫煤渣草: 灼烧不衰减反而增长
             if p.burn_stacks > 0:
                 hp_before = p.current_hp
-                dmg = int(p.hp * 0.02 * p.burn_stacks)
-                p.current_hp = round(p.current_hp - max(1, dmg), 2)
+                dmg = _percent_status_damage(p, 0.02, p.burn_stacks, Type.FIRE)
+                p.current_hp = max(0, int(p.current_hp) - dmg)
                 core_log("status", "burn_tick", turn=state.turn, pokemon=p.name,
-                         stacks=p.burn_stacks, damage=max(1, dmg),
+                         stacks=p.burn_stacks, damage=dmg,
                          hp_before=hp_before, hp_after=p.current_hp)
                 _check_frostbite_lethal(p)
                 if p.is_fainted:
@@ -866,7 +877,7 @@ def turn_end_effects(state: BattleState) -> None:
             # 寄生: 每层2%最大HP, 吸取给对手
             if p.leech_stacks > 0:
                 leech_dmg = int(p.hp * 0.02 * p.leech_stacks)
-                p.current_hp = round(p.current_hp - max(1, leech_dmg), 2)
+                p.current_hp = max(0, int(p.current_hp) - max(1, leech_dmg))
                 _check_frostbite_lethal(p)
                 if p.is_fainted:
                     break
@@ -897,7 +908,7 @@ def turn_end_effects(state: BattleState) -> None:
                         meteor_dmg = max(1, int((e_spatk / p_spdef) * meteor_power * 0.9))
                     else:
                         meteor_dmg = max(1, meteor_power)
-                    p.current_hp = round(p.current_hp - meteor_dmg, 2)
+                    p.current_hp = max(0, int(p.current_hp) - meteor_dmg)
 
             # 生长特性：每回合回12%HP
             heal_per_turn = p.ability_state.get("heal_per_turn_pct", 0)
@@ -928,7 +939,7 @@ def turn_end_effects(state: BattleState) -> None:
         meteor_add = p.ability_state.get("meteor_mark_add", 0)
         if meteor_add > 0 and not p.is_fainted:
             enemy_marks = state.marks_b if team_id == "a" else state.marks_a
-            enemy_marks["meteor_mark"] = enemy_marks.get("meteor_mark", 0) + meteor_add
+            enemy_marks["meteor_mark"] = min(99, max(0, int(enemy_marks.get("meteor_mark", 0)) + int(meteor_add)))
 
         # 判定倒下
         if p.current_hp <= 0:
@@ -950,7 +961,7 @@ def turn_end_effects(state: BattleState) -> None:
                     if p.is_fainted:
                         continue
                     for sk in p.skills:
-                        key = id(sk)
+                        key = sk.skill_instance_id
                         if key in state.sandstorm_original_costs:
                             sk.energy_cost = state.sandstorm_original_costs[key]
                 state.sandstorm_original_costs.clear()
@@ -958,9 +969,7 @@ def turn_end_effects(state: BattleState) -> None:
 
     # 减少冷却
     for p in state.team_a + state.team_b:
-        for k in list(p.cooldowns.keys()):
-            if p.cooldowns[k] > 0:
-                p.cooldowns[k] -= 1
+        p.decrement_skill_cooldowns()
         if p.ability_state.get("temporary_skill_cost_mods"):
             next_mods = []
             for mod in p.ability_state["temporary_skill_cost_mods"]:
@@ -1094,8 +1103,8 @@ def _apply_mark_turn_end(state: BattleState) -> None:
         # 中毒印记：对在场宠物造成每层3%最大HP伤害（存在自己的marks中）
         poison_mark = get_mark_stacks(my_marks, "poison_mark")
         if poison_mark > 0:
-            dmg = max(1, int(p.hp * 0.03 * poison_mark))
-            p.current_hp = round(p.current_hp - dmg, 2)
+            dmg = _percent_status_damage(p, 0.03, poison_mark, Type.POISON)
+            p.current_hp = max(0, int(p.current_hp) - dmg)
             if p.current_hp <= 0:
                 p.current_hp = 0
                 p.status = StatusType.FAINTED
@@ -1134,7 +1143,7 @@ def _apply_mark_on_enter(state: BattleState, team: str, pokemon: 'Pokemon') -> N
     thorn_mark = get_mark_stacks(my_marks, "thorn_mark")
     if thorn_mark > 0:
         dmg = max(1, int(pokemon.hp * 0.06 * thorn_mark))
-        pokemon.current_hp = round(pokemon.current_hp - dmg, 2)
+        pokemon.current_hp = max(0, int(pokemon.current_hp) - dmg)
         if pokemon.current_hp <= 0:
             pokemon.current_hp = 0
             pokemon.status = StatusType.FAINTED
@@ -1361,41 +1370,44 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
     _execute_repeated_action(state, first_team, first_act, second_team, second_act, is_first=True)
     _apply_share_gains(state, first_team, _first_hp, _first_en)
     _check_fainted_and_deduct_mp(state)
-    if check_winner(state):
+    # 这里必须识别平局：同一不可分割效果导致双方同时力竭时立即结束。
+    if check_outcome(state):
         _clear_turn_temporary_ability_logic(state)
         return
     auto_switch(state, switch_cb_a, switch_cb_b)
     # 特性：零能量自动换人
     ability_auto_switch(state, first_team, "zero_energy", switch_cb_b)
 
-    if check_winner(state):
+    if check_outcome(state):
         _clear_turn_temporary_ability_logic(state)
         return
 
     # ── 后手精灵被先手击杀 → 跳过后手行动（死亡精灵无法出招，被动换人消耗本回合）──
     second_killed_by_first = second_alive_before and second_pokemon_before.is_fainted
+    # 先手精灵因技能自毁、陨石等效果力竭时，本回合后手行动取消。
+    first_fainted_after_first_action = _first_p.is_fainted
 
-    if not second_killed_by_first:
+    if not second_killed_by_first and not first_fainted_after_first_action:
         # 后手行动
         _second_p = _get_current_pokemon(state, second_team)
         _second_hp, _second_en = _second_p.current_hp, _second_p.energy
         _execute_repeated_action(state, second_team, second_act, first_team, first_act, is_first=False)
         _apply_share_gains(state, second_team, _second_hp, _second_en)
         _check_fainted_and_deduct_mp(state)
-        if check_winner(state):
+        if check_outcome(state):
             _clear_turn_temporary_ability_logic(state)
             return
         auto_switch(state, switch_cb_a, switch_cb_b)
         # 特性：零能量自动换人
         ability_auto_switch(state, second_team, "zero_energy", switch_cb_b)
 
-        if check_winner(state):
+        if check_outcome(state):
             _clear_turn_temporary_ability_logic(state)
             return
 
     turn_end_effects(state)
     _check_fainted_and_deduct_mp(state)
-    if check_winner(state):
+    if check_outcome(state):
         _clear_turn_temporary_ability_logic(state)
         return
     auto_switch(state, switch_cb_a, switch_cb_b)
@@ -1403,8 +1415,10 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
     for _t in ("a", "b"):
         ability_auto_switch(state, _t, "every_turn", switch_cb_b)
     _apply_pending_skill_transforms(state)
-    core_log("turn", "execute_done", turn=state.turn,
-             next_turn=state.turn + 1,
+    # 回合结束后先推进回合号，再做第 50 回合的四指标裁决。
+    state.turn += 1
+    core_log("turn", "execute_done", turn=state.turn - 1,
+             next_turn=state.turn,
              active_a=state.team_a[state.current_a].name,
              active_b=state.team_b[state.current_b].name,
              hp_a=state.team_a[state.current_a].current_hp,
@@ -1412,7 +1426,8 @@ def execute_full_turn(state: BattleState, action_a: Action, action_b: Action,
              energy_a=state.team_a[state.current_a].energy,
              energy_b=state.team_b[state.current_b].energy,
              report_count=len(state.turn_report))
-    state.turn += 1
+    if check_outcome(state):
+        _clear_turn_temporary_ability_logic(state)
 
 
 def _skill_use_repetitions(state: BattleState, team: str, action: Action) -> int:
@@ -1673,7 +1688,7 @@ def _execute_with_counter(state: BattleState, team: str, action: Action,
             missing = actual_cost - current.energy
             hp_cost = int(current.hp * 0.05 * missing)
             if current.current_hp > hp_cost:
-                current.current_hp = round(current.current_hp - hp_cost, 2)
+                current.current_hp = max(0, int(current.current_hp) - hp_cost)
                 current.energy = 0  # 消耗所有当前能量 + HP补差
             else:
                 # HP不够，回到正常聚能逻辑
@@ -2131,7 +2146,7 @@ def _apply_damage_to_enemy(state, enemy, damage: int, attacker=None, skill=None)
                          skill=skill.name if skill else None,
                          requested=requested_damage, threshold=threshold)
         if damage > 0:
-            enemy.current_hp = round(enemy.current_hp - damage, 2)
+            enemy.current_hp = max(0, int(enemy.current_hp) - int(damage))
             if enemy.current_hp <= 0:
                 enemy.current_hp = 0
                 enemy.status = StatusType.FAINTED
@@ -2153,7 +2168,7 @@ def _check_kill_effects(state, current, enemy, skill, result, team, enemy_team) 
         for tag in _iter_flat_tags(skill.effects):
             if tag.type == E.CONVERT_POISON_TO_MARK and tag.params.get("on") == "kill":
                 marks = state.marks_b if team == "a" else state.marks_a
-                marks["poison_mark"] = marks.get("poison_mark", 0) + enemy.poison_stacks
+                marks["poison_mark"] = min(99, max(0, int(marks.get("poison_mark", 0)) + int(enemy.poison_stacks)))
                 enemy.poison_stacks = 0
 
         # 攻击方：击败敌方时触发 ON_KILL 特性（恶魔的晚宴/振奋虫心/付给恶魔的赎价等）
@@ -2313,18 +2328,46 @@ def get_priority(state: BattleState, team: str, action: Action) -> int:
     return skill.priority_mod + getattr(pokemon, "priority_stage", 0)
 
 
+def check_outcome(state: BattleState) -> Optional[str]:
+    """返回当前终局结果：a_win、b_win、draw或None。
+
+    即时终局只看MP与全队存活；第50回合结束后再按规则表逐项比较。
+    """
+    mp_a_zero = state.mp_a <= 0
+    mp_b_zero = state.mp_b <= 0
+    if mp_a_zero or mp_b_zero:
+        if mp_a_zero and mp_b_zero:
+            return "draw"
+        return "b_win" if mp_a_zero else "a_win"
+
+    alive_a = sum(not pokemon.is_fainted for pokemon in state.team_a)
+    alive_b = sum(not pokemon.is_fainted for pokemon in state.team_b)
+    if alive_a == 0 or alive_b == 0:
+        if alive_a == 0 and alive_b == 0:
+            return "draw"
+        return "b_win" if alive_a == 0 else "a_win"
+
+    # execute_full_turn在结算后将turn递增，因此turn>50表示第50回合已结束。
+    if state.turn > 50:
+        score_a = (state.mp_a, alive_a,
+                   sum(max(0, pokemon.current_hp) for pokemon in state.team_a),
+                   sum(max(0, pokemon.energy) for pokemon in state.team_a))
+        score_b = (state.mp_b, alive_b,
+                   sum(max(0, pokemon.current_hp) for pokemon in state.team_b),
+                   sum(max(0, pokemon.energy) for pokemon in state.team_b))
+        if score_a > score_b:
+            return "a_win"
+        if score_b > score_a:
+            return "b_win"
+        return "draw"
+    return None
+
+
 def check_winner(state: BattleState) -> Optional[str]:
-    """检查胜负: 先失去4点MP(降到0)的玩家败北"""
-    if state.mp_a <= 0:
-        return "b"
-    if state.mp_b <= 0:
+    """兼容旧接口，仅返回获胜方；平局和未终局均返回None。"""
+    outcome = check_outcome(state)
+    if outcome == "a_win":
         return "a"
-    alive_a = any(not pokemon.is_fainted for pokemon in state.team_a)
-    alive_b = any(not pokemon.is_fainted for pokemon in state.team_b)
-    if not alive_a and alive_b:
-        return "b"
-    if not alive_b and alive_a:
-        return "a"
-    if not alive_a and not alive_b:
+    if outcome == "b_win":
         return "b"
     return None

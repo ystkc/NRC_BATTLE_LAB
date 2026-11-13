@@ -30,8 +30,8 @@ from urllib.parse import quote, unquote, urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from scripts.wiki_crawler.database import evolution_key, normalize_record, read_committed_rows, spirit_base_name, spirit_key, write_database
+# ``wiki_crawler`` 已迁移到仓库根目录，数据库模块使用同包导入。
+from .database import evolution_key, normalize_record, read_committed_rows, spirit_base_name, spirit_key, write_database
 
 try:
     from bs4 import BeautifulSoup, Tag
@@ -39,7 +39,8 @@ except ImportError as error:  # pragma: no cover - depends on environment
     raise SystemExit("wiki_crawler requires beautifulsoup4; install with: pip install -e '.[wiki]'") from error
 
 
-ROOT = Path(__file__).resolve().parents[2]
+# sync.py 位于 <repo>/wiki_crawler/，上一级就是项目根目录。
+ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DB_PATH = DATA / "nrc_wiki.db"
 STAGING_DIR = DATA / "wiki_staging"
@@ -1074,7 +1075,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--spirit-detail", action="store_true", help="额外逐个请求精灵详情页，抓取 nrc-spirit-pet-card 关系")
     parser.add_argument("--database", type=Path, default=DB_PATH, help="新 Wiki 数据库路径，默认 data/nrc_wiki.db；不向旧战斗数据库写入")
     manual_options = parser.add_mutually_exclusive_group()
-    manual_options.add_argument("--manual-data", type=Path, default=MANUAL_DATA_PATH, help="人工补充 YAML，默认 scripts/wiki_crawler/manual_data.yaml；指定字段优先于 Wiki")
+    manual_options.add_argument("--manual-data", type=Path, default=MANUAL_DATA_PATH, help="人工补充 YAML，默认 wiki_crawler/manual_data.yaml；指定字段优先于 Wiki")
     manual_options.add_argument("--no-manual-data", action="store_true", help="禁用人工 YAML，仅采集 Wiki")
     parser.add_argument("--limit", type=int, default=0, help="限制每类记录数量，0 为全部")
     parser.add_argument("--delay", type=float, default=0.0, help="请求间隔秒数；缓存命中不等待，默认 0")

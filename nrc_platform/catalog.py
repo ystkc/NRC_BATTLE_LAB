@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sqlite3
 from pathlib import Path
@@ -10,6 +11,7 @@ from typing import Any
 from nrc_core.catalog import CoreCatalog
 from nrc_core.effect_data import ABILITY_EFFECTS, SKILL_EFFECTS
 from nrc_core.models import Skill, SkillCategory, Type
+from nrc_core.pokemon_nature_table import NATURE_BONUSES
 
 try:
     from nrc_core.skill_effects_generated import SKILL_EFFECTS_GENERATED
@@ -45,15 +47,63 @@ _CATEGORY_ALIASES = {
     "status": SkillCategory.STATUS, "变化": SkillCategory.STATUS, "状态": SkillCategory.STATUS,
 }
 
+_DIMO_BOSS_FORMS = ("圣光迪莫", "圣水迪莫", "圣火迪莫", "圣草迪莫")
+_REQUIRED_COLUMNS = {
+    "elements": {"id", "name"},
+    "ability_catalog": {"id", "name", "description", "source_url"},
+    "skill_catalog": {"id", "name", "wiki_id", "element_id", "category", "energy_cost", "power", "description"},
+    "spirit_forms": {
+        "id", "name", "catalog_number", "evolution_stage", "is_lord", "ability_id",
+        "base_hp", "base_speed", "base_attack", "base_magic_attack", "base_defense", "base_magic_defense",
+        "ability_description", "weight_text", "weight_sort_value", "source_url",
+    },
+    "spirit_skills": {"spirit_name", "skill_name"},
+    "evolution_links": {"from_name", "to_name", "from_number", "to_number", "from_stage", "to_stage"},
+    "distribution_records": {"distribution_kind", "spirit_name", "item_name", "percentage", "position"},
+}
 
-def _lookup(mapping: dict[str, Any], raw: Any, default: Any) -> Any:
+
+class CatalogDataError(ValueError):
+    """目录结构或枚举值不满足核心契约。"""
+
+
+def _validate_schema(connection: sqlite3.Connection) -> None:
+    for table, required in _REQUIRED_COLUMNS.items():
+        rows = connection.execute(f"PRAGMA table_info({table})").fetchall()
+        actual = {str(row[1]) for row in rows}
+        missing = sorted(required - actual)
+        if missing:
+            raise CatalogDataError(f"目录表 {table} 缺少字段: {', '.join(missing)}")
+
+
+def _enum_value(mapping: dict[str, Any], raw: Any, *, field: str, record: str, default: Any) -> Any:
     text = str(raw or "").strip().lower()
-    if text in mapping:
-        return mapping[text]
-    for key, value in mapping.items():
-        if key and key in text:
-            return value
-    return default
+    if not text:
+        return default
+    value = mapping.get(text)
+    if value is None:
+        raise CatalogDataError(f"目录字段 {field}={raw!r} 未知（记录 {record}）")
+    return value
+
+
+def _weight_range(text: Any, fallback: Any = None) -> tuple[float, float] | None:
+    value = str(text or "").strip().replace("ＫＧ", "KG").replace("kg", "")
+    numbers = re.findall(r"\d+(?:\.\d+)?", value)
+    if len(numbers) >= 2:
+        low, high = float(numbers[0]), float(numbers[1])
+        if low <= high:
+            return low, high
+    if fallback not in (None, ""):
+        try:
+            point = float(fallback)
+            return point, point
+        except (TypeError, ValueError):
+            pass
+    return None
+
+
+def _lookup(mapping: dict[str, Any], raw: Any, default: Any, *, field: str = "", record: str = "") -> Any:
+    return _enum_value(mapping, raw, field=field, record=record, default=default)
 
 
 def _skill_effects() -> dict[str, list[Any]]:
@@ -78,8 +128,11 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
 
     with sqlite3.connect(database) as connection:
         connection.row_factory = sqlite3.Row
+        _validate_schema(connection)
         element_names = {int(row["id"]): str(row["name"] or "") for row in connection.execute("SELECT id, name FROM elements")}
-        ability_names = {int(row["id"]): str(row["name"] or "") for row in connection.execute("SELECT id, name FROM ability_catalog")}
+        ability_rows = list(connection.execute("SELECT id, name, source_url FROM ability_catalog"))
+        ability_names = {int(row["id"]): str(row["name"] or "") for row in ability_rows}
+        ability_sources = {int(row["id"]): str(row["source_url"] or "") for row in ability_rows}
         descriptions = {
             str(row["name"]): str(row["description"] or "")
             for row in connection.execute("SELECT name, description FROM skill_catalog")
@@ -114,6 +167,7 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
                 "catalog_number": item.get("catalog_number"),
                 "types": spirit_elements.get(int(item["id"]), []),
                 "ability": ability_names.get(int(item["ability_id"]), "") if item.get("ability_id") else "",
+                "ability_source_url": ability_sources.get(int(item["ability_id"]), "") if item.get("ability_id") else "",
                 "ability_description": item.get("ability_description") or "",
                 "evolution_stage": item.get("evolution_stage"),
                 "is_lord": bool(item.get("is_lord")),
@@ -124,14 +178,32 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
                 "base_magic_defense": item.get("base_magic_defense") or 0,
                 "base_speed": item.get("base_speed") or 0,
                 "skills": tuple(skills_by_spirit.get(name, ())),
+                "skill_pool": tuple(skills_by_spirit.get(name, ())),
+                "weight_range": _weight_range(item.get("weight_text"), item.get("weight_sort_value")),
+                "source_url": str(item.get("source_url") or ""),
+                "nature_modifiers": {key: dict(value) for key, value in NATURE_BONUSES.items()},
             }
         for record in pokemon.values():
             record["previous_forms"] = []
+        evolution_previous: dict[str, str] = {}
         for row in connection.execute("SELECT DISTINCT from_name, to_name FROM evolution_links"):
             previous, evolved = str(row[0]), str(row[1])
             if previous in pokemon and evolved in pokemon:
+                if evolved in evolution_previous and evolution_previous[evolved] != previous:
+                    raise CatalogDataError(f"形态 {evolved} 存在多个前阶")
+                evolution_previous[evolved] = previous
                 pokemon[evolved]["previous_forms"].append(previous)
+                pokemon[previous].setdefault("next_forms", []).append(evolved)
+        for start in evolution_previous:
+            seen: set[str] = set()
+            current = start
+            while current in evolution_previous:
+                if current in seen:
+                    raise CatalogDataError(f"进化图包含循环: {current}")
+                seen.add(current)
+                current = evolution_previous[current]
         for name, record in pokemon.items():
+            record.setdefault("next_forms", [])
             if record["skills"]:
                 continue
             base_name = str(name).split("（", 1)[0]
@@ -147,14 +219,15 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
             hit_count = int(hit_match.group(1)) if hit_match else 1
             skill = Skill(
                 name=name,
-                skill_type=_lookup(_TYPE_ALIASES, element_names.get(row["element_id"], ""), Type.NORMAL),
-                category=_lookup(_CATEGORY_ALIASES, row["category"], SkillCategory.STATUS),
+                skill_type=_lookup(_TYPE_ALIASES, element_names.get(row["element_id"], ""), Type.NORMAL, field="element", record=name),
+                category=_lookup(_CATEGORY_ALIASES, row["category"], SkillCategory.STATUS, field="category", record=name),
                 power=int(row["power"] or 0),
                 energy_cost=int(row["energy_cost"] or 0),
                 hit_count=max(1, hit_count),
                 skill_id=str(row["wiki_id"] or row["id"]),
             )
             skill.description = description
+            skill.source_url = str(row["source_url"] or "")
             skill.effects = list(skill_effects.get(name, ()))
             skill.choice_options = _choice_options(description)
             skill._base_energy_cost = skill.energy_cost
@@ -172,8 +245,47 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
         for name, record in pokemon.items()
         if not record.get("is_lord") and len(forms_by_number.get(record.get("catalog_number"), ())) == 1
     }
+    dimo = pokemon.get("迪莫")
+    resident_file = root / "resident_boss_ids.json"
+    resident_ids: list[int] | None = None
+    if resident_file.exists():
+        try:
+            resident_data = json.loads(resident_file.read_text(encoding="utf-8"))
+            resident_ids = [int(value) for value in resident_data.get("迪莫", [])]
+        except (OSError, ValueError, TypeError, AttributeError, json.JSONDecodeError) as exc:
+            raise CatalogDataError(f"常驻首领映射文件无效: {resident_file}") from exc
+    if resident_ids is not None:
+        resident_records = [record for record in pokemon.values() if int(record.get("id", -1)) in resident_ids]
+        resident_names = {str(record.get("name")) for record in resident_records}
+        if len(resident_ids) != 4 or len(resident_records) != 4 or resident_names != set(_DIMO_BOSS_FORMS):
+            raise CatalogDataError("常驻首领映射必须恰好包含四个迪莫首领形态")
+        if any(not record.get("is_lord") for record in resident_records):
+            raise CatalogDataError("常驻首领映射包含非首领形态")
+        boss_forms["迪莫"] = tuple(pokemon[name] for name in _DIMO_BOSS_FORMS)
+    missing = [name for name in _DIMO_BOSS_FORMS if name not in pokemon]
+    invalid = [name for name in _DIMO_BOSS_FORMS if name in pokemon and not pokemon[name].get("is_lord")]
+    if dimo is None:
+        missing.insert(0, "迪莫")
+    if invalid or missing:
+        details = []
+        if missing:
+            details.append("缺失=" + ",".join(missing))
+        if invalid:
+            details.append("非首领=" + ",".join(invalid))
+        raise CatalogDataError("迪莫首领映射无效: " + "; ".join(details))
+    boss_forms["迪莫"] = tuple(pokemon[name] for name in _DIMO_BOSS_FORMS)
     frozen_distributions = {key: tuple(sorted(value, key=lambda item: (-item["percentage"], item["position"]))) for key, value in distributions.items()}
     ability_effects = {name: tuple(value) for name, value in ABILITY_EFFECTS.items()}
+    evolution_next = {
+        name: tuple(record.get("next_forms", ()))
+        for name, record in pokemon.items()
+    }
+    weight_ranges = {name: record.get("weight_range") for name, record in pokemon.items()}
+    source_snapshots = {
+        "pokemon": {name: record.get("source_url", "") for name, record in pokemon.items()},
+        "skills": {name: getattr(skill, "source_url", "") for name, skill in skills.items()},
+        "abilities": {name: ability_sources.get(ability_id, "") for ability_id, name in ability_names.items()},
+    }
     return CoreCatalog(
         skills=skills,
         pokemon=pokemon,
@@ -182,7 +294,14 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
         skill_descriptions=descriptions,
         ability_descriptions=ability_descriptions,
         distributions=frozen_distributions,
+        skill_pools={name: tuple(values) for name, values in skills_by_spirit.items()},
+        evolution_previous=dict(evolution_previous),
+        evolution_next=evolution_next,
+        nature_modifiers={name: dict(values) for name, values in NATURE_BONUSES.items()},
+        weight_ranges=weight_ranges,
+        source_snapshots=source_snapshots,
+        resident_boss_ids=tuple(resident_ids or ()),
     )
 
 
-__all__ = ["load_catalog"]
+__all__ = ["CatalogDataError", "load_catalog"]

@@ -43,7 +43,7 @@ export function createBattleSync({ renderEvents, setResolving, playResolution, r
         || summary.phase !== previous.phase
         || summary.decision_index !== previous.decision_index
         || Boolean(summary.pending) !== Boolean(previousPending);
-      state.battle = { ...state.battle, ...summary };
+      state.battle = { ...state.battle, ...summary, terminal: Boolean(summary.terminal || summary.terminated || summary.outcome) };
       if (!summary.initialized) return renderSetup();
       const firstLoad = state.eventCursor === null;
       const nextData = (await api(`/api/battles/${id}/state?side=own`)).data;
@@ -79,6 +79,9 @@ export function createBattleSync({ renderEvents, setResolving, playResolution, r
     try {
       const result = await api(`/api/battles/${state.battle.battle_id}/selection`, { method: 'POST', body: JSON.stringify({ action_key: key, request_id: crypto.randomUUID(), decision_index: state.battle.decision_index }) });
       state.pending = !result.resolved;
+      if (result.terminated || result.outcome) {
+        state.battle = { ...state.battle, terminal: true, terminated: true, outcome: result.outcome || state.battle.outcome };
+      }
       state.opponentPending = false;
       // 提交锁持续覆盖结算拉取与播放；等待对手时只保留 pending。
       if (result.resolved) await refreshBattle({ refreshDisplay: true, animateEvents: true });

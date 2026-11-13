@@ -7,6 +7,7 @@ EffectTag = (效果类型, 参数字典, 触发条件, 子效果列表)
 
 from enum import Enum, auto
 from typing import Dict, List, Optional, Any
+import copy
 
 
 # ============================================================
@@ -364,9 +365,9 @@ class EffectTag:
     def copy(self) -> "EffectTag":
         return EffectTag(
             type=self.type,
-            params=dict(self.params),
-            condition=dict(self.condition),
-            sub_effects=[e.copy() for e in self.sub_effects],
+            params=copy.deepcopy(self.params),
+            condition=copy.deepcopy(self.condition),
+            sub_effects=copy.deepcopy(self.sub_effects),
         )
 
 
@@ -400,8 +401,8 @@ class AbilityEffect:
     def copy(self) -> "AbilityEffect":
         return AbilityEffect(
             timing=self.timing,
-            effects=[e.copy() for e in self.effects],
-            filter=dict(self.filter),
+            effects=copy.deepcopy(self.effects),
+            filter=copy.deepcopy(self.filter),
         )
 
 
@@ -456,6 +457,6 @@ class SkillEffect:
     def copy(self) -> "SkillEffect":
         return SkillEffect(
             timing=self.timing,
-            effects=[e.copy() for e in self.effects],
-            filter=dict(self.filter),
+            effects=copy.deepcopy(self.effects),
+            filter=copy.deepcopy(self.filter),
         )

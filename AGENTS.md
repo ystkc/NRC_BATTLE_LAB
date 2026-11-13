@@ -55,6 +55,7 @@ python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 | 任务 | 文件 |
 |---|---|
 | 伤害和回合结算 | `nrc_core/core.py:simulate_turn`、`nrc_core/battle.py` |
+| 回合阶段、终局结果与派生随机 | `nrc_core/battle.py:execute_full_turn/check_outcome`、`nrc_core/runtime.py:BattleRuntime`、`nrc_core/rng.py` |
 | 效果原语与注册 | `nrc_core/engine/registry.py:_HANDLERS`、`handlers_skill.py`、`handlers_ability.py`、`handlers_field.py` |
 | 技能效果生成 | `scripts/generate_skill_effects.py`、`nrc_core/skill_effects_generated.py` **生成文件勿手改** |
 | 特性原语 | `nrc_core/effect_models.py` |
@@ -66,6 +67,8 @@ python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 | 技能数据 | `nrc_core/effect_data.py` |
 | 属性克制 | `nrc_core/models.py:get_type_effectiveness` |
 | 六维和资质公式 | `nrc_core/catalog.py:calc_combat_stats` |
+| 构建诊断、目录完整性与输入拒绝 | `nrc_platform/builder.py:BuildDiagnostics/BattleBuilder`、`nrc_platform/catalog.py:load_catalog`、`nrc_core/codec.py` |
+| 技能实例身份、冷却与对象图复制 | `nrc_core/models.py:Skill/Pokemon`、`nrc_core/battle.py`、`nrc_core/engine/handlers_ability.py` |
 | 对战状态显示与战报可见性 | `nrc_platform/rooms.py:_visible_events`、`nrc_platform/state.py:normalize_observation`、`nrc_server/static/app.js` |
 | 对方已知阵容悬浮窗 | `nrc_server/static/opponent-roster.js:createOpponentRoster` |
 | 全技能修正归属与特性触发战报 | `nrc_core/engine/dispatch.py:_apply_tag`、`helpers.py:_record_public_skill_modifier`、`executor.py:EffectExecutor.execute_ability` |
@@ -73,4 +76,5 @@ python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 | 核心初始化、决策、合法动作和只读预览 | `nrc_core/runtime.py:BattleRuntime` |
 | 双人房间准备、确认与身份 | `nrc_platform/rooms.py:RoomService` |
 | 提交事务与新快照 | `nrc_platform/platform.py:_serialized`、`submit_selection`、`export_battle` |
+| 快照版本与恢复拒绝 | `nrc_core/runtime.py:export_state/import_state`、`nrc_platform/platform.py:import_battle` |
 | 强化学习和MCTS | `nrc_ai/` 暂存，旧 CLI 停用 |
