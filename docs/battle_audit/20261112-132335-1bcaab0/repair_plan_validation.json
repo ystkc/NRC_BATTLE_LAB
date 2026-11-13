@@ -1,0 +1,91 @@
+{
+  "planning_only": true,
+  "baseline": {
+    "implementation_head": "911babcc77c0486ad91f00663cc1521a3a6c5b0b",
+    "original_audit_head": "a393307d302bb97482b68ddf1516e84a21314127",
+    "snapshot": "repair_plan_baseline.json",
+    "business_code_modified": false
+  },
+  "scope": {
+    "audit_defects": 108,
+    "audit_questions": 64,
+    "total_items": 172,
+    "phases": ["P0", "P1", "P2", "P3", "P4", "P5", "P6"]
+  },
+  "ledger": {
+    "file": "repair_ledger.csv",
+    "merge_sources": "三个并行分片已合并为唯一权威台账，分片副本已清理以避免过期口径",
+    "rows": 172,
+    "unique_item_ids": 172,
+    "unique_acceptance_ids": 172,
+    "required_fields_empty": [],
+    "expected_item_ids": 172,
+    "missing_item_ids": [],
+    "unexpected_item_ids": [],
+    "status_counts": {
+      "not_started": 172
+    },
+    "disposition_counts": {
+      "planned": 126,
+      "mixed": 36,
+      "gated": 2,
+      "preserve": 5,
+      "deferred": 3
+    },
+    "severity_counts": {
+      "P1": 91,
+      "P2": 16,
+      "P3": 1,
+      "n/a": 64
+    },
+    "phase_counts": {
+      "P0": 13,
+      "P1": 26,
+      "P2": 24,
+      "P3": 68,
+      "P4": 28,
+      "P5": 7,
+      "P6": 6
+    },
+    "gate_references": [
+      "G01", "G02", "G03", "G04", "G05", "G06", "G07", "G08", "G09", "G10",
+      "G11", "G12", "G13", "G15", "G16", "G17", "G18", "G19", "G20", "G21"
+    ]
+  },
+  "gates": {
+    "declared": [
+      "G01", "G02", "G03", "G04", "G05", "G06", "G07", "G08", "G09", "G10",
+      "G11", "G12", "G13", "G14", "G15", "G16", "G17", "G18", "G19", "G20", "G21"
+    ],
+    "missing": [],
+    "unreferenced_declared": ["G14"],
+    "referenced_without_declaration": []
+  },
+  "plan_checks": {
+    "full_plan_exists": true,
+    "first_half_migrated": true,
+    "required_terms_present": [
+      "AUD-001", "AUD-108", "QUE-001", "QUE-064", "Float32", "BuildIssue",
+      "BuildDiagnostics", "BuildResult", "nrc_core.runtime.pickle.v2", "channel: \"chrome\""
+    ],
+    "missing_required_terms": []
+  },
+  "read_only_verification": {
+    "tracked_hashes_checked": 70,
+    "data_hashes_checked": 49,
+    "hash_mismatches": [],
+    "business_diff": [],
+    "database_write_performed": false,
+    "network_collection_performed": false,
+    "generator_run": false,
+    "business_tests_run": false,
+    "user_untracked_files_preserved": [
+      "tests/playwright_ui_changes.js",
+      "tests/test_compound_status.py"
+    ]
+  },
+  "encoding": {
+    "files_are_utf8": true,
+    "incident": "审计基线记录的首次终端乱码已通过显式UTF-8重读确认，未改写原文件"
+  }
+}

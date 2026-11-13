@@ -1,0 +1,3 @@
+# 仅保留本轮规划的机器可读基线和校验记录。
+!repair_plan_baseline.json
+!repair_plan_validation.json
