@@ -237,7 +237,8 @@ class BattleRuntime:
             if any(not pokemon.skills for pokemon in team):
                 raise ValueError("every creature must contain resolved skills")
         backups = _weather_backups(battle)
-        resolved = copy.deepcopy(battle)
+        # 规则目录是只读依赖，平台目录可能持有带锁的缓存。
+        resolved = copy.deepcopy(battle, {id(battle.catalog): battle.catalog})
         _restore_weather_backups(resolved, backups)
         resolved.catalog = self.catalog
         state = BattleSession(resolved, self.manifest, seed=int(seed), events=[])
@@ -245,9 +246,11 @@ class BattleRuntime:
         return state
 
     def clone(self, state: object) -> BattleSession:
+        """复制战斗会话并复用只读规则目录。"""
         current = self._check_state(state)
         backups = _weather_backups(current.battle)
-        cloned = copy.deepcopy(current)
+        catalog = current.battle.catalog
+        cloned = copy.deepcopy(current, {id(catalog): catalog})
         _restore_weather_backups(cloned.battle, backups)
         return cloned
 
