@@ -29,6 +29,13 @@ segmentation = [
 ]
 dev = ["pytest>=8.0"]
 
+[tool.setuptools.packages.find]
+include = ["nrc_ai", "nrc_ai.*", "nrc_core", "nrc_core.*", "nrc_platform", "nrc_platform.*", "nrc_server", "nrc_server.*", "wiki_crawler", "wiki_crawler.*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+nrc_server = ["static/*"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
