@@ -390,8 +390,6 @@ class BattleBuilder(BattleRulesSupport):
             state.random_devotion_draws_b = draws
             state.random_devotion_counts_b = legacy_random if legacy_random else {}
 
-    def _distribution_rows(self, spirit_name: str, distribution_kind: str) -> list[dict[str, Any]]:
-        return [dict(row) for row in self.catalog.get_distribution(spirit_name, distribution_kind)]
     @staticmethod
     def _normalize_individual_values(raw: Any) -> dict[str, int]:
         """规范化基础资质值；输入值按1..10基础资质保存，公式统一乘6。"""
@@ -434,13 +432,23 @@ class BattleBuilder(BattleRulesSupport):
     ) -> tuple[str, dict[str, int], dict[str, Any]]:
         metadata = item.metadata if isinstance(item.metadata, dict) else {}
         mode = str(metadata.get("attribute_assumption", "database") or "database").lower()
-        nature_rows = self._distribution_rows(name, "nature")
-        talent_rows = self._distribution_rows(name, "talent")
         nature_explicit = item.base.nature.known and item.base.nature.exists and bool(item.base.nature.value)
+        iv_explicit = item.base.individual_values.known and item.base.individual_values.exists
+        neutral_assumption = mode in {"neutral", "zero", "all_zero"}
+        needed = []
+        if not nature_explicit and not neutral_assumption:
+            needed.append("nature")
+        if not iv_explicit and not neutral_assumption and not provided_stats:
+            needed.append("talent")
+        if needed:
+            self.catalog.get_distributions(name, tuple(needed))
+        rows = self.catalog.get_distributions(name, ("nature", "talent"), allow_fetch=False)
+        nature_rows = [dict(row) for row in rows["nature"]]
+        talent_rows = [dict(row) for row in rows["talent"]]
         if nature_explicit:
             nature_name = str(item.base.nature.value)
             nature_source = "input"
-        elif mode in {"neutral", "zero", "all_zero"}:
+        elif neutral_assumption:
             nature_name = "中性"
             nature_source = "assumption:neutral"
         elif nature_rows:
@@ -450,11 +458,10 @@ class BattleBuilder(BattleRulesSupport):
             nature_name = "坦率"
             nature_source = "fallback:neutral"
 
-        iv_explicit = item.base.individual_values.known and item.base.individual_values.exists
         if iv_explicit:
             iv_config = self._normalize_individual_values(item.base.individual_values.value)
             iv_source = "input"
-        elif mode in {"neutral", "zero", "all_zero"} or provided_stats:
+        elif neutral_assumption or provided_stats:
             iv_config = self._normalize_individual_values({})
             iv_source = "assumption:zero" if not provided_stats else "not_used:provided_stats"
         else:

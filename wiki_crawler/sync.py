@@ -7,8 +7,7 @@ The crawler deliberately has two phases:
 2. After the user confirms the diff, merge the snapshot into canonical CSV
    files and a separate wiki catalog SQLite database.
 
-The wiki pages contain their records in server-rendered HTML, so no browser or
-JavaScript runtime is required.
+列表和技能池解析服务端 HTML，无需浏览器。
 """
 
 from __future__ import annotations
@@ -19,6 +18,7 @@ import hashlib
 import html as html_lib
 import json
 import logging
+import os
 import re
 import sys
 import time
@@ -31,7 +31,8 @@ from urllib.request import Request, urlopen
 
 
 # ``wiki_crawler`` 已迁移到仓库根目录，数据库模块使用同包导入。
-from .database import evolution_key, normalize_record, read_committed_rows, spirit_base_name, spirit_key, write_database
+from .database import SPIRIT_SKILL_SOURCES, evolution_key, normalize_record, read_committed_rows, spirit_base_name, spirit_key, write_database
+from .history import export_balance_adjustments, parse_balance_adjustments
 
 try:
     from bs4 import BeautifulSoup, Tag
@@ -50,10 +51,10 @@ MANUAL_DATA_PATH = Path(__file__).resolve().with_name("manual_data.yaml")
 
 BASE_URL = "https://wiki.biligame.com"
 NAMESPACE = "/nrc/"
-SKILL_LIST_URL = BASE_URL + "/nrc/%E6%8A%80%E8%83%BD%E5%88%97%E8%A1%A8"
-SPIRIT_LIST_URL = BASE_URL + "/nrc/%E7%B2%BE%E7%81%B5%E5%88%97%E8%A1%A8"
-SPIRIT_ATLAS_URL = BASE_URL + "/nrc/%E7%B2%BE%E7%81%B5%E5%9B%BE%E9%89%B4"
-GAME_DESCRIPTION_ATLAS_URL = BASE_URL + "/nrc/%E6%B8%B8%E6%88%8F%E6%8F%8F%E8%BF%B0%E5%9B%BE%E9%89%B4"
+SKILL_LIST_URL = BASE_URL +  quote("/nrc/技能列表")
+SPIRIT_LIST_URL = BASE_URL +  quote("/nrc/精灵列表")
+SPIRIT_ATLAS_URL = BASE_URL +  quote("/nrc/精灵图鉴")
+GAME_DESCRIPTION_ATLAS_URL = BASE_URL +  quote("/nrc/游戏描述图鉴")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 NRC-Battle-Lab/1.0",
@@ -76,11 +77,7 @@ CSV_FIELDS = {
     ],
     "game_descriptions": ["名称", "类别", "系别", "系别图标路径", "规则图标路径", "描述", "来源URL"],
     "evolutions": ["from_name", "to_name", "from_number", "to_number", "from_stage", "to_stage", "method", "level", "condition", "chain_text"],
-    "spirit_skills": ["精灵", "技能", "技能类别", "来源URL"],
-    "skill": ["精灵", "名称", "百分比", "排序"],
-    "nature": ["精灵", "名称", "百分比", "排序"],
-    "blood": ["精灵", "名称", "百分比", "排序"],
-    "talent": ["精灵", "名称", "百分比", "排序"],
+    "spirit_skills": ["精灵", "技能", "技能类别", "学习等级", "来源URL"],
 }
 
 CSV_KEYS = {
@@ -89,10 +86,6 @@ CSV_KEYS = {
     "game_descriptions": "名称",
     "evolutions": "_evolution_key",
     "spirit_skills": "_spirit_skill_key",
-    "skill": "_distribution_key",
-    "nature": "_distribution_key",
-    "blood": "_distribution_key",
-    "talent": "_distribution_key",
 }
 
 LOGGER = logging.getLogger("nrc.wiki")
@@ -346,6 +339,8 @@ def _strict_spirit_cards(html: str, source_url: str, image_role: str) -> list[di
     records: list[dict] = []
     for card in soup.select("div.npc-card"):
         link = card.select_one(".npc-card-target a[href]") or card.select_one("a[href]")
+        if not link:
+            continue
         name = str(link.get("title") or clean_text(card.select_one(".npc-name") or link or "")).strip()
         number = str(card.get("data-number", "")).strip() or clean_text(card.select_one(".npc-number") or "")
         if not name or not number:
@@ -471,8 +466,6 @@ def _row_key(kind: str, row: dict) -> str:
         return evolution_key(row)
     if kind == "spirit_skills":
         return "\x00".join((str(row.get("精灵", "")).strip(), str(row.get("技能", "")).strip(), str(row.get("技能类别", "")).strip()))
-    if kind in REFERENCE_KINDS.values():
-        return "\x00".join((str(row.get("精灵", "")).strip(), str(row.get("名称", "")).strip()))
     if kind == "spirits":
         return spirit_key(row)
     return str(row.get(CSV_KEYS[kind], "")).strip()
@@ -570,78 +563,41 @@ def _skill_snapshot(fetcher: WikiFetcher, limit: int) -> list[dict]:
     return result
 
 
-SKILL_RELATION_SOURCES = {
-    "default": "default-skill",
-    "blood": "blood-skill",
-    "stone": "stone-skill",
-}
-
-
-def parse_skill_pet_cards(html: str, skill_name: str, source_url: str) -> list[dict]:
-    """Read skill-to-spirit cards from one skill detail page."""
+def parse_spirit_skill_cards(html: str, spirit_name: str, source_url: str) -> list[dict]:
+    """解析精灵详情页中的技能卡，并保留学习方式和等级。"""
     soup = BeautifulSoup(html or "", "html.parser")
     rows: list[dict] = []
-    for card in soup.select(".nrc-skill-pet-card"):
-        raw_source = str(card.get("data-skill-source", "")).strip().casefold()
-        if raw_source.endswith("-skill"):
-            raw_source = raw_source[:-6]
-        skill_source = SKILL_RELATION_SOURCES.get(raw_source)
-        if not skill_source:
-            LOGGER.warning("[RELATION] unknown data-skill-source=%r skill=%s url=%s", raw_source, skill_name, source_url)
-            continue
-        name_element = card.select_one(".nrc-skill-pet-name")
-        spirit_name = clean_text(name_element or "")
-        if not spirit_name:
-            LOGGER.warning("[RELATION] card has no spirit name skill=%s source=%s url=%s", skill_name, raw_source, source_url)
+    for card in soup.select("div.sd-p-skill-card"):
+        skill_name = str(card.get("data-name", "")).strip()
+        skill_source = str(card.get("data-source", "")).strip().casefold()
+        if not skill_name or skill_source not in SPIRIT_SKILL_SOURCES:
+            LOGGER.warning(
+                "[PARSE] invalid spirit skill card spirit=%s skill=%r source=%r url=%s",
+                spirit_name,
+                skill_name,
+                skill_source,
+                source_url,
+            )
             continue
         rows.append({
             "精灵": spirit_name,
             "技能": skill_name,
             "技能类别": skill_source,
+            "学习等级": str(card.get("data-level", "")).strip() if skill_source in {"level", "blood"} else "",
             "来源URL": source_url,
         })
-    return list({
-        (row["精灵"], row["技能"], row["技能类别"]): row for row in rows
-    }.values())
+    unique = {
+        (row["精灵"], row["技能"], row["技能类别"]): row
+        for row in rows
+    }
+    return list(unique.values())
 
-
-def _skill_relation_snapshot(fetcher: WikiFetcher, skills: list[dict]) -> list[dict]:
-    result: list[dict] = []
-    total = len(skills)
-    for index, skill in enumerate(skills, 1):
-        name = str(skill.get("名称", "")).strip()
-        if not name:
-            continue
-        url = normalize_url(f"{BASE_URL}{NAMESPACE}{quote(name, safe='')}")
-        LOGGER.info("[RELATION] FETCH skill=%d/%d name=%s url=%s", index, total, name, url)
-        html = fetcher.get_text(url)
-        rows = parse_skill_pet_cards(html, name, url)
-        result.extend(rows)
-        LOGGER.info("[RELATION] PARSE skill=%d/%d name=%s cards=%d", index, total, name, len(rows))
-    unique = {(row["精灵"], row["技能"], row["技能类别"]): row for row in result}
-    LOGGER.info("[RELATION] COMPLETE skills=%d relations=%d", total, len(unique))
-    rows = list(unique.values())
-    _log_first_record("spirit_skills", rows)
-    return rows
-
-
-REFERENCE_KINDS = {"skill": "skill", "nature": "nature", "blood": "blood", "talent": "talent"}
-
-def parse_spirit_distributions(html: str, spirit_name: str, source_url: str) -> dict[str, list[dict]]:
-    soup = BeautifulSoup(html or "", "html.parser")
-    result = {kind: [] for kind in REFERENCE_KINDS.values()}
-    for chart_name, kind in REFERENCE_KINDS.items():
-        chart = soup.select_one(f'[data-reference-chart="{chart_name}"]')
-        if not chart:
-            continue
-        for position, row in enumerate(chart.select(".roco-reference-row"), 1):
-            name = clean_text(row.select_one(".roco-reference-name") or "")
-            percentage = clean_text(row.select_one(".roco-reference-value") or "")
-            if name and percentage:
-                result[kind].append({"精灵": spirit_name, "名称": name, "百分比": percentage, "排序": position})
-    return result
 
 def _spirit_snapshot(fetcher: WikiFetcher, limit: int, include_detail: bool = False) -> tuple[list[dict], list[dict], dict[str, list[dict]]]:
+    """采集精灵列表，并复用详情页收集技能池等数据。"""
+    detail_rows = {}
+    if include_detail:
+        detail_rows["spirit_skills"] = []
     LOGGER.info("[PAGE] FETCH spirits list url=%s", SPIRIT_LIST_URL)
     list_html = fetcher.get_text(SPIRIT_LIST_URL)
     LOGGER.info("[PAGE] FETCH spirits atlas url=%s", SPIRIT_ATLAS_URL)
@@ -649,7 +605,7 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int, include_detail: bool = Fa
     if not list_html and not atlas_html:
         _log_first_record("spirits", [])
         _log_first_record("evolutions", [])
-        return [], [], {kind: [] for kind in REFERENCE_KINDS.values()}
+        return [], [], detail_rows
     records = parse_spirit_list(list_html) if list_html else []
     atlas_records = parse_spirit_list(atlas_html, SPIRIT_ATLAS_URL, image_role="portrait") if atlas_html else []
     by_key = {
@@ -673,7 +629,7 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int, include_detail: bool = Fa
         records = records[:limit]
     manifest = load_manifest()
     result: list[dict] = []
-    detail_rows = {kind: [] for kind in REFERENCE_KINDS.values()}
+    history_rows = []
     for index, record in enumerate(records, 1):
         identity_parts = (
             str(record.get("精灵ID", "")).strip(),
@@ -710,12 +666,13 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int, include_detail: bool = Fa
         merged["头像路径"] = avatar_path
         merged["立绘路径"] = "|".join(portrait_paths)
         merged["特性图标路径"] = ability_path
-        detail_url = str(record.get("_detail_url", "")).strip()
+        detail_url = str(record.get("_detail_url") or record.get("来源URL", "")).strip()
         if include_detail and detail_url:
-            distributions = parse_spirit_distributions(fetcher.get_text(detail_url), str(record['名称']), detail_url)
-            LOGGER.info("[PARSE] obtain spirit distributions %s", record['名称'])
-            for distribution_kind, distribution_rows in distributions.items():
-                detail_rows[distribution_kind].extend(distribution_rows)
+            detail_text = fetcher.get_text(detail_url)
+            skill_rows = parse_spirit_skill_cards(detail_text, str(record["名称"]), detail_url)
+            detail_rows["spirit_skills"].extend(skill_rows)
+            LOGGER.info("[PARSE] obtain spirit skill pool %s cards=%d", record["名称"], len(skill_rows))
+            history_rows.extend(parse_balance_adjustments(detail_text, str(record['名称'])))
         public = _public_record(merged)
         result.append(public)
         if index % 100 == 0:
@@ -725,8 +682,42 @@ def _spirit_snapshot(fetcher: WikiFetcher, limit: int, include_detail: bool = Fa
     for evolution in evolutions:
         evolution_map[evolution_key(evolution)] = evolution
     unique_evolutions = list(evolution_map.values())
+    if include_detail and records:
+        # 按赛季分成几个文件
+        seasons = {}
+        for history in history_rows:
+            season = history.get("赛季", "")
+            if season not in seasons:
+                seasons[season] = {}
+            seasons[season][history["精灵名"]] = history
+        # 导入文件中的平衡记录，如果已存在则跳过
+        def restruct_history_rows(row_csv: list[str]) -> dict:
+            """将 CSV 格式的历史记录重新组织为字典格式。"""
+            return {
+                "赛季": row_csv[0],
+                "日期": row_csv[1],
+                "精灵名": row_csv[2],
+                "调整内容": row_csv[3],
+            }
+        for season in seasons.keys():
+            history_path = CANONICAL_DIR / f"balance_adjustments_{season.split()[0]}.csv"
+            if not os.path.exists(history_path):
+                continue
+            with history_path.open("r", encoding="utf-8") as f:
+                csv_reader = csv.reader(f)
+                next(csv_reader)
+                for row in csv_reader:
+                    if row[2] not in seasons[season]:
+                        seasons[season][row[2]] = restruct_history_rows(row)
+        for season, history_dict in seasons.items():
+            history_list = list(history_dict.values())
+            path = CANONICAL_DIR / f"balance_adjustments_{season.split()[0]}.csv"
+            count = export_balance_adjustments(history_list, path)
+            LOGGER.info("[HISTORY] 已导出 %s %d 条赛季调整：%s", season, count, path)
     _log_first_record("spirits", result)
     _log_first_record("evolutions", unique_evolutions)
+    if include_detail:
+        _log_first_record("spirit_skills", detail_rows["spirit_skills"])
     return result, unique_evolutions, detail_rows
 
 
@@ -786,8 +777,11 @@ def current_rows(kind: str) -> list[dict]:
 
 
 def _comparison_values(kind: str, row: dict) -> tuple[str, ...]:
+    """比较记录内容，忽略 Wiki 技能目录重新编号。"""
     record = normalize_record(kind, row)
-    return tuple("" if record.get(field) is None else str(record[field]) for field in CSV_FIELDS[kind])
+    # 目录 ID 会随 Wiki 列表调整而批量变化，技能仍按名称识别并保存最新 ID。
+    fields = [field for field in CSV_FIELDS[kind] if not (kind == "skills" and field == "技能目录ID")]
+    return tuple("" if record.get(field) is None else str(record[field]) for field in fields)
 
 
 def diff_rows(kind: str, incoming: list[dict]) -> dict:
@@ -879,8 +873,8 @@ def load_manual_data(path: Path) -> dict[str, list[dict]]:
                 row.setdefault("method", "manual")
             if any(not row.get(field) for field in required_fields[kind]):
                 raise ValueError(f"人工 YAML {location} 缺少必填字段：{required_fields[kind]}")
-            if kind == "spirit_skills" and row["技能类别"] not in {"default-skill", "blood-skill", "stone-skill"}:
-                raise ValueError(f"人工 YAML {location} 技能类别必须是 default-skill/blood-skill/stone-skill")
+            if kind == "spirit_skills" and row["技能类别"] not in SPIRIT_SKILL_SOURCES:
+                raise ValueError(f"人工 YAML {location} 技能类别必须是 level/blood/machine")
             key = _row_key(kind, row)
             if key in seen:
                 raise ValueError(f"人工 YAML {location} 记录标识重复")
@@ -939,12 +933,47 @@ def apply_database(rows_by_kind: dict[str, list[dict]]) -> None:
 def print_diff(kind: str, summary: dict) -> None:
     def display(value: str) -> str:
         return value.replace("\x00", " / ")
-
+    if kind in ('skills', 'spirits', 'game_descriptions'):
+        with open(CANONICAL_DIR / "update.csv", "a", encoding="utf-8") as handle:
+            # 将当前新增附加到 update.csv 中
+            header = ["时间", "类型", "当前", "人工录入合并后", "增删类型", "数量", "记录"]
+            writer = csv.DictWriter(handle, fieldnames=header, extrasaction="ignore")
+            writer.writeheader()
+            datestr = datetime.now().strftime('%y/%m/%d-%H:%M:%S')
+            writer.writerows([
+                {
+                    "时间": datestr,
+                    "类型": kind,
+                    "当前": summary["current"],
+                    "人工录入合并后": summary["incoming"],
+                    "增删类型": "新增",
+                    "数量": len(summary["new"]),
+                    "记录": "、".join(display(item) for item in summary["new"]),
+                },
+                {
+                    "时间": datestr,
+                    "类型": kind,
+                    "当前": summary["current"],
+                    "人工录入合并后": summary["incoming"],
+                    "增删类型": "变化",
+                    "数量": len(summary["changed"]),
+                    "记录": "、".join(display(item) for item in summary["changed"]),
+                },
+                {
+                    "时间": datestr,
+                    "类型": kind,
+                    "当前": summary["current"],
+                    "人工录入合并后": summary["incoming"],
+                    "增删类型": "缺失",
+                    "数量": len(summary["missing"]),
+                    "记录": "、".join(display(item) for item in summary["missing"]),
+                },
+            ])
     print(f"{kind}: 当前 {summary['current']}，wiki/人工合并 {summary['incoming']}，新增 {len(summary['new'])}，变化 {len(summary['changed'])}，本次未找到 {len(summary['missing'])}")
     if summary["new"]:
-        print("  新增：" + "、".join(display(item) for item in summary["new"][:20]) + (" …" if len(summary["new"]) > 20 else ""))
+        print("  新增：" + "、".join(display(item) for item in summary["new"]))
     if summary["missing"]:
-        print("  本次未找到：" + "、".join(display(item) for item in summary["missing"][:20]) + (" …" if len(summary["missing"]) > 20 else ""))
+        print("  本次未找到：" + "、".join(display(item) for item in summary["missing"]))
 
 
 def configure_logging(level: str = "INFO", quiet: bool = False) -> None:
@@ -975,9 +1004,6 @@ def run(args: argparse.Namespace) -> int:
     selected = {"skills", "spirits", "game_descriptions"} if args.kind == "all" else {
         "game_descriptions" if args.kind == "game-descriptions" else args.kind
     }
-    if getattr(args, "crawl_skill_relations", False) and "skills" not in selected:
-        LOGGER.error("[RELATION] --crawl-skill-relations requires --kind skills or --kind all")
-        return 2
     manual_path = None if getattr(args, "no_manual_data", False) else Path(getattr(args, "manual_data", MANUAL_DATA_PATH)).resolve()
     try:
         manual = load_manual_data(manual_path) if manual_path else {}
@@ -989,10 +1015,8 @@ def run(args: argparse.Namespace) -> int:
     if "skills" in selected:
         LOGGER.info("[JOB] skills list + icons; detail pages disabled")
         rows_by_kind["skills"] = _skill_snapshot(fetcher, args.limit)
-        if getattr(args, "crawl_skill_relations", False):
-            rows_by_kind["spirit_skills"] = _skill_relation_snapshot(fetcher, rows_by_kind["skills"])
     if "spirits" in selected:
-        LOGGER.info("[JOB] spirit list + atlas + detail distributions")
+        LOGGER.info("[JOB] spirit list + atlas + detail skill pools/history")
         spirits, evolutions, detail_rows = _spirit_snapshot(fetcher, args.limit, args.spirit_detail)
         rows_by_kind["spirits"] = spirits
         rows_by_kind["evolutions"] = evolutions
@@ -1012,7 +1036,7 @@ def run(args: argparse.Namespace) -> int:
     snapshot = {
         "created_at": datetime.now(timezone.utc).isoformat(),
         "sources": {"skills": SKILL_LIST_URL, "spirits": SPIRIT_LIST_URL, "atlas": SPIRIT_ATLAS_URL, "game_descriptions": GAME_DESCRIPTION_ATLAS_URL},
-        "skill_relation_pages": bool(getattr(args, "crawl_skill_relations", False)),
+        "spirit_detail_pages": bool(args.spirit_detail and "spirits" in selected),
         "wiki_counts": wiki_counts,
         "manual_data": {"path": str(manual_path) if manual_path else None, "counts": {kind: len(manual.get(kind, [])) for kind in rows_by_kind}},
         "counts": {kind: len(rows) for kind, rows in rows_by_kind.items()},
@@ -1072,7 +1096,7 @@ def run(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="NRC wiki 增量同步：先下载并生成 staging，确认后才写入数据库")
     parser.add_argument("--kind", choices=("all", "skills", "spirits", "game-descriptions"), default="all")
-    parser.add_argument("--spirit-detail", action="store_true", help="额外逐个请求精灵详情页，抓取 nrc-spirit-pet-card 关系")
+    parser.add_argument("--spirit-detail", action="store_true", help="额外逐个请求精灵详情页，抓取技能池和历史变动")
     parser.add_argument("--database", type=Path, default=DB_PATH, help="新 Wiki 数据库路径，默认 data/nrc_wiki.db；不向旧战斗数据库写入")
     manual_options = parser.add_mutually_exclusive_group()
     manual_options.add_argument("--manual-data", type=Path, default=MANUAL_DATA_PATH, help="人工补充 YAML，默认 wiki_crawler/manual_data.yaml；指定字段优先于 Wiki")
@@ -1083,7 +1107,6 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--yes", action="store_true", help="自动确认写入 canonical CSV 和 SQLite")
     parser.add_argument("--remove-missing", action="store_true", help="自动移除本次 Wiki 和人工数据均未找到的旧记录")
     parser.add_argument("--keep-missing", action="store_true", help="保留本次 Wiki 和人工数据均未找到的旧记录")
-    parser.add_argument("--crawl-skill-relations", action="store_true", help="额外逐个请求技能详情页，抓取 nrc-skill-pet-card 关系")
     parser.add_argument("--log-level", choices=("DEBUG", "INFO", "WARNING", "ERROR"), default="INFO", help="日志级别，默认 INFO")
     parser.add_argument("--verbose", action="store_true", help="等同于 --log-level DEBUG")
     parser.add_argument("--quiet", action="store_true", help="仅输出 WARNING/ERROR")

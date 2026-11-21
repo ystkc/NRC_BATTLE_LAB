@@ -8,6 +8,7 @@ from typing import Any, Mapping
 import mimetypes
 mimetypes.add_type("application/javascript", ".js")
 from fastapi import FastAPI, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from nrc_platform.platform import PlatformError
@@ -87,7 +88,7 @@ def create_app() -> FastAPI:
 
     @app.get('/api/pokemon/{name}')
     def pokemon_detail(name: str) -> Any:
-        """返回指定精灵的基础展示数据。"""
+        """返回指定精灵的基础展示数据和培养选项。"""
         try:
             result = app.state.rooms.pokemon_detail(name)
             return decorate_response(result, ROOT / "data")
@@ -99,7 +100,7 @@ def create_app() -> FastAPI:
         """根据用户配置生成精灵面板预览。"""
         try:
             payload = await _payload(request)
-            result = app.state.rooms.pokemon_preview(payload)
+            result = await run_in_threadpool(app.state.rooms.pokemon_preview, payload)
             return decorate_response(result, ROOT / "data")
         except Exception as error:
             return _error_response(error)
@@ -153,7 +154,7 @@ def create_app() -> FastAPI:
         try:
             identity = _identity(app, request)
             payload = await _payload(request)
-            result = app.state.rooms.set_rosters(battle_id, identity, payload)
+            result = await run_in_threadpool(app.state.rooms.set_rosters, battle_id, identity, payload)
             return decorate_response(result, ROOT / "data")
         except Exception as error:
             return _error_response(error)

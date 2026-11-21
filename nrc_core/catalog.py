@@ -145,7 +145,12 @@ class CoreCatalog:
         return tuple(self.boss_forms.get(name, ()))
 
     def get_distribution(self, spirit_name: str, distribution_kind: str) -> tuple[Mapping[str, Any], ...]:
+        """读取显式注入的单项分布快照。"""
         return tuple(self.distributions.get((spirit_name, distribution_kind), ()))
+
+    def get_distributions(self, spirit_name: str, kinds: tuple[str, ...], *, allow_fetch: bool = True) -> dict[str, tuple[Mapping[str, Any], ...]]:
+        """读取显式注入的分布快照。"""
+        return {kind: self.get_distribution(spirit_name, kind) for kind in kinds}
 
     def get_skill_pool(self, spirit_name: str) -> tuple[str, ...]:
         """读取平台预解析的精灵技能池。"""

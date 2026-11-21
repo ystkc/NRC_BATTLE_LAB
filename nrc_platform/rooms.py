@@ -123,18 +123,23 @@ def _pinyin(value: str) -> tuple[str, str]:
     syllables = lazy_pinyin(value)
     return (''.join(syllables), ''.join(lazy_pinyin(value, style=Style.FIRST_LETTER)))
 
-def _distribution_options(catalog: Any, name: str, kind: str) -> list[dict[str, Any]]:
-    rows = catalog.get_distribution(name, kind)
+_CUSTOMIZATION_KINDS = ('nature', 'blood', 'talent')
+
+
+def _distribution_options(rows: Any) -> list[dict[str, Any]]:
+    """把培养分布转换为阵容编辑器选项。"""
     return [{'name': str(row.get('item', '')), 'percentage': float(row.get('percentage', 0))} for row in rows if row.get('item')]
 
-def _customization_options(catalog: Any, name: str) -> dict[str, Any]:
-    nature_rows = _distribution_options(catalog, name, 'nature')
-    bloodline_rows = _distribution_options(catalog, name, 'blood')
-    aptitude_rows = _distribution_options(catalog, name, 'talent')
+def _customization_options(catalog: Any, name: str, *, allow_fetch: bool) -> dict[str, Any]:
+    """读取单只精灵的自定义选项和缓存状态。"""
+    rows = catalog.get_distributions(name, _CUSTOMIZATION_KINDS, allow_fetch=allow_fetch)
+    nature_rows = _distribution_options(rows['nature'])
+    bloodline_rows = _distribution_options(rows['blood'])
+    aptitude_rows = _distribution_options(rows['talent'])
     if not nature_rows:
         nature_rows = [{'name': nature, 'percentage': 0} for nature in NATURE_BONUSES]
     if not bloodline_rows:
-        all_bloodlines = sorted({str(row.get('item')) for (spirit, kind), rows in catalog.distributions.items() if kind == 'blood' for row in rows if row.get('item')})
+        all_bloodlines = catalog.distribution_cache.bloodline_names()
         bloodline_rows = [{'name': bloodline, 'percentage': 0} for bloodline in all_bloodlines]
     bonus = {nature: {key: float(value) for key, value in values.items() if float(value)} for nature, values in NATURE_BONUSES.items()}
 
@@ -146,14 +151,19 @@ def _customization_options(catalog: Any, name: str) -> dict[str, Any]:
             item.update({'pinyin': pinyin, 'initials': initials})
             result.append(item)
         return result
-    return {'natures': enrich(nature_rows), 'nature_bonus': bonus, 'bloodlines': enrich(bloodline_rows), 'aptitudes': enrich(aptitude_rows)}
+    return {
+        'natures': enrich(nature_rows), 'nature_bonus': bonus,
+        'bloodlines': enrich(bloodline_rows), 'aptitudes': enrich(aptitude_rows),
+        'cached': catalog.distribution_cache.has_distributions(name, _CUSTOMIZATION_KINDS),
+    }
 
 def _catalog_index(platform: BattlePlatform) -> dict[str, Any]:
+    """构建检索索引，遍历目录时只使用已缓存的培养数据。"""
     catalog = platform._catalog.catalog
     forms: dict[str, list[dict[str, Any]]] = {}
     for name, record in catalog.pokemon.items():
         pinyin, initials = _pinyin(_base_name(name))
-        forms.setdefault(_base_name(name), []).append({'name': name, 'base_name': _base_name(name), 'types': list(record.get('types', ())), 'ability': record.get('ability', ''), 'skills': list(record.get('skills', ())), 'default_skills': list(MANUAL_LOADOUTS.get(_base_name(name), record.get('skills', ()))[:4]), 'pinyin': pinyin, 'initials': initials, 'customization': _customization_options(catalog, name), 'aliases': ['bbh'] if _pinyin(_base_name(name))[1].casefold() == 'bbh' else []})
+        forms.setdefault(_base_name(name), []).append({'name': name, 'base_name': _base_name(name), 'types': list(record.get('types', ())), 'ability': record.get('ability', ''), 'skills': list(record.get('skills', ())), 'default_skills': list(MANUAL_LOADOUTS.get(_base_name(name), record.get('skills', ()))[:4]), 'pinyin': pinyin, 'initials': initials, 'customization': _customization_options(catalog, name, allow_fetch=False), 'aliases': ['bbh'] if _pinyin(_base_name(name))[1].casefold() == 'bbh' else []})
     pokemon = [{'name': base, 'pinyin': _pinyin(base)[0], 'initials': _pinyin(base)[1], 'aliases': sorted({alias for form in values for alias in form.get('aliases', [])}), 'forms': values} for base, values in sorted(forms.items())]
     skills = []
     for name, skill in catalog.skills.items():
@@ -274,11 +284,13 @@ class RoomService:
         return [row for row in rows if text in row['name'].casefold() or text in row['pinyin'] or text in row['initials']][:30]
 
     def pokemon_detail(self, name: str) -> Any:
-        """双人房间管理与展示适配。"""
+        """读取指定精灵的展示数据和阵容编辑选项。"""
         record = _resolve_record(self.platform, name)
         if record is None:
             raise ValueError('pokemon not found')
-        return _creature_preview(self.platform, record['name'])
+        detail = _creature_preview(self.platform, record['name'])
+        detail['customization'] = _customization_options(self.platform._catalog.catalog, record['name'], allow_fetch=True)
+        return detail
 
     def pokemon_preview(self, payload: Mapping[str, Any]) -> Any:
         """双人房间管理与展示适配。"""

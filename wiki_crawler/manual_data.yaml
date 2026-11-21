@@ -100,8 +100,10 @@ evolutions: []
 spirit_skills: []
   # - 精灵: "示例幼体"
   #   技能: "示例技能"
-  #   技能类别: "default-skill"
+  #   技能类别: "level"
+  #   学习等级: 1
   # - 精灵: "示例成体"
   #   技能: "示例技能"
-  #   技能类别: "blood-skill"
-  # 技能类别只接受 default-skill / blood-skill / stone-skill。
+  #   技能类别: "blood"
+  #   学习等级: 15
+  # 技能类别只接受 level / blood / machine；machine 的学习等级留空。

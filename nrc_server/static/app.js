@@ -31,6 +31,40 @@ function formFor(name) {
   const row = pokemonRow(name);
   return row?.forms?.find((form) => form.name === name) || row?.forms?.[0] || null;
 }
+
+const customizationRequests = new Map();
+
+async function loadFormCustomization(form) {
+  // 目录索引只带本地数据，缺失时仅请求当前精灵。
+  if (!form || form.customization?.cached) return false;
+  if (!customizationRequests.has(form.name)) {
+    const request = api(`/api/pokemon/${encodeURIComponent(form.name)}`)
+      .then((detail) => {
+        form.customization = detail.customization;
+        return Boolean(detail.customization?.cached);
+      })
+      .catch((error) => { toast(error.message); return false; })
+      .finally(() => customizationRequests.delete(form.name));
+    customizationRequests.set(form.name, request);
+  }
+  return customizationRequests.get(form.name);
+}
+
+function openCreatureEditor(index, anchor) {
+  const item = state.teams.own[index];
+  if (!item) return;
+  const name = item.name;
+  renderCreatureEditor(index, anchor);
+  loadFormCustomization(formFor(name)).then((loaded) => {
+    const card = $('#hover-card');
+    if (!loaded || state.teams.own[index] !== item || item.name !== name) return;
+    ensureDefaultCustomization(item);
+    saveSession();
+    if (card.dataset.floatingEditIndex === String(index) && !card.contains(document.activeElement)) {
+      renderCreatureEditor(index, anchor);
+    }
+  });
+}
 function skillMeta(name) { return state.catalog.skills.find((skill) => skill.name === name) || { name, power: '-', energy_cost: '-', element_key: 'normal' }; }
 function asset(name, kind) { return formFor(name)?.[kind] || ''; }
 const TYPE_NAMES = { normal: '普通', fire: '火', water: '水', electric: '电', grass: '草', ice: '冰', fighting: '武', poison: '毒', ground: '地', flying: '翼', psychic: '幻', bug: '虫', ghost: '幽', dragon: '龙', dark: '恶', steel: '机械', fairy: '萌', light: '光' };
@@ -72,6 +106,7 @@ function hydrateTeamItem(item, previous = {}) {
 function ensureDefaultCustomization(item) {
   if (!item || !item.form) return item;
   const customization = item.form.customization || {};
+  if (!customization.cached) return item;
   item.base = { ...(item.base || {}) };
   if (!item.base.bloodline_attributes?.length && customization.bloodlines?.[0]?.name) {
     item.base.bloodline_attributes = [customization.bloodlines[0].name];
@@ -182,10 +217,14 @@ function renderSetup() {
   else status.textContent = '我方首发已确认，等待对方确认';
 }
 
-function addCreature(name, stats = {}) {
+async function addCreature(name, stats = {}) {
   const row = pokemonRow(name);
   if (!row || state.teams.own.length >= 6 || state.teams.own.some((item) => item.base_name === row.name)) return false;
   const form = row.forms[0];
+  if (!form.customization?.cached) {
+    await loadFormCustomization(form);
+    if (state.teams.own.length >= 6 || state.teams.own.some((item) => item.base_name === row.name)) return false;
+  }
   const base = Object.keys(stats).length ? { stats: { ...stats } } : {};
   const item = { name: form.name, base_name: row.name, form, base, skills: (form.default_skills || form.skills || []).slice(0, 4).map((skill) => ({ name: typeof skill === 'string' ? skill : skill.name })) };
   ensureDefaultCustomization(item);
@@ -793,14 +832,14 @@ document.addEventListener('click', (event) => {
     const item = state.teams.own[index];
     if (item) {
       setForm(index, editorForm.dataset.editorForm)
-      renderCreatureEditor(index);
+      openCreatureEditor(index);
     }
     return;
   }
   if (event.target.closest('[data-editor-close]')) { closeCreatureEditor(); return; }
   const edit = event.target.closest('[data-edit-index]');
   if (edit && edit.dataset.editIndex !== '') {
-    renderCreatureEditor(Number(edit.dataset.editIndex), edit);
+    openCreatureEditor(Number(edit.dataset.editIndex), edit);
     return;
   }
   const select = event.target.closest('[data-select-index]');

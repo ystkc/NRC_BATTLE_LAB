@@ -25,3 +25,7 @@ data/mitm/
 /.cdp-profile-360-a
 /.cdp-profile-360-b
 *.log
+/tests/.cdp-profile-360-a
+/tests/.cdp-profile-360-b
+/tests/.cdp-profile-chrome
+/tests/.cdp-profile-playwright

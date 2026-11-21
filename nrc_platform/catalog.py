@@ -3,15 +3,20 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 import sqlite3
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
+
+from cryptography.exceptions import InvalidTag
 
 from nrc_core.catalog import CoreCatalog
 from nrc_core.effect_data import ABILITY_EFFECTS, SKILL_EFFECTS
 from nrc_core.models import Skill, SkillCategory, Type
 from nrc_core.pokemon_nature_table import NATURE_BONUSES
+from wiki_crawler.distribution_cache import DEFAULT_CACHE, DEFAULT_DATABASE, DistributionCache
 
 try:
     from nrc_core.skill_effects_generated import SKILL_EFFECTS_GENERATED
@@ -59,7 +64,6 @@ _REQUIRED_COLUMNS = {
     },
     "spirit_skills": {"spirit_name", "skill_name"},
     "evolution_links": {"from_name", "to_name", "from_number", "to_number", "from_stage", "to_stage"},
-    "distribution_records": {"distribution_kind", "spirit_name", "item_name", "percentage", "position"},
 }
 
 
@@ -120,7 +124,29 @@ def _choice_options(description: str) -> tuple[str, ...]:
     return options if len(options) == 2 else ()
 
 
-def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
+@dataclass(frozen=True)
+class PlatformCatalog(CoreCatalog):
+    """在平台侧把目录中的精灵身份连接到培养分布缓存。"""
+
+    distribution_cache: DistributionCache = field(default=DEFAULT_CACHE, repr=False, compare=False)
+
+    def get_distribution(self, spirit_name: str, distribution_kind: str) -> tuple[Mapping[str, Any], ...]:
+        """按精灵名称获取指定分布。"""
+        return self.get_distributions(spirit_name, (distribution_kind,))[distribution_kind]
+
+    def get_distributions(self, spirit_name: str, kinds: tuple[str, ...], *, allow_fetch: bool = True) -> dict[str, tuple[Mapping[str, Any], ...]]:
+        """查询培养分布，Wiki 暂不可用时继续提供本地数据。"""
+        record = self.get_pokemon(spirit_name)
+        if allow_fetch and record is not None:
+            try:
+                return self.distribution_cache.get_distributions(spirit_name, kinds, source_url=record.get("source_url", ""))
+            except (OSError, ValueError, KeyError, TypeError, InvalidTag) as error:
+                logging.getLogger(__name__).warning("%s 培养统计暂不可用：%s", spirit_name, error)
+        return self.distribution_cache.get_distributions(spirit_name, kinds, allow_fetch=False)
+
+
+def load_catalog(data_dir: str | Path | None = None) -> PlatformCatalog:
+    """从 SQLite 载入规则目录，并接入同一数据库的分布缓存。"""
     root = Path(data_dir) if data_dir else Path(__file__).resolve().parents[1] / "data"
     database = root / "nrc_wiki.db"
     if not database.exists():
@@ -144,14 +170,6 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
         skills_by_spirit: dict[str, list[str]] = {}
         for row in connection.execute("SELECT spirit_name, skill_name FROM spirit_skills ORDER BY id"):
             skills_by_spirit.setdefault(str(row[0]), []).append(str(row[1]))
-        distributions: dict[tuple[str, str], list[dict[str, Any]]] = {}
-        for row in connection.execute("SELECT spirit_name, distribution_kind, item_name, percentage, position FROM distribution_records"):
-            key = (str(row[0]), str(row[1]))
-            distributions.setdefault(key, []).append({
-                "item": str(row[2]),
-                "percentage": float(str(row[3] or 0).replace("%", "")),
-                "position": int(row[4] or 0),
-            })
         spirit_elements: dict[int, list[str]] = {}
         for row in connection.execute(
             "SELECT spirit_id, element_id FROM spirit_elements ORDER BY spirit_id, position"
@@ -274,7 +292,6 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
             details.append("非首领=" + ",".join(invalid))
         raise CatalogDataError("迪莫首领映射无效: " + "; ".join(details))
     boss_forms["迪莫"] = tuple(pokemon[name] for name in _DIMO_BOSS_FORMS)
-    frozen_distributions = {key: tuple(sorted(value, key=lambda item: (-item["percentage"], item["position"]))) for key, value in distributions.items()}
     ability_effects = {name: tuple(value) for name, value in ABILITY_EFFECTS.items()}
     evolution_next = {
         name: tuple(record.get("next_forms", ()))
@@ -286,14 +303,14 @@ def load_catalog(data_dir: str | Path | None = None) -> CoreCatalog:
         "skills": {name: getattr(skill, "source_url", "") for name, skill in skills.items()},
         "abilities": {name: ability_sources.get(ability_id, "") for ability_id, name in ability_names.items()},
     }
-    return CoreCatalog(
+    return PlatformCatalog(
         skills=skills,
         pokemon=pokemon,
         ability_effects=ability_effects,
         boss_forms=boss_forms,
         skill_descriptions=descriptions,
         ability_descriptions=ability_descriptions,
-        distributions=frozen_distributions,
+        distribution_cache=DEFAULT_CACHE if database.resolve() == DEFAULT_DATABASE else DistributionCache(database),
         skill_pools={name: tuple(values) for name, values in skills_by_spirit.items()},
         evolution_previous=dict(evolution_previous),
         evolution_next=evolution_next,

@@ -1,8 +1,16 @@
 # PixPin OCR Service
 
+## 给人看的部分
+
+PixOCR因为未知原因，虽然识别精度高于所有市面轻量开源方案，且软件UI测试也和RapidOCR速度相当，但当前管道方案速度远不如RapidOCR，请使用后者。
+
+## 下面是给Agent看的部分
+
 这是一个x64 Windows可执行文件，它调用PixPin 3.5.5.1中的本地OCR实现，并返回JSON格式的结果。
 
 该桥接程序使用 Windows 命名管道，以 BGRA32 原始像素直接通信，并返回 UTF-8 JSON。
+
+
 
 ## 构建
 

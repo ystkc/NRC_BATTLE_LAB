@@ -1,4 +1,4 @@
-"""Versioned wiki catalog storage, isolated from the legacy battle database."""
+"""独立存储 Wiki 目录、技能池与同步日志。"""
 
 from __future__ import annotations
 
@@ -11,9 +11,38 @@ from pathlib import Path
 from uuid import uuid4
 
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 LOGGER = logging.getLogger("nrc.wiki.database")
-KINDS = {"skills", "spirits", "evolutions", "spirit_skills", "game_descriptions", "skill", "nature", "blood", "talent"}
+KINDS = {"skills", "spirits", "evolutions", "spirit_skills", "game_descriptions"}
+SPIRIT_SKILL_SOURCES = {"level", "blood", "machine"}
+LEGACY_SPIRIT_SKILL_SOURCES = {
+    "default-skill": "level",
+    "blood-skill": "blood",
+    "stone-skill": "machine",
+}
+
+DISTRIBUTION_RECORDS_TABLE = """CREATE TABLE IF NOT EXISTS distribution_records (
+        id INTEGER PRIMARY KEY,
+        distribution_kind TEXT NOT NULL,
+        spirit_name TEXT NOT NULL,
+        item_name TEXT NOT NULL,
+        percentage TEXT NOT NULL DEFAULT '',
+        position INTEGER NOT NULL,
+        UNIQUE(distribution_kind, spirit_name, item_name)
+    )"""
+
+SPIRIT_SKILLS_TABLE = """CREATE TABLE IF NOT EXISTS spirit_skills (
+        id INTEGER PRIMARY KEY,
+        record_key TEXT NOT NULL UNIQUE,
+        spirit_id INTEGER REFERENCES spirit_forms(id) ON DELETE SET NULL,
+        skill_id INTEGER REFERENCES skill_catalog(id) ON DELETE SET NULL,
+        spirit_name TEXT NOT NULL,
+        skill_name TEXT NOT NULL,
+        skill_source TEXT NOT NULL CHECK(skill_source IN ('level', 'blood', 'machine')),
+        required_level INTEGER CHECK(required_level >= 0),
+        source_url TEXT NOT NULL DEFAULT ''
+    )"""
+
 SCHEMA = (
     """CREATE TABLE IF NOT EXISTS assets (
         id INTEGER PRIMARY KEY,
@@ -126,31 +155,14 @@ SCHEMA = (
         inference_method TEXT NOT NULL DEFAULT '',
         UNIQUE(from_name, to_name)
     )""",
-    """CREATE TABLE IF NOT EXISTS spirit_skills (
-        id INTEGER PRIMARY KEY,
-        record_key TEXT NOT NULL UNIQUE,
-        spirit_id INTEGER REFERENCES spirit_forms(id) ON DELETE SET NULL,
-        skill_id INTEGER REFERENCES skill_catalog(id) ON DELETE SET NULL,
-        spirit_name TEXT NOT NULL,
-        skill_name TEXT NOT NULL,
-        skill_source TEXT NOT NULL CHECK(skill_source IN ('default-skill', 'blood-skill', 'stone-skill')),
-        source_url TEXT NOT NULL DEFAULT ''
-    )""",
+    SPIRIT_SKILLS_TABLE,
     "CREATE INDEX IF NOT EXISTS idx_spirit_name ON spirit_forms(name)",
     "CREATE INDEX IF NOT EXISTS idx_spirit_number ON spirit_forms(catalog_number)",
     "CREATE INDEX IF NOT EXISTS idx_spirit_wiki_id ON spirit_forms(wiki_id)",
     "CREATE INDEX IF NOT EXISTS idx_evolution_from ON evolution_links(from_name)",
     "CREATE INDEX IF NOT EXISTS idx_evolution_to ON evolution_links(to_name)",
     "CREATE INDEX IF NOT EXISTS idx_spirit_skill_spirit ON spirit_skills(spirit_id)",
-    """CREATE TABLE IF NOT EXISTS distribution_records (
-        id INTEGER PRIMARY KEY,
-        distribution_kind TEXT NOT NULL,
-        spirit_name TEXT NOT NULL,
-        item_name TEXT NOT NULL,
-        percentage TEXT NOT NULL DEFAULT '',
-        position INTEGER NOT NULL,
-        UNIQUE(distribution_kind, spirit_name, item_name)
-    )""",
+    DISTRIBUTION_RECORDS_TABLE,
     "CREATE INDEX IF NOT EXISTS idx_spirit_skill_skill ON spirit_skills(skill_id)",
     """CREATE VIEW IF NOT EXISTS spirit_evolution_neighbors AS
         SELECT from_name AS spirit_name, 'next' AS direction, to_name AS neighbor_name
@@ -188,6 +200,12 @@ def normalize_record(kind: str, row: dict) -> dict:
         for field in ("进化链", "上一阶", "下一阶"):
             if field in result:
                 result[field] = _base_chain_text(result[field])
+    elif kind == "spirit_skills":
+        source = _text(result.get("技能类别")).casefold()
+        result["技能类别"] = LEGACY_SPIRIT_SKILL_SOURCES.get(source, source)
+        result["学习等级"] = _text(result.get("学习等级"))
+        if result["技能类别"] == "machine":
+            result["学习等级"] = ""
     elif kind == "evolutions":
         result["from_name"] = spirit_base_name(result.get("from_name"))
         result["to_name"] = spirit_base_name(result.get("to_name"))
@@ -398,24 +416,40 @@ def _relation_key(row: dict) -> str:
     return json.dumps([_text(row.get("精灵")), _text(row.get("技能")), _text(row.get("技能类别"))], ensure_ascii=False, separators=(",", ":"))
 
 
-def _write_distributions(connection: sqlite3.Connection, kind: str, rows: list[dict]) -> None:
-    for row in rows:
-        _upsert(connection, "distribution_records", ("distribution_kind", "spirit_name", "item_name"), {
-            "distribution_kind": kind, "spirit_name": _text(row.get("精灵")),
-            "item_name": _text(row.get("名称")), "percentage": _text(row.get("百分比")),
-            "position": _optional_int(row.get("排序")) or 0,
-        })
-
 def _write_spirit_skills(connection: sqlite3.Connection, rows: list[dict]) -> None:
+    """保存精灵技能池及学习方式、等级。"""
     for row in rows:
         if not _text(row.get("精灵")) or not _text(row.get("技能")):
             raise ValueError("技能关系缺少精灵名或技能名")
+        source = _text(row.get("技能类别")).casefold()
+        if source not in SPIRIT_SKILL_SOURCES:
+            raise ValueError(f"技能学习方式无效：{source!r}")
         _upsert(connection, "spirit_skills", "record_key", {
             "record_key": _relation_key(row),
             "spirit_name": _text(row.get("精灵")), "skill_name": _text(row.get("技能")),
-            "skill_source": _text(row.get("技能类别")), "source_url": _text(row.get("来源URL")),
+            "skill_source": source,
+            "required_level": _optional_int(row.get("学习等级")) if source in {"level", "blood"} else None,
+            "source_url": _text(row.get("来源URL")),
         })
     _retain_keys(connection, "spirit_skills", "record_key", [_relation_key(row) for row in rows])
+
+
+def _migrate_spirit_skills(connection: sqlite3.Connection) -> None:
+    """迁移旧技能关系，保留记录 ID，未知学习等级留空。"""
+    connection.execute("ALTER TABLE spirit_skills RENAME TO spirit_skills_legacy")
+    connection.execute(SPIRIT_SKILLS_TABLE)
+    legacy_rows = connection.execute(
+        "SELECT id, spirit_id, skill_id, spirit_name, skill_name, skill_source, source_url FROM spirit_skills_legacy"
+    ).fetchall()
+    for row_id, spirit_id, skill_id, spirit_name, skill_name, raw_source, source_url in legacy_rows:
+        row = normalize_record("spirit_skills", {"精灵": spirit_name, "技能": skill_name, "技能类别": raw_source})
+        connection.execute(
+            """INSERT INTO spirit_skills
+               (id, record_key, spirit_id, skill_id, spirit_name, skill_name, skill_source, source_url)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (row_id, _relation_key(row), spirit_id, skill_id, spirit_name, skill_name, row["技能类别"], source_url),
+        )
+    connection.execute("DROP TABLE spirit_skills_legacy")
 
 
 def sync_log_directory(database: Path) -> Path:
@@ -447,12 +481,14 @@ def write_database(database: Path, rows_by_kind: dict[str, list[dict]], manifest
         if {"skill", "pokemon", "pokemon_skill"} & existing:
             raise ValueError("拒绝向旧战斗数据库写入新结构；请选择新的数据库文件，例如 data/nrc_wiki.db")
         version = connection.execute("PRAGMA user_version").fetchone()[0]
-        if version not in (0, 2, SCHEMA_VERSION):
+        if version not in (0, 2, 3, SCHEMA_VERSION):
             raise ValueError(f"不支持的 wiki 数据库版本：{version}")
         if version == 0 and existing:
-            raise ValueError("目标数据库已有无版本表结构；请使用当前 v2 数据库或新的空文件")
+            raise ValueError("目标数据库已有无版本表结构；请使用当前 Wiki 数据库或新的空文件")
         with connection:
             connection.execute("BEGIN")
+            if version in (2, 3) and "spirit_skills" in existing:
+                _migrate_spirit_skills(connection)
             for statement in SCHEMA:
                 connection.execute(statement)
             connection.execute(f"PRAGMA user_version={SCHEMA_VERSION}")
@@ -466,9 +502,6 @@ def write_database(database: Path, rows_by_kind: dict[str, list[dict]], manifest
                 _write_evolutions(connection, rows_by_kind["evolutions"])
             if "spirit_skills" in rows_by_kind:
                 _write_spirit_skills(connection, rows_by_kind["spirit_skills"])
-            for distribution_kind in ("skill", "nature", "blood", "talent"):
-                if distribution_kind in rows_by_kind:
-                    _write_distributions(connection, distribution_kind, rows_by_kind[distribution_kind])
             _resolve_relations(connection)
             violations = connection.execute("PRAGMA foreign_key_check").fetchall()
             if violations:

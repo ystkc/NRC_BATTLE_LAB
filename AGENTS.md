@@ -54,6 +54,10 @@ python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 
 | 任务 | 文件 |
 |---|---|
+| 赛季调整独立 CSV 采集 | `wiki_crawler/history.py`、`wiki_crawler/sync.py:run` |
+| Wiki 培养分布缓存与单只精灵回填 | `wiki_crawler/distribution_cache.py:DistributionCache`、`wiki_crawler/usage.py:read_usage`、`nrc_platform/catalog.py:PlatformCatalog` |
+| 爬虫增量比较（忽略技能目录重新编号） | `wiki_crawler/sync.py:_comparison_values/diff_rows` |
+| 精灵详情技能池与学习方式、等级采集 | `wiki_crawler/sync.py:parse_spirit_skill_cards/_spirit_snapshot`、`wiki_crawler/database.py:_write_spirit_skills` |
 | 伤害和回合结算 | `nrc_core/core.py:simulate_turn`、`nrc_core/battle.py` |
 | 回合阶段、终局结果与派生随机 | `nrc_core/battle.py:execute_full_turn/check_outcome`、`nrc_core/runtime.py:BattleRuntime`、`nrc_core/rng.py` |
 | 效果原语与注册 | `nrc_core/engine/registry.py:_HANDLERS`、`handlers_skill.py`、`handlers_ability.py`、`handlers_field.py` |
