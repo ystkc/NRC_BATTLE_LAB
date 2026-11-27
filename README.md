@@ -7,12 +7,19 @@
 安装：安装Python ≥ 3.10，然后执行:
 ```
 pip install -e ".[dev]"
-npm ci
 ```
 
 启动：`python -m nrc_server.server --host 127.0.0.1 --port 8767`。使用两个浏览器访问127.0.0.1:8767，编辑阵容，一方创建对局，另一方加入对局即可。
 
-除了手动操控对局，也可以通过Playwright自动化操作进行对局，具体例子见`tests/1007`。建议安装`360极速浏览器X`（不是360安全浏览器），次选`Google Chrome`。首先按上述操作启动服务器，然后运行`test/launchBrowser.py`，然后手动或运行`test/tileWindows.py`自动将浏览器左右布局。然后运行`node tests/1007/playwright_1007.js`
+安装 Google Chrome 并启动服务器后，运行 1007 对局回归用例。
+
+```bash
+python tests/1007/playwright_1007.py
+```
+
+脚本通过 Python Playwright 启动无界面的 Chrome，为双方创建独立会话，并将断言结果和战报快照写入 `tests/1007/1007-results.json`。服务器使用其他地址时，可设置环境变量 `NRC_TEST_URL`。
+
+如需在 Windows 上观看对局，可通过 `python tests/launchBrowser.py` 打开两个 360 极速浏览器 X 窗口，再运行 `python tests/1007/playwright_1007.py --cdp`。可用 `python tests/tileWindows.py` 将窗口左右排列。
 
 架构简介：
 

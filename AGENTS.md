@@ -6,7 +6,7 @@
 
 - 如果在使用下列流程指定的工具进行中文文件读写时遇到错误、乱码，请务必报告用户；
 - Windows 下补丁文件必须通过 `functions.exec` 内的原生 `tools.apply_patch(patch)` 完成；不要在 PowerShell 中调用 `apply_patch`、`apply_patch.bat` 或 `codex --codex-run-as-apply-patch`。禁止使用Unicode编码编写中文（\uXXXX）。
-- 该项目为UTF-8编码，PowerShell 的 `Get-Content` 用系统默认编码解读 UTF-8 会显示为乱码，务必记得加上 -Encoding utf8 或用 Node.js `fs.readFileSync(path, 'utf8')` 读取
+- 该项目为 UTF-8 编码，使用 PowerShell 的 `Get-Content -Encoding utf8` 或 Python 的 `Path.read_text(encoding="utf-8")` 读取中文文件。
 
 
 ## 架构
@@ -32,12 +32,12 @@
 
 ## agents编写规则
 
-- 建议对于verbose命令，使用subagent执行，例如git挖掘，日志分析，批量测试等。如果要调用subagent，请务必使用6.1-Sol模型的Low Effort
+- 建议对于verbose命令，使用subagent执行，例如git挖掘，日志分析，批量测试等。如果要调用subagent，请务必使用6.2-Sol模型的Low Effort
 - 减少tests脚本，只有你觉得非常不确定非常没有信心极有可能出现问题的代码才需要测试
 - 这个项目需要维护人类可读性和开发性，需要将功能类似的代码集中并模块化，避免复杂难度的逻辑
 - 在关键且难以理解的位置增加中文注释，且务必简洁，原则上一个函数不应超过5处
 - 为函数、类和文件的开头增加中文描述字符串，且务必简洁
-- 前端测试不应使用computer-use技能，而是使用node已安装好的playwright，并显式指定channel为chrome
+- 前端测试使用 Python Playwright。直接启动浏览器时显式指定 `channel="chrome"`。
 
 ## 命令
 
@@ -45,7 +45,6 @@
 pip install -e ".[dev]"
 python -m nrc_server.server --host 127.0.0.1 --port 8767
 python scripts/generate_skill_effects.py
-python -m wiki_crawler --kind all --stage-only     # 确认写库加 --yes
 ```
 
 ## 重要模块垂直位点记录（请持续维护）
