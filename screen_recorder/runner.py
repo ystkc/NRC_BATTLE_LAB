@@ -15,7 +15,7 @@ import yaml
 from .desktop import Capture, Desktop
 from .frames import RegionHistory, RegionTiming, RegionTimings, ScreenFrame
 from .program import (
-    CaptureSource, ClickAction, Condition, OCRAction, Program, WaitAction,
+    CaptureSource, ClickAction, Condition, OCRAction, Program, TriggerCondition, WaitAction,
 )
 from .recognition import Polygon, Recognizer
 
@@ -62,6 +62,7 @@ class RoundFrames:
     timings: RegionTimings | None
     image: np.ndarray | None = None
     triggered: set[str] = field(default_factory=set)
+    fired_triggers: set[str] = field(default_factory=set)
 
     def boxes(self) -> list[Polygon]:
         """取得本轮要标出的最近有效文字轮廓。"""
@@ -235,8 +236,9 @@ class Recorder:
             if trigger.conditions:
                 if frame is None:
                     frame = self._capture(capture, frames)
-                if not self._matches(frame, trigger.conditions):
+                if not self._matches(frame, trigger.conditions, frames.fired_triggers):
                     continue
+            frames.fired_triggers.add(trigger.name)
             executed: list[dict] = []
             record.setdefault("触发器", []).append({"名称": trigger.name, "操作": executed})
             index = 0
@@ -279,16 +281,16 @@ class Recorder:
             return None, {"等待": action.seconds}
 
         frame = self._capture(capture, frames)
-        return self._click_action(action, program.source, frame, trial)
+        return self._click_action(action, program.source, frame, trial, frames.fired_triggers)
 
     def _click_action(
-        self, action: ClickAction, source: CaptureSource, frame: ScreenFrame, trial: bool,
+        self, action: ClickAction, source: CaptureSource, frame: ScreenFrame, trial: bool, fired_triggers: set[str],
     ) -> tuple[ScreenFrame | None, dict]:
         """在同一张新截图上筛选候选点并随机取一个。"""
         eligible = {
             (candidate.point.x, candidate.point.y): candidate.point
             for candidate in action.candidates
-            if self._matches(frame, candidate.conditions)
+            if self._matches(frame, candidate.conditions, fired_triggers)
         }
         key = "预演点击" if trial else "点击"
         if not eligible:
@@ -310,11 +312,14 @@ class Recorder:
         frames.image = image
         return ScreenFrame(image, frames.regions, self.recognizer, frames.timings)
 
-    def _matches(self, frame: ScreenFrame, conditions: list[Condition]) -> bool:
+    def _matches(self, frame: ScreenFrame, conditions: list[Condition], fired_triggers: set[str]) -> bool:
         """要求条件全部通过，每项检查前允许停止。"""
         for condition in conditions:
             self._check_stop()
-            if not frame.matches(condition):
+            if isinstance(condition, TriggerCondition):
+                if condition.trigger not in fired_triggers:
+                    return False
+            elif not frame.matches(condition):
                 return False
         return True
 

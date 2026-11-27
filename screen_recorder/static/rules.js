@@ -58,6 +58,7 @@ function options(label, choices, value, update) {
 
 /** 创建某种条件的默认字段。 */
 function newCondition(type, ctx) {
+  if (type === "trigger") return {type, trigger: ctx.earlier[0] ?? ""};
   const region = ctx.program.regions[0]?.name ?? "";
   if (type === "confidence") return {type, region, threshold: 0.8};
   if (type === "text") return {type, region, text: "", match: "contains"};
@@ -147,11 +148,19 @@ function colorFields(condition, ctx) {
 /** 编辑单个触发器条件或候选点条件。 */
 function conditionRow(conditions, index, ctx) {
   const condition = conditions[index];
-  const type = options("条件类型", conditionTypes, condition.type, value =>
+  const type = options("条件类型", [...conditionTypes, ["trigger", "前置触发器已触发"]], condition.type, value =>
     ctx.edit(() => { conditions[index] = newCondition(value, ctx); }));
   type.className = "rule-type";
   const head = node("div", "rule-head", type, listButtons(conditions, index, ctx, "条件"));
   if (condition.type === "color") return node("div", "rule-row", head, colorFields(condition, ctx));
+  if (condition.type === "trigger") {
+    const choices = [["", "选择前置触发器"], ...ctx.earlier.map(name => [name, name])];
+    if (condition.trigger && !ctx.earlier.includes(condition.trigger)) {
+      choices.push([condition.trigger, `${condition.trigger}（须位于前面且名称唯一）`]);
+    }
+    return node("div", "rule-row", head, field("前置触发器",
+      options("前置触发器", choices, condition.trigger, setter(condition, "trigger", ctx))));
+  }
   const fields = node("div", "rule-fields", regionField(condition, ctx));
   if (condition.type === "confidence") {
     fields.append(field("置信度高于", input("number", condition.threshold, setter(condition, "threshold", ctx), {
@@ -207,6 +216,12 @@ function actionRow(actions, index, ctx) {
 
 /** 绘制单个触发器的有序条件和操作组。 */
 function triggerCard(trigger, index, ctx) {
+  const triggers = ctx.program.triggers;
+  const earlier = triggers.slice(0, index)
+    .filter(item => triggers.filter(other => other.name.trim() === item.name.trim()).length === 1)
+    .map(item => item.name.trim())
+    .filter(Boolean);
+  ctx = {...ctx, earlier};
   const show = document.createElement("input");
   show.type = "checkbox";
   show.checked = trigger.show ?? true;
@@ -214,7 +229,7 @@ function triggerCard(trigger, index, ctx) {
   const visibility = node("label", "check", show, "显示");
   visibility.title = "在截图编辑区显示该触发器引用的 OCR 框";
   const head = node("div", "trigger-head",
-    field("触发器名称", input("text", trigger.name, setter(trigger, "name", ctx))),
+    field("触发器名称", triggerName(trigger, ctx)),
     visibility,
     listButtons(ctx.program.triggers, index, ctx, "触发器", true),
   );
@@ -233,6 +248,37 @@ function triggerCard(trigger, index, ctx) {
     ...trigger.actions.map((_, i) => actionRow(trigger.actions, i, ctx)),
   );
   return node("article", "trigger", head, conditions, actions);
+}
+
+/** 重命名时同步条件引用，并刷新可选触发器。 */
+function triggerName(trigger, ctx) {
+  const name = document.createElement("input");
+  name.type = "text";
+  name.value = trigger.name;
+  name.addEventListener("change", () => {
+    const previous = trigger.name.trim();
+    const next = name.value.trim();
+    if (!next || ctx.program.triggers.some(other => other !== trigger && other.name.trim() === next)) {
+      name.value = trigger.name;
+      return;
+    }
+    const unique = ctx.program.triggers.filter(other => other.name.trim() === previous).length === 1;
+    ctx.edit(() => {
+      trigger.name = next;
+      if (!unique) return;
+      for (const item of ctx.program.triggers) {
+        const conditions = [...item.conditions];
+        for (const action of item.actions) {
+          if (action.type !== "click") continue;
+          for (const candidate of action.candidates) conditions.push(...candidate.conditions);
+        }
+        for (const condition of conditions) {
+          if (condition.type === "trigger" && condition.trigger === previous) condition.trigger = next;
+        }
+      }
+    });
+  });
+  return name;
 }
 
 /** 绘制触发器列表，并向应用提供新建操作。 */

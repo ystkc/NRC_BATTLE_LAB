@@ -1,6 +1,7 @@
 """定义识别区域、触发条件和有序操作。"""
 
 from math import cos, radians, sin
+from collections import Counter
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, FiniteFloat, StringConstraints, model_validator
@@ -98,7 +99,14 @@ class ColorCondition(Settings):
     tolerance: int = Field(default=0, ge=0, le=255)
 
 
-Condition = Annotated[ConfidenceCondition | TextCondition | ColorCondition, Field(discriminator="type")]
+class TriggerCondition(Settings):
+    """检查前面的触发器是否已在本轮触发。"""
+
+    type: Literal["trigger"]
+    trigger: Name
+
+
+Condition = Annotated[ConfidenceCondition | TextCondition | ColorCondition | TriggerCondition, Field(discriminator="type")]
 
 
 class OCRAction(Settings):
@@ -190,13 +198,13 @@ class Program(Settings):
         if any(region.periodic for region in self.regions):
             return True
         for trigger in self.triggers:
-            if any(not isinstance(condition, ColorCondition) for condition in trigger.conditions):
+            if any(isinstance(condition, (ConfidenceCondition, TextCondition)) for condition in trigger.conditions):
                 return True
             for action in trigger.actions:
                 if isinstance(action, OCRAction):
                     return True
                 if isinstance(action, ClickAction) and any(
-                    not isinstance(condition, ColorCondition)
+                    isinstance(condition, (ConfidenceCondition, TextCondition))
                     for candidate in action.candidates
                     for condition in candidate.conditions
                 ):
@@ -216,22 +224,31 @@ class Program(Settings):
                 raise ValueError(f"识别区域超出截图范围：{region.name}")
             names.add(region.name)
 
+        trigger_counts = Counter(trigger.name for trigger in self.triggers)
+        earlier = set()
         for trigger in self.triggers:
-            self._validate_conditions(trigger.conditions, names, trigger.name)
+            self._validate_conditions(trigger.conditions, names, trigger.name, earlier)
             for action in trigger.actions:
                 if isinstance(action, OCRAction):
                     self._check_region(action.region, names, trigger.name)
                 if isinstance(action, ClickAction):
                     for candidate in action.candidates:
                         self._check_point(candidate.point, trigger.name)
-                        self._validate_conditions(candidate.conditions, names, trigger.name)
+                        self._validate_conditions(candidate.conditions, names, trigger.name, earlier)
+            if trigger_counts[trigger.name] == 1:
+                earlier.add(trigger.name)
         return self
 
-    def _validate_conditions(self, conditions: list[Condition], names: set[str], source: str) -> None:
+    def _validate_conditions(
+        self, conditions: list[Condition], names: set[str], source: str, earlier: set[str],
+    ) -> None:
         """检查条件中的区域引用和取色坐标。"""
         for condition in conditions:
             if isinstance(condition, ColorCondition):
                 self._check_point(condition.point, source)
+            elif isinstance(condition, TriggerCondition):
+                if condition.trigger not in earlier:
+                    raise ValueError(f"触发器「{source}」须引用名称唯一且排在前面的触发器「{condition.trigger}」")
             else:
                 self._check_region(condition.region, names, source)
 
