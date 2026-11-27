@@ -99,11 +99,16 @@ def _scale_crop(crop: np.ndarray) -> tuple[np.ndarray, float]:
 def _text_line(
     region: Region, text: str, score: float, box: np.ndarray | None = None, scale: float = 1,
 ) -> TextLine | None:
-    """按选区的置信度保留非空文字，并计算截图上的轮廓。"""
+    """保留非空文字，并计算截图上的轮廓。"""
     text = text.strip()
-    if text and score >= region.confidence:
+    if text:
         return TextLine(text, float(score), _screen_polygon(region, box, scale))
     return None
+
+
+def _passes_stage(lines: list[TextLine], threshold: float) -> bool:
+    """要求有识别结果，且每行都达到该阶段的下限。"""
+    return bool(lines) and all(line.score >= threshold for line in lines)
 
 
 @contextmanager
@@ -137,13 +142,36 @@ class Recognizer:
 
     def __init__(self) -> None:
         """推迟模型初始化，便于先在 Web 界面配置区域。"""
-        self._engine = None
-        self._selection = None
+        self._engine: RapidOCR | None = None
+        self._stages: list[tuple[RapidOCR, float]] = []
         self._detectors = OrderedDict()
         self._recognizers = OrderedDict()
 
-    def prepare(self, models: OCRModels) -> None:
-        """加载所选模型，复用缓存中相同的检测和识别阶段。"""
+    def prepare(self, models: OCRModels, check_stop: Callable[[], None] | None = None) -> None:
+        """加载默认及分级模型，提前执行每个分级模型的首次推理。"""
+        engine = self._load_engine(models)
+        stages = []
+        warmed = set()
+        for stage in models.recognition_stages:
+            if check_stop is not None:
+                check_stop()
+            stage_models = models.model_copy(update={
+                "recognition": stage.model,
+                "recognition_path": stage.model_path,
+                "recognition_keys_path": stage.keys_path,
+            })
+            stage_engine = self._load_engine(stage_models)
+            recognizer = stage_engine.text_rec
+            if recognizer not in warmed:
+                # 使用模型的标准输入尺寸预热，避免首次遇到低分时才运行推理。
+                channels, height, width = recognizer.rec_image_shape
+                stage_engine.recognize_txt([np.zeros((height, width, channels), dtype=np.uint8)])
+                warmed.add(recognizer)
+            stages.append((stage_engine, stage.threshold))
+        self._engine, self._stages = engine, stages
+
+    def _load_engine(self, models: OCRModels) -> RapidOCR:
+        """取得当前配置对应的检测和识别会话。"""
         detection = (
             _model_file(models.detection_path, "检测模型", onnx=True)
             if models.detection == "local" else None
@@ -155,10 +183,6 @@ class Recognizer:
         keys = _model_file(models.recognition_keys_path, "识别字符字典") if recognition else None
         detection_key = (models.detection, detection)
         recognition_key = (models.recognition, recognition, keys)
-        selection = (detection_key, recognition_key)
-        if selection == self._selection:
-            return
-
         params = {
             "Global.use_cls": False,
             "Global.text_score": 0.0,
@@ -178,7 +202,7 @@ class Recognizer:
         # 固定版本的 RapidOCR 在两个加载方法中分别创建 ONNX 会话。
         engine.text_det = self._cached(self._detectors, detection_key, engine._load_det_model)
         engine.text_rec = self._cached(self._recognizers, recognition_key, engine._load_rec_model)
-        self._engine, self._selection = engine, selection
+        return engine
 
     @staticmethod
     def _cached(cache: OrderedDict, key: tuple, load: Callable):
@@ -194,7 +218,9 @@ class Recognizer:
         """从原截图裁剪、校正并识别区域。"""
         return self.read_crop(upright_crop(image, region), region)
 
-    def read_crop(self, crop: np.ndarray, region: Region) -> list[TextLine]:
+    def read_crop(
+        self, crop: np.ndarray, region: Region, check_stop: Callable[[], None] | None = None,
+    ) -> list[TextLine]:
         """识别已校正的区域，应用置信度下限并返回截图坐标。"""
         if self._engine is None:
             self.prepare(OCRModels())
@@ -206,8 +232,26 @@ class Recognizer:
             crop = cv2.copyMakeBorder(
                 crop, PADDING_Y, PADDING_Y, PADDING_X, PADDING_X, cv2.BORDER_CONSTANT, value=background,
             )
-        with _limit_characters(self._engine.text_rec, region.allowed_chars):
-            result = self._engine(crop, use_det=region.detect)
+        if region.adaptive_recognition:
+            if not self._stages:
+                raise ValueError("请先配置分级识别模型和阈值")
+            for engine, threshold in self._stages:
+                if check_stop is not None:
+                    check_stop()
+                lines = self._recognize_crop(engine, crop, region, scale)
+                if _passes_stage(lines, threshold):
+                    return lines
+            return []
+        return [
+            line for line in self._recognize_crop(self._engine, crop, region, scale)
+            if line.score >= region.confidence
+        ]
+
+    @staticmethod
+    def _recognize_crop(engine: RapidOCR, crop: np.ndarray, region: Region, scale: float) -> list[TextLine]:
+        """用给定模型识别同一裁剪图并保留每行原始分数。"""
+        with _limit_characters(engine.text_rec, region.allowed_chars):
+            result = engine(crop, use_det=region.detect)
         boxes = getattr(result, "boxes", None)
         texts = getattr(result, "txts", None) or ()
         scores = getattr(result, "scores", None) or ()
@@ -221,13 +265,41 @@ class Recognizer:
 
     def read_direct(
         self, crops: list[tuple[Region, np.ndarray]], check_stop: Callable[[], None],
-    ) -> Iterator[list[tuple[str, list[TextLine], float]]]:
-        """逐批返回关闭检测的选区结果和分摊耗时。"""
+    ) -> Iterator[list[tuple[str, list[TextLine] | None, float]]]:
+        """逐批返回模型尝试，未通过且还有后续模型的结果为 None。"""
         if not crops:
             return
         if self._engine is None:
             self.prepare(OCRModels())
-        engine = self._engine
+        regular = [(region, crop) for region, crop in crops if not region.adaptive_recognition]
+        for batch in self._read_direct(self._engine, regular, check_stop):
+            yield [(region.name, [line for line in lines if line.score >= region.confidence], elapsed)
+                   for region, lines, elapsed in batch]
+
+        adaptive = {region.name: (region, crop) for region, crop in crops if region.adaptive_recognition}
+        if not self._stages and adaptive:
+            raise ValueError("请先配置分级识别模型和阈值")
+        for index, (engine, threshold) in enumerate(self._stages):
+            if not adaptive:
+                break
+            last_stage = index == len(self._stages) - 1
+            for batch in self._read_direct(engine, list(adaptive.values()), check_stop):
+                readings = []
+                for region, lines, elapsed in batch:
+                    if _passes_stage(lines, threshold):
+                        del adaptive[region.name]
+                    else:
+                        lines = [] if last_stage else None
+                    readings.append((region.name, lines, elapsed))
+                yield readings
+
+    @staticmethod
+    def _read_direct(
+        engine: RapidOCR, crops: list[tuple[Region, np.ndarray]], check_stop: Callable[[], None],
+    ) -> Iterator[list[tuple[Region, list[TextLine], float]]]:
+        """逐批返回关闭检测的选区结果和分摊耗时。"""
+        if not crops:
+            return
         model = engine.text_rec
         # ONNX 输入的第一维决定模型能否接收动态批大小。
         batch_dimension = model.session.session.get_inputs()[0].shape[0]
@@ -258,5 +330,5 @@ class Recognizer:
                     started = perf_counter()
                     line = _text_line(region, text, score)
                     elapsed = preprocessing + shared + (perf_counter() - started)
-                    readings.append((region.name, [line] if line is not None else [], elapsed))
+                    readings.append((region, [line] if line is not None else [], elapsed))
                 yield readings

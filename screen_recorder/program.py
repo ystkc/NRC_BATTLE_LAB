@@ -61,6 +61,7 @@ class Region(Settings):
     confidence: FiniteFloat = Field(default=0, ge=0, le=1)
     frame_diff_threshold: FiniteFloat = Field(default=0, ge=0, le=1)
     allowed_chars: str = ""
+    adaptive_recognition: bool = False
 
     def fits(self, source: CaptureSource) -> bool:
         """检查旋转矩形的四角是否都在截图范围内。"""
@@ -152,6 +153,22 @@ class Trigger(Settings):
 ModelVariant = Literal["tiny", "small", "medium", "local"]
 
 
+class RecognitionStage(Settings):
+    """为分级识别配置一个模型及其通过阈值。"""
+
+    model: ModelVariant
+    threshold: FiniteFloat = Field(ge=0, le=1)
+    model_path: Name | None = None
+    keys_path: Name | None = None
+
+    @model_validator(mode="after")
+    def validate_local_path(self) -> "RecognitionStage":
+        """要求为本地识别模型填写路径。"""
+        if self.model == "local" and self.model_path is None:
+            raise ValueError("请填写分级识别的本地 ONNX 路径")
+        return self
+
+
 class OCRModels(Settings):
     """选择检测、识别模型和本地模型文件。"""
 
@@ -160,6 +177,7 @@ class OCRModels(Settings):
     detection_path: Name | None = None
     recognition_path: Name | None = None
     recognition_keys_path: Name | None = None
+    recognition_stages: list[RecognitionStage] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_local_paths(self) -> "OCRModels":
@@ -219,6 +237,8 @@ class Program(Settings):
             raise ValueError("请指定一个显示器或窗口作为截图来源")
         names = set()
         for region in self.regions:
+            if region.adaptive_recognition and not self.ocr_models.recognition_stages:
+                raise ValueError(f"区域「{region.name}」启用了分级识别，请先添加识别模型和阈值")
             if region.name in names:
                 raise ValueError(f"识别区域备注名重复：{region.name}")
             if not region.fits(self.source):

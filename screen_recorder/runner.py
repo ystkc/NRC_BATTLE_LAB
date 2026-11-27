@@ -64,6 +64,12 @@ class RoundFrames:
     image: np.ndarray | None = None
     triggered: set[str] = field(default_factory=set)
     fired_triggers: set[str] = field(default_factory=set)
+    read_names: set[str] = field(default_factory=set)
+
+    def discard_unread(self) -> None:
+        """清空本轮未读取区域的缓存。"""
+        for name in self.regions.keys() - self.read_names:
+            self.regions[name] = RegionHistory(self.regions[name].region)
 
     def boxes(self) -> list[Polygon]:
         """取得本轮要标出的最近有效文字轮廓。"""
@@ -171,8 +177,11 @@ class Recorder:
         error = ""
         try:
             self._check_stop()
-            if program.uses_ocr():
-                self.recognizer.prepare(program.ocr_models)
+            models = program.ocr_models
+            if models.recognition_stages:
+                self.recognizer.prepare(models, check_stop=self._check_stop)
+            elif program.uses_ocr():
+                self.recognizer.prepare(models)
             deadline = monotonic() + program.start_delay
             self._set_phase("starting", deadline)
             self._sleep_until(deadline)
@@ -224,6 +233,7 @@ class Recorder:
                 record["状态"] = "已停止" if isinstance(exc, RunStopped) else "中断"
                 self._publish(stream, record, frames, program.record_timings)
             raise
+        frames.discard_unread()
         self._publish(stream, record, frames, program.record_timings)
 
     def _execute_round(
@@ -317,7 +327,10 @@ class Recorder:
         image = capture()
         self._check_stop()
         frames.image = image
-        return ScreenFrame(image, frames.regions, self.recognizer, frames.timings, frames.differences)
+        return ScreenFrame(
+            image, frames.regions, self.recognizer, frames.timings, frames.differences, self._check_stop,
+            read_names=frames.read_names,
+        )
 
     def _matches(self, frame: ScreenFrame, conditions: list[Condition], fired_triggers: set[str]) -> bool:
         """要求条件全部通过，每项检查前允许停止。"""

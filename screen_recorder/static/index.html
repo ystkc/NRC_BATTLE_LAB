@@ -61,6 +61,33 @@
             字符字典路径（可选）<input id="recognition-keys-path" type="text" spellcheck="false" autocomplete="off">
           </label>
         </div>
+        <details id="recognition-stages" class="recognition-stages">
+          <summary>置信度不足时提高参数量</summary>
+          <div id="recognition-stage-list" class="recognition-stage-list"></div>
+          <button id="add-recognition-stage" type="button" class="secondary">＋ 添加识别模型</button>
+        </details>
+        <template id="recognition-stage-template">
+          <div class="recognition-stage">
+            <label class="field stack">识别模型
+              <select data-field="model">
+                <option value="tiny">PP-OCRv6 Tiny</option>
+                <option value="small">PP-OCRv6 Small</option>
+                <option value="medium">PP-OCRv6 Medium</option>
+                <option value="local">本地 ONNX</option>
+              </select>
+            </label>
+            <label class="field stack">通过阈值<input data-field="threshold" type="number" min="0" max="1" step="any" required></label>
+            <div class="actions">
+              <button type="button" class="quiet" data-move="-1" aria-label="上移识别模型">↑</button>
+              <button type="button" class="quiet" data-move="1" aria-label="下移识别模型">↓</button>
+              <button type="button" class="danger" data-remove>删除</button>
+            </div>
+            <div class="recognition-stage-files" hidden>
+              <label class="field stack">识别 ONNX 路径<input data-field="model_path" type="text" autocomplete="off"></label>
+              <label class="field stack">字符字典路径（可选）<input data-field="keys_path" type="text" autocomplete="off"></label>
+            </div>
+          </div>
+        </template>
       </fieldset>
       <div class="actions">
         <button id="trial" type="button" class="secondary" title="执行一轮，点击只记录坐标">试跑一轮</button>
@@ -140,6 +167,7 @@
               <div class="actions">
                 <label class="check"><input id="region-periodic" type="checkbox">每轮识别</label>
                 <label class="check" title="关闭后将整个区域作为一行识别"><input id="region-detect" type="checkbox">检测文字框</label>
+                <label class="check" title="使用全局模型列表及各阶段的置信度阈值"><input id="region-adaptive" type="checkbox">分级识别</label>
               </div>
               <div class="region-thresholds">
                 <label class="field stack" title="保留分数达到下限的文字行">

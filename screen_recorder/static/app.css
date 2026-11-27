@@ -96,6 +96,12 @@ main.shell { padding-top: 22px; padding-bottom: 40px; }
 .scores { margin-left: 3px; }
 .model-select { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .model-files { display: grid; flex: 1 0 100%; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); gap: 8px; }
+.recognition-stages { flex: 1 0 100%; font-size: 13px; }
+.recognition-stages summary { cursor: pointer; color: var(--muted); }
+.recognition-stage-list { display: grid; gap: 8px; margin: 8px 0; }
+.recognition-stage { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; }
+.recognition-stage [type="number"] { width: 90px; }
+.recognition-stage-files { display: grid; flex: 1 0 100%; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); gap: 8px; }
 .field, .check { color: var(--muted); font-size: 13px; }
 .field.stack { display: grid; gap: 4px; min-width: 0; }
 .check { display: inline-flex; align-items: center; gap: 7px; }

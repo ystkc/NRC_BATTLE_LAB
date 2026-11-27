@@ -6,13 +6,17 @@ import {rulesEditor} from "./rules.js";
 const id = name => document.getElementById(name);
 const storageKey = "screen-ocr-program";
 const geometryInputs = ["x", "y", "width", "height", "angle"];
-const regionDefaults = {periodic: true, detect: true, confidence: 0, frame_diff_threshold: 0, allowed_chars: ""};
-const regionChecks = [["region-periodic", "periodic"], ["region-detect", "detect"]];
+const regionDefaults = {
+  periodic: true, detect: true, confidence: 0, frame_diff_threshold: 0, allowed_chars: "", adaptive_recognition: false,
+};
+const regionChecks = [
+  ["region-periodic", "periodic"], ["region-detect", "detect"], ["region-adaptive", "adaptive_recognition"],
+];
 const regionThresholds = [["region-confidence", "confidence"], ["region-frame-diff", "frame_diff_threshold"]];
 let program = {
   version: 1, monitor: null, window: null, frequency_hz: 1, start_delay: 3,
   include_scores: false, record_timings: false, record_frame_diffs: false,
-  ocr_models: {detection: "small", recognition: "small"},
+  ocr_models: {detection: "small", recognition: "small", recognition_stages: []},
   regions: [], triggers: [],
 };
 const modelPaths = [
@@ -300,6 +304,7 @@ function showRegions() {
     id("region-allowed-chars").value = selected.allowed_chars ?? "";
     for (const [input, field] of regionChecks) id(input).checked = selected[field];
     for (const [input, field] of regionThresholds) id(input).value = selected[field];
+    id("region-confidence").disabled = selected.adaptive_recognition;
   }
   showGeometry();
   showRegionOverlay();
@@ -307,8 +312,8 @@ function showRegions() {
 
 /** 将区域标为当前编辑项。 */
 function selectRegion(region) {
-  if (selected === region) return;
-  selected = region;
+  if (selected === region) selected = null;
+  else selected = region;
   showRegions();
 }
 
@@ -501,6 +506,41 @@ function showModelFiles() {
   id("recognition-keys-file").hidden = !localRecognition;
 }
 
+/** 绘制按执行顺序排列的识别模型及其通过阈值。 */
+function showRecognitionStages() {
+  const stages = program.ocr_models.recognition_stages ??= [];
+  const rows = stages.map((stage, index) => {
+    const row = id("recognition-stage-template").content.firstElementChild.cloneNode(true);
+    const files = row.querySelector(".recognition-stage-files");
+    files.hidden = stage.model !== "local";
+    for (const input of row.querySelectorAll("[data-field]")) {
+      const field = input.dataset.field;
+      input.value = stage[field] ?? "";
+      input.addEventListener("input", () => {
+        stage[field] = field === "threshold" ? (input.validity.valid ? input.valueAsNumber : null) : input.value.trim() || null;
+        files.hidden = stage.model !== "local";
+        save();
+      });
+    }
+    for (const button of row.querySelectorAll("[data-move]")) {
+      const target = index + Number(button.dataset.move);
+      button.disabled = target < 0 || target >= stages.length;
+      button.addEventListener("click", () => {
+        [stages[index], stages[target]] = [stages[target], stages[index]];
+        showRecognitionStages();
+        save();
+      });
+    }
+    row.querySelector("[data-remove]").addEventListener("click", () => {
+      stages.splice(index, 1);
+      showRecognitionStages();
+      save();
+    });
+    return row;
+  });
+  id("recognition-stage-list").replaceChildren(...rows);
+}
+
 /** 用当前配置填充界面。 */
 function showProgram() {
   id("frequency").value = program.frequency_hz ?? "";
@@ -512,6 +552,7 @@ function showProgram() {
   id("recognition-model").value = program.ocr_models.recognition;
   for (const [input, field] of modelPaths) id(input).value = program.ocr_models[field] ?? "";
   showModelFiles();
+  showRecognitionStages();
   showSources();
   showRegions();
   rules.render();
@@ -633,6 +674,14 @@ id("record-timings").addEventListener("change", event => {
 id("record-frame-diffs").addEventListener("change", event => {
   program.record_frame_diffs = event.target.checked;
   save();
+});
+id("add-recognition-stage").addEventListener("click", () => {
+  const stages = program.ocr_models.recognition_stages;
+  const model = ["tiny", "small", "medium"][stages.length] ?? "medium";
+  stages.push({model, threshold: 0.8});
+  showRecognitionStages();
+  save();
+  id("recognition-stage-list").lastElementChild.querySelector("select").focus();
 });
 for (const stage of ["detection", "recognition"]) {
   id(`${stage}-model`).addEventListener("change", event => {
