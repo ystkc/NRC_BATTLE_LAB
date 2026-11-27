@@ -11,7 +11,7 @@ const regionChecks = [["region-periodic", "periodic"], ["region-detect", "detect
 const regionThresholds = [["region-confidence", "confidence"], ["region-frame-diff", "frame_diff_threshold"]];
 let program = {
   version: 1, monitor: null, window: null, frequency_hz: 1, start_delay: 3,
-  include_scores: false, record_timings: false,
+  include_scores: false, record_timings: false, record_frame_diffs: false,
   ocr_models: {detection: "small", recognition: "small"},
   regions: [], triggers: [],
 };
@@ -378,14 +378,30 @@ function showRoundPreview(show) {
   previewing = show && Boolean(status.recording);
   const button = id("round-view");
   const image = id("round-preview");
+  const visible = previewing && Boolean(previewKey);
   button.hidden = !status.recording;
   button.setAttribute("aria-pressed", String(previewing));
-  image.hidden = !previewing || previewKey !== `${status.recording}/${status.rounds}`
-    || !image.complete || !image.naturalWidth;
-  editor.stage.hidden = previewing || !editor.ready;
-  editor.empty.hidden = previewing || editor.ready;
+  image.hidden = !visible;
+  editor.stage.hidden = visible || !editor.ready;
+  editor.empty.hidden = visible || editor.ready;
   if (wasPreviewing && !previewing) editor.fit();
   controls();
+}
+
+/** 解码新画面后再替换当前图片。 */
+async function loadRoundPreview(jpeg, key, recording) {
+  const image = id("round-preview");
+  const next = image.cloneNode(false);
+  next.src = `data:image/jpeg;base64,${jpeg}`;
+  try {
+    await next.decode();
+  } catch {
+    return;
+  }
+  if (status.recording !== recording || key !== `${status.recording}/${status.rounds}`) return;
+  image.replaceWith(next);
+  previewKey = key;
+  showRoundPreview(previewing);
 }
 
 /** 显示每个区域的最近有效文字和帧差跳过次数。 */
@@ -434,15 +450,12 @@ function showStatus({preview_jpeg: jpeg, ...next}) {
     previewKey = "";
     id("round-preview").removeAttribute("src");
   }
-  if (jpeg) {
-    previewKey = `${status.recording}/${status.rounds}`;
-    id("round-preview").src = `data:image/jpeg;base64,${jpeg}`;
-  }
   if (newRound || jpeg) {
     showRoundPreview(newRecording || previewing);
   } else {
     controls();
   }
+  if (jpeg) return loadRoundPreview(jpeg, `${status.recording}/${status.rounds}`, status.recording);
 }
 
 /** 定时刷新状态，忽略较旧请求返回的结果。 */
@@ -453,7 +466,7 @@ async function poll() {
     if (!pending) {
       const preview = previewing || !status.recording ? `?after_preview=${encodeURIComponent(previewKey)}` : "";
       const next = await (await api(`status${preview}`)).json();
-      if (requested === revision && !pending) showStatus(next);
+      if (requested === revision && !pending) await showStatus(next);
       connection.hidden = true;
     }
   } catch {
@@ -494,6 +507,7 @@ function showProgram() {
   id("start-delay").value = program.start_delay ?? "";
   id("include-scores").checked = program.include_scores;
   id("record-timings").checked = program.record_timings;
+  id("record-frame-diffs").checked = program.record_frame_diffs;
   id("detection-model").value = program.ocr_models.detection;
   id("recognition-model").value = program.ocr_models.recognition;
   for (const [input, field] of modelPaths) id(input).value = program.ocr_models[field] ?? "";
@@ -539,9 +553,6 @@ id("cancel-pick").addEventListener("click", finishPick);
 id("round-view").addEventListener("click", () => {
   if (pickTarget) finishPick();
   showRoundPreview(!previewing);
-});
-id("round-preview").addEventListener("load", () => {
-  if (previewing) showRoundPreview(true);
 });
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && pickTarget) finishPick();
@@ -617,6 +628,10 @@ id("include-scores").addEventListener("change", event => {
 });
 id("record-timings").addEventListener("change", event => {
   program.record_timings = event.target.checked;
+  save();
+});
+id("record-frame-diffs").addEventListener("change", event => {
+  program.record_frame_diffs = event.target.checked;
   save();
 });
 for (const stage of ["detection", "recognition"]) {

@@ -13,7 +13,7 @@ import numpy as np
 import yaml
 
 from .desktop import Capture, Desktop
-from .frames import RegionHistory, RegionTiming, RegionTimings, ScreenFrame
+from .frames import FrameDifferences, RegionHistory, RegionTiming, RegionTimings, ScreenFrame
 from .program import (
     CaptureSource, ClickAction, Condition, OCRAction, Program, TriggerCondition, WaitAction,
 )
@@ -35,7 +35,7 @@ class RecordingDumper(yaml.SafeDumper):
     """将坐标和耗时序列化为紧凑的行内数组。"""
 
 
-def _dump_sequence(dumper: RecordingDumper, values: tuple[str | int | float, ...]) -> yaml.SequenceNode:
+def _dump_sequence(dumper: RecordingDumper, values: tuple[str | int | float | None, ...]) -> yaml.SequenceNode:
     """保留数组类型并写在同一行。"""
     return dumper.represent_sequence("tag:yaml.org,2002:seq", values, flow_style=True)
 
@@ -56,10 +56,11 @@ RecordingDumper.add_representer(RegionTiming, _dump_timing)
 
 @dataclass
 class RoundFrames:
-    """收集一轮中共用的区域历史、截图、触发区域和耗时。"""
+    """收集一轮中共用的区域历史、截图、触发区域和诊断数据。"""
 
     regions: dict[str, RegionHistory]
     timings: RegionTimings | None
+    differences: FrameDifferences | None = None
     image: np.ndarray | None = None
     triggered: set[str] = field(default_factory=set)
     fired_triggers: set[str] = field(default_factory=set)
@@ -99,6 +100,7 @@ class Recorder:
         self._error = ""
         self._completed = 0
         self._latest = ""
+        self._last_record: dict | None = None
         self._filename = ""
         self._region_results: list[dict] = []
         self._round_preview: RoundPreview | None = None
@@ -126,6 +128,7 @@ class Recorder:
             self._trial = trial
             self._completed = 0
             self._error = self._latest = ""
+            self._last_record = None
             self._region_results = []
             self._round_preview = None
             self._filename = datetime.now().strftime("%Y%m%d-%H%M%S-%f.yaml")
@@ -147,7 +150,7 @@ class Recorder:
         return self.snapshot()[0]
 
     def snapshot(self) -> tuple[dict, RoundPreview | None]:
-        """从同一轮获取任务状态和画面，供前端同步显示。"""
+        """获取最新轮次的画面、区域状态和最近写入的记录。"""
         with self._lock:
             remaining = max(0, self._deadline - monotonic()) if self._deadline is not None else 0
             status = {
@@ -209,15 +212,19 @@ class Recorder:
             "时间": datetime.now().astimezone().isoformat(timespec="milliseconds"),
             "识别": {},
         }
-        frames = RoundFrames(regions, [] if program.record_timings else None)
+        # 输出置信度时也需要知道本轮是否实际执行了 OCR。
+        frames = RoundFrames(
+            regions, [] if program.record_timings or program.include_scores else None,
+            differences={} if program.record_frame_diffs else None,
+        )
         try:
             self._execute_round(record, capture, program, trial, frames)
         except Exception as exc:
-            if record["识别"] or record.get("触发器") or frames.timings:
+            if record["识别"] or record.get("触发器") or frames.timings or frames.differences:
                 record["状态"] = "已停止" if isinstance(exc, RunStopped) else "中断"
-                self._publish(stream, record, frames)
+                self._publish(stream, record, frames, program.record_timings)
             raise
-        self._publish(stream, record, frames)
+        self._publish(stream, record, frames, program.record_timings)
 
     def _execute_round(
         self, record: dict, capture: Capture, program: Program, trial: bool, frames: RoundFrames,
@@ -310,7 +317,7 @@ class Recorder:
         image = capture()
         self._check_stop()
         frames.image = image
-        return ScreenFrame(image, frames.regions, self.recognizer, frames.timings)
+        return ScreenFrame(image, frames.regions, self.recognizer, frames.timings, frames.differences)
 
     def _matches(self, frame: ScreenFrame, conditions: list[Condition], fired_triggers: set[str]) -> bool:
         """要求条件全部通过，每项检查前允许停止。"""
@@ -323,13 +330,19 @@ class Recorder:
                 return False
         return True
 
-    def _publish(self, stream: TextIO, record: dict, frames: RoundFrames) -> None:
-        """追加一个独立的 YAML 文档并更新界面输出。"""
-        if frames.timings:
+    def _publish(self, stream: TextIO, record: dict, frames: RoundFrames, record_timings: bool) -> None:
+        """保存变化的记录或实际执行 OCR 的诊断轮次。"""
+        if record_timings and frames.timings:
             record["OCR耗时(ms)"] = frames.timings
-        output = dump_yaml(record, document=True)
-        stream.write(output)
-        stream.flush()
+        if frames.differences:
+            record["OCR帧差"] = {name: tuple(values) for name, values in frames.differences.items()}
+        content = {key: value for key, value in record.items() if key not in ("时间", "轮次")}
+        output = None
+        if frames.timings or frames.differences or content != self._last_record:
+            output = dump_yaml(record, document=True)
+            stream.write(output)
+            stream.flush()
+            self._last_record = content
         regions = [
             {
                 "name": name,
@@ -341,7 +354,8 @@ class Recorder:
         preview = (frames.image, frames.boxes()) if frames.image is not None else None
         with self._lock:
             self._completed += 1
-            self._latest = output
+            if output is not None:
+                self._latest = output
             self._region_results = regions
             self._round_preview = preview
 

@@ -20,14 +20,7 @@ class RegionTiming:
 
 
 RegionTimings = list[RegionTiming]
-
-
-@dataclass(frozen=True)
-class FrameResult:
-    """区分本帧新识别结果和帧差命中的缓存结果。"""
-
-    lines: list[TextLine]
-    skipped: bool = False
+FrameDifferences = dict[str, list[float | None]]
 
 
 @dataclass
@@ -40,29 +33,33 @@ class RegionHistory:
     last_valid: list[TextLine] = field(default_factory=list)
     skipped_frames: int = 0
 
-    def reuse(self, crop: np.ndarray) -> FrameResult | None:
-        """帧差达到跳过条件时，沿用上次识别结果。"""
-        if self.previous_image is not None:
-            difference = cv2.norm(crop, self.previous_image, cv2.NORM_L1) / (255 * crop.size)
-            if difference <= self.region.frame_diff_threshold:
-                self.skipped_frames += 1
-                return FrameResult(self.previous_lines, skipped=True)
-        return None
+    def reuse(self, crop: np.ndarray) -> tuple[list[TextLine] | None, float | None]:
+        """返回可复用的结果及当前裁剪图与识别基准的帧差。"""
+        if self.previous_image is None:
+            return None, None
+        difference = cv2.norm(crop, self.previous_image, cv2.NORM_L1) / (255 * crop.size)
+        if difference <= self.region.frame_diff_threshold:
+            self.skipped_frames += 1
+            return self.previous_lines, difference
+        return None, difference
 
-    def remember(self, crop: np.ndarray, lines: list[TextLine]) -> FrameResult:
+    def remember(self, crop: np.ndarray, lines: list[TextLine]) -> list[TextLine]:
         """更新实际识别的图像和最近有效结果。"""
         self.previous_image = crop
         self.previous_lines = lines
         if lines:
             self.last_valid = lines
             self.skipped_frames = 0
-        return FrameResult(lines)
+        return lines
 
-    def read(self, image: np.ndarray, recognizer: Recognizer, timings: RegionTimings | None) -> FrameResult:
+    def read(
+        self, image: np.ndarray, recognizer: Recognizer, timings: RegionTimings | None,
+        differences: FrameDifferences | None = None,
+    ) -> list[TextLine]:
         """比较校正后的像素，超过帧差阈值时执行 OCR。"""
         started = perf_counter() if timings is not None else None
         crop = upright_crop(image, self.region)
-        cached = self.reuse(crop)
+        cached, difference = self.reuse(crop)
         if cached is not None:
             return cached
 
@@ -72,6 +69,8 @@ class RegionHistory:
             if timings is not None and started is not None:
                 elapsed_ms = round((perf_counter() - started) * 1000, 3)
                 timings.append(RegionTiming((self.region.name,), (elapsed_ms,)))
+        if differences is not None:
+            differences.setdefault(self.region.name, []).append(difference)
         return self.remember(crop, lines)
 
 
@@ -80,14 +79,15 @@ class ScreenFrame:
 
     def __init__(
         self, image: np.ndarray, regions: dict[str, RegionHistory], recognizer: Recognizer,
-        timings: RegionTimings | None = None,
+        timings: RegionTimings | None = None, differences: FrameDifferences | None = None,
     ) -> None:
         """使用同一份截图判定一组条件。"""
         self.image = image
         self.regions = regions
         self.recognizer = recognizer
         self.timings = timings
-        self.cache: dict[str, FrameResult] = {}
+        self.differences = differences
+        self.cache: dict[str, list[TextLine]] = {}
 
     def read_regions(self, names: list[str], check_stop: Callable[[], None]) -> None:
         """先批量识别直读框，再补齐本帧的其他结果。"""
@@ -100,7 +100,7 @@ class ScreenFrame:
         """对同一截图中的直读框做帧差检查并批量识别。"""
         if len(names) < 2:
             return
-        pending: dict[str, tuple[np.ndarray, float]] = {}
+        pending: dict[str, tuple[np.ndarray, float, float | None]] = {}
         for name in names:
             check_stop()
             if name in self.cache or name in pending:
@@ -108,27 +108,29 @@ class ScreenFrame:
             started = perf_counter()
             history = self.regions[name]
             crop = upright_crop(self.image, history.region)
-            cached = history.reuse(crop)
+            cached, difference = history.reuse(crop)
             if cached is None:
-                pending[name] = (crop, perf_counter() - started)
+                pending[name] = (crop, perf_counter() - started, difference)
             else:
                 self.cache[name] = cached
 
-        crops = [(self.regions[name].region, crop) for name, (crop, _) in pending.items()]
+        crops = [(self.regions[name].region, crop) for name, (crop, _, _) in pending.items()]
         for batch in self.recognizer.read_direct(crops, check_stop):
             samples = []
             for name, lines, elapsed in batch:
-                crop, cropping = pending[name]
+                crop, cropping, difference = pending[name]
                 self.cache[name] = self.regions[name].remember(crop, lines)
+                if self.differences is not None:
+                    self.differences.setdefault(name, []).append(difference)
                 if self.timings is not None:
                     samples.append(round((cropping + elapsed) * 1000, 3))
             if self.timings is not None:
                 self.timings.append(RegionTiming(tuple(name for name, _, _ in batch), tuple(samples)))
 
-    def _read(self, name: str) -> FrameResult:
-        """复用同一次截图中同一区域的识别或跳过结果。"""
+    def _read(self, name: str) -> list[TextLine]:
+        """复用同一次截图中同一区域的识别结果。"""
         if name not in self.cache:
-            self.cache[name] = self.regions[name].read(self.image, self.recognizer, self.timings)
+            self.cache[name] = self.regions[name].read(self.image, self.recognizer, self.timings, self.differences)
         return self.cache[name]
 
     def matches(self, condition: Condition) -> bool:
@@ -139,7 +141,7 @@ class ScreenFrame:
             reference = bytes.fromhex(condition.reference[1:])
             return all(abs(int(actual) - expected) <= condition.tolerance
                        for actual, expected in zip(pixel, reference))
-        lines = self._read(condition.region).lines
+        lines = self._read(condition.region)
         if isinstance(condition, ConfidenceCondition):
             return any(line.score > condition.threshold for line in lines)
         text = " ".join(word for line in lines for word in line.text.split())
@@ -148,13 +150,11 @@ class ScreenFrame:
 
     def result(self, name: str, include_scores: bool) -> str | list | None:
         """生成适合 YAML 展示的简短识别结果。"""
-        result = self._read(name)
-        if result.skipped:
-            return "跳过"
-        if not result.lines:
+        lines = self._read(name)
+        if not lines:
             return None
         if include_scores:
-            return [{"文字": line.text, "置信度": round(line.score, 4)} for line in result.lines]
-        if len(result.lines) == 1:
-            return result.lines[0].text
-        return [line.text for line in result.lines]
+            return [{"文字": line.text, "置信度": round(line.score, 4)} for line in lines]
+        if len(lines) == 1:
+            return lines[0].text
+        return [line.text for line in lines]

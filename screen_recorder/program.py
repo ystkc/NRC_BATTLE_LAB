@@ -181,6 +181,7 @@ class Program(Settings):
     start_delay: FiniteFloat = Field(default=3, ge=0)
     include_scores: bool = False
     record_timings: bool = False
+    record_frame_diffs: bool = False
     ocr_models: OCRModels = Field(default_factory=OCRModels)
     regions: list[Region] = Field(default_factory=list)
     triggers: list[Trigger] = Field(default_factory=list)

@@ -138,7 +138,7 @@ def create_app(recorder: Recorder | None = None) -> FastAPI:
 
     @app.get("/api/status")
     def status(after_preview: str | None = None) -> dict:
-        """返回最近一轮结果，并按需附上同一轮的画面。"""
+        """返回当前状态，并按需附上最新一轮的画面。"""
         current, preview = recorder.snapshot()
         key = f"{current['recording']}/{current['rounds']}"
         if after_preview is not None and after_preview != key and preview is not None:
