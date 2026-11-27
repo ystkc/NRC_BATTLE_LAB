@@ -30,3 +30,4 @@ data/mitm/
 /tests/.cdp-profile-chrome
 /tests/.cdp-profile-playwright
 nrc_battle_lab.egg-info/PKG-INFO
+*.yaml

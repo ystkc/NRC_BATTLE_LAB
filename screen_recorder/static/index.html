@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f5f4">
+  <title>屏幕 OCR</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script type="module" src="/static/app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="shell masthead-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <h1>屏幕 OCR</h1>
+        <span id="run-status" class="status" data-phase="idle" role="status">待机</span>
+      </div>
+      <div class="actions">
+        <button id="import-config" type="button" class="quiet">导入配置</button>
+        <button id="export-config" type="button" class="quiet">导出配置</button>
+        <input id="config-file" type="file" accept=".yaml,.yml,application/yaml,text/yaml" hidden>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <div class="runbar panel">
+      <fieldset id="run-settings" class="settings">
+        <label class="field" for="frequency">识别频率</label>
+        <div class="input-unit"><input id="frequency" type="number" min="0" step="any" value="1"><span>Hz</span></div>
+        <label class="field" for="start-delay">启动延迟</label>
+        <div class="input-unit"><input id="start-delay" type="number" min="0" step="any" value="0"><span>秒</span></div>
+        <label class="field model-select">检测模型
+          <select id="detection-model">
+            <option value="tiny">PP-OCRv6 Tiny</option>
+            <option value="small" selected>PP-OCRv6 Small</option>
+            <option value="medium">PP-OCRv6 Medium</option>
+            <option value="local">本地 ONNX</option>
+          </select>
+        </label>
+        <label class="field model-select">识别模型
+          <select id="recognition-model">
+            <option value="tiny">PP-OCRv6 Tiny</option>
+            <option value="small" selected>PP-OCRv6 Small</option>
+            <option value="medium">PP-OCRv6 Medium</option>
+            <option value="local">本地 ONNX</option>
+          </select>
+        </label>
+        <label class="check scores"><input id="include-scores" type="checkbox">输出置信度</label>
+        <label class="check scores"><input id="record-timings" type="checkbox">记录耗时</label>
+        <div id="model-files" class="model-files" hidden>
+          <label id="detection-file" class="field stack" hidden>
+            检测 ONNX 路径<input id="detection-path" type="text" spellcheck="false" autocomplete="off">
+          </label>
+          <label id="recognition-file" class="field stack" hidden>
+            识别 ONNX 路径<input id="recognition-path" type="text" spellcheck="false" autocomplete="off">
+          </label>
+          <label id="recognition-keys-file" class="field stack" hidden>
+            字符字典路径（可选）<input id="recognition-keys-path" type="text" spellcheck="false" autocomplete="off">
+          </label>
+        </div>
+      </fieldset>
+      <div class="actions">
+        <button id="trial" type="button" class="secondary" title="执行一轮，点击只记录坐标">试跑一轮</button>
+        <button id="start" type="button" class="primary">开始运行</button>
+        <button id="stop" type="button" class="stop" hidden>停止</button>
+      </div>
+    </div>
+
+    <div id="notice" class="notice" role="alert" hidden></div>
+    <div id="connection" class="notice" role="status" hidden></div>
+
+    <div class="workspace">
+      <div class="workspace-main">
+        <section id="workbench" class="panel workbench" aria-labelledby="workbench-heading">
+          <div class="panel-head capture-head">
+            <h2 id="workbench-heading">屏幕截图</h2>
+            <fieldset id="capture-settings" class="actions">
+              <select id="capture-source" aria-label="截图来源"></select>
+              <button id="refresh-sources" type="button" class="quiet" title="刷新显示器和窗口列表">刷新</button>
+              <select id="capture-delay" aria-label="截图延迟">
+                <option value="0">即时</option>
+                <option value="3">3 秒后</option>
+                <option value="5">5 秒后</option>
+              </select>
+              <button id="capture" type="button" class="secondary">获取截图</button>
+            </fieldset>
+          </div>
+          <div id="viewport" class="viewport">
+            <div id="capture-empty" class="capture-empty">
+              <div class="capture-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <strong>等待截图</strong>
+              <p>截取目标画面后，在截图上拖拽框选文字。</p>
+            </div>
+            <div id="stage" class="stage" hidden>
+              <img id="snapshot" alt="所选来源的截图" draggable="false">
+              <canvas id="overlay" aria-label="识别区域框选画布"></canvas>
+            </div>
+            <img id="round-preview" class="round-preview" alt="最近一轮截图及有效 OCR 轮廓" draggable="false" hidden>
+          </div>
+          <div class="canvas-toolbar">
+            <div class="actions canvas-tools" aria-label="截图工具">
+              <button id="select-tool" class="tool" type="button" aria-pressed="false" disabled>选择</button>
+              <button id="draw-tool" class="tool" type="button" aria-pressed="false" disabled>框选</button>
+              <button id="cancel-pick" class="quiet" type="button" hidden>取消取点</button>
+              <button id="round-view" class="tool" type="button" aria-pressed="false" hidden>本轮画面</button>
+            </div>
+            <span id="canvas-help" class="canvas-help">选择显示器或窗口并获取截图</span>
+            <span id="pixel-position" class="pixel-position"></span>
+          </div>
+        </section>
+
+        <section class="panel triggers" aria-labelledby="triggers-heading">
+          <div class="panel-head">
+            <h2 id="triggers-heading">触发器</h2>
+            <button id="add-trigger" type="button" class="secondary">＋ 添加触发器</button>
+          </div>
+          <fieldset id="rules-editor">
+            <div id="rules"></div>
+          </fieldset>
+        </section>
+      </div>
+
+      <aside class="workspace-side">
+        <section class="panel regions" aria-labelledby="regions-heading">
+          <div class="panel-head">
+            <h2 id="regions-heading">识别区域</h2>
+            <span id="region-count" class="meta">0 个</span>
+          </div>
+          <fieldset id="region-editor">
+            <p id="regions-empty" class="empty-text">框选后可填写区域备注名。</p>
+            <div id="region-list" class="region-list"></div>
+            <div id="region-details" class="region-details" hidden>
+              <label class="field stack">备注名<input id="region-name" type="text" autocomplete="off"></label>
+              <div class="actions">
+                <label class="check"><input id="region-periodic" type="checkbox">每轮识别</label>
+                <label class="check" title="关闭后将整个区域作为一行识别"><input id="region-detect" type="checkbox">检测文字框</label>
+              </div>
+              <div class="region-thresholds">
+                <label class="field stack" title="保留分数达到下限的文字行">
+                  置信度下限<input id="region-confidence" type="number" min="0" max="1" step="any">
+                </label>
+                <label class="field stack" title="平均像素差在 0 到 1 之间，设为 0 时只跳过相同画面">
+                  帧差阈值<input id="region-frame-diff" type="number" min="0" max="1" step="any">
+                </label>
+              </div>
+              <div class="geometry">
+                <label class="field stack">中心 X<input id="region-x" type="number" min="0" step="any"></label>
+                <label class="field stack">中心 Y<input id="region-y" type="number" min="0" step="any"></label>
+                <label class="field stack">宽<input id="region-width" type="number" min="1" step="1"></label>
+                <label class="field stack">高<input id="region-height" type="number" min="1" step="1"></label>
+              </div>
+              <label class="field stack">
+                顺时针倾角
+                <span class="input-unit"><input id="region-angle" type="number" min="-180" max="180" step="any"><span>°</span></span>
+              </label>
+              <div id="crop-preview" class="preview" hidden>
+                <h3>校正预览</h3>
+                <div class="preview-image"><canvas id="rectified" aria-label="水平校正后的区域预览"></canvas></div>
+              </div>
+              <div class="actions region-controls">
+                <button id="copy-region" type="button" class="quiet">复制区域</button>
+                <button id="redraw-region" type="button" class="quiet">重画区域</button>
+                <button id="delete-region" type="button" class="danger">删除区域</button>
+              </div>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="panel results" aria-labelledby="results-heading">
+          <div class="panel-head">
+            <h2 id="results-heading">识别结果</h2>
+            <span id="round-count" class="meta"></span>
+          </div>
+          <pre id="yaml-output" tabindex="0" class="yaml-output" data-empty="true">运行后显示最近一轮的 YAML。</pre>
+          <div id="region-results" class="region-results" hidden>
+            <table aria-label="区域识别历史">
+              <thead><tr><th scope="col">区域</th><th scope="col">最近有效内容</th><th scope="col">跳过帧数</th></tr></thead>
+              <tbody id="region-result-rows"></tbody>
+            </table>
+          </div>
+          <div class="actions result-actions">
+            <button id="copy-result" type="button" class="quiet" disabled>复制本轮</button>
+            <button id="download-record" type="button" class="secondary" disabled>下载记录</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
