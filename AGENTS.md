@@ -42,7 +42,7 @@
 ## 命令
 
 ```bash
-pip install -e ".[dev]"
+python -m pip install -r requirements.txt
 python -m nrc_server.server --host 127.0.0.1 --port 8767
 python scripts/generate_skill_effects.py
 ```

@@ -7,21 +7,29 @@ name = "nrc-battle-lab"
 version = "0.1.0"
 description = "纯核心战斗模拟器与半自动对战数据审计工具"
 requires-python = ">=3.10"
-dependencies = ["pypinyin>=0.50", "fastapi>=0.115", "uvicorn>=0.30", "numpy>=1.24", "beautifulsoup4>=4.12", "cryptography>=41"]
+dependencies = [
+    "pypinyin>=0.50",
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1",
+    "numpy>=1.24",
+    "beautifulsoup4>=4.12",
+    "cryptography>=41",
+]
 
 [project.optional-dependencies]
-wiki = ["PyYAML>=6.0"]
+wiki = ["PyYAML>=6,<7"]
 screen = [
-    "opencv-python>=4.8",
-    "numpy>=1.24",
-    "mss>=9.0",
-    "rapidocr>=3.0",
-    "onnxruntime>=1.17",
+    "mss>=10.2,<11",
+    "opencv-python-headless>=4.8",
+    "pydantic>=2.7,<3",
+    "rapidocr==3.10.0",
+    "onnxruntime>=1.17,<2",
+    "PyYAML>=6,<7",
+    "starlette",
+    "pywin32>=306; sys_platform == 'win32'",
+    "capturekit==0.1.0; sys_platform == 'win32'",
 ]
-training = [
-    "numpy>=1.24",
-    "torch>=2.0",
-]
+training = ["torch>=2.0"]
 segmentation = [
     "torch>=2.0",
     "torchvision>=0.15",

@@ -152,7 +152,7 @@ def open_window_capture(window: Window) -> Iterator[Callable[[], np.ndarray]]:
     try:
         import capturekit
     except ImportError as exc:
-        raise CaptureError("缺少窗口捕获组件，请安装 requirements.txt 中的 Windows 依赖") from exc
+        raise CaptureError("缺少窗口捕获组件，请安装项目根目录 requirements.txt 中的 Windows 依赖") from exc
 
     capture = capturekit.ScreenCapture(capturekit.WindowSource(window.handle, client_area_only=True))
 

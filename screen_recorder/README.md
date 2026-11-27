@@ -7,7 +7,7 @@ Windows 桌面上的周期 OCR 与触发器执行程序，使用浏览器配置�
 在 NRC Battle Lab 根目录运行以下命令。
 
 ```powershell
-python -m pip install -r screen_recorder/requirements.txt
+python -m pip install -r requirements.txt
 python -m screen_recorder
 ```
 
