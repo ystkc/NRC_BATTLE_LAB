@@ -207,8 +207,15 @@ function actionRow(actions, index, ctx) {
 
 /** 绘制单个触发器的有序条件和操作组。 */
 function triggerCard(trigger, index, ctx) {
+  const show = document.createElement("input");
+  show.type = "checkbox";
+  show.checked = trigger.show ?? true;
+  show.addEventListener("change", () => setter(trigger, "show", ctx)(show.checked));
+  const visibility = node("label", "check", show, "显示");
+  visibility.title = "在截图编辑区显示该触发器引用的 OCR 框";
   const head = node("div", "trigger-head",
     field("触发器名称", input("text", trigger.name, setter(trigger, "name", ctx))),
+    visibility,
     listButtons(ctx.program.triggers, index, ctx, "触发器", true),
   );
   const conditions = node("section", "rule-section",
@@ -236,7 +243,7 @@ export function rulesEditor(container, getProgram, save, pick) {
     pick,
     edit(callback) {
       callback();
-      save();
+      ctx.save();
       render();
     },
   };
@@ -256,6 +263,7 @@ export function rulesEditor(container, getProgram, save, pick) {
       while (used.has(`触发器 ${number}`)) number++;
       ctx.edit(() => ctx.program.triggers.push({
         name: `触发器 ${number}`,
+        show: true,
         conditions: [],
         actions: [newAction("ocr", ctx)],
       }));

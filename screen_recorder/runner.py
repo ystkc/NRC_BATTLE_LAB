@@ -13,9 +13,9 @@ import numpy as np
 import yaml
 
 from .desktop import Capture, Desktop
-from .frames import RegionHistory, RegionTimings, ScreenFrame
+from .frames import RegionHistory, RegionTiming, RegionTimings, ScreenFrame
 from .program import (
-    Action, CaptureSource, ClickAction, Condition, OCRAction, Program, WaitAction,
+    CaptureSource, ClickAction, Condition, OCRAction, Program, WaitAction,
 )
 from .recognition import Polygon, Recognizer
 
@@ -35,12 +35,23 @@ class RecordingDumper(yaml.SafeDumper):
     """将坐标和耗时序列化为紧凑的行内数组。"""
 
 
-def _dump_sequence(dumper: RecordingDumper, values: tuple[int | float, ...]) -> yaml.SequenceNode:
+def _dump_sequence(dumper: RecordingDumper, values: tuple[str | int | float, ...]) -> yaml.SequenceNode:
     """保留数组类型并写在同一行。"""
     return dumper.represent_sequence("tag:yaml.org,2002:seq", values, flow_style=True)
 
 
+def _dump_timing(dumper: RecordingDumper, timing: RegionTiming) -> yaml.MappingNode:
+    """用一行记录一次识别的区域和耗时。"""
+    if len(timing.names) == 1:
+        label = timing.names[0]
+    else:
+        # 将框名列表作为字符串键，便于普通 YAML 解析器读取。
+        label = yaml.dump(timing.names, Dumper=RecordingDumper, allow_unicode=True, width=float("inf")).strip()
+    return dumper.represent_mapping("tag:yaml.org,2002:map", {label: timing.samples}, flow_style=True)
+
+
 RecordingDumper.add_representer(tuple, _dump_sequence)
+RecordingDumper.add_representer(RegionTiming, _dump_timing)
 
 
 @dataclass
@@ -64,7 +75,10 @@ class RoundFrames:
 
 def dump_yaml(value: dict, *, document: bool = False) -> str:
     """输出保留中文和字段顺序的 YAML。"""
-    return yaml.dump(value, Dumper=RecordingDumper, allow_unicode=True, sort_keys=False, explicit_start=document)
+    return yaml.dump(
+        value, Dumper=RecordingDumper, allow_unicode=True, sort_keys=False,
+        explicit_start=document, width=float("inf") if document else None,
+    )
 
 
 class Recorder:
@@ -194,7 +208,7 @@ class Recorder:
             "时间": datetime.now().astimezone().isoformat(timespec="milliseconds"),
             "识别": {},
         }
-        frames = RoundFrames(regions, {} if program.record_timings else None)
+        frames = RoundFrames(regions, [] if program.record_timings else None)
         try:
             self._execute_round(record, capture, program, trial, frames)
         except Exception as exc:
@@ -209,10 +223,13 @@ class Recorder:
     ) -> None:
         """先做每轮识别，再按顺序判定和执行触发器。"""
         frame = self._capture(capture, frames)
-        for region in program.regions:
-            self._check_stop()
-            if region.periodic:
-                record["识别"][region.name] = frame.result(region.name, program.include_scores)
+        periodic = [region.name for region in program.regions if region.periodic]
+        try:
+            frame.read_regions(periodic, self._check_stop)
+        finally:
+            for name in periodic:
+                if name in frame.cache:
+                    record["识别"][name] = frame.result(name, program.include_scores)
         for trigger in program.triggers:
             self._check_stop()
             if trigger.conditions:
@@ -222,13 +239,36 @@ class Recorder:
                     continue
             executed: list[dict] = []
             record.setdefault("触发器", []).append({"名称": trigger.name, "操作": executed})
-            for action in trigger.actions:
+            index = 0
+            while index < len(trigger.actions):
                 self._check_stop()
-                frame, result = self._execute_action(action, capture, program, trial, frames)
-                executed.append(result)
+                action = trigger.actions[index]
+                if not isinstance(action, OCRAction):
+                    frame, result = self._execute_action(action, capture, program, trial, frames)
+                    executed.append(result)
+                    index += 1
+                    continue
+
+                # 连续读取不同区域时共享截图，重复读取同一区域会开始新一段。
+                names: dict[str, None] = {}
+                for offset in range(index, len(trigger.actions)):
+                    next_action = trigger.actions[offset]
+                    if not isinstance(next_action, OCRAction) or next_action.region in names:
+                        break
+                    names[next_action.region] = None
+                frame = self._capture(capture, frames)
+                try:
+                    frame.read_regions(list(names), self._check_stop)
+                finally:
+                    for name in names:
+                        if name in frame.cache:
+                            frames.triggered.add(name)
+                            result = frame.result(name, program.include_scores)
+                            executed.append({"额外识别": {name: result}})
+                index += len(names)
 
     def _execute_action(
-        self, action: Action, capture: Capture, program: Program, trial: bool, frames: RoundFrames,
+        self, action: ClickAction | WaitAction, capture: Capture, program: Program, trial: bool, frames: RoundFrames,
     ) -> tuple[ScreenFrame | None, dict]:
         """按操作类型返回最新画面和结果。"""
         if isinstance(action, WaitAction):
@@ -239,10 +279,6 @@ class Recorder:
             return None, {"等待": action.seconds}
 
         frame = self._capture(capture, frames)
-        if isinstance(action, OCRAction):
-            result = frame.result(action.region, program.include_scores)
-            frames.triggered.add(action.region)
-            return frame, {"额外识别": {action.region: result}}
         return self._click_action(action, program.source, frame, trial)
 
     def _click_action(
@@ -285,7 +321,7 @@ class Recorder:
     def _publish(self, stream: TextIO, record: dict, frames: RoundFrames) -> None:
         """追加一个独立的 YAML 文档并更新界面输出。"""
         if frames.timings:
-            record["OCR耗时(ms)"] = {name: tuple(samples) for name, samples in frames.timings.items()}
+            record["OCR耗时(ms)"] = frames.timings
         output = dump_yaml(record, document=True)
         stream.write(output)
         stream.flush()

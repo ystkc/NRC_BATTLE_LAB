@@ -59,6 +59,7 @@ class Region(Settings):
     detect: bool = True
     confidence: FiniteFloat = Field(default=0, ge=0, le=1)
     frame_diff_threshold: FiniteFloat = Field(default=0, ge=0, le=1)
+    allowed_chars: str = ""
 
     def fits(self, source: CaptureSource) -> bool:
         """检查旋转矩形的四角是否都在截图范围内。"""
@@ -101,7 +102,7 @@ Condition = Annotated[ConfidenceCondition | TextCondition | ColorCondition, Fiel
 
 
 class OCRAction(Settings):
-    """重新截图并识别指定区域。"""
+    """使用该段额外 OCR 的截图识别指定区域。"""
 
     type: Literal["ocr"]
     region: Name
@@ -135,6 +136,7 @@ class Trigger(Settings):
     """在条件全部满足时依次执行操作。"""
 
     name: Name
+    show: bool = True
     conditions: list[Condition] = Field(default_factory=list)
     actions: list[Action] = Field(min_length=1)
 

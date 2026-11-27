@@ -1,14 +1,16 @@
 """校正截图区域并复用 RapidOCR 的检测与识别模型。"""
 
 from collections import OrderedDict
+from contextlib import contextmanager
 from dataclasses import dataclass
 from math import cos, radians, sin
 from pathlib import Path
-from typing import Callable
-from rapidocr import ModelType, RapidOCR
+from time import perf_counter
+from typing import Callable, Iterator
 
 import cv2
 import numpy as np
+from rapidocr import ModelType, RapidOCR
 
 from .program import OCRModels, Region
 
@@ -86,6 +88,50 @@ def _screen_polygon(region: Region, box: np.ndarray | None, scale: float) -> Pol
     return tuple((float(x), float(y)) for x, y in screen)
 
 
+def _scale_crop(crop: np.ndarray) -> tuple[np.ndarray, float]:
+    """放大小选区并保留缩放比例。"""
+    scale = max(1, min(3, 48 / min(crop.shape[:2])))
+    if scale > 1:
+        crop = cv2.resize(crop, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+    return crop, scale
+
+
+def _text_line(
+    region: Region, text: str, score: float, box: np.ndarray | None = None, scale: float = 1,
+) -> TextLine | None:
+    """按选区的置信度保留非空文字，并计算截图上的轮廓。"""
+    text = text.strip()
+    if text and score >= region.confidence:
+        return TextLine(text, float(score), _screen_polygon(region, box, scale))
+    return None
+
+
+@contextmanager
+def _limit_characters(model, characters: str) -> Iterator[None]:
+    """在本次识别中限制 CTC 候选，同时保留原始置信度。"""
+    if not characters:
+        yield
+        return
+    decoder = model.postprocess_op
+    missing = set(characters).difference(decoder.dict)
+    if missing:
+        raise ValueError(f"当前 OCR 模型不支持这些字符：{''.join(sorted(missing))}")
+    indices = np.array(sorted({0, *(decoder.dict[char] for char in characters)}))
+
+    def decode(preds: np.ndarray, return_word_box: bool, **kwargs):
+        """只在允许字符与 CTC 空白之间选择概率最高的候选。"""
+        allowed = preds[..., indices]
+        best = allowed.argmax(axis=-1)
+        scores = np.take_along_axis(allowed, best[..., None], axis=-1)[..., 0]
+        return decoder.decode(indices[best], scores, return_word_box, remove_duplicate=True, **kwargs)
+
+    model.postprocess_op = decode
+    try:
+        yield
+    finally:
+        model.postprocess_op = decoder
+
+
 class Recognizer:
     """在录制任务之间复用 RapidOCR 模型和 ONNX 会话。"""
 
@@ -152,9 +198,7 @@ class Recognizer:
         """识别已校正的区域，应用置信度下限并返回截图坐标。"""
         if self._engine is None:
             self.prepare(OCRModels())
-        scale = max(1, min(3, 48 / min(crop.shape[:2])))
-        if scale > 1:
-            crop = cv2.resize(crop, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+        crop, scale = _scale_crop(crop)
         if region.detect:
             # 给贴边文字留出检测空间，填充色取自选区自身的边缘。
             edges = np.concatenate((crop[0], crop[-1], crop[:, 0], crop[:, -1]))
@@ -162,14 +206,57 @@ class Recognizer:
             crop = cv2.copyMakeBorder(
                 crop, PADDING_Y, PADDING_Y, PADDING_X, PADDING_X, cv2.BORDER_CONSTANT, value=background,
             )
-        result = self._engine(crop, use_det=region.detect)
+        with _limit_characters(self._engine.text_rec, region.allowed_chars):
+            result = self._engine(crop, use_det=region.detect)
         boxes = getattr(result, "boxes", None)
         texts = getattr(result, "txts", None) or ()
         scores = getattr(result, "scores", None) or ()
         lines = []
         for index, (text, score) in enumerate(zip(texts, scores)):
-            text = text.strip()
-            if text and score >= region.confidence:
-                box = boxes[index] if boxes is not None else None
-                lines.append(TextLine(text, float(score), _screen_polygon(region, box, scale)))
+            box = boxes[index] if boxes is not None else None
+            line = _text_line(region, text, score, box, scale)
+            if line is not None:
+                lines.append(line)
         return lines
+
+    def read_direct(
+        self, crops: list[tuple[Region, np.ndarray]], check_stop: Callable[[], None],
+    ) -> Iterator[list[tuple[str, list[TextLine], float]]]:
+        """逐批返回关闭检测的选区结果和分摊耗时。"""
+        if not crops:
+            return
+        if self._engine is None:
+            self.prepare(OCRModels())
+        engine = self._engine
+        model = engine.text_rec
+        # ONNX 输入的第一维决定模型能否接收动态批大小。
+        batch_dimension = model.session.session.get_inputs()[0].shape[0]
+        batch_size = 1 if isinstance(batch_dimension, int) else model.rec_batch_num
+        _, model_height, model_width = model.rec_image_shape
+        groups: dict[tuple[int, str], list[tuple[Region, np.ndarray, float]]] = {}
+        for region, crop in crops:
+            check_stop()
+            started = perf_counter()
+            crop, _ = _scale_crop(crop)
+            crop, _ = engine.preprocess_img(engine.load_img(crop))
+            height, width = crop.shape[:2]
+            # 按单框推理时的宽度分组，避免宽框拉长同批小框的输入。
+            input_width = int(model_height * max(model_width / model_height, width / height))
+            characters = "".join(sorted(set(region.allowed_chars)))
+            groups.setdefault((input_width, characters), []).append((region, crop, perf_counter() - started))
+
+        for (_, characters), group in groups.items():
+            for offset in range(0, len(group), batch_size):
+                check_stop()
+                batch = group[offset:offset + batch_size]
+                started = perf_counter()
+                with _limit_characters(model, characters):
+                    result = engine.recognize_txt([crop for _, crop, _ in batch])
+                shared = (perf_counter() - started) / len(batch)
+                readings = []
+                for (region, _, preprocessing), text, score in zip(batch, result.txts, result.scores):
+                    started = perf_counter()
+                    line = _text_line(region, text, score)
+                    elapsed = preprocessing + shared + (perf_counter() - started)
+                    readings.append((region.name, [line] if line is not None else [], elapsed))
+                yield readings

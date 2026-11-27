@@ -133,6 +133,9 @@
             <div id="region-list" class="region-list"></div>
             <div id="region-details" class="region-details" hidden>
               <label class="field stack">备注名<input id="region-name" type="text" autocomplete="off"></label>
+              <label class="field stack" title="填入识别时允许的字符，留空使用模型的全部字符">
+                允许字符<input id="region-allowed-chars" type="text" placeholder="例如 0123456789/" autocomplete="off" spellcheck="false">
+              </label>
               <div class="actions">
                 <label class="check"><input id="region-periodic" type="checkbox">每轮识别</label>
                 <label class="check" title="关闭后将整个区域作为一行识别"><input id="region-detect" type="checkbox">检测文字框</label>
@@ -159,6 +162,7 @@
                 <h3>校正预览</h3>
                 <div class="preview-image"><canvas id="rectified" aria-label="水平校正后的区域预览"></canvas></div>
               </div>
+              <label class="field stack">Tips: 尽量使OCR框高度相同来加速批量识别</label>
               <div class="actions region-controls">
                 <button id="copy-region" type="button" class="quiet">复制区域</button>
                 <button id="redraw-region" type="button" class="quiet">重画区域</button>

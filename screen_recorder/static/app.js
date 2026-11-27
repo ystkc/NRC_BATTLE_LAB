@@ -6,7 +6,7 @@ import {rulesEditor} from "./rules.js";
 const id = name => document.getElementById(name);
 const storageKey = "screen-ocr-program";
 const geometryInputs = ["x", "y", "width", "height", "angle"];
-const regionDefaults = {periodic: true, detect: true, confidence: 0, frame_diff_threshold: 0};
+const regionDefaults = {periodic: true, detect: true, confidence: 0, frame_diff_threshold: 0, allowed_chars: ""};
 const regionChecks = [["region-periodic", "periodic"], ["region-detect", "detect"]];
 const regionThresholds = [["region-confidence", "confidence"], ["region-frame-diff", "frame_diff_threshold"]];
 let program = {
@@ -247,10 +247,32 @@ function showGeometry() {
   if (editor.ready) editor.preview(id("rectified"), selected);
 }
 
+/** 收集可能引用 OCR 区域的条件和操作。 */
+function triggerRegionReferences(trigger) {
+  const references = [...trigger.conditions];
+  for (const action of trigger.actions) {
+    if (action.type === "ocr") references.push(action);
+    if (action.type === "click") {
+      for (const candidate of action.candidates) references.push(...candidate.conditions);
+    }
+  }
+  return references;
+}
+
+/** 只将符合显示条件的区域标在截图上。 */
+function showRegionOverlay() {
+  const names = new Set();
+  for (const trigger of program.triggers) {
+    if (trigger.show === false) continue;
+    for (const reference of triggerRegionReferences(trigger)) names.add(reference.region);
+  }
+  editor.regions = program.regions.filter(region => region.periodic || names.has(region.name));
+  editor.selected = selected;
+  editor.paint();
+}
+
 /** 绘制区域列表以及当前区域的备注。 */
 function showRegions() {
-  editor.regions = program.regions;
-  editor.selected = selected;
   const list = id("region-list");
   list.replaceChildren();
   for (const region of program.regions) {
@@ -275,11 +297,12 @@ function showRegions() {
   id("region-details").hidden = !selected;
   if (selected) {
     id("region-name").value = selected.name;
+    id("region-allowed-chars").value = selected.allowed_chars ?? "";
     for (const [input, field] of regionChecks) id(input).checked = selected[field];
     for (const [input, field] of regionThresholds) id(input).value = selected[field];
   }
   showGeometry();
-  editor.paint();
+  showRegionOverlay();
 }
 
 /** 将区域标为当前编辑项。 */
@@ -327,14 +350,7 @@ function finishRegionEdit(region) {
 /** 更新触发器对重命名或删除区域的引用。 */
 function replaceRegionReferences(previous, next) {
   for (const trigger of program.triggers) {
-    const references = [...trigger.conditions];
-    for (const action of trigger.actions) {
-      if (action.type === "ocr") references.push(action);
-      if (action.type === "click") {
-        for (const candidate of action.candidates) references.push(...candidate.conditions);
-      }
-    }
-    for (const reference of references) {
+    for (const reference of triggerRegionReferences(trigger)) {
       if (reference.region === previous) reference.region = next;
     }
   }
@@ -502,7 +518,10 @@ const editor = new SelectionCanvas({
   },
   position: showPosition,
 });
-const rules = rulesEditor(id("rules"), () => program, save, beginPick);
+const rules = rulesEditor(id("rules"), () => program, () => {
+  save();
+  showRegionOverlay();
+}, beginPick);
 
 id("capture-source").addEventListener("change", event => {
   const source = sources.find(item => sourceKey(item) === event.target.value);
@@ -558,6 +577,10 @@ for (const [input, field] of regionChecks) {
     save();
   });
 }
+id("region-allowed-chars").addEventListener("input", event => {
+  selected.allowed_chars = event.target.value;
+  save();
+});
 for (const [input, field] of regionThresholds) {
   id(input).addEventListener("change", event => {
     const target = event.target;
