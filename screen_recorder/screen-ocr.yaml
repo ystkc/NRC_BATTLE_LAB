@@ -1,0 +1,874 @@
+version: 1
+window:
+  handle: 1
+  pid: 1
+  class_name: className
+  title: 请选择目标窗口
+  width: 1600
+  height: 900
+frequency_hz: 10.0
+start_delay: 0.0
+include_scores: false
+record_timings: false
+record_frame_diffs: false
+ocr_models:
+  detection: tiny
+  recognition: tiny
+  detection_path: null
+  recognition_path: null
+  recognition_keys_path: null
+  recognition_stages:
+  - model: tiny
+    threshold: 0.8
+    model_path: null
+    keys_path: null
+  - model: small
+    threshold: 0.6
+    model_path: null
+    keys_path: null
+regions:
+- name: 精灵1名称
+  x: 217.657
+  y: 210.985
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 精灵2名称
+  x: 217.305
+  y: 293.665
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 精灵3名称
+  x: 216.953
+  y: 374.236
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 精灵4名称
+  x: 217.657
+  y: 456.564
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 精灵5名称
+  x: 214.141
+  y: 537.651
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 精灵6名称
+  x: 218.008
+  y: 620.33
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 精灵1血量
+  x: 260.259
+  y: 239.337
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/
+  adaptive_recognition: false
+- name: 精灵2血量
+  x: 257.798
+  y: 321.314
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/
+  adaptive_recognition: false
+- name: 精灵3血量
+  x: 259.908
+  y: 405.158
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/
+  adaptive_recognition: false
+- name: 精灵4血量
+  x: 260.611
+  y: 486.541
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/
+  adaptive_recognition: false
+- name: 精灵5血量
+  x: 259.556
+  y: 568.572
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/
+  adaptive_recognition: false
+- name: 精灵6血量
+  x: 259.205
+  y: 650.956
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/
+  adaptive_recognition: false
+- name: 提示字条（左）
+  x: 260.0
+  y: 150.0
+  width: 330
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.2
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 提示字条（右）
+  x: 1283.0
+  y: 146.0
+  width: 330
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.2
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 「技能」
+  x: 1524.237
+  y: 868.505
+  width: 45
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.03
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 我方场上精灵名称
+  x: 152.934
+  y: 49.063
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 对方场上精灵名称
+  x: 1456.643
+  y: 49.469
+  width: 120
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 我方场上精灵血量
+  x: 170.888
+  y: 69.735
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/%
+  adaptive_recognition: false
+- name: 对方场上精灵血量
+  x: 1472.315
+  y: 69.657
+  width: 88
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789/%
+  adaptive_recognition: false
+- name: 我方能量
+  x: 234.364
+  y: 93.594
+  width: 20
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789
+  adaptive_recognition: false
+- name: 对方能量
+  x: 1424.589
+  y: 94.602
+  width: 20
+  height: 15
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: 0123456789
+  adaptive_recognition: false
+- name: 技能1
+  x: 301.569
+  y: 384.988
+  width: 90
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: true
+- name: 技能2
+  x: 279.022
+  y: 499.686
+  width: 90
+  height: 25
+  angle: -7.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: true
+- name: 技能3
+  x: 294.999
+  y: 617.675
+  width: 90
+  height: 25
+  angle: -14.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: true
+- name: 技能4
+  x: 356.569
+  y: 718.803
+  width: 90
+  height: 25
+  angle: -21.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: true
+- name: 技能威力1
+  x: 322.29
+  y: 364.988
+  width: 55
+  height: 20
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.6
+  frame_diff_threshold: 0.1
+  allowed_chars: 1234567890-
+  adaptive_recognition: false
+- name: 技能威力2
+  x: 298.453
+  y: 477.826
+  width: 55
+  height: 20
+  angle: -7.0
+  periodic: false
+  detect: false
+  confidence: 0.6
+  frame_diff_threshold: 0.1
+  allowed_chars: 1234567890-
+  adaptive_recognition: false
+- name: 技能威力3
+  x: 311.15
+  y: 593.384
+  width: 55
+  height: 20
+  angle: -14.0
+  periodic: false
+  detect: false
+  confidence: 0.6
+  frame_diff_threshold: 0.1
+  allowed_chars: 1234567890-
+  adaptive_recognition: false
+- name: 技能威力4
+  x: 371.29
+  y: 691.651
+  width: 55
+  height: 20
+  angle: -21.0
+  periodic: false
+  detect: false
+  confidence: 0.6
+  frame_diff_threshold: 0.1
+  allowed_chars: 1234567890-
+  adaptive_recognition: false
+- name: 技能能耗1
+  x: 288.29
+  y: 311.988
+  width: 25
+  height: 20
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 技能能耗2
+  x: 255.011
+  y: 429.116
+  width: 25
+  height: 20
+  angle: -7.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 技能能耗3
+  x: 265.58
+  y: 550.535
+  width: 25
+  height: 20
+  angle: -14.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 技能能耗4
+  x: 319.29
+  y: 654.512
+  width: 25
+  height: 20
+  angle: -21.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 技能1冷却回合/null不可用
+  x: 304.135
+  y: 336.43
+  width: 50
+  height: 30
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 技能2冷却回合/null不可用
+  x: 270.213
+  y: 452.726
+  width: 50
+  height: 30
+  angle: -7.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 技能3冷却回合/null不可用
+  x: 284.674
+  y: 571.156
+  width: 50
+  height: 30
+  angle: -14.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 技能4冷却回合/null不可用
+  x: 341.432
+  y: 673.069
+  width: 50
+  height: 30
+  angle: -21.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: '1234567890'
+  adaptive_recognition: false
+- name: 「背包」
+  x: 1360.574
+  y: 869.911
+  width: 45
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 「更换」
+  x: 1444.73
+  y: 868.857
+  width: 45
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.1
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 正中提示
+  x: 805.941
+  y: 329.405
+  width: 480
+  height: 25
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.0
+  frame_diff_threshold: 0.02
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 提示字条（左2）
+  x: 260.0
+  y: 200.0
+  width: 330
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.2
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 提示字条（左3）
+  x: 260.0
+  y: 250.0
+  width: 330
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.2
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 提示字条（右2）
+  x: 1283.0
+  y: 196.0
+  width: 330
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.2
+  allowed_chars: ''
+  adaptive_recognition: false
+- name: 提示字条（右3）
+  x: 1283.0
+  y: 246.0
+  width: 330
+  height: 18
+  angle: 0.0
+  periodic: false
+  detect: false
+  confidence: 0.7
+  frame_diff_threshold: 0.2
+  allowed_chars: ''
+  adaptive_recognition: false
+triggers:
+- name: 开局页
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 797
+      y: 564
+    reference: '#1980b0'
+    tolerance: 12
+  - type: color
+    point:
+      x: 831
+      y: 560
+    reference: '#cb6512'
+    tolerance: 12
+  actions:
+  - type: ocr
+    region: 精灵1名称
+  - type: ocr
+    region: 精灵2名称
+  - type: ocr
+    region: 精灵3名称
+  - type: ocr
+    region: 精灵4名称
+  - type: ocr
+    region: 精灵5名称
+  - type: ocr
+    region: 精灵6名称
+  - type: ocr
+    region: 精灵1血量
+  - type: ocr
+    region: 精灵2血量
+  - type: ocr
+    region: 精灵3血量
+  - type: ocr
+    region: 精灵4血量
+  - type: ocr
+    region: 精灵5血量
+  - type: ocr
+    region: 精灵6血量
+- name: 选择技能页
+  show: true
+  conditions:
+  - type: color
+    point:
+      x: 1503
+      y: 801
+    reference: '#f2e8dc'
+    tolerance: 12
+  - type: text
+    region: 「技能」
+    text: 技能
+    match: contains
+  actions:
+  - type: ocr
+    region: 我方场上精灵名称
+  - type: ocr
+    region: 我方场上精灵血量
+  - type: ocr
+    region: 对方场上精灵名称
+  - type: ocr
+    region: 对方场上精灵血量
+  - type: ocr
+    region: 我方能量
+  - type: ocr
+    region: 对方能量
+  - type: ocr
+    region: 技能1
+  - type: ocr
+    region: 技能威力1
+  - type: ocr
+    region: 技能能耗1
+  - type: ocr
+    region: 技能2
+  - type: ocr
+    region: 技能威力2
+  - type: ocr
+    region: 技能能耗2
+  - type: ocr
+    region: 技能3
+  - type: ocr
+    region: 技能威力3
+  - type: ocr
+    region: 技能能耗3
+  - type: ocr
+    region: 技能4
+  - type: ocr
+    region: 技能威力4
+  - type: ocr
+    region: 技能能耗4
+- name: 技能1冷却/不可用
+  show: false
+  conditions:
+  - type: trigger
+    trigger: 选择技能页
+  - type: color
+    point:
+      x: 281
+      y: 370
+    reference: '#c6c3b6'
+    tolerance: 24
+  actions:
+  - type: ocr
+    region: 技能1冷却回合/null不可用
+- name: 技能2冷却/不可用
+  show: false
+  conditions:
+  - type: trigger
+    trigger: 选择技能页
+  - type: color
+    point:
+      x: 259
+      y: 489
+    reference: '#c6c3b6'
+    tolerance: 24
+  actions:
+  - type: ocr
+    region: 技能2冷却回合/null不可用
+- name: 技能3冷却/不可用
+  show: false
+  conditions:
+  - type: trigger
+    trigger: 选择技能页
+  - type: color
+    point:
+      x: 276
+      y: 608
+    reference: '#c6c3b6'
+    tolerance: 24
+  actions:
+  - type: ocr
+    region: 技能3冷却回合/null不可用
+- name: 技能4冷却/不可用
+  show: false
+  conditions:
+  - type: trigger
+    trigger: 选择技能页
+  - type: color
+    point:
+      x: 337
+      y: 712
+    reference: '#c6c3b6'
+    tolerance: 24
+  actions:
+  - type: ocr
+    region: 技能4冷却回合/null不可用
+- name: 打开了背包页
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 1339
+      y: 805
+    reference: '#f6efe5'
+    tolerance: 12
+  - type: text
+    region: 「背包」
+    text: 背包
+    match: contains
+  actions:
+  - type: wait
+    seconds: 0.1
+- name: 打开了更换页
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 1431
+      y: 802
+    reference: '#f3eee0'
+    tolerance: 12
+  - type: text
+    region: 「更换」
+    text: 更换
+    match: contains
+  actions:
+  - type: wait
+    seconds: 0.1
+- name: 正中提示文本
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 5
+      y: 763
+    reference: '#2b2a29'
+    tolerance: 8
+  - type: color
+    point:
+      x: 1159
+      y: 891
+    reference: '#262726'
+    tolerance: 8
+  - type: color
+    point:
+      x: 381
+      y: 7
+    reference: '#24252c'
+    tolerance: 8
+  - type: color
+    point:
+      x: 1587
+      y: 124
+    reference: '#272627'
+    tolerance: 8
+  actions:
+  - type: ocr
+    region: 正中提示
+- name: 弹出提示字条（右）
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 1569
+      y: 157
+    reference: '#343534'
+    tolerance: 12
+  - type: color
+    point:
+      x: 1488
+      y: 133
+    reference: '#272627'
+    tolerance: 12
+  actions:
+  - type: ocr
+    region: 提示字条（右）
+- name: 弹出提示字条（右2）
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 1569
+      y: 207
+    reference: '#292725'
+    tolerance: 12
+  - type: color
+    point:
+      x: 1488
+      y: 183
+    reference: '#353635'
+    tolerance: 12
+  actions:
+  - type: ocr
+    region: 提示字条（右2）
+- name: 弹出提示字条（右3）
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 1569
+      y: 257
+    reference: '#292725'
+    tolerance: 12
+  - type: color
+    point:
+      x: 1488
+      y: 203
+    reference: '#353635'
+    tolerance: 12
+  actions:
+  - type: ocr
+    region: 提示字条（右3）
+- name: 弹出提示字条（左）
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 14
+      y: 152
+    reference: '#343434'
+    tolerance: 12
+  - type: color
+    point:
+      x: 79
+      y: 137
+    reference: '#2b2a2c'
+    tolerance: 12
+  actions:
+  - type: ocr
+    region: 提示字条（左）
+- name: 弹出提示字条（左2）
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 14
+      y: 202
+    reference: '#262629'
+    tolerance: 12
+  - type: color
+    point:
+      x: 79
+      y: 187
+    reference: '#363536'
+    tolerance: 12
+  actions:
+  - type: ocr
+    region: 提示字条（左2）
+- name: 弹出提示字条（左3）
+  show: false
+  conditions:
+  - type: color
+    point:
+      x: 14
+      y: 252
+    reference: '#262629'
+    tolerance: 12
+  - type: color
+    point:
+      x: 79
+      y: 207
+    reference: '#363536'
+    tolerance: 12
+  actions:
+  - type: ocr
+    region: 提示字条（左3）
